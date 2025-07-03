@@ -1,0 +1,60 @@
+node_modules
+
+# ------------------------------
+# Laravel - backend
+# ------------------------------
+/backend/vendor/
+/backend/node_modules/
+/backend/.env
+/backend/.env.backup
+/backend/.env.production
+/backend/.phpactor.json
+/backend/.phpunit.result.cache
+/backend/.phpunit.cache
+/backend/.idea/
+/backend/.vscode/
+/backend/.nova/
+/backend/.zed/
+/backend/.fleet/
+/backend/public/build/
+/backend/public/hot/
+/backend/public/storage/
+/backend/storage/*.key
+/backend/storage/pail/
+/backend/Homestead.json
+/backend/Homestead.yaml
+
+# Logs e arquivos temporários
+*.log
+.DS_Store
+Thumbs.db
+
+# ------------------------------
+# Angular - frontend
+# ------------------------------
+node_modules/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/tmp/
+/frontend/out-tsc/
+/frontend/.angular/cache/
+/frontend/.vscode/
+/frontend/.idea/
+frontend/.history/
+
+# IDEs e editores diversos
+*.launch
+*.sublime-workspace
+/project
+.classpath
+.c9/
+.settings/
+
+# Cache e relatórios
+npm-debug.log
+yarn-error.log
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
