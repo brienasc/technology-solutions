@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Convites;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class ConviteService{
     public function enviarConvite(string $email): Convites{
@@ -16,5 +17,9 @@ class ConviteService{
         // Tratar o envio do convite por email
 
         return $convite;
+    }
+
+    public function indexAllConvites(): Collection{
+        return Convites::all();
     }
 }
