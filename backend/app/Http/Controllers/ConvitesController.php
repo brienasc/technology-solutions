@@ -30,12 +30,14 @@ class ConvitesController extends Controller
                 'email.email'    => 'O e-mail deve ter um formato válido.',
                 'email.unique'   => 'Este e-mail já está sendo utilizado por outro colaborador.',
                 'email.max'      => 'O e-mail não pode ter mais de :max caracteres.'
-            ]);
+           ]);
        
             $convite = $this->conviteService->enviarConvite($validateData['email']);
 
-            return $this->apiResponse->success($convite, 'Convite criado com sucesso');
+            $conviteArray = $convite->toArray();
+            $conviteArray['status_description'] = $convite->status_code->description();
 
+            return $this->apiResponse->success($conviteArray, 'Convite criado com sucesso');
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         } catch (Exception $e) {
@@ -46,8 +48,18 @@ class ConvitesController extends Controller
     }
 
     public function index(Request $request): JsonResponse{
-        $convites = $this->conviteService->indexAllConvites();
+        try {
+            $convites = $this->conviteService->indexAllConvites();
 
-        return $this->apiResponse->success($convites);
+            $mappedConvites = $convites->map(function ($convite) {
+                $conviteArray = $convite->toArray();
+                $conviteArray['status_description'] = $convite->status_code->description();
+                return $conviteArray;
+            });
+
+            return $this->apiResponse->success($mappedConvites, 'Lista de convites retornada com sucesso.');
+        } catch (Exeception $e) {
+            return $this->apiResponse->error('Erro ao buscar convites', 400);
+        }
     }
 }

@@ -6,11 +6,13 @@ use App\Models\Convites;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
+use App\Enums\ConviteStatus;
+
 class ConviteService{
     public function enviarConvite(string $email): Convites{
         $convite = Convites::create([
             "email_colab" => $email,
-            'status_code' => 0,
+            'status_code' => ConviteStatus::PENDENTE,
             'expires_at' => Carbon::now()->addDay(),
         ]);
 

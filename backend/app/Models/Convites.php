@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
+use App\Enums\ConviteStatus;
+
 class Convites extends Model{
     use HasFactory, HasUuids;
 
@@ -21,5 +23,6 @@ class Convites extends Model{
 
     protected $casts = [
         'expires_at' => 'datetime',
+        'status_code' => ConviteStatus::class,
     ];
 }
