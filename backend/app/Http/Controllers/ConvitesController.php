@@ -19,7 +19,7 @@ class ConvitesController extends Controller
         $this->apiResponse = $apiResponse;
         $this->conviteService = $conviteService;
     }
-    
+
     public function store(Request $request): JsonResponse{
         try{
            $validateData = $request->validate([
@@ -43,5 +43,11 @@ class ConvitesController extends Controller
                 'message' => $e->getMessage()
             ],400);
         }
+    }
+
+    public function index(Request $request): JsonResponse{
+        $convites = $this->conviteService->indexAllConvites();
+
+        return $this->apiResponse->success($convites);
     }
 }
