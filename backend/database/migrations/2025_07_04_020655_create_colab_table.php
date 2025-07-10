@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('logradouro', 100)->nullable(false);
             $table->string('numero', 5)->nullable(false);
             
-            $table->uuid('perfil_id')->nullable(false);
+            $table->bigInteger('perfil_id')->nullable(false);
             $table->foreign('perfil_id')
             ->references('perfil_id')
             ->on('perfis')

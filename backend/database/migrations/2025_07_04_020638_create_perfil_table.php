@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('perfis', function (Blueprint $table) {
-            $table->uuid(column: 'perfil_id')->primary();
+            $table->bigIncrements(column: 'perfil_id')->primary();
 
             $table->string('perfil_name')->nullable(false);
 
