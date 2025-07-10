@@ -60,3 +60,6 @@ testem.log
 /typings
 
 **/.env
+db-data/
+**/*.log
+logs/
