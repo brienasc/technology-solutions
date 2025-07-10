@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('convites', function (Blueprint $table) {
             $table->uuid('id_convite')->primary();
 
-            $table->string('email_colab', 50)->nullable(false);
+            $table->string('email_colab', 255)->nullable(false);
 
-            $table->tinyInteger('status_convite_code')->default(0);
+            $table->tinyInteger('status_code')->default(0);
 
             $table->timestamp('expires_at')->nullable();
 
