@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 use Exception;
 
 use App\Http\Responses\ApiResponse;
@@ -58,8 +59,29 @@ class ConvitesController extends Controller
             });
 
             return $this->apiResponse->success($mappedConvites, 'Lista de convites retornada com sucesso.');
-        } catch (Exeception $e) {
+        } catch (Exception $e) {
             return $this->apiResponse->error('Erro ao buscar convites', 400);
+        }
+    }
+
+    public function show(string $id_convite): JsonResponse{
+        try {
+            if (!Str::isUuid($id_convite)) {
+                return $this->apiResponse->badRequest('O ID do convite fornecido é inválido.');
+            }
+
+            $convite = $this->conviteService->getConviteById($id_convite);
+            
+            if (!$convite) {
+                return $this->apiResponse->badRequest(message: 'Convite não encontrado');
+            }
+
+            $conviteArray = $convite->toArray();
+            $conviteArray['status_description'] = $convite->status_code->description();
+
+            return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
+        } catch(Exception $e) {
+            return $this->apiResponse->error('Erro ao buscar convite', 400);
         }
     }
 }

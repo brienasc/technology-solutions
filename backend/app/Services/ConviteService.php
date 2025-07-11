@@ -24,4 +24,8 @@ class ConviteService{
     public function indexAllConvites(): Collection{
         return Convites::all();
     }
+
+    public function getConviteById(string $id): ?Convites{
+        return Convites::find($id);
+    }
 }
