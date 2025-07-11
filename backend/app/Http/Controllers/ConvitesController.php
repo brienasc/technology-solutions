@@ -11,8 +11,7 @@ use Exception;
 use App\Http\Responses\ApiResponse;
 use App\Services\ConviteService;
 
-class ConvitesController extends Controller
-{
+class ConvitesController extends Controller{
     protected $apiResponse;
     protected $conviteService;
 
@@ -23,15 +22,15 @@ class ConvitesController extends Controller
 
     public function store(Request $request): JsonResponse{
         try{
-           $validateData = $request->validate([
+            $validateData = $request->validate([
                 'email' => 'required|email|max:255|unique:colab,email', 
-           ],
-   [
+            ],
+    [
                 'email.required' => 'O campo e-mail é obrigatório.',
                 'email.email'    => 'O e-mail deve ter um formato válido.',
                 'email.unique'   => 'Este e-mail já está sendo utilizado por outro colaborador.',
                 'email.max'      => 'O e-mail não pode ter mais de :max caracteres.'
-           ]);
+            ]);
        
             $convite = $this->conviteService->enviarConvite($validateData['email']);
 
@@ -42,9 +41,7 @@ class ConvitesController extends Controller
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ],400);
+            return $this->apiResponse->error('', $e->getMessage(), 400);
         }
     }
 
@@ -81,7 +78,7 @@ class ConvitesController extends Controller
 
             return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
         } catch(Exception $e) {
-            return $this->apiResponse->error('Erro ao buscar convite', 400);
+            return $this->apiResponse->error($e->getMessage(), 'Erro ao buscar convite', 400);
         }
     }
 }
