@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ConviteStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -50,6 +52,12 @@ class ConvitesController extends Controller{
             $convites = $this->conviteService->indexAllConvites();
 
             $mappedConvites = $convites->map(function ($convite) {
+                if($convite->status_code !== ConviteStatus::FINALIZADO &&
+                   $convite->expires_at && Carbon::now()->greaterThan($convite->expires_at))
+                {
+                    $convite->status_code = ConviteStatus::EXPIRADO;
+                }
+
                 $conviteArray = $convite->toArray();
                 $conviteArray['status_description'] = $convite->status_code->description();
                 return $conviteArray;
@@ -71,6 +79,12 @@ class ConvitesController extends Controller{
             
             if (!$convite) {
                 return $this->apiResponse->badRequest(message: 'Convite não encontrado');
+            }
+
+            if($convite->status_code !== ConviteStatus::FINALIZADO &&
+                $convite->expires_at && Carbon::now()->greaterThan($convite->expires_at))
+            {
+                $convite->status_code = ConviteStatus::EXPIRADO;
             }
 
             $conviteArray = $convite->toArray();
