@@ -1,0 +1,158 @@
+<!-- login.component.html -->
+
+<!-- Contêiner principal da página de login.
+     Define o layout de duas colunas (formulário e imagem). -->
+<div class="login-page-container">
+
+       <!-- Seção para o logo/nome da empresa no canto superior esquerdo do formulário.
+           O clique na logo leva para a rota raiz (Home). -->
+     <!-- <div class="login-header-wrapper">
+        <a routerLink="/" class="logo-link">
+          <img src="app/assets/imagens/logo.png" alt="Technology Solutions Logo"> 
+        </a>
+      </div>  -->
+
+  <!-- Seção do lado esquerdo: Contém o formulário de login. -->
+  <div class="login-form-section"> 
+    <div class="login-content-wrapper"> 
+
+      <!-- Título principal da seção de login. -->
+      <h1>Faça o seu login</h1> 
+
+      <!-- Formulário de Login:
+           - [formGroup]="loginForm": Vincula este formulário HTML a um FormGroup 'loginForm' no TS.
+           - (ngSubmit)="onLogin()": Chama o método 'onLogin()' no TS quando o formulário é submetido. -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <!-- Grupo de formulário para o campo CPF. -->
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input
+            type="text"
+            id="cpf"
+            formControlName="cpf"                      
+            mask="000.000.000-00"                      
+            placeholder="000.000.000-00"
+            [ngClass]="{'is-invalid': loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched}"
+        
+          >
+          <!-- Mensagens de feedback para o CPF. -->
+          <div *ngIf="loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</div>
+            <div *ngIf="loginForm.get('cpf')?.errors?.['cpfInvalido']">CPF inválido.</div>
+          </div>
+        </div>
+
+        <!-- Grupo de formulário para o campo Senha. -->
+        <div class="form-group">
+          <label for="password">Senha:</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"                  
+            [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}"
+          >
+          <!-- Mensagens de feedback para a Senha. -->
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 8 caracteres.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['passwordStrength']">
+              A senha deve conter:
+              <ul>
+                <!-- Cada <li> verifica se uma regra específica de força da senha foi atendida. -->
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasUpperCase}">1 letra maiúscula</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasLowerCase}">1 letra minúscula</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasNumeric}">1 número</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasSpecialChar}">1 caractere especial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão de submissão do formulário. -->
+        <button type="submit" [disabled]="loginForm.invalid">Logar no Sistema</button>
+
+        <!-- Link para "Esqueci minha Senha". Navega sem recarregar a página. -->
+        <a routerLink="/esqueci-senha" class="forgot-password-link">Esqueci minha Senha</a> 
+      </form>
+      <!-- FIM DO FORMULÁRIO.
+           NOTA: Havia uma tag </form> duplicada aqui, foi removida. -->
+
+     
+
+    </div>
+  </div>
+
+  <!-- Seção do lado direito: Contém a imagem relacionada ao sistema. -->
+  <div class="login-image-section">
+
+    <img src="app/assets/imagens/fundo-login.png" alt="Imagem relacionada à empresa ou sistema"> 
+  </div>
+
+  <!-- Botão de voltar para a página inicial. --> 
+      <button routerLink="/" class="back-to-home-button login-button-style">Voltar ao Início</button>
+</div>
+
+
+
+
+<!-- <div class="login-page-container">
+
+  <div class="login-form-section">  
+    <div class="login-content-wrapper"> 
+      <div class="login-header-wrapper">
+        <a routerLink="/" class="logo-link">
+        <img src="app/assets/imagens/logo.png" alt="Technology Solutions Logo"> </a></div>
+      <h1>Faça o seu login</h1> 
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input
+            type="text"
+            id="cpf"
+            formControlName="cpf"
+            mask="000.000.000-00"
+            placeholder="000.000.000-00"
+            [ngClass]="{'is-invalid': loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched}"
+          >
+          <div *ngIf="loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</div>
+            <div *ngIf="loginForm.get('cpf')?.errors?.['cpfInvalido']">CPF inválido.</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha:</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}"
+          >
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Senha deve ter no mínimo 8 caracteres.</div>
+            <div *ngIf="loginForm.get('password')?.errors?.['passwordStrength']">
+              A senha deve conter:
+              <ul>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasUpperCase}">1 letra maiúscula</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasLowerCase}">1 letra minúscula</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasNumeric}">1 número</li>
+                <li [ngClass]="{'valid': loginForm.get('password')?.errors?.['passwordStrength']?.hasSpecialChar}">1 caractere especial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">Logar no Sistema</button>
+
+        <a routerLink="/esqueci-senha" class="forgot-password-link">Esqueci minha Senha</a> </form>
+      </form>
+       <button routerLink="/" class="back-button">Voltar</button>
+    </div>
+  </div>
+
+<div class="login-image-section">
+  <img src="app/assets/imagens/fundo-login.png" alt="Imagem relacionada à empresa ou sistema">
+  </div>
+</div>
+ -->

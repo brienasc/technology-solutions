@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+/* You/* frontend/src/styles.css */
+
+:root {
+  /* Cores */
+  --color-background-detail: #A9ABE1; /* Cor para detalhes de fundo */
+  --color-text-primary: #10002B;      /* Cor para títulos e textos */
+
+  /* Fontes */
+  --font-playfair-display: 'Playfair Display', serif;
+  --font-nunito-sans: 'Nunito Sans', sans-serif; 
+}
+
+html, body {
+  margin: 0; /* Remove a margem padrão do navegador */
+  padding: 0; /* Remove o padding padrão do navegador */
+  height: 100%; /* Garante que html e body ocupem 100% da altura da viewport */
+  width: 100%; /* Garante que html e body ocupem 100% da largura da viewport */
+  overflow: hidden; /* Evita barras de rolagem indesejadas se o conteúdo for maior */
+}
+
+body {
+  font-family: var(--font-nunito-sans); 
+  color: var(--color-text-primary);
+} 
