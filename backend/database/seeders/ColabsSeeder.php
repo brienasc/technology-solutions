@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\PerfilType;
 use DB;
+use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Str;
@@ -19,9 +20,9 @@ class ColabsSeeder extends Seeder
             [
                 'id_colab' => (string) Str::uuid(),
                 'name' => 'Administrador',
-                'cpf' => '12345678901',
+                'cpf' => '36435240051',
                 'email' => 'admin@admin.com',
-                'password' => null,
+                'password' => Hash::make('administrador'),
                 'celular' => '82999999999',
                 'cep' => '57000000',
                 'estado' => 'AL',
@@ -36,9 +37,9 @@ class ColabsSeeder extends Seeder
             [
                 'id_colab' => (string) Str::uuid(),
                 'name' => 'Gente e Cultura',
-                'cpf' => '10987654321',
+                'cpf' => '69720064064',
                 'email' => 'gentecultura@gente.com',
-                'password' => null,
+                'password' => Hash::make('genteecultura'),
                 'celular' => '82988888888',
                 'cep' => '57000001',
                 'estado' => 'AL',
@@ -53,7 +54,7 @@ class ColabsSeeder extends Seeder
             [
                 'id_colab' => (string) Str::uuid(),
                 'name' => 'Usuário Colaborador Comum',
-                'cpf' => '98765432109',
+                'cpf' => '98475933025',
                 'email' => 'colaborador@comum.com',
                 'password' => null,
                 'celular' => '82977777777',

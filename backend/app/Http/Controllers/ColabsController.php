@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colab;
 use App\Models\Perfis;
+use App\Rules\Cpf;
+use Illuminate\Validation\ValidationException;
 use Exception;
+use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -60,6 +64,30 @@ class ColabsController extends Controller{
             return $this->apiResponse->success($colab, 'Colaborador retornado com sucesso.');
         }catch(Exception $e){
             return $this->apiResponse->badRequest( null, 'Erro ao buscar colaborador');
+        }
+    }
+
+    public function login(Request $request): JsonResponse{
+        try{
+            $validateData = $request->validate([
+                'cpf' => ['required', 'digits:11', new Cpf()],
+                'password' => ['required', 'min:8'],
+            ],[
+                'required' => 'O :attribute é obrigatório',
+                'digits' => 'O campo :attribute deve conter apenas :digits digitos.',
+                'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
+            ]);
+
+            $dataResponse = $this->colabService->loginColab($validateData['cpf'], $validateData['password']);
+            if($dataResponse == null){
+                return $this->apiResponse->badRequest( null, 'Usuario ou senha inválido!');
+            }
+
+            return $this->apiResponse->success($dataResponse, 'Login com sucesso');
+        }catch(ValidationException $e){
+            return $this->apiResponse->badRequest($e->errors(), 'Bad request');
+        }catch(Exception $e){
+            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
         }
     }
 }
