@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>title</title>
-</head>
-<body>
-    
-</body>
-</html>
+<!-- frontend/src/app/pages/menu-gerencial/menu-gerencial.component.html -->
+
+<div class="menu-gerencial-container">
+  <h1>Menu Gerencial</h1>
+  <p>Gerencie seus colaboradores e convites.</p>
+
+  <!-- Aqui será o local para o componente de lista de colaboradores.
+       Ele incluirá a pesquisa, paginação e o botão de exportar. -->
+  <app-lista-colaboradores></app-lista-colaboradores>
+
+  <!-- Placeholder para o modal de detalhes do colaborador.
+       Ele será exibido condicionalmente quando um colaborador for selecionado. -->
+  <!-- <app-modal-detalhes *ngIf="showModal"></app-modal-detalhes> -->
+</div>
+

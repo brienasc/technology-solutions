@@ -1,10 +1,75 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>title</title>
-</head>
-<body>
-    
-</body>
-</html>
+<!-- frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.html -->
+
+<div class="lista-colaboradores-container">
+  <!-- Seção de Pesquisa e Exportação -->
+  <div class="filter-export-section">
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Pesquisar por nome, e-mail ou CPF..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+      >
+      <button class="search-button">
+        <!-- Ícone de lupa (exemplo com SVG inline ou Font Awesome) -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+    <button class="export-button" (click)="exportToExcel()">
+      <!-- Ícone de Excel (exemplo com SVG inline ou Font Awesome) -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.18 1.18 3.712 3.712 1.18-1.18a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.336 2.025l-.353 1.059A.75.75 0 0 0 5.003 18.5l1.059-.353a5.25 5.25 0 0 0 2.025-1.336l8.4-8.4Z" />
+        <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+      </svg>
+      Exportar para Excel
+    </button>
+  </div>
+
+  <!-- Tabela de Colaboradores -->
+  <div class="table-responsive">
+    <table class="colaboradores-table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>CPF</th>
+          <th>Status Convite</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Exibe uma mensagem de carregamento enquanto os dados são buscados -->
+        <tr *ngIf="loading">
+          <td colspan="5" class="text-center">Carregando colaboradores...</td>
+        </tr>
+        <!-- Exibe uma mensagem se não houver colaboradores -->
+        <tr *ngIf="!loading && filteredColaboradores.length === 0">
+          <td colspan="5" class="text-center">Nenhum colaborador encontrado.</td>
+        </tr>
+        <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
+        <tr *ngFor="let colaborador of paginatedColaboradores">
+          <td>{{ colaborador.nome }}</td>
+          <td>{{ colaborador.email }}</td>
+          <td>{{ colaborador.cpf }}</td>
+          <td>
+            <span class="status-badge status-{{ colaborador.status | lowercase }}">{{ colaborador.status }}</span>
+          </td>
+          <td>
+            <button class="details-button" (click)="viewDetails(colaborador)">
+              Detalhes
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Controles de Paginação -->
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
+  </div>
+</div>
