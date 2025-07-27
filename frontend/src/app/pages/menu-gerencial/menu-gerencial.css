@@ -1,0 +1,41 @@
+/* frontend/src/app/pages/menu-gerencial/menu-gerencial..css */
+
+/* Editar o css */
+
+.menu-gerencial-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 40px auto; /* Centraliza o contêiner na página */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-nunito-sans); /* Usa a fonte padrão do projeto */
+  color: var(--color-text-primary); /* Usa a cor de texto padrão */
+}
+
+.menu-gerencial-container h1 {
+  font-family: var(--font-playfair-display); /* Fonte para títulos */
+  font-style: italic;
+  color: var(--color-text-primary);
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.menu-gerencial-container p {
+  font-size: 1.1em;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+  .menu-gerencial-container {
+    padding: 20px;
+    margin: 20px;
+  }
+  .menu-gerencial-container h1 {
+    font-size: 2em;
+  }
+}
