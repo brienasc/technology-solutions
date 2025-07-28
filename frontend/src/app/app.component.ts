@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet, provideRouter } from '@angular/router'; 
 import { provideHttpClient } from '@angular/common/http'; 
 import { ReactiveFormsModule } from '@angular/forms'; 
+import { provideNgxMask } from 'ngx-mask';
 
 // Importa as rotas aqui, que estão em './app.routes'
 import { routes } from './app.routes';
@@ -12,6 +13,7 @@ export const appConfig = {
   providers: [
     provideRouter(routes), 
     provideHttpClient(),   
+     provideNgxMask(),
   ]
 };
 
