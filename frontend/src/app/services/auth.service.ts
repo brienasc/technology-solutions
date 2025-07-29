@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root' // Disponível em toda a aplicação
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/login'; // Substuir pela URL real da sua API de login da do backend
+  private apiUrl = 'URL_DA_API/login'; // Substuir pela URL real da sua API de login da do backend
 
   constructor(private http: HttpClient) { }
 

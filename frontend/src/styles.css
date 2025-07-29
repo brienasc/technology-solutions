@@ -1,38 +1,24 @@
-@import "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
-@import "https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
+/* You/* frontend/src/styles.css */
 
 :root {
-  --color-background-detail: #A9ABE1;      /* Cor para detalhes de fundo / primary-color */
-  --color-text-primary: #10002B;           /* Cor para títulos e textos / primary-text */
-  --color-secondary-text: #240046;         /* Equivalente ao seu antigo $secondary-text */
-  --color-secondary: #3C096C;              /* Equivalente ao seu antigo $secondary-color */
-  --color-light-primary: #7B2CBF;          /* Equivalente ao seu antigo $light-primary-color */
-  --color-lighten-primary: #C6C7EB;        /* lighten(#A9ABE1, 10%) - Usado em hero-section */
+  /* Cores */
+  --color-background-detail: #A9ABE1; /* Cor para detalhes de fundo */
+  --color-text-primary: #10002B;      /* Cor para títulos e textos */
 
-  --color-body-text: #333;                 /* Cor geral para textos do body/html */
-  --color-body-background: #f8f8f8;       /* Cor de fundo geral do body */
-  --color-paragraph-text: #555;            /* Cor para parágrafos (usado em hero-section, about-text, etc.) */
-  --color-muted-text: #999;                /* Cor para textos muted (usado em vagas span) */
-  --color-footer-link: #ccc;               /* Cor de links no rodapé */
-  --color-light-background: #fdfdff;       /* cor pra about-stats) */
-
+  /* Fontes */
   --font-playfair-display: 'Playfair Display', serif;
-  --font-nunito-sans: 'Nunito Sans', sans-serif;
-  --font-secondary: 'Allura', sans-serif;  
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  --font-nunito-sans: 'Nunito Sans', sans-serif; 
 }
 
 html, body {
-  height: 100%;  
-  width: 100%;                     
-  font-family: var(--font-playfair-display); 
-  color: var(--color-body-text);         
-  background-color: var(--color-body-background); 
-  line-height: 1.6;
-  scroll-behavior: smooth; 
+  margin: 0; /* Remove a margem padrão do navegador */
+  padding: 0; /* Remove o padding padrão do navegador */
+  height: 100%; /* Garante que html e body ocupem 100% da altura da viewport */
+  width: 100%; /* Garante que html e body ocupem 100% da largura da viewport */
+  overflow: hidden; /* Evita barras de rolagem indesejadas se o conteúdo for maior */
 }
+
+body {
+  font-family: var(--font-nunito-sans); 
+  color: var(--color-text-primary);
+} 
