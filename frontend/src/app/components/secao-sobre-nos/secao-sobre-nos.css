@@ -1,0 +1,147 @@
+/* mobile */
+.about-us-section {
+    padding: 40px 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.about-us-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text {
+    flex: 1;
+    line-height: 1.6;
+    color: #555;
+    font-size: 1em;
+    text-align: center;
+}
+
+.about-text p {
+    margin-bottom: 12px;
+}
+
+.about-stats {
+    flex: 0 0 auto;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-left: 3px solid #3C096C;
+    background-color: #fdfdff;
+    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.05);
+}
+
+.about-stats .stat-item {
+    font-size: 1.1em;
+    color: #10002B; 
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.about-stats .stat-item span {
+    font-weight: bold;
+    color:  #7B2CBF;
+    margin-right: 8px;
+    font-size: 1.1em;
+}
+
+.about-stats .stat-item::before {
+    margin-right: 8px;
+    color:  #7B2CBF;
+}
+
+/* tablet 768px */
+@media (min-width: 768px) {
+    .about-us-section {
+        padding: 60px 30px;
+    }
+
+    .about-us-content {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 60px;
+        max-width: 900px;
+        text-align: left;
+    }
+
+    .about-text {
+        font-size: 1em;
+        text-align: left;
+    }
+
+    .about-text p {
+        margin-bottom: 15px;
+    }
+
+    .about-stats {
+        flex: 0 0 300px;
+        width: auto;
+        max-width: none;
+        gap: 22px;
+        padding: 25px;
+        border-left: 4px solid #3C096C; 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .about-stats .stat-item {
+        font-size: 1.2em;
+    }
+
+    .about-stats .stat-item span {
+        margin-right: 9px;
+        font-size: 1.15em;
+    }
+
+    .about-stats .stat-item::before {
+        margin-right: 9px;
+    }
+}
+
+/* desktop 1200px */
+@media (min-width: 1200px) {
+    .about-us-section {
+        padding: 80px 50px;
+    }
+
+    .about-us-content {
+        gap: 80px;
+        max-width: 1100px;
+    }
+
+    .about-text {
+        font-size: 1.05em;
+    }
+
+    .about-stats {
+        flex: 0 0 350px;
+        gap: 25px;
+        padding: 30px;
+        border-left: 5px solid #3C096C;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .about-stats .stat-item {
+        font-size: 1.25em;
+    }
+
+    .about-stats .stat-item span {
+        margin-right: 10px;
+        font-size: 1.2em;
+    }
+
+    .about-stats .stat-item::before {
+        margin-right: 10px;
+    }
+}
