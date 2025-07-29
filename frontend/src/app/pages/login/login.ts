@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { NgxMaskDirective } from 'ngx-mask';
 import { RouterLink } from '@angular/router';
 
+import { AuthService } from '../../services/auth.service';
+
 // *** VALIDADORES CUSTOMIZADOS ***
 // Validador de CPF
 // Validador de CPF: Verifica se o valor inserido é um CPF válido.
@@ -137,7 +139,7 @@ export class LoginComponent implements OnInit {
   // Injete o FormBuilder para criar o formulário reativo
   // Injete o Router para navegação após o login
   // Injete o AuthService quando criá-lo (para fazer a chamada de API)
-  constructor(private fb: FormBuilder, private router: Router /* private authService: AuthService */) { }
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     // Inicializa o formulário com os controles e validadores
@@ -159,33 +161,37 @@ export class LoginComponent implements OnInit {
 
       // *** AQUI INTEGRARIA O SERVIÇO DE AUTENTICAÇÃO ***
       // Exemplo:
-      /*
+      
       this.authService.login(cpf, password).subscribe(
         response => {
           console.log('Login bem-sucedido!', response);
+          alert(response.message)
           // Armazenar token, redirecionar
-          this.router.navigate(['/menu-gerencial']);
+          localStorage.setItem('accessToken', response.data.token)
+          localStorage.setItem('userAbilities', response.data.abilities)
+          this.router.navigate(['/']);
         },
         error => {
-          console.error('Erro no login:', error);
+          console.error('Erro no login: ', error);
+          alert(error.error.message)
           // Exibir mensagem de erro para o usuário
         }
       );
-      */
 
       // *** SIMULAÇÃO DE LOGIN PARA TESTE LOCAL ***
-          if (cpf === '98765432100' && password === 'Senha+123') { 
-            alert('Login de teste bem-sucedido! Redirecionando...');
-            this.router.navigate(['/menu-gerencial']);
-          } else {
-            alert('Login de teste falhou. Verifique CPF ou senha (987.654.321-00 / Senha+123)'); // Aqui pode deixar com máscara para o alerta
-          }
+      // if (cpf === '98765432100' && password === 'Senha+123') { 
+      //   alert('Login de teste bem-sucedido! Redirecionando...');
+      //   this.router.navigate(['/menu-gerencial']);
+      // } else {
+      //   alert('Login de teste falhou. Verifique CPF ou senha (987.654.321-00 / Senha+123)'); // Aqui pode deixar com máscara para o alerta
+      // }
 
-          } else {
-            // Se o formulário não for válido, será marcado todos os campos como "touched"
-            // para exibir as mensagens de erro
-            this.loginForm.markAllAsTouched();
-            console.log('Formulário inválido, verifique os campos.');
-          }
+      // } else {
+      //   // Se o formulário não for válido, será marcado todos os campos como "touched"
+      //   // para exibir as mensagens de erro
+      //   this.loginForm.markAllAsTouched();
+      //   console.log('Formulário inválido, verifique os campos.');
+      // }
+    }
   }
 }
