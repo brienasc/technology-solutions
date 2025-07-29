@@ -1,0 +1,131 @@
+/* mobile  */
+.job-openings-section {
+    padding: 40px 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+.job-intro {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 30px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.job-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.job-item {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    flex: 1 1 280px;
+    max-width: 90%;
+    border-top: 3px solid #3C096C;
+}
+
+.job-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.job-item h3 {
+    font-size: 1.2em;
+    color: #10002B; 
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.job-item span {
+    font-size: 0.85em;
+    color: #999;
+}
+
+/* tablet 768px */
+@media (min-width: 768px) {
+    .job-openings-section {
+        padding: 60px 30px;
+    }
+
+    .job-intro {
+        font-size: 1.05em;
+        margin-bottom: 35px;
+        max-width: 700px;
+    }
+
+    .job-list {
+        gap: 25px;
+        margin-bottom: 45px;
+    }
+
+    .job-item {
+        padding: 28px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+        flex: 1 1 300px;
+        max-width: 320px;
+        border-top: 4px solid #3C096C;
+    }
+
+    .job-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.11);
+    }
+
+    .job-item h3 {
+        font-size: 1.3em;
+        margin-bottom: 9px;
+    }
+
+    .job-item span {
+        font-size: 0.9em;
+    }
+}
+
+/* desktop 1200px */
+@media (min-width: 1200px) {
+    .job-openings-section {
+        padding: 80px 50px;
+    }
+
+    .job-intro {
+        font-size: 1.1em;
+        margin-bottom: 40px;
+        max-width: 800px;
+    }
+
+    .job-list {
+        gap: 30px;
+        margin-bottom: 50px;
+    }
+
+    .job-item {
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        flex: 1 1 300px;
+        max-width: 350px;
+        border-top: 5px solid #3C096C;
+    }
+
+    .job-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .job-item h3 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+    }
+
+    .job-item span {
+        font-size: 0.95em;
+    }
+}
