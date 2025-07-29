@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { Router } from '@angular/router';
-import { NgxMaskDirective } from 'ngx-mask'; 
+import { NgxMaskDirective } from 'ngx-mask';
+import { RouterLink } from '@angular/router';
 
 // *** VALIDADORES CUSTOMIZADOS ***
 // Validador de CPF
@@ -122,7 +123,8 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
   imports: [ 
     CommonModule, 
     ReactiveFormsModule, 
-    NgxMaskDirective 
+    NgxMaskDirective,
+    RouterLink 
   ],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
@@ -135,7 +137,7 @@ export class LoginComponent implements OnInit {
   // Injete o FormBuilder para criar o formulário reativo
   // Injete o Router para navegação após o login
   // Injete o AuthService quando criá-lo (para fazer a chamada de API)
-  constructor(private fb: FormBuilder, private router: Router /*, private authService: AuthService */) {}
+  constructor(private fb: FormBuilder, private router: Router /* private authService: AuthService */) { }
 
   ngOnInit(): void {
     // Inicializa o formulário com os controles e validadores
