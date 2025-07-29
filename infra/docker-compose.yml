@@ -1,0 +1,68 @@
+services:
+  php:
+    build:
+      context: ..
+      dockerfile: infra/php/Dockerfile
+    networks:
+      - internal
+    volumes:
+      - ../backend/:/var/www/html/
+      - ../logs/php.log:/var/log/fpm-php.www.log
+      - ./php/entrypoint.sh:/entrypoint.sh
+    container_name: php
+    expose:
+      - "9000"
+    entrypoint: ["sh", "-c", "chmod +x /entrypoint.sh && /entrypoint.sh"]
+
+  angular:
+    build:
+      context: ..
+      dockerfile: infra/angular/Dockerfile
+      target: builder
+    volumes:
+      - ../frontend:/app/
+      - /app/node_modules
+    command: sh -c "npm ci --silent && npm run start -- --host 0.0.0.0"
+    container_name: angular
+    networks:
+      - internal
+    ports:
+      - "4200:4200"
+
+  postgres:
+    container_name: postgres-db
+    restart: always
+    image: postgres:latest
+    platform: linux/x86_64
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: hoppe
+      POSTGRES_PASSWORD: passwd
+      POSTGRES_DB: techsolu_db_docker
+    volumes:
+      - ../db-data:/var/lib/postgresql/data
+      - ../backend/database/:/docker-entrypoint-initdb.d/
+    networks:
+      - internal
+
+  nginx:
+    build:
+      context: ..
+      dockerfile: infra/nginx/Dockerfile
+    depends_on:
+      - angular
+      - php
+    ports: 
+      - "8080:8080"
+    networks:
+      - internal
+    volumes:
+      - ../backend/:/var/www/html/
+      # - ../frontend/dist/frontend-app/browser:/usr/share/nginx/html
+      - ../logs/nginx:/var/log/nginx/
+    container_name: nginx
+
+networks:
+  internal:
+    driver: bridge
