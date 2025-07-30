@@ -1,38 +1,101 @@
+/* frontend/src/styles.css */
+
 @import "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
 @import "https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
 
+/* --- Variáveis de TEMA (Definidas no :root para o modo claro padrão) --- */
+/* Estas são as variáveis que serão usadas pelos componentes e que mudarão no dark mode. */
 :root {
-  --color-background-detail: #A9ABE1;      /* Cor para detalhes de fundo / primary-color */
-  --color-text-primary: #10002B;           /* Cor para títulos e textos / primary-text */
-  --color-secondary-text: #240046;         /* Equivalente ao seu antigo $secondary-text */
-  --color-secondary: #3C096C;              /* Equivalente ao seu antigo $secondary-color */
-  --color-light-primary: #7B2CBF;          /* Equivalente ao seu antigo $light-primary-color */
-  --color-lighten-primary: #C6C7EB;        /* lighten(#A9ABE1, 10%) - Usado em hero-section */
+  /* Cores da sua paleta principal (não mudam com o tema) */
+  --color-primary: #10002B; /* Seu azul escuro/quase preto */
+  --color-secondary: #3C096C; /* Seu roxo mais escuro */
+  --color-background-detail: #A9ABE1; /* Seu lilás/roxo claro (usado na imagem de fundo) */
+  --color-light-primary: #7B2CBF; /* Seu roxo médio */
+  --color-lighten-primary: #C6C7EB; /* Seu lilás bem claro */
+  
+  /* Cores de Texto e Fundo Genéricas (não mudam com o tema) */
+  --color-text-primary: #10002B; /* Cor principal para textos, títulos */
+  --color-text-secondary: #240046; /* Texto secundário */
+  --color-body-text: #333; /* Cor geral para textos do body/html */
+  --color-body-background: #f8f8f8; /* Cor de fundo geral do body */
+  --color-paragraph-text: #555; /* Cor para parágrafos */
+  --color-muted-text: #999; /* Cor para textos muted */
+  --color-footer-link: #ccc; /* Cor de links no rodapé */
+  --color-light-background: #fdfdff; /* Cor de fundo para seções claras */
+  --color-white: #ffffff; /* Branco puro */
+  --color-light-gray: #ccc; /* Cinza claro para bordas de input */
+  --color-medium-gray: #cccccc; /* Cinza médio para botões desabilitados */
+  --color-danger: #dc3545; /* Vermelho para erros */
+  --color-success: #28a745; /* Verde para sucesso */
+  --color-warning: #ffc107; /* Amarelo para avisos */
+  --color-info-blue: #007bff; /* Azul para links e foco de input */
+  --color-info-blue-dark: #0056b3; /* Azul escuro para hover de link/botão */
 
-  --color-body-text: #333;                 /* Cor geral para textos do body/html */
-  --color-body-background: #f8f8f8;       /* Cor de fundo geral do body */
-  --color-paragraph-text: #555;            /* Cor para parágrafos (usado em hero-section, about-text, etc.) */
-  --color-muted-text: #999;                /* Cor para textos muted (usado em vagas span) */
-  --color-footer-link: #ccc;               /* Cor de links no rodapé */
-  --color-light-background: #fdfdff;       /* cor pra about-stats) */
-
+  /* Fontes */
   --font-playfair-display: 'Playfair Display', serif;
   --font-nunito-sans: 'Nunito Sans', sans-serif;
-  --font-secondary: 'Allura', sans-serif;  
+  --font-secondary: 'Allura', sans-serif;
+  
+  /* --- Variáveis de TEMA (Definidas no :root para o modo claro padrão) --- */
+  /* Estas são as variáveis que serão usadas pelos componentes e que mudarão no dark mode. */
+  --theme-background: var(--color-body-background); /* Fundo geral da página (light) */
+  --theme-form-bg: var(--color-white); /* Fundo da seção do formulário (light) */
+  --theme-card-bg: var(--color-white); /* Fundo do cartão do formulário (light) */
+  --theme-heading-text: var(--color-primary); /* Cor do texto de títulos (light) */
+  --theme-body-text: var(--color-paragraph-text); /* Cor do texto do corpo (light) */
+  --theme-label-text: var(--color-primary); /* Cor do texto dos rótulos (light) */
+  --theme-input-text: var(--color-text-primary); /* Cor do texto dentro dos inputs (light) */
+  --theme-input-border: var(--color-light-gray); /* Cor da borda dos inputs (light) */
+  --theme-focus-border: var(--color-info-blue); /* Cor da borda no foco (light) */
+  --theme-focus-shadow: rgba(0, 123, 255, 0.25); /* Cor da sombra no foco (light) */
+  --theme-button-primary-bg: var(--color-primary); /* Cor de fundo do botão primário (light) */
+  --theme-button-primary-hover: var(--color-secondary); /* Cor de hover do botão primário (light) */
+  --theme-button-text: var(--color-white); /* Cor do texto dos botões (light) */
+  --theme-link-text: var(--color-info-blue); /* Cor do texto dos links (light) */
+  --theme-button-disabled-bg: var(--color-medium-gray); /* Cor do botão desabilitado (light) */
+  --theme-button-secondary-bg: var(--color-primary); /* Cor de fundo do botão secundário (light) */
+  --theme-image-section-bg: var(--color-background-detail); /* Fundo da seção da imagem (light) */
+  --theme-invalid-feedback-text: #96020b; /* Cor do texto de feedback (vermelho) no modo claro */
 }
 
+/* --- Modo Escuro (Aplicado ao body) --- */
+/* Estas variáveis sobrescrevem as do :root quando a classe .dark-theme está no body. */
+body.dark-theme { 
+  --theme-background: #1a1a1a; /* Fundo geral da página (dark) */
+  --theme-form-bg: #000000; /*  Fundo da seção do formulário (dark)*/
+  --theme-card-bg: #000000; /* Fundo do cartão do formulário (dark) */
+  --theme-heading-text: var(--color-lighten-primary); /* Cor do texto de títulos (dark) */
+  --theme-body-text: #ffffff; /* Cor do texto do corpo (dark) */
+  --theme-label-text: #ffffff; /* Cor do texto dos rótulos (dark) */
+  --theme-input-text: #ffffff; /* Cor do texto dentro dos inputs (dark) */
+  --theme-input-border: #555; /* Cor da borda dos inputs (dark) */
+  --theme-focus-border: var(--color-lighten-primary); /* Cor da borda no foco (dark) */
+  --theme-focus-shadow: rgba(123, 44, 191, 0.25); /* Cor da sombra no foco (dark) */
+  --theme-button-primary-bg: var(--color-light-primary); /* Cor de fundo do botão primário (dark) */
+  --theme-button-primary-hover: var(--color-secondary); /* Cor de hover do botão primário (dark) */
+  --theme-button-text: var(--color-white); /* Cor do texto dos botões (dark) */
+  --theme-link-text: var(--color-lighten-primary); /* Cor do texto dos links (dark) */
+  --theme-button-disabled-bg: #555; /* Cor do botão desabilitado (dark) */
+  --theme-button-secondary-bg: #4a4a4a; /* Cor de fundo do botão secundário (dark) */
+  --theme-image-section-bg: var(--color-secondary); /* Fundo da seção da imagem (dark) */
+  --theme-invalid-feedback-text: #ffffff; /* Cor do texto de feedback (branco) no modo escuro */
+}
+
+/* --- Reset Básico (Universal) --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* --- Estilos Globais para HTML e Body --- */
 html, body {
-  height: 100%;  
-  width: 100%;                     
-  font-family: var(--font-playfair-display); 
-  color: var(--color-body-text);         
-  background-color: var(--color-body-background); 
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-nunito-sans); /* Usando a fonte padrão para o body */
+  color: var(--theme-body-text); /* Usa a variável de tema para a cor do texto do body */
+  background-color: var(--theme-background); /* Usa a variável de tema para o fundo do body */
   line-height: 1.6;
-  scroll-behavior: smooth; 
+  scroll-behavior: smooth;
+  
 }

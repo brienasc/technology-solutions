@@ -1,16 +1,20 @@
-/* mobile */
+
+
+/* frontend/src/app/components/header/header.css */
+
 .app-header {
     display: flex;
-    flex-direction: column; /* pra centralizar verticalmente qd for empilhado */
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
-    padding: 15px 20px; /* espaçamento interno e lateral */
-    background-color: #fff;
+    padding: 15px 20px; 
+    background-color: var(--theme-form-bg); /*  Usa variável de tema para o fundo */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 0;
     gap: 10px;
     z-index: 1000;
+    transition: background-color 0.5s ease, color 0.5s ease; /* Adiciona transição para o fundo */
 }
 
 .header-logo {
@@ -42,14 +46,15 @@
 
 .header-nav ul li a {
     text-decoration: none;
-    color:  #240046;
+    color: var(--theme-heading-text); /* Usa variável de tema para a cor do texto */
     font-weight: 500;
     font-size: 1.6em;
     display: block;
+    transition: color 0.3s ease; /* Adiciona transição para a cor */
 }
 
 .header-nav ul li a:hover {
-    color: #7B2CBF;
+    color: var(--color-light-primary); /*  Cor de hover da sua paleta, não muda com o tema */
 }
 
 .header-buttons {
@@ -63,7 +68,7 @@
 
 .secondary-button-outline {
     padding: 10px 20px;
-    color: #3C096C; 
+    color: var(--theme-button-primary-bg); /* Usa variável de tema para a cor do texto (será a cor da borda no light) */
     border-radius: 25px;
     cursor: pointer;
     font-size: 0.95em;
@@ -74,15 +79,69 @@
     max-width: 250px;
     text-align: center;
     background-color: transparent; 
-    border: 2px solid #3C096C;
+    border: 2px solid var(--theme-button-primary-bg); /* Usa variável de tema para a cor da borda */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Adiciona transição para borda e texto */
 }
 
 .secondary-button-outline:hover {
-    background-color: #3C096C;
-    color: white;
+    background-color: var(--theme-button-primary-hover); /* Usa variável de tema para o hover */
+    color: var(--theme-button-text); /*  Usa variável de tema para o texto no hover */
+    border-color: var(--theme-button-primary-hover); /*  Borda acompanha o hover */
 }
 
-/*telas maiores (a partir de 768px) */
+/* Toggle Switch para Tema - Estilos (mantidos e ajustados para variáveis de tema) */
+.theme-switch {
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  position: relative; 
+  cursor: pointer;
+  /* Adicionado margem para separar do botão de login */
+  margin-left: 15px; 
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--theme-button-primary-bg); /* Usa variável de tema para o fundo do switch */
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--theme-button-text); /* Usa variável de tema para a cor do "círculo" */
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.theme-switch input:checked + .slider {
+  background-color: var(--theme-button-primary-hover); /* Cor de fundo do switch (modo escuro) */
+}
+
+.theme-switch input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Responsividade */
 @media (min-width: 768px){
     .app-header {
         flex-direction: row;
@@ -129,7 +188,6 @@
     }
 }
 
-/* telas maiores (acima de 1200px) */
 @media (min-width: 1200px){
     .app-header {
         padding: 20px 50px;
@@ -147,3 +205,4 @@
         font-size: 2.2em;
     }
 }
+

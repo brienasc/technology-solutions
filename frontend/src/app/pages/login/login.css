@@ -1,3 +1,4 @@
+/* src/app/pages/login/login.component.css */
 
 /* Contêiner principal da página de login.
    Define o layout base da página usando Flexbox para organizar as duas seções (formulário e imagem). */
@@ -6,213 +7,325 @@
   height: 100vh; /* Garante que o contêiner ocupe 100% da altura da viewport. */
   width: 100vw; /* Garante que o contêiner ocupe 100% da largura da viewport. */
   
-  /* A cor de fundo principal da página é definida no body (styles.css).
-     As seções internas (formulário e imagem) definirão suas próprias cores de fundo,
-     preenchendo todo o espaço e eliminando a borda branca entre elas. */
-  
-  color: var(--color-text-primary); /* Cor principal para todos os textos dentro deste contêiner. */
-  font-family: var(--font-nunito-sans); /* Fonte padrão para o texto. */
+  /* Fundo transparente para que as seções internas definam suas próprias cores. */
+  background-color: transparent; 
+
+  color: var(--theme-body-text); /* As cores e fontes agora serão controladas pelas variáveis de tema definidas no :root ou .dark-theme */
+  font-family: var(--font-nunito-sans); 
+
+  position: relative; /* Necessário para posicionar o botão de tema fixo */
 }
+
+/* Estilos para o botão de alternância de tema (toggle switch) */
+.theme-switch {
+  position: fixed; /* Posição fixa na tela */
+  top: 20px; /* Distância do topo */
+  right: 20px; /* Distância da direita */
+  z-index: 100; /* Garante que fique acima de outros elementos */
+  display: inline-block; /* Permite que o switch tenha largura e altura definidas */
+  width: 60px; /* Largura do switch */
+  height: 34px; /* Altura do switch */
+  cursor: pointer;
+}
+
+/* Esconde o checkbox padrão do HTML */
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* O 'slider' é a parte visual do switch */
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--theme-button-primary-bg); /* Usa variável de tema para o fundo do switch (light) */
+  -webkit-transition: .4s; /* Transição para o WebKit (Chrome, Safari) */
+  transition: .4s; /* Transição suave */
+  border-radius: 34px; /* Arredonda o fundo do switch */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; /* Altura do "círculo" do switch */
+  width: 26px; /* Largura do "círculo" do switch */
+  left: 4px; /* Distância da esquerda */
+  bottom: 4px; /* Distância da base */
+  background-color: var(--theme-button-text); /* Usa variável de tema para a cor do "círculo" (branco/claro) */
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; /* Faz o "círculo" ser um círculo perfeito */
+}
+
+/* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
+.theme-switch input:checked + .slider {
+  background-color: var(--theme-button-primary-hover); /* Usa variável de tema para o fundo do switch (dark) */
+}
+
+.theme-switch input:checked + .slider:before {
+  -webkit-transform: translateX(26px); /* Move o "círculo" para a direita */
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
 
 /* Estilos para a seção do formulário (o lado esquerdo do layout). */
 .login-form-section {
-  flex: 1; /* Permite que esta seção cresça e ocupe o espaço disponível. */
+  flex: 1.5; /* Faz a seção do formulário ser 1.5x maior que a seção da imagem. */
+  
   display: flex; /* Transforma esta seção em um flex container para centralizar seu conteúdo. */
   justify-content: center; /* Centraliza o conteúdo (o wrapper do formulário) horizontalmente. */
   align-items: center;    /* Centraliza o conteúdo (o wrapper do formulário) verticalmente. */
-  padding: 0; /* Remove padding desta seção para que o fundo branco vá até a borda. */
-  background-color: var(--color-white); /* Define o fundo de TODA a seção esquerda como branco. */
+  
+  padding: 0; /* Remove padding desta seção para que o fundo vá até a borda. */
+  background-color: var(--theme-form-bg); /* Usa variável de tema para o fundo do formulário */
+  
+  border-radius: 20px; 
+  margin: 20px; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
 }
 
-/* Estilos para o wrapper do conteúdo do formulário (o 'cartão' que contém os campos de login). */
+/* Estilos para o wrapper do conteúdo interno do formulário. */
 .login-content-wrapper {
-  background-color: var(--color-white); /* Fundo branco para o formulário (se houver padding, será visível). */
-  padding: 40px; /* Espaçamento interno dentro do wrapper. */
-  border-radius: 8px; /* Cantos arredondados para o wrapper. */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave. */
-  width: 100%; /* Ocupa 100% da largura disponível. */
-  max-width: 450px; /* Limita a largura máxima do formulário. */
-  text-align: center; /* Centraliza o texto. */
-  position: relative; /* Necessário se houver elementos posicionados absolutamente dentro. */
+  background-color: var(--theme-card-bg); /* Usa variável de tema para o fundo do cartão */
+  padding: 60px 40px; 
+  border-radius: 0; 
+  box-shadow: none; 
+  width: 100%; 
+  max-width: 450px; 
+  text-align: left; 
+  position: relative; 
 }
 
-/* Estilos para títulos (h1, h2) dentro do wrapper de conteúdo. */
-.login-content-wrapper h1,
-.login-content-wrapper h2 { 
-  font-family: var(--font-playfair-display); /* Fonte Playfair Display. */
-  font-style: italic; /* Estilo itálico para títulos. */
-  color: var(--color-primary); /* Cor principal para títulos. */
-  margin-bottom: 30px; /* Espaço abaixo. */
-  font-size: 2em; /* Tamanho da fonte. */
-  font-weight: 700; /* Peso da fonte. */
+/* Estilos para o título "Login". */
+.login-content-wrapper h1 { 
+  font-family: var(--font-playfair-display); 
+  font-style: normal; 
+  color: var(--theme-heading-text); /* Usa variável de tema para a cor do título */
+  margin-bottom: 30px; 
+  font-size: 2.5em; 
+  font-weight: 700; 
+  text-align: left; 
 }
 
-/* Estilos para textos regulares (labels, inputs, p, a). */
+/* Estilos para textos regulares (labels, p, a). */
 .form-group label,
-.form-group input,
 .login-content-wrapper p,
 .login-content-wrapper a {
-  font-family: var(--font-playfair-display); /* Fonte Playfair Display. */
-  font-style: normal; /* Estilo normal. */
-  font-weight: 400; /* Peso regular. */
-  color: var(--color-text-primary); /* Cor para texto. */
+  font-family: var(--font-nunito-sans); 
+  font-style: normal; 
+  font-weight: 400; 
+  color: var(--theme-body-text); /* Usa variável de tema para a cor do texto do corpo */
 }
 
 /* Estilos para cada grupo de formulário (label + input). */
 .form-group {
-  margin-bottom: 20px; /* Espaçamento abaixo. */
-  text-align: left; /* Alinha texto à esquerda. */
+  margin-bottom: 20px; 
+  text-align: left; 
 }
 
 /* Estilos para o rótulo de cada campo de formulário. */
 .form-group label {
-  display: block; /* Ocupa sua própria linha. */
-  margin-bottom: 8px; /* Espaçamento abaixo. */
-  font-weight: bold; /* Negrito. */
-  color: var(--color-primary); /* Cor do texto do rótulo. */
+  display: block; 
+  margin-bottom: 8px; 
+  font-weight: bold; 
+  color: var(--theme-label-text); /* Usa variável de tema para a cor do texto do rótulo */
+}
+
+/* Wrapper para o input de senha e o ícone de mostrar/esconder */
+.password-input-wrapper {
+  position: relative; 
+  width: 100%; 
 }
 
 /* Estilos para os campos de entrada (inputs). */
 .form-group input {
-  width: calc(100% - 20px); /* Ocupa largura total menos padding. */
-  padding: 10px; /* Espaçamento interno. */
-  border: 1px solid var(--color-light-gray); /* Borda cinza clara. */
-  border-radius: 5px; /* Cantos arredondados. */
-  font-size: 1em; /* Tamanho da fonte. */
-  color: var(--color-text-primary); /* Cor do texto digitado. */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transição suave. */
+  width: 100%; 
+  padding: 12px 15px; 
+  border: 1px solid var(--theme-input-border); /* Usa variável de tema para a borda do input */
+  border-radius: 25px; 
+  font-size: 1em; 
+  color: var(--theme-input-text); /* Usa variável de tema para a cor do texto do input */
+  background-color: var(--theme-form-bg); /* Fundo do input (geralmente o mesmo do form-bg) */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease; 
+  
+  padding-right: 45px; /* Espaço para o ícone */
 }
 
 /* Estilo aplicado ao input quando ele está inválido. */
 .form-group input.is-invalid {
-  border-color: var(--color-danger); /* Borda vermelha. */
+  border-color: var(--color-danger); 
 }
 
-/* Estilo para o input quando ele está em foco. */
+
+/* Estilo para o input quando ele está em foco (clicado/ativo). */
 .form-group input:focus {
-  outline: none; /* Remove contorno padrão. */
-  border-color: var(--color-info-blue); /* Borda azul no foco. */
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra azul suave. */
+  outline: none; 
+  border-color: var(--theme-focus-border); /* Usa variável de tema para a borda no foco */
+  box-shadow: 0 0 0 3px var(--theme-focus-shadow); /* Usa variável de tema para a sombra no foco */
 }
 
-/* Estilos para as mensagens de feedback de validação. */
-.invalid-feedback {
-  color: var(--color-danger); /* Cor vermelha. */
-  font-size: 0.85em; /* Tamanho menor. */
-  margin-top: 5px; /* Espaço acima. */
-  text-align: left; /* Alinha à esquerda. */
+/* Estilos para o botão de mostrar/esconder senha (ícone de olho) */
+.toggle-password-visibility {
+  position: absolute; 
+  right: 10px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  background: none; 
+  border: none; 
+  cursor: pointer;
+  padding: 5px;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-body-text); /* Usa variável de tema para a cor do ícone */
 }
+
+.toggle-password-visibility svg {
+  width: 20px; 
+  height: 20px;
+}
+
+
+
+.invalid-feedback {
+  color: var(--theme-invalid-feedback-text); /* Usa variável de tema para a cor do texto de feedback */
+  font-size: 0.85em; 
+  margin-top: 5px; 
+  text-align: left; 
+}
+
 
 /* Estilos para as listas de regras de senha. */
 .invalid-feedback ul {
-  list-style: none; /* Remove marcadores. */
-  padding: 0; /* Remove padding. */
-  margin: 5px 0 0 0; /* Ajusta margens. */
+  list-style: none; 
+  padding: 0; 
+  margin: 5px 0 0 0; 
 }
 
 /* Estilos para cada item de regra de senha. */
 .invalid-feedback li {
-  margin-bottom: 2px; /* Espaçamento entre regras. */
+  margin-bottom: 2px; 
+  color: var(--theme-invalid-feedback-text); /* Usa variável de tema para a cor do texto de feedback */
+  transition: color 0.3s ease, text-decoration 0.3s ease; 
 }
+
+
 
 /* Estilo aplicado a uma regra de senha quando ela é válida. */
 .invalid-feedback li.valid {
-  color: var(--color-success); /* Verde. */
-  text-decoration: line-through; /* Risca. */
+  color: #049206; 
+  text-decoration: line-through; 
 }
 
 /* Estilos para o botão de submissão. */
 button[type="submit"] {
-  width: 100%; /* Ocupa largura total. */
-  padding: 12px 20px; /* Espaçamento interno. */
-  background-color: var(--color-primary); /* Cor de fundo principal. */
-  color: var(--color-white); /* Texto branco. */
-  border: none; /* Sem borda. */
-  border-radius: 5px; /* Cantos arredondados. */
-  font-size: 1.1em; /* Tamanho da fonte. */
-  cursor: pointer; /* Cursor de mão. */
-  transition: background-color 0.3s ease; /* Transição suave. */
-  margin-top: 15px; /* Espaço acima. */
+  width: 100%; 
+  padding: 12px 20px; 
+  background-color: var(--theme-button-primary-bg); /* Usa variável de tema */
+  color: var(--theme-button-text); /* Usa variável de tema */
+  border: 1px solid var(--theme-button-primary-bg); /* Borda acompanha o fundo */
+  border-radius: 25px; 
+  font-size: 1.1em; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
+  margin-top: 25px; 
 }
 
 /* Estilo para o botão de submissão no hover. */
 button[type="submit"]:hover:not(:disabled) {
-  background-color: var(--color-secondary); /* Cor de fundo secundária no hover. */
+  background-color: var(--theme-button-primary-hover); /* Usa variável de tema */
+  color: var(--theme-button-text); /* Usa variável de tema */
+  border-color: var(--theme-button-primary-hover); /* Borda acompanha o hover */
 }
 
 /* Estilo para o botão de submissão desabilitado. */
 button[type="submit"]:disabled {
-  background-color: var(--color-medium-gray); /* Fundo cinza. */
-  cursor: not-allowed; /* Cursor de não permitido. */
+  background-color: var(--theme-button-disabled-bg); /* Usa variável de tema */
+  cursor: not-allowed; 
 }
 
 /* Estilos para o link "Esqueci minha Senha". */
 .forgot-password-link {
-  display: block; /* Ocupa sua própria linha. */
-  margin-top: 20px; /* Espaço acima. */
-  color: var(--color-info-blue); /* Cor azul. */
-  text-decoration: none; /* Sem sublinhado. */
-  font-size: 0.9em; /* Tamanho da fonte. */
+  display: block; 
+  margin-top: 15px; 
+  color: var(--theme-link-text); /* Usa variável de tema */
+  text-decoration: none; 
+  font-size: 0.9em; 
+  text-align: right; 
 }
 
 /* Estilo para o link "Esqueci minha Senha" no hover. */
 .forgot-password-link:hover {
-  text-decoration: underline; /* Adiciona sublinhado. */
+  text-decoration: underline; 
 }
 
 /* Estilos para o botão "Voltar ao Início" (se usado). */
 .back-to-home-button {
-  position: absolute; /* Posicionamento absoluto. */
-  bottom: 5px; /* Distância do fundo. */
-  left: 5px; /* Distância da esquerda. */
-  z-index: 10; /* Fica acima de outros elementos. */
-  width: 180px; /* Largura fixa. */
-  text-align: center; /* Centraliza texto. */
-  padding: 5px 20px; /* Espaçamento interno. */
-  background-color: var(--color-primary); /* Cor de fundo. */
-  color: var(--color-white); /* Texto branco. */
-  border: none; /* Sem borda. */
-  border-radius: 5px; /* Cantos arredondados. */
-  font-size: 1.1em; /* Tamanho da fonte. */
-  cursor: pointer; /* Cursor de mão. */
-  transition: background-color 0.3s ease; /* Transição suave. */
-  margin-top: 15px; /* Espaço acima. */
+  position: absolute; 
+  bottom: 5px; 
+  left: 5px; 
+  z-index: 10; 
+  width: 180px; 
+  text-align: center; 
+  padding: 12px 20px; 
+  background-color: var(--theme-button-primary-bg); /* Usa variável de tema */
+  color: var(--theme-button-text); /* Usa variável de tema */
+  border: 1px solid var(--theme-button-primary-bg); /* Borda acompanha o fundo */
+  border-radius: 25px; 
+  font-size: 1.1em; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
+  margin-top: 15px; 
+}
+
+/* Estilo para o botão "Voltar ao Início" no hover. */
+.back-to-home-button:hover {
+  background-color: var(--theme-button-primary-hover); /* Usa variável de tema */
+  color: var(--theme-button-text); /* Usa variável de tema */
+  border-color: var(--theme-button-primary-hover); /* Borda acompanha o hover */
 }
 
 /* Estilos para a seção da imagem (o lado direito do layout). */
 .login-image-section {
-  flex: 1; /* Ocupa o espaço restante. */
-  display: flex; /* Flex container. */
-  
-  /* Alinha o conteúdo (a imagem) ao início do eixo principal (horizontal) e cruzado (vertical). */
-  justify-content: flex-start;
-  align-items: flex-start;
-  
-  background-color: var(--color-background-detail); /* Cor de fundo da seção da imagem (lilás). */
-  overflow: hidden; /* Oculta conteúdo que transborda. */
+  flex: 1; 
+  display: flex; 
+  justify-content: center; /* Centraliza a imagem no modo dark/light */
+  align-items: center;    /* Centraliza a imagem no modo dark/light */
+  background-color: var(--theme-image-section-bg); /* Usa variável de tema para o fundo da imagem */
+  overflow: hidden; 
 }
 
 /* Estilos para a imagem dentro da seção da imagem. */
 .login-image-section img {
-  width: 100%;      /* Faz a imagem ocupar 100% da largura do pai. */
-  height: 100%;     /* Faz a imagem ocupar 100% da altura do pai. */
-  object-fit: cover; /* Redimensiona para cobrir todo o espaço, cortando se necessário. */
-  display: block; /* Comporta-se como um bloco. */
+  width: 100%;      
+  height: 100%;     
+  object-fit: cover; 
+  display: block; 
 }
 
 /* Estilos para Responsividade Básica (telas com largura máxima de 768px). */
 @media (max-width: 768px) {
-  /* Altera a direção do layout principal de linha para coluna em telas menores. */
   .login-page-container {
     flex-direction: column;
   }
 
-  /* Ajusta a seção da imagem em telas menores. */
+  .login-form-section {
+    margin: 10px; 
+    border-radius: 10px; 
+  }
+
+  .login-content-wrapper {
+    padding: 30px; 
+  }
+
   .login-image-section {
-    min-height: 200px; /* Altura mínima para a imagem em mobile. */
-    order: -1; /* Muda a ordem para que a imagem apareça antes do formulário em mobile. */
-    
-    /* Em mobile, a imagem pode voltar a ser centralizada se desejar. */
+    min-height: 200px; 
+    order: -1; 
     justify-content: center;
     align-items: center;
   }

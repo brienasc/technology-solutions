@@ -1,22 +1,23 @@
-/* frontend/src/app/pages/menu-gerencial/menu-gerencial..css */
-
-/* Editar o css */
+/* frontend/src/app/pages/menu-gerencial/menu-gerencial.component.css */
 
 .menu-gerencial-container {
   padding: 30px;
   max-width: 1200px;
-  margin: 40px auto; /* Centraliza o contêiner na página */
-  background-color: #ffffff;
+  margin: 40px auto; 
+  
+  /* Usar variáveis de tema para as cores de fundo e texto */
+  background-color: var(--theme-form-bg); /* Fundo do cartão/seção */
+  color: var(--theme-body-text); /* Cor do texto */
+  
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  font-family: var(--font-nunito-sans); /* Usa a fonte padrão do projeto */
-  color: var(--color-text-primary); /* Usa a cor de texto padrão */
+  font-family: var(--font-nunito-sans); 
 }
 
 .menu-gerencial-container h1 {
-  font-family: var(--font-playfair-display); /* Fonte para títulos */
+  font-family: var(--font-playfair-display); 
   font-style: italic;
-  color: var(--color-text-primary);
+  color: var(--theme-heading-text); /* Usar variável de tema para a cor do título */
   margin-bottom: 20px;
   font-size: 2.5em;
   text-align: center;
@@ -26,7 +27,60 @@
   font-size: 1.1em;
   text-align: center;
   margin-bottom: 30px;
-  color: #666;
+  color: var(--theme-body-text); /* Usar variável de tema para a cor do texto */
+}
+
+/* Estilos para o botão de alternância de tema (toggle switch)  */
+.theme-switch {
+  position: fixed; 
+  top: 20px; 
+  right: 20px; 
+  z-index: 100; 
+  display: inline-block; 
+  width: 60px; 
+  height: 34px; 
+  cursor: pointer;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--theme-button-primary-bg); 
+  -webkit-transition: .4s; 
+  transition: .4s; 
+  border-radius: 34px; 
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; 
+  width: 26px; 
+  left: 4px; 
+  bottom: 4px; 
+  background-color: var(--theme-button-text); 
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%; 
+}
+
+.theme-switch input:checked + .slider {
+  background-color: var(--theme-button-primary-hover); 
+}
+
+.theme-switch input:checked + .slider:before {
+  -webkit-transform: translateX(26px); 
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 /* Responsividade básica */
