@@ -3,9 +3,12 @@
 .lista-colaboradores-container {
   margin-top: 30px;
   padding: 20px;
-  border: 1px solid #e0e0e0;
+  
+  /* Usar variáveis de tema para as cores de fundo e borda */
+  border: 1px solid var(--theme-input-border); /* Borda */
   border-radius: 8px;
-  background-color: #fcfcfc;
+  background-color: var(--theme-card-bg); /* Fundo do contêiner da lista */
+  color: var(--theme-body-text); /* Cor do texto */
 }
 
 /* Seção de Filtro e Exportação */
@@ -14,17 +17,17 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
-  gap: 15px; /* Espaçamento entre os itens */
+  flex-wrap: wrap; 
+  gap: 15px; 
 }
 
 .search-bar {
   display: flex;
-  flex-grow: 1; /* Permite que a barra de pesquisa ocupe o máximo de espaço */
-  max-width: 400px; /* Limita a largura máxima da barra de pesquisa */
-  border: 1px solid #ccc;
+  flex-grow: 1; 
+  max-width: 400px; 
+  border: 1px solid var(--theme-input-border); /* Borda da barra de pesquisa */
   border-radius: 5px;
-  overflow: hidden; /* Garante que o input e o botão fiquem dentro da borda arredondada */
+  overflow: hidden; 
 }
 
 .search-bar input {
@@ -33,11 +36,12 @@
   border: none;
   outline: none;
   font-size: 1em;
-  color: var(--color-text-primary);
+  color: var(--theme-input-text); /* Cor do texto do input de pesquisa */
+  background-color: var(--theme-form-bg); /* Fundo do input de pesquisa */
 }
 
 .search-button {
-  background-color: #f0f0f0;
+  background-color: var(--theme-button-secondary-bg); /* Cor de fundo do botão de pesquisa */
   border: none;
   padding: 10px 15px;
   cursor: pointer;
@@ -48,18 +52,18 @@
 }
 
 .search-button:hover {
-  background-color: #e0e0e0;
+  background-color: var(--theme-button-disabled-bg); /* Cor de hover do botão de pesquisa */
 }
 
 .search-button svg {
   width: 20px;
   height: 20px;
-  color: #555;
+  color: var(--theme-button-text); /* Cor do ícone do botão de pesquisa */
 }
 
 .export-button {
-  background-color: #28a745; /* Verde para exportar */
-  color: white;
+  background-color: var(--color-success); /* Verde para exportar (não muda com o tema) */
+  color: var(--color-white);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -67,54 +71,54 @@
   font-size: 1em;
   display: flex;
   align-items: center;
-  gap: 8px; /* Espaçamento entre ícone e texto */
+  gap: 8px; 
   transition: background-color 0.3s ease;
 }
 
 .export-button:hover {
-  background-color: #218838;
+  background-color: #218838; /* Verde mais escuro no hover */
 }
 
 .export-button svg {
   width: 20px;
   height: 20px;
-  color: white;
+  color: var(--color-white);
 }
 
 /* Tabela */
 .table-responsive {
-  overflow-x: auto; /* Permite rolagem horizontal em telas pequenas se a tabela for muito larga */
+  overflow-x: auto; 
   margin-bottom: 20px;
 }
 
 .colaboradores-table {
   width: 100%;
-  border-collapse: collapse; /* Remove espaçamento entre as bordas das células */
+  border-collapse: collapse; 
   margin-top: 15px;
 }
 
 .colaboradores-table th,
 .colaboradores-table td {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--theme-input-border); /* Borda da tabela */
   padding: 12px 15px;
   text-align: left;
   font-size: 0.95em;
-  color: var(--color-text-primary);
+  color: var(--theme-body-text); /* Cor do texto da tabela */
 }
 
 .colaboradores-table th {
-  background-color: #f8f8f8;
+  background-color: var(--theme-form-bg); /* Fundo do cabeçalho da tabela */
   font-weight: bold;
   text-transform: uppercase;
-  color: #555;
+  color: var(--theme-label-text); /* Cor do texto do cabeçalho da tabela */
 }
 
 .colaboradores-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Fundo zebrado para linhas alternadas */
+  background-color: var(--theme-card-bg); /* Fundo zebrado (light) */
 }
 
 .colaboradores-table tbody tr:hover {
-  background-color: #f0f0f0; /* Efeito de hover nas linhas da tabela */
+  background-color: var(--theme-background); /* Efeito de hover na tabela */
 }
 
 .text-center {
@@ -127,27 +131,27 @@
   border-radius: 4px;
   font-size: 0.85em;
   font-weight: bold;
-  color: white;
-  text-transform: capitalize; /* Capitaliza a primeira letra do status */
+  color: var(--color-white); /* Cor do texto do badge */
+  text-transform: capitalize; 
 }
 
 .status-finalizado {
-  background-color: #28a745; /* Verde */
+  background-color: var(--color-success); 
 }
 
 .status-emaberto {
-  background-color: #ffc107; /* Amarelo */
-  color: #333; /* Texto escuro para contraste no amarelo */
+  background-color: var(--color-warning); 
+  color: var(--color-text-dark); /* Texto escuro para contraste no amarelo */
 }
 
 .status-vencido {
-  background-color: #dc3545; /* Vermelho */
+  background-color: var(--color-danger); 
 }
 
 /* Botão de Detalhes */
 .details-button {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--theme-button-primary-bg); /* Fundo do botão de detalhes */
+  color: var(--theme-button-text); /* Texto do botão de detalhes */
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
@@ -157,7 +161,7 @@
 }
 
 .details-button:hover {
-  background-color: #0056b3;
+  background-color: var(--theme-button-primary-hover); /* Hover do botão de detalhes */
 }
 
 /* Controles de Paginação */
@@ -170,49 +174,50 @@
 }
 
 .pagination-controls button {
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  background-color: var(--theme-button-secondary-bg); /* Fundo do botão de paginação */
+  border: 1px solid var(--theme-input-border); /* Borda do botão de paginação */
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.95em;
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  color: var(--theme-button-text); /* Cor do texto do botão de paginação */
 }
 
 .pagination-controls button:hover:not(:disabled) {
-  background-color: #e0e0e0;
-  border-color: #ccc;
+  background-color: var(--theme-button-disabled-bg); /* Hover do botão de paginação */
+  border-color: var(--theme-focus-border); /* Borda no hover */
 }
 
 .pagination-controls button:disabled {
-  background-color: #eee;
-  color: #aaa;
+  background-color: var(--theme-button-disabled-bg); /* Fundo do botão desabilitado */
+  color: var(--color-muted-text); /* Texto muted para desabilitado */
   cursor: not-allowed;
 }
 
 .pagination-controls span {
   font-size: 1em;
-  color: #777;
+  color: var(--theme-body-text); /* Cor do texto da paginação */
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
   .filter-export-section {
-    flex-direction: column; /* Empilha itens em telas pequenas */
-    align-items: stretch; /* Estica itens para preencher a largura */
+    flex-direction: column; 
+    align-items: stretch; 
   }
 
   .search-bar {
-    max-width: 100%; /* Ocupa toda a largura disponível */
+    max-width: 100%; 
   }
 
   .export-button {
-    width: 100%; /* Botão de exportar ocupa toda a largura */
+    width: 100%; 
   }
 
   .colaboradores-table th,
   .colaboradores-table td {
-    padding: 10px; /* Reduz o padding da tabela */
+    padding: 10px; 
   }
 
   .pagination-controls {
