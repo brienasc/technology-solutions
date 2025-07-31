@@ -266,7 +266,166 @@ export class ListaColaboradoresComponent implements OnInit {
   }
 
   // Método para exportar os dados da tabela para um arquivo Excel.
+/*DESCOMENTAR QUANDO A API ESTIVER PRONTA
+  exportToExcel(): void {
+    
+    console.log('Exportar para Excel clicado. Termo de pesquisa:', this.searchTerm);
+    
+    // Verificar se há dados para exportar
+    if (this.filteredColaboradores.length === 0) {
+      alert('Não há dados para exportar.');
+      return;
+    }
 
+    // Ativar loading durante a exportação
+    this.loading = true;
+    
+    // Preparar parâmetros para enviar ao backend
+    const params: any = {
+      status: 'Finalizado' // Apenas colaboradores finalizados
+    };
+    
+    // Adicionar termo de pesquisa se houver
+    if (this.searchTerm && this.searchTerm.trim()) {
+      params.search = this.searchTerm.trim();
+    }
+
+    console.log('Enviando parâmetros para o backend:', params);
+
+    // Chamar o endpoint do backend para gerar e baixar o arquivo Excel
+    this.http.get('SUA_URL_DA_API/colaboradores/export', { 
+      params: params,
+      responseType: 'blob' // Importante: tipo blob para arquivos binários
+    }).subscribe({
+      next: (response: Blob) => {
+        console.log('✅ Arquivo Excel recebido do backend');
+        
+        // Criar URL temporária para o blob
+        const url = window.URL.createObjectURL(response);
+        
+        // Criar elemento <a> temporário para forçar o download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = this.generateFileName();
+        link.style.display = 'none';
+        
+        // Adicionar ao DOM, clicar e remover
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Limpar URL temporária para liberar memória
+        window.URL.revokeObjectURL(url);
+        
+        this.loading = false;
+        console.log(`✅ Download concluído: ${this.filteredColaboradores.length} colaboradores exportados`);
+      },
+      error: (error) => {
+        console.error('❌ Erro ao exportar para Excel:', error);
+        this.loading = false;
+        
+        // Mensagens de erro mais específicas
+        if (error.status === 0) {
+          alert('Erro de conexão. Verifique se o backend está rodando.');
+        } else if (error.status === 404) {
+          alert('Endpoint de exportação não encontrado. Verifique a URL da API.');
+        } else if (error.status === 500) {
+          alert('Erro interno do servidor ao gerar o arquivo Excel.');
+        } else {
+          alert('Erro ao gerar arquivo Excel. Tente novamente.');
+        }
+      }
+    });
+  }
+
+  // Método para gerar nome do arquivo baseado na pesquisa e data
+  private generateFileName(): string {
+    const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const searchSuffix = this.searchTerm ? `_filtrado` : '';
+    return `colaboradores_${timestamp}${searchSuffix}.xlsx`;
+  }
+
+  */
+
+  // VERSÃO TEMPORÁRIA PARA TESTAR COM MOCK
+  exportToExcel(): void {
+    console.log('Exportar para Excel clicado. Termo de pesquisa:', this.searchTerm);
+    
+    if (this.filteredColaboradores.length === 0) {
+      alert('Não há dados para exportar.');
+      return;
+    }
+
+    this.loading = true;
+    
+    // SIMULAR CHAMADA AO BACKEND (remover quando a API estiver pronta)
+    setTimeout(() => {
+      // Gerar CSV dos dados filtrados para simular o backend
+      const dadosParaExportar = this.filteredColaboradores.map(colaborador => ({
+        'Nome': colaborador.nome,
+        'E-mail': colaborador.email,
+        'CPF': colaborador.cpf,
+        'Celular': colaborador.celular || '',
+        'Perfil': colaborador.perfil || '',
+        'Status': colaborador.status,
+        'CEP': colaborador.cep || '',
+        'UF': colaborador.uf || '',
+        'Cidade': colaborador.localidade || '',
+        'Bairro': colaborador.bairro || '',
+        'Endereço': colaborador.logradouro || ''
+      }));
+
+      const csvContent = this.convertToCSV(dadosParaExportar);
+      this.downloadCsvFile(csvContent, this.generateFileName());
+      
+      this.loading = false;
+      console.log(`✅ MOCK: ${this.filteredColaboradores.length} colaboradores exportados`);
+    }, 2000); // Simula 2 segundos de processamento no backend
+  }
+
+  private generateFileName(): string {
+    const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const searchSuffix = this.searchTerm ? `_filtrado` : '';
+    return `colaboradores_${timestamp}${searchSuffix}.xlsx`;
+  }
+
+  // Métodos auxiliares para a versão mock
+  private convertToCSV(data: any[]): string {
+    if (data.length === 0) return '';
+    
+    const headers = Object.keys(data[0]);
+    const headerRow = headers.join(',');
+    
+    const dataRows = data.map(row => {
+      return headers.map(header => {
+        const value = row[header] || '';
+        const escapedValue = String(value).replace(/"/g, '""');
+        return /[",\n\r]/.test(escapedValue) ? `"${escapedValue}"` : escapedValue;
+      }).join(',');
+    });
+    
+    return [headerRow, ...dataRows].join('\n');
+  }
+
+  private downloadCsvFile(content: string, fileName: string): void {
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + content], { type: 'text/csv;charset=utf-8;' });
+    
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName.replace('.xlsx', '.csv'));
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+  }
+
+// MOCK TEMPORÁRIO ACABA AQUI
 
   // Método para visualizar detalhes de um colaborador.
   // Emite um evento 'viewColaboradorDetails' para o componente pai (MenuGerencialComponent),
