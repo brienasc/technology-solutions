@@ -1,8 +1,9 @@
 /* mobile */
 .about-us-section {
     padding: 40px 20px;
-    background-color: #fff;
+    background-color: var(--theme-background); 
     text-align: center;
+    transition: background-color 0.5s ease; 
 }
 
 .about-us-content {
@@ -19,9 +20,10 @@
 .about-text {
     flex: 1;
     line-height: 1.6;
-    color: #555;
+    color: var(--theme-body-text); 
     font-size: 1em;
     text-align: center;
+    transition: color 0.5s ease; 
 }
 
 .about-text p {
@@ -37,29 +39,33 @@
     flex-direction: column;
     gap: 20px;
     padding: 20px;
-    border-left: 3px solid #3C096C;
-    background-color: #fdfdff;
-    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.05);
+    border-left: 3px solid var(--color-secondary); 
+    background-color: var(--theme-light-background); 
+    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.05); 
+    transition: background-color 0.5s ease, border-color 0.5s ease; 
 }
 
 .about-stats .stat-item {
     font-size: 1.1em;
-    color: #10002B; 
+    color: var(--theme-heading-text); 
     font-weight: 500;
     display: flex;
     align-items: center;
+    transition: color 0.5s ease;
 }
 
 .about-stats .stat-item span {
     font-weight: bold;
-    color:  #7B2CBF;
+    color: var(--color-light-primary);
     margin-right: 8px;
     font-size: 1.1em;
+    transition: color 0.5s ease;
 }
 
 .about-stats .stat-item::before {
     margin-right: 8px;
-    color:  #7B2CBF;
+    color: var(--color-light-primary); 
+    transition: color 0.5s ease; 
 }
 
 /* tablet 768px */
@@ -91,7 +97,7 @@
         max-width: none;
         gap: 22px;
         padding: 25px;
-        border-left: 4px solid #3C096C; 
+        border-left: 4px solid var(--color-secondary); 
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
     }
 
@@ -128,7 +134,7 @@
         flex: 0 0 350px;
         gap: 25px;
         padding: 30px;
-        border-left: 5px solid #3C096C;
+        border-left: 5px solid var(--color-secondary);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
 
