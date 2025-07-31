@@ -76,14 +76,11 @@
 /* Estilos para a seção do formulário (o lado esquerdo do layout). */
 .login-form-section {
   flex: 1.5; /* Faz a seção do formulário ser 1.5x maior que a seção da imagem. */
-  
   display: flex; /* Transforma esta seção em um flex container para centralizar seu conteúdo. */
   justify-content: center; /* Centraliza o conteúdo (o wrapper do formulário) horizontalmente. */
   align-items: center;    /* Centraliza o conteúdo (o wrapper do formulário) verticalmente. */
-  
   padding: 0; /* Remove padding desta seção para que o fundo vá até a borda. */
   background-color: var(--theme-form-bg); /* Usa variável de tema para o fundo do formulário */
-  
   border-radius: 20px; 
   margin: 20px; 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
@@ -328,5 +325,31 @@ button[type="submit"]:disabled {
     order: -1; 
     justify-content: center;
     align-items: center;
+  }
+
+  /* Ajustes para tipografia em mobile, se necessário */
+  .login-content-wrapper h1 {
+    font-size: 2em; /* Reduz o tamanho do título em mobile */
+  }
+
+  .form-group input {
+    font-size: 0.9em; /* Reduz o tamanho da fonte do input em mobile */
+    padding: 10px 15px; /* Ajusta padding do input em mobile */
+  }
+
+  button[type="submit"], .back-to-home-button {
+    font-size: 1em; /* Ajusta o tamanho da fonte dos botões em mobile */
+    padding: 10px 15px; /* Ajusta o padding dos botões em mobile */
+  }
+
+  .forgot-password-link, .signup-link {
+    font-size: 0.85em; /* Ajusta o tamanho da fonte dos links em mobile */
+  }
+
+  /* Ajustes para o toggle switch em mobile, se necessário */
+  .theme-switch {
+    top: 10px; /* Ajusta a posição do toggle em mobile */
+    right: 10px; /* Ajusta a posição do toggle em mobile */
+    transform: none; /* Remove transform se não for mais necessário */
   }
 }
