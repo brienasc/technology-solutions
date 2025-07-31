@@ -58,6 +58,10 @@ export class ListaColaboradoresComponent implements OnInit {
   totalItems: number = 0; // Total de itens após a filtragem.
   totalPages: number = 1; // Total de páginas disponíveis.
 
+  // Propriedades para o dialog
+  showColaboradorDialog: boolean = false;
+  selectedColaborador: Colaborador | null = null;
+
   // Construtor do componente: Usado para injetar dependências como HttpClient.
   constructor(private http: HttpClient) { }
 
@@ -427,11 +431,28 @@ export class ListaColaboradoresComponent implements OnInit {
 
 // MOCK TEMPORÁRIO ACABA AQUI
 
-  // Método para visualizar detalhes de um colaborador.
-  // Emite um evento 'viewColaboradorDetails' para o componente pai (MenuGerencialComponent),
-  // passando os dados do colaborador selecionado.
+  // Método para abrir o dialog com os detalhes do colaborador
+  openColaboradorDialog(colaborador: Colaborador): void {
+    console.log('Abrindo dialog para colaborador:', colaborador);
+    this.selectedColaborador = colaborador;
+    this.showColaboradorDialog = true;
+    // Previne scroll da página quando o modal está aberto
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Método para fechar o dialog
+  closeColaboradorDialog(): void {
+    console.log('Fechando dialog do colaborador');
+    this.showColaboradorDialog = false;
+    this.selectedColaborador = null;
+    // Restaura o scroll da página
+    document.body.style.overflow = 'auto';
+  }
+
+  // Atualizar o método viewDetails para usar o dialog
   viewDetails(colaborador: Colaborador): void {
     console.log('Visualizar detalhes do colaborador:', colaborador);
-    this.viewColaboradorDetails.emit(colaborador); // Notifica o pai para abrir o modal de detalhes.
+    this.openColaboradorDialog(colaborador);
+    this.viewColaboradorDetails.emit(colaborador); // Mantém a emissão para o pai se necessário
   }
 }
