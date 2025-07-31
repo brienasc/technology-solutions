@@ -35,27 +35,23 @@
           <th>Nome</th>
           <th>E-mail</th>
           <th>CPF</th>
-          <th>Status Convite</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <!-- Exibe uma mensagem de carregamento enquanto os dados são buscados -->
         <tr *ngIf="loading">
-          <td colspan="5" class="text-center">Carregando colaboradores...</td>
+          <td colspan="4" class="text-center">Carregando colaboradores...</td>
         </tr>
         <!-- Exibe uma mensagem se não houver colaboradores -->
         <tr *ngIf="!loading && filteredColaboradores.length === 0">
-          <td colspan="5" class="text-center">Nenhum colaborador encontrado.</td>
+          <td colspan="4" class="text-center">Nenhum colaborador encontrado.</td>
         </tr>
         <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
         <tr *ngFor="let colaborador of paginatedColaboradores">
           <td>{{ colaborador.nome }}</td>
           <td>{{ colaborador.email }}</td>
           <td>{{ colaborador.cpf }}</td>
-          <td>
-            <span class="status-badge status-{{ colaborador.status | lowercase }}">{{ colaborador.status }}</span>
-          </td>
           <td>
             <button class="details-button" (click)="viewDetails(colaborador)">
               Detalhes

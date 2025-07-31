@@ -70,12 +70,121 @@ export class ListaColaboradoresComponent implements OnInit {
   // Método para carregar os colaboradores do backend.
   loadColaboradores(): void {
     this.loading = true; // Ativa o estado de carregamento.
+
+    // MOCK DE DADOS - Remover quando a API estiver pronta
+  const mockColaboradores: Colaborador[] = [
+    {
+      id: 1,
+      nome: 'Maria Silva Santos',
+      email: 'maria.silva@empresa.com',
+      cpf: '123.456.789-00',
+      celular: '(11) 99999-1234',
+      perfil: 'Administrador',
+      status: 'Finalizado',
+      cep: '01234-567',
+      uf: 'SP',
+      localidade: 'São Paulo',
+      bairro: 'Centro',
+      logradouro: 'Rua das Flores, 123'
+    },
+    {
+      id: 2,
+      nome: 'João Pedro Oliveira',
+      email: 'joao.pedro@empresa.com',
+      cpf: '987.654.321-00',
+      celular: '(11) 88888-5678',
+      perfil: 'Gente e Cultura',
+      status: 'Finalizado',
+      cep: '12345-678',
+      uf: 'RJ',
+      localidade: 'Rio de Janeiro',
+      bairro: 'Copacabana',
+      logradouro: 'Av. Atlântica, 456'
+    },
+    {
+      id: 3,
+      nome: 'Ana Carolina Ferreira',
+      email: 'ana.carolina@empresa.com',
+      cpf: '456.789.123-00',
+      celular: '(11) 77777-9012',
+      perfil: 'Colaborador Comum',
+      status: 'Finalizado',
+      cep: '23456-789',
+      uf: 'MG',
+      localidade: 'Belo Horizonte',
+      bairro: 'Savassi',
+      logradouro: 'Rua da Bahia, 789'
+    },
+    {
+      id: 4,
+      nome: 'Carlos Eduardo Lima',
+      email: 'carlos.eduardo@empresa.com',
+      cpf: '789.123.456-00',
+      celular: '(11) 66666-3456',
+      perfil: 'Administrador',
+      status: 'Finalizado',
+      cep: '34567-890',
+      uf: 'RS',
+      localidade: 'Porto Alegre',
+      bairro: 'Moinhos de Vento',
+      logradouro: 'Rua Padre Chagas, 321'
+    },
+    {
+      id: 5,
+      nome: 'Fernanda Costa Almeida',
+      email: 'fernanda.costa@empresa.com',
+      cpf: '321.654.987-00',
+      celular: '(11) 55555-7890',
+      perfil: 'Gente e Cultura',
+      status: 'Finalizado',
+      cep: '45678-901',
+      uf: 'PR',
+      localidade: 'Curitiba',
+      bairro: 'Batel',
+      logradouro: 'Av. Batel, 654'
+    },
+    {
+      id: 6,
+      nome: 'Roberto Machado Junior',
+      email: 'roberto.machado@empresa.com',
+      cpf: '654.321.789-00',
+      celular: '(11) 44444-2468',
+      perfil: 'Colaborador Comum',
+      status: 'Em Aberto',
+      cep: '56789-012',
+      uf: 'SC',
+      localidade: 'Florianópolis',
+      bairro: 'Centro',
+      logradouro: 'Rua Felipe Schmidt, 987'
+    }
+  ];
+
+  // Simula delay de requisição (1.5 segundos)
+  setTimeout(() => {
+    // Filtra colaboradores com status "Finalizado" e ordena alfabeticamente
+    const colaboradoresFiltrados = mockColaboradores
+      .filter(colaborador => colaborador.status === 'Finalizado')
+      .sort((a, b) => a.nome.localeCompare(b.nome));
+
+    this.colaboradores = colaboradoresFiltrados;
+    this.totalItems = this.colaboradores.length;
+    this.applyFilterAndPaginate();
+    this.loading = false;
+    
+    console.log('✅ Mock de colaboradores carregado:', this.colaboradores.length, 'colaboradores');
+  }, 1500);
+
+    // FIM DO MOCK DE DADOS (APAGAR ATÉ AQUI)
+
+
     // VOLTAR AQUI: Substituir a  'SUA_URL_DA_API/colaboradores' pela URL real da API de colaboradores.
     // Esperamos que o backend retorne apenas colaboradores com status "Finalizado" e ordenados por nome.
-    this.http.get<Colaborador[]>('SUA_URL_DA_API/colaboradores').pipe(
+    this.http.get<Colaborador[]>('SUA_URL_DA_API/colaboradores?status=finalizado').pipe(
       map(data => {
         // Mapeia os dados recebidos. Se o backend não ordenar, ordena aqui.
-        return data.sort((a, b) => a.nome.localeCompare(b.nome));
+        return data
+        .filter(colaborador => colaborador.status === 'Finalizado')
+        .sort((a, b) => a.nome.localeCompare(b.nome));
       }),
       catchError(error => {
         console.error('Erro ao carregar colaboradores:', error);
@@ -157,15 +266,7 @@ export class ListaColaboradoresComponent implements OnInit {
   }
 
   // Método para exportar os dados da tabela para um arquivo Excel.
-  exportToExcel(): void {
-    console.log('Exportar para Excel clicado. Termo de pesquisa:', this.searchTerm);
-    // VOLTAR AQUI: Chamar o endpoint do backend para gerar e baixar o arquivo Excel.
-    // O backend vai precisar receber o termo de pesquisa atual para filtrar os dados do relatório.
-    // Exemplo de chamada HTTP (responseType: 'blob' para arquivos binários):
-    // this.http.get('SUA_URL_DA_API/colaboradores/export', { params: { search: this.searchTerm }, responseType: 'blob' })
-    //          .subscribe(response => { /* Lógica para baixar o arquivo no navegador */ });
-    alert('Funcionalidade de Exportar para Excel será implementada em breve.'); // Alerta temporário.
-  }
+
 
   // Método para visualizar detalhes de um colaborador.
   // Emite um evento 'viewColaboradorDetails' para o componente pai (MenuGerencialComponent),
