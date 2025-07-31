@@ -1,31 +1,28 @@
-
-
-/* frontend/src/app/components/header/header.css */
-
+/* mobile*/
 .app-header {
-    display: flex;
-    flex-direction: column; 
+    display: flex; /* conteiner flexivel, permitindo alinhamento de itens */
+    flex-direction: column; /*organiza os itens (logo, botoes) numa coluna*/
     justify-content: center;
     align-items: center;
-    padding: 15px 20px; 
-    background-color: var(--theme-form-bg); /*  Usa variável de tema para o fundo */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    position: sticky;
-    top: 0;
-    gap: 10px;
-    z-index: 1000;
-    transition: background-color 0.5s ease, color 0.5s ease; /* Adiciona transição para o fundo */
+    padding: 15px 20px; /*espaçamento interno */
+    background-color: var(--theme-form-bg); /* cor do fundo do cabeçalho */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* sombra*/
+    position: sticky; /* pra colar no topo da tela */
+    top: 0; /* pra nao vir nada acima do header */
+    gap: 10px; /* espaço entre os itens flexiveis*/
+    z-index: 1000; /* valor mt alto pra ficar la em cima*/
+    transition: background-color 0.5s ease, color 0.5s ease; 
 }
 
-.header-logo {
+.header-logo { /* conteiner da logo */
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* margem abaixo do container */
 }
 
 .header-logo img {
-    height: 90px;
+    height: 90px; /* altura da imagem*/
     width: auto;
 }
 
@@ -46,15 +43,15 @@
 
 .header-nav ul li a {
     text-decoration: none;
-    color: var(--theme-heading-text); /* Usa variável de tema para a cor do texto */
+    color: var(--theme-heading-text);
     font-weight: 500;
     font-size: 1.6em;
     display: block;
-    transition: color 0.3s ease; /* Adiciona transição para a cor */
+    transition: color 0.3s ease; 
 }
 
 .header-nav ul li a:hover {
-    color: var(--color-light-primary); /*  Cor de hover da sua paleta, não muda com o tema */
+    color: var(--color-light-primary); 
 }
 
 .header-buttons {
@@ -68,7 +65,7 @@
 
 .secondary-button-outline {
     padding: 10px 20px;
-    color: var(--theme-button-primary-bg); /* Usa variável de tema para a cor do texto (será a cor da borda no light) */
+    color: var(--theme-button-primary-bg); 
     border-radius: 25px;
     cursor: pointer;
     font-size: 0.95em;
@@ -79,25 +76,25 @@
     max-width: 250px;
     text-align: center;
     background-color: transparent; 
-    border: 2px solid var(--theme-button-primary-bg); /* Usa variável de tema para a cor da borda */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Adiciona transição para borda e texto */
+    border: 2px solid var(--theme-button-primary-bg); 
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
 }
 
 .secondary-button-outline:hover {
-    background-color: var(--theme-button-primary-hover); /* Usa variável de tema para o hover */
-    color: var(--theme-button-text); /*  Usa variável de tema para o texto no hover */
-    border-color: var(--theme-button-primary-hover); /*  Borda acompanha o hover */
+    background-color: var(--theme-button-primary-hover); 
+    color: var(--theme-button-text); 
+    border-color: var(--theme-button-primary-hover); 
 }
 
-/* Toggle Switch para Tema - Estilos (mantidos e ajustados para variáveis de tema) */
+/* MUDANÇA DO TEMA */
 .theme-switch {
   display: inline-block;
   width: 60px;
   height: 34px;
   position: relative; 
   cursor: pointer;
-  /* Adicionado margem para separar do botão de login */
-  margin-left: 15px; 
+  
+  margin-left: 15px; /* PRA SEPARAR DO BOTAO DO LOGIN */
 }
 
 .theme-switch input {
@@ -112,7 +109,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--theme-button-primary-bg); /* Usa variável de tema para o fundo do switch */
+  background-color: var(--theme-button-primary-bg); 
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 34px;
@@ -125,14 +122,14 @@
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: var(--theme-button-text); /* Usa variável de tema para a cor do "círculo" */
+  background-color: var(--theme-button-text); 
   -webkit-transition: .4s;
   transition: .4s;
   border-radius: 50%;
 }
 
 .theme-switch input:checked + .slider {
-  background-color: var(--theme-button-primary-hover); /* Cor de fundo do switch (modo escuro) */
+  background-color: var(--theme-button-primary-hover); /* COR DE FUNDO QUANDO MUDA O TEMA */
 }
 
 .theme-switch input:checked + .slider:before {
@@ -141,7 +138,7 @@
   transform: translateX(26px);
 }
 
-/* Responsividade */
+/* TABLETS */
 @media (min-width: 768px){
     .app-header {
         flex-direction: row;

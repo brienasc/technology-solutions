@@ -1,17 +1,19 @@
-/* mobile  */
+/* mobile */
 .job-openings-section {
     padding: 40px 20px;
-    background-color: #f8f8f8;
+    background-color: var(--theme-background); 
     text-align: center;
+    transition: background-color 0.5s ease; 
 }
 
 .job-intro {
     font-size: 1em;
-    color: #666;
+    color: var(--theme-body-text); 
     margin-bottom: 30px;
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
+    transition: color 0.5s ease; 
 }
 
 .job-list {
@@ -23,31 +25,34 @@
 }
 
 .job-item {
-    background-color: #fff;
+    background-color: var(--theme-card-bg); 
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); 
     text-align: left;
     flex: 1 1 280px;
     max-width: 90%;
-    border-top: 3px solid #3C096C;
+    border-top: 3px solid var(--color-secondary); 
+    transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Adiciona transição */
 }
 
 .job-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); 
 }
 
 .job-item h3 {
     font-size: 1.2em;
-    color: #10002B; 
+    color: var(--theme-heading-text); 
     margin-bottom: 8px;
     font-weight: 600;
+    transition: color 0.5s ease; 
 }
 
 .job-item span {
     font-size: 0.85em;
-    color: #999;
+    color: var(--color-muted-text); 
+    transition: color 0.5s ease; 
 }
 
 /* tablet 768px */
@@ -72,7 +77,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
         flex: 1 1 300px;
         max-width: 320px;
-        border-top: 4px solid #3C096C;
+        border-top: 4px solid var(--color-secondary);
     }
 
     .job-item:hover {
@@ -112,7 +117,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
         flex: 1 1 300px;
         max-width: 350px;
-        border-top: 5px solid #3C096C;
+        border-top: 5px solid var(--color-secondary);
     }
 
     .job-item:hover {

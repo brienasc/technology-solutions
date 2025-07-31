@@ -1,16 +1,18 @@
 /* mobile */
 .app-footer {
-    background-color: #10002B;
-    color: white;
+    background-color: var(--color-primary); 
+    color: var(--color-white); 
     padding: 30px 20px 15px;
     text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease; 
 }
 
 .footer-title {
     font-size: 1.8em;
     margin-bottom: 25px;
-    color: white;
+    color: var(--color-white); 
     font-weight: 600;
+    transition: color 0.5s ease; 
 }
 
 .footer-content {
@@ -34,10 +36,11 @@
 }
 
 .footer-column h3 {
+    color: var(--color-lighten-primary); 
     font-size: 1.2em;
-    color: #A9ABE1;
     margin-bottom: 15px;
     font-weight: 600;
+    transition: color 0.5s ease; 
 }
 
 .footer-column ul {
@@ -50,18 +53,20 @@
 }
 
 .footer-column ul li a {
-    color: #ccc;
+    color: var(--color-footer-link); /* Cor dos links, ajustaDO para o modo escuro */
     text-decoration: none;
     font-size: 0.9em;
+    transition: color 0.3s ease; 
 }
 
 .footer-column ul li a:hover {
-    color: white;
+    color: var(--color-white); /* Hover dos links, sempre branco */
 }
 
 .footer-column p {
-    color: #ccc; 
+    color: var(--color-footer-link); 
     font-size: 0.9em;
+    transition: color 0.5s ease; 
 }
 
 .footer-column.direitos {
@@ -78,14 +83,15 @@
 .footer-column.direitos a {
     margin: 0 3px;
     text-decoration: underline;
-    color: #ccc;
+    color: var(--color-footer-link); 
+    transition: color 0.3s ease;
 }
 
 .footer-column.direitos a:hover {
-    color: white;
+    color: var(--color-white); 
 }
 
-/* tablet  768px */
+/* tablet 768px */
 @media (min-width: 768px){
     .app-footer {
         padding: 45px 30px 20px;
@@ -109,7 +115,7 @@
         flex-basis: 45%;
         max-width: none;
         padding: 0;
-        text-align: center;
+        text-align: center; 
     }
 
     .footer-column h3 {
