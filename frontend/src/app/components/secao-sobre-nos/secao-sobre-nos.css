@@ -5,6 +5,14 @@
     text-align: center;
     transition: background-color 0.5s ease; 
 }
+/* estilo para o título "Sobre nós" */
+.about-us-section .section-title {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--color-light-primary); /*  cor é a mesma do +120 */
+    transition: color 0.5s ease;
+}
 
 .about-us-content {
     display: flex;

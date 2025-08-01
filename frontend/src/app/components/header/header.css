@@ -1,17 +1,16 @@
 /* mobile*/
 .app-header {
-    display: flex; /* conteiner flexivel, permitindo alinhamento de itens */
-    flex-direction: column; /*organiza os itens (logo, botoes) numa coluna*/
+    display: flex; /* permite alinhamento de itens */
+    flex-direction: column; /*deixo os itens numa coluna no mobile*/
     justify-content: center;
     align-items: center;
     padding: 15px 20px; /*espaçamento interno */
     background-color: var(--theme-form-bg); /* cor do fundo do cabeçalho */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* sombra*/
-    position: sticky; /* pra colar no topo da tela */
     top: 0; /* pra nao vir nada acima do header */
     gap: 10px; /* espaço entre os itens flexiveis*/
     z-index: 1000; /* valor mt alto pra ficar la em cima*/
-    transition: background-color 0.5s ease, color 0.5s ease; 
+    transition: background-color 0.5s ease, color 0.5s ease; /*pra transicao do darklight*/
 }
 
 .header-logo { /* conteiner da logo */
@@ -26,14 +25,14 @@
     width: auto;
 }
 
-.header-nav {
+.header-nav { /*  botoes de navegacao  */
     margin: 10px 0px;
     justify-content: center;
     width: 100%;
 }
 
-.header-nav ul {
-    list-style: none;
+.header-nav ul { /* lista dos botoes   */
+    list-style: none; /*  remove os marcadores de lista  */
     flex-direction: column;
     display: flex;
     gap: 20px;
@@ -41,20 +40,20 @@
     padding: 0;
 }
 
-.header-nav ul li a {
-    text-decoration: none;
-    color: var(--theme-heading-text);
+.header-nav ul li a { /* texto dos botoes   */
+    text-decoration: none; /* remove o sublinhado   */
+    color: var(--theme-heading-text); /* cor do texto   */
     font-weight: 500;
     font-size: 1.6em;
     display: block;
     transition: color 0.3s ease; 
 }
 
-.header-nav ul li a:hover {
+.header-nav ul li a:hover { /*  quando passa por cima  */
     color: var(--color-light-primary); 
 }
 
-.header-buttons {
+.header-buttons { /* propriedade dos botoes   */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -63,7 +62,7 @@
     margin-top: 10px;
 }
 
-.secondary-button-outline {
+.secondary-button-outline { /* estilos pro botao de login   */
     padding: 10px 20px;
     color: var(--theme-button-primary-bg); 
     border-radius: 25px;
@@ -80,21 +79,21 @@
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
 }
 
-.secondary-button-outline:hover {
+.secondary-button-outline:hover { /*  quando passa o mouse em cima do botao de login  */
     background-color: var(--theme-button-primary-hover); 
     color: var(--theme-button-text); 
     border-color: var(--theme-button-primary-hover); 
 }
 
-/* MUDANÇA DO TEMA */
-.theme-switch {
+/* MUDANÇA DOS TEMAS */
+.theme-switch { /*ESTILO DO BOTAO DO TEMA  */
   display: inline-block;
   width: 60px;
   height: 34px;
   position: relative; 
   cursor: pointer;
   
-  margin-left: 15px; /* PRA SEPARAR DO BOTAO DO LOGIN */
+  margin-left: 15px; /* SEPARO DO BOTAO DO LOGIN */
 }
 
 .theme-switch input {

@@ -55,7 +55,7 @@
 }
 
 /*  Modo Escuro  */
-/* Essas variáveis vão sobrescrever as do :root quando a classe .dark-theme está no body. */
+/* vão PREVALECER sobre as do :root quando a classe .dark-theme está no body. */
 body.dark-theme { 
   --theme-background: #1a1a1a; /* Fundo geral da página  */
   --theme-form-bg: #000000; /*  Fundo da seção do formulário */
