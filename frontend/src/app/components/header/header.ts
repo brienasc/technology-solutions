@@ -18,9 +18,10 @@ import { CommonModule } from '@angular/common';
 export class Header implements OnInit { // << usarei o OnInit que importei
 
   isDarkTheme: boolean = false; // Propriedade para controlar o tema, vai armazenar como ta o estado atual do tema
+   isMobileMenuOpen = false;
 
   // agora uso private renderer para adicionar ou remover classes diretamente do body da pagina
-  constructor(private renderer: Renderer2, private el: ElementRef) { } 
+  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router) { } 
 
   ngOnInit(): void { // aqui vou assumir o tema claro por padrão, mas carregar o dark quando for preciso
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
@@ -40,6 +41,54 @@ export class Header implements OnInit { // << usarei o OnInit que importei
       this.renderer.addClass(document.body, 'dark-theme'); // Adiciona a classe 'dark-theme' ao body
     } else {
       this.renderer.removeClass(document.body, 'dark-theme'); // Remove a classe 'dark-theme' do body
+    }
+  }
+
+  // Toggle do menu mobile
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    
+    // Previne scroll quando menu está aberto
+    if (this.isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }
+
+  // Fechar menu mobile ao clicar em um link
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+    document.body.style.overflow = 'auto';
+  }
+
+  // Navegação para home (usando o routerLink é melhor, mas se precisar...)
+  navigateToHome(): void {
+    this.closeMobileMenu();
+    this.router.navigate(['/']);
+  }
+
+  // Outros métodos de navegação (caso precise usar programaticamente)
+  navigateToLogin(): void {
+    this.closeMobileMenu();
+    this.router.navigate(['/login']);
+  }
+
+  navigateToAbout(): void {
+    this.closeMobileMenu();
+    // Scroll para seção sobre nós
+    const element = document.getElementById('sobre-nos');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  navigateToContact(): void {
+    this.closeMobileMenu();
+    // Scroll para rodapé/contato
+    const element = document.getElementById('contato');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

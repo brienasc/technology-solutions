@@ -91,6 +91,64 @@
     color: var(--color-white); 
 }
 
+/* Mobile específico - telas pequenas */
+@media (max-width: 480px) {
+    .app-footer {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .footer-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+    
+    .footer-content {
+        gap: 1.5rem;
+    }
+    
+    .footer-column {
+        flex-basis: 100%;
+        max-width: none;
+        padding: 0;
+    }
+    
+    .footer-column h3 {
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+    
+    .footer-column ul li a {
+        font-size: 0.85em;
+    }
+    
+    .footer-column p {
+        font-size: 0.85em;
+    }
+    
+    .footer-column.direitos {
+        margin-top: 20px;
+        font-size: 0.75em;
+    }
+}
+
+/* Mobile landscape / tablet pequeno */
+@media (max-width: 767px) {
+    .app-footer {
+        padding: 2rem 1rem;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .footer-column {
+        width: 100%;
+        flex-basis: auto;
+    }
+}
+
 /* tablet 768px */
 @media (min-width: 768px){
     .app-footer {

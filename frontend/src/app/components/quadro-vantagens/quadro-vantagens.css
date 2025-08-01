@@ -205,6 +205,119 @@
     }
 }
 
+/* tablets 768px */
+@media (min-width: 768px) {
+    .benefits-grid-section {
+        padding: 60px 30px;
+    }
+
+    .benefits-grid-container {
+        margin: 0 auto 60px auto;
+    }
+
+    .benefits-grid {
+        gap: 20px;
+    }
+
+    .benefit-card {
+        flex: 0 0 45%; /* 2 cards por vez no tablet */
+        padding: 40px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+    
+    .benefit-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .benefit-card img {
+        height: 120px; 
+        width: 120px;
+        margin-bottom: 18px;
+        padding: 12px;
+    }
+
+    .benefit-card h3 {
+        font-size: 1.3em;
+        margin-bottom: 10px;
+    }
+
+    .benefit-card p {
+        font-size: 0.95em;
+    }
+
+    .benefit-description {
+        max-width: 800px;
+        padding-top: 40px;
+    }
+
+    .benefit-description h2 {
+        font-size: 2em;
+        margin-bottom: 18px;
+    }
+
+    .benefit-description p {
+        font-size: 1.05em;
+    }
+}
+
+/* Mobile específico - ajustes finos */
+@media (max-width: 767px) {
+    .benefits-grid-section {
+        padding: 2rem 1rem;
+    }
+    
+    .benefit-card {
+        padding: 1.5rem;
+        min-height: 280px; /* Altura mínima para consistência */
+    }
+    
+    .benefit-card img {
+        height: 80px;
+        width: 80px;
+        margin-bottom: 1rem;
+    }
+    
+    .benefit-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .benefit-card p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 480px) {
+    .benefits-grid-section {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .benefit-card {
+        flex: 0 0 90%; /* Cards um pouco maiores em telas muito pequenas */
+        padding: 1rem;
+        min-height: 250px;
+    }
+    
+    .benefit-card img {
+        height: 70px;
+        width: 70px;
+    }
+    
+    .benefit-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .benefit-card p {
+        font-size: 0.85rem;
+    }
+    
+    .benefit-description h2 {
+        font-size: 1.5em;
+    }
+}
+
 /* desktops 1200px */
 @media (min-width: 1200px) {
     .benefits-grid-section {
