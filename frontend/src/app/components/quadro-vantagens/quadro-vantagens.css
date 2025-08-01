@@ -1,21 +1,50 @@
 /* mobile */
-.benefits-grid-section {
-    padding: 40px 20px;
+.benefits-grid-section { /* meu conteiner principal dessa seção!  */
+    padding: 40px 20px; /*espaçamento interno, pra que não fique grudado na tela de celular */
     text-align: center;
     background-color: var(--theme-background); 
-    transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease; /* pra transição suave de cor de fundo, devido ao nosso tema darklight*/
+    position: relative; /*vai servir como ponto de referência p posicionar os botões de navegação  */
 }
 
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    max-width: 100%;
-    margin: 0 auto 40px auto;
+.main-content-container { /* será meu conteiner principal  */
+    display: flex; /* vai permitir que seja flexivel, devido ao alinhamento dos itens do carrossel   */
+    flex-direction: column; /* pra empilhar no mobile */
+    align-items: center;
+    gap: 40px;
 }
 
-.benefit-card {
-    background-color: var(--theme-card-bg); 
+/* contêiner do carrossel no mobile */
+.carousel-wrapper {
+    position: relative; /* posicao relativa para servir como referência aos botoes de naveg.  */
+    width: 100%; /* o conteiner do carrossel vai ocupar a largura toda do mobile */
+}
+
+.benefits-grid-container { /* container da grade do carrossel  */
+    max-width: 100%; /* largura maxima do mobile  */
+    margin: 0 auto 40px auto; /* centralizo na horizontal com o auto e boto margem de 40px  */
+}/* a margem de 40px botei pra afastar o container do texto embaixo dele  */
+
+.benefits-grid { /* meus cards  */
+    display: flex; /* permite que fiquem lado a lado  */
+    overflow-x: scroll; /* isso permite rolagem horizontal */
+    scroll-snap-type: x mandatory; /* serve pra rolagem ir aos poucos, parando em cada card  */
+    -webkit-overflow-scrolling: touch; /* pra iOs isso melhora a rolagem  */
+    gap: 15px; /* espaço entre meus cards  */
+    padding-bottom: 20px;
+    scrollbar-width: none; /* oculta a barra de rolagem no firefox  */
+    -ms-overflow-style: none; /* oculta a barra de rolagem no INTERNET EXPLORER  */
+}
+
+.benefits-grid::-webkit-scrollbar {
+    display: none; /* OCULTA NO CHROME OU SAFARI   */
+}
+
+.benefit-card { /* ESPECIFICAMENTE OS CARDS AGORA  */
+    scroll-snap-align: center; /* Alinho meu card no centro quando a rolagem parar  */
+    flex: 0 0 85%; /* defino aqui o tamanho do card, 00 vai impedir que cresça ou encolha */
+    /*  além disso esse 85% vai ser a largura do container (que vai deixar 1 card por vez no mobile) */
+    background-color: var(--theme-card-bg); /* fundo do card  */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); 
@@ -24,14 +53,45 @@
     align-items: center;
     text-align: center;
     transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* as transições deixei suaves, para quando trocar pro darklight  */
+}
+
+/* Botões de navegação - que só vão estar APENAS no desktop */
+.nav-button {
+    position: absolute; 
+    top: 50%;
+    transform: translateY(-50%); /* uso pra centralizar verticalmente o botao  */
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10; /* garanto que os botoes fiquem acima do carrossel  */
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 1;
+    display: none; /* ou seja, deixo oculto no mobile e tablet, so aparece no desktop*/
+    transition: background-color 0.2s ease;
+}
+
+.nav-button.prev { /* botao esquerdo  */
+    left: 10px;
+}
+
+.nav-button.next { /* botao direito  */
+    right: 10px;
+}
+
+.nav-button:hover { /* cor do botao q vai aparecer quando passo o mouse  */
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .benefit-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px); /* efeito de flutuacao  */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); 
 }
 
-.benefit-card img {
+.benefit-card img { /* estilos pra minha imagem dos cards */
     height: 100px;
     width: 100px;
     object-fit: cover;
@@ -43,7 +103,7 @@
     transition: background-color 0.5s ease;
 }
 
-.benefit-card h3 {
+.benefit-card h3 { /* estilo p titulo do card */
     font-size: 1.3em;
     color: var(--theme-heading-text); 
     margin-bottom: 8px;
@@ -52,20 +112,20 @@
 }
 
 .benefit-card p {
-    font-size: 0.9em;
+    font-size: 0.9em; /* estilo pro paragrafo do card   */
     color: var(--theme-body-text); 
     line-height: 1.5;
     transition: color 0.5s ease; 
 }
 
-.benefit-description {
-    max-width: 90%;
+.benefit-description { /* texto ao lado do meu carrossel */
+    max-width: 90%; /* limito uma largura de 90% pro mobile  */
     margin: 0 auto;
     text-align: center;
     padding-top: 30px;
 }
 
-.benefit-description h2 {
+.benefit-description h2 { /* texto ao lado do carrossel  */
     font-size: 1.8em;
     font-weight: 600;
     color: var(--theme-heading-text); 
@@ -74,7 +134,7 @@
     transition: color 0.5s ease; 
 }
 
-.benefit-description h2 b {
+.benefit-description h2 b { /* meu gradiente do texto  */
     background: -webkit-linear-gradient(90deg, var(--color-background-detail), var(--color-light-primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -95,17 +155,20 @@
         padding: 60px 30px;
     }
 
-    .benefits-grid {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
+    .benefits-grid-container {
         margin: 0 auto 60px auto;
     }
 
+    .benefits-grid {
+        gap: 20px;
+    }
+
     .benefit-card {
+        flex: 0 0 45%; /* 2 cards por vez no tablet */
         padding: 40px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
     }
-
+    
     .benefit-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
@@ -148,50 +211,75 @@
         padding: 80px 40px;
     }
 
+    .main-content-container { /* no desktop botei pra ficar lado a lado usando o row  */
+        flex-direction: row; 
+        align-items: center;
+        max-width: 100%; 
+        padding: 0 40px; 
+        margin: 0; /* removo a margem  */
+    }
+
+    .carousel-wrapper {
+        flex: 0 0 60%; /* carrossel ocupa 60% da largura */
+        max-width: 60%;
+        position: relative;
+    }
+
+    .benefits-grid-container {
+        margin: 0;
+        padding: 0 40px; /* espaçamento interno para os botões */
+    }
+
     .benefits-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
-        max-width: 1200px;
-        margin: 0 auto 80px auto;
+        scroll-snap-type: x mandatory;
     }
 
     .benefit-card {
-        padding: 60px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        flex: 0 0 calc(25% - 15px); /*  4 cards por vez */
+        padding: 65px 40px; 
     }
-
-    .benefit-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .benefit-card img {
-        height: 150px;
-        width: 150px; 
-        margin-bottom: 20px;
-        padding: 15px;
-    }
-
-    .benefit-card h3 {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
-
-    .benefit-card p {
-        font-size: 1em;
-    }
-
+    
     .benefit-description {
-        max-width: 900px;
-        padding-top: 50px;
+        flex: 0 0 40%; /* O texto ocupa 40% da largura */
+        max-width: 40%;
+        text-align: left;
+        padding-top: 0;
     }
 
     .benefit-description h2 {
         font-size: 2.5em;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+    
+    .benefit-description p {
+        font-size: 1.1em;
+    }
+
+    .nav-button {
+        display: block;
+    }
+    
+    .nav-button.prev {
+        left: 0;
+    }
+    
+    .nav-button.next {
+        right: 0;
+    }
+    
+    .benefit-card img {
+        height: 150px;
+        width: 150px;
         margin-bottom: 20px;
     }
 
-    .benefit-description p {
+    .benefit-card h3 {
+        font-size: 1.6em;
+    }
+
+    .benefit-card p {
         font-size: 1.1em;
     }
 }

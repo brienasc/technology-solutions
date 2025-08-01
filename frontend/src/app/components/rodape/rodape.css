@@ -1,5 +1,5 @@
 /* mobile */
-.app-footer {
+.app-footer { /* container do rodape*/
     background-color: var(--color-primary); 
     color: var(--color-white); 
     padding: 30px 20px 15px;
@@ -7,7 +7,7 @@
     transition: background-color 0.5s ease, color 0.5s ease; 
 }
 
-.footer-title {
+.footer-title {/* titulo do rodape*/
     font-size: 1.8em;
     margin-bottom: 25px;
     color: var(--color-white); 
