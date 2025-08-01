@@ -11,10 +11,12 @@
             <li><a routerLink="/servicos">Serviços</a></li>
             <li><a routerLink="/vagas">Vagas</a></li>
             <li><a routerLink="/contato">Contato</a></li>
+
 <!-- Botão de alternância de tema como um toggle switch -->
   <label class="theme-switch">
     <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-    <span class="slider round"></span>
+     <!-- ESSE ISDARKTHEME É UMA PROPRIEDADE DO ANGULAR QUE SINCRONIZA SE O BOTAO TA CLICADO OU NAO-->
+    <span class="slider round"></span> <!-- PRA FAZER PARECER UM TOGGLE SWITCH (ESSE BOTAO QUE TA)-->
   </label>
         </ul>
 
