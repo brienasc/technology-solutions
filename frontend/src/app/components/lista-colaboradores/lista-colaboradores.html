@@ -35,27 +35,23 @@
           <th>Nome</th>
           <th>E-mail</th>
           <th>CPF</th>
-          <th>Status Convite</th>
           <th>Ações</th>
         </tr>
       </thead>
       <tbody>
         <!-- Exibe uma mensagem de carregamento enquanto os dados são buscados -->
         <tr *ngIf="loading">
-          <td colspan="5" class="text-center">Carregando colaboradores...</td>
+          <td colspan="4" class="text-center">Carregando colaboradores...</td>
         </tr>
         <!-- Exibe uma mensagem se não houver colaboradores -->
         <tr *ngIf="!loading && filteredColaboradores.length === 0">
-          <td colspan="5" class="text-center">Nenhum colaborador encontrado.</td>
+          <td colspan="4" class="text-center">Nenhum colaborador encontrado.</td>
         </tr>
         <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
         <tr *ngFor="let colaborador of paginatedColaboradores">
           <td>{{ colaborador.nome }}</td>
           <td>{{ colaborador.email }}</td>
           <td>{{ colaborador.cpf }}</td>
-          <td>
-            <span class="status-badge status-{{ colaborador.status | lowercase }}">{{ colaborador.status }}</span>
-          </td>
           <td>
             <button class="details-button" (click)="viewDetails(colaborador)">
               Detalhes
@@ -71,5 +67,119 @@
     <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
     <span>Página {{ currentPage }} de {{ totalPages }}</span>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
+  </div>
+
+  <!-- Dialog Modal para Detalhes do Colaborador -->
+  <div class="modal-overlay" *ngIf="showColaboradorDialog" (click)="closeColaboradorDialog()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+      <!-- Header do Modal -->
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <i class="fas fa-user-circle"></i>
+          Detalhes do Colaborador
+        </h2>
+        <button 
+          type="button" 
+          class="close-button" 
+          (click)="closeColaboradorDialog()"
+          aria-label="Fechar"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Conteúdo do Modal -->
+      <div class="modal-body" *ngIf="selectedColaborador">
+        <!-- Informações Pessoais -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-user"></i>
+            Informações Pessoais
+          </h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Nome Completo:</label>
+              <span>{{ selectedColaborador.nome }}</span>
+            </div>
+            <div class="info-item">
+              <label>E-mail:</label>
+              <span>{{ selectedColaborador.email }}</span>
+            </div>
+            <div class="info-item">
+              <label>CPF:</label>
+              <span>{{ selectedColaborador.cpf }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.celular">
+              <label>Celular:</label>
+              <span>{{ selectedColaborador.celular }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informações Profissionais -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-briefcase"></i>
+            Informações Profissionais
+          </h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="selectedColaborador.perfil">
+              <label>Perfil de Acesso:</label>
+              <span class="perfil-badge" [ngClass]="selectedColaborador.perfil | lowercase">
+                {{ selectedColaborador.perfil }}
+              </span>
+            </div>
+            <div class="info-item">
+              <label>Status do Convite:</label>
+              <span class="status-badge" [ngClass]="selectedColaborador.status | lowercase">
+                {{ selectedColaborador.status }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endereço -->
+        <div class="info-section" *ngIf="selectedColaborador.cep || selectedColaborador.logradouro">
+          <h3 class="section-title">
+            <i class="fas fa-map-marker-alt"></i>
+            Endereço
+          </h3>
+          <div class="info-grid">
+            <div class="info-item" *ngIf="selectedColaborador.logradouro">
+              <label>Logradouro:</label>
+              <span>{{ selectedColaborador.logradouro }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.bairro">
+              <label>Bairro:</label>
+              <span>{{ selectedColaborador.bairro }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.localidade">
+              <label>Cidade:</label>
+              <span>{{ selectedColaborador.localidade }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.uf">
+              <label>UF:</label>
+              <span>{{ selectedColaborador.uf }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.cep">
+              <label>CEP:</label>
+              <span>{{ selectedColaborador.cep }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer do Modal -->
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="closeColaboradorDialog()"
+        >
+          <i class="fas fa-times"></i>
+          Fechar
+        </button>
+      </div>
+    </div>
   </div>
 </div>
