@@ -201,9 +201,6 @@ this.isDarkTheme = localStorage.getItem('theme') === 'dark';
         response => {
           console.log('Login bem-sucedido!', response);
           alert(response.message); // Exibe uma mensagem de sucesso (pode ser substituído por um modal).
-          // Armazena tokens de acesso e habilidades do usuário no localStorage.
-          localStorage.setItem('accessToken', response.data.token);
-          localStorage.setItem('userAbilities', response.data.abilities);
           this.router.navigate(['/']); // Redireciona o usuário para a página inicial ('/').
         },
         error => {

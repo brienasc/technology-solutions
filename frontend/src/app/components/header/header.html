@@ -24,8 +24,14 @@
 
     <!-- Botões Desktop -->
     <div class="header-buttons desktop-buttons">
-      <a routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()">
-        Faça seu Login
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()">
+        Entrar
+      </a>
+      <a *ngIf="isLoggedIn" (click)="onMenuGerencialClick()" class="secondary-button-outline">
+        Menu Gerencial
+      </a>
+      <a *ngIf="isLoggedIn" (click)="onLogout()" class="secondary-button-outline">
+        Sair
       </a>
     </div>
 
@@ -111,9 +117,15 @@
 
     <!-- Botões Mobile -->
     <div class="mobile-actions">
-      <a routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
+      <a *ngIf="!isLoggedIn" routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
         <i class="fas fa-sign-in-alt"></i>
-        Faça seu Login
+        Entrar
+      </a>
+      <a *ngIf="isLoggedIn" (click)="onMenuGerencialClick()" class="mobile-btn">
+        Menu Gerencial
+      </a>
+      <a *ngIf="isLoggedIn" (click)="onLogout()" class="mobile-btn">
+        Sair
       </a>
     </div>
   </div>
