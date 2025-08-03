@@ -3,6 +3,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, OnInit, Renderer2, ElementRef} from '@angular/core'; 
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -18,14 +19,16 @@ import { CommonModule } from '@angular/common';
 export class Header implements OnInit { // << usarei o OnInit que importei
 
   isDarkTheme: boolean = false; // Propriedade para controlar o tema, vai armazenar como ta o estado atual do tema
-   isMobileMenuOpen = false;
+  isMobileMenuOpen: boolean = false;
+  isLoggedIn: boolean = false;
 
   // agora uso private renderer para adicionar ou remover classes diretamente do body da pagina
-  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router) { } 
+  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, private authService: AuthService) { } 
 
   ngOnInit(): void { // aqui vou assumir o tema claro por padrão, mas carregar o dark quando for preciso
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
     this.applyThemeClass(); //aplico
+    this.isLoggedIn = this.authService.isLoggedIn()
   }
 
   // Método que ALTERNA O TEMA
@@ -90,6 +93,15 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  onLogout(): void {
+    this.authService.logout();
+    this.isLoggedIn = false;
+  }
+
+  onMenuGerencialClick(): void {
+    this.router.navigate(['/menu-gerencial']);
   }
 }
 
