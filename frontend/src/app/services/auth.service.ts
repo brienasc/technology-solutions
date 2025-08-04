@@ -17,11 +17,10 @@ export class AuthService {
 
     return this.http.post(this.apiUrl, credentials).pipe(
       tap((response: any) => {
-        // Supondo que a API retorna um token ou dados do usuário
-        if (response && response.token) {
-          localStorage.setItem('authToken', response.token); // Armazena o token
+        if (response && response.data.token) {
+          localStorage.setItem('authToken', response.data.token); // Armazena o token
+          localStorage.setItem('userAbilities', response.data.abilities); // Armazena abilities
         }
-        // Aqui pode armazenar mais informações do usuário se a API retornar
       })
     );
   }
