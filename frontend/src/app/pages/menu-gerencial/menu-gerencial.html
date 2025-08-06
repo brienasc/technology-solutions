@@ -1,18 +1,13 @@
 <!-- frontend/src/app/pages/menu-gerencial/menu-gerencial.component.html -->
 
-<div class="menu-gerencial-container">
-  <!-- Botão de alternância de tema como um toggle switch -->
-  <label class="theme-switch">
-    <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-    <span class="slider round"></span>
-  </label>
-
+<app-header></app-header>
+<div class="menu-gerencial-title">
   <h1>Menu Gerencial</h1>
-  <p>Gerencie seus colaboradores e convites.</p>
+  <p>Gerencie colaboradores e suas permissões</p>
 
+</div>
+
+<div class="menu-gerencial-container">
   <app-lista-colaboradores></app-lista-colaboradores>
-
-  <!-- Placeholder para o modal de detalhes do colaborador. -->
-  <!-- <app-modal-detalhes *ngIf="showModal"></app-modal-detalhes> -->
 </div>
 

@@ -9,7 +9,8 @@ import { HttpClient } from '@angular/common/http';
 // Importa Observable e 'of' do RxJS para lidar com fluxos de dados assíncronos.
 import { Observable, of } from 'rxjs'; 
 // Importa operadores RxJS para manipulação de Observables (filtragem, transformação de dados).
-import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators'; 
+import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Header } from '../header/header'
 
 // Interface para o modelo de dados do Colaborador.
 // Define a estrutura esperada para cada objeto de colaborador.
@@ -35,6 +36,7 @@ interface Colaborador {
   imports: [
     CommonModule, 
     FormsModule, 
+    Header,
     LowerCasePipe 
   ],
   templateUrl: './lista-colaboradores.html', 
@@ -62,13 +64,35 @@ export class ListaColaboradoresComponent implements OnInit {
   showColaboradorDialog: boolean = false;
   selectedColaborador: Colaborador | null = null;
 
+  // Propriedades para controle de acesso
+  isAdmin: boolean = false;
+
+  // Propriedades para o dialog de convite
+  showInviteDialog: boolean = false;
+  inviteEmail: string = '';
+  inviteLoading: boolean = false;
+  inviteSuccessMessage: string = '';
+  inviteErrorMessage: string = '';
+
   // Construtor do componente: Usado para injetar dependências como HttpClient.
   constructor(private http: HttpClient) { }
 
   // Método de ciclo de vida: Executado uma vez após a inicialização do componente.
   ngOnInit(): void {
     console.log('ListaColaboradoresComponent inicializado.'); 
-    this.loadColaboradores(); 
+    this.loadColaboradores();
+    this.checkUserRole(); // Verifica se o usuário é admin
+  }
+
+  // Verifica se o usuário logado é administrador
+  checkUserRole(): void {
+    // MOCK - substituir pela lógica real de verificação
+    // this.isAdmin = this.authService.getUserRole() === 'Administrador';
+    
+    // VERSÃO MOCK PARA TESTE (sempre true para testar)
+    this.isAdmin = true; // Altere para false para testar a restrição
+    
+    console.log('Usuário é admin:', this.isAdmin);
   }
 
   // Método para carregar os colaboradores do backend.
@@ -454,5 +478,90 @@ export class ListaColaboradoresComponent implements OnInit {
     console.log('Visualizar detalhes do colaborador:', colaborador);
     this.openColaboradorDialog(colaborador);
     this.viewColaboradorDetails.emit(colaborador); // Mantém a emissão para o pai se necessário
+  }
+
+  // Abre o dialog de convite
+  openInviteDialog(): void {
+    this.showInviteDialog = true;
+    this.inviteEmail = '';
+    this.inviteSuccessMessage = '';
+    this.inviteErrorMessage = '';
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Fecha o dialog de convite
+  closeInviteDialog(): void {
+    this.showInviteDialog = false;
+    this.inviteEmail = '';
+    this.inviteSuccessMessage = '';
+    this.inviteErrorMessage = '';
+    this.inviteLoading = false;
+    document.body.style.overflow = 'auto';
+  }
+
+  // Envia o convite
+  sendInvite(): void {
+    if (!this.inviteEmail || this.inviteLoading) {
+      return;
+    }
+
+    this.inviteLoading = true;
+    this.inviteSuccessMessage = '';
+    this.inviteErrorMessage = '';
+
+    // MOCK - substitua pela chamada real da API
+    /*
+    const inviteData = {
+      email: this.inviteEmail
+    };
+
+    this.http.post('http://localhost:8000/api/convites', inviteData).subscribe({
+      next: (response: any) => {
+        this.inviteSuccessMessage = `Convite enviado com sucesso para ${this.inviteEmail}!`;
+        this.inviteEmail = '';
+        this.inviteLoading = false;
+        
+        // Fecha o dialog após 2 segundos
+        setTimeout(() => {
+          this.closeInviteDialog();
+        }, 2000);
+      },
+      error: (error) => {
+        this.inviteLoading = false;
+        
+        if (error.status === 400) {
+          this.inviteErrorMessage = 'E-mail inválido ou já possui convite pendente.';
+        } else if (error.status === 409) {
+          this.inviteErrorMessage = 'Este e-mail já possui um convite ativo.';
+        } else if (error.status === 0) {
+          this.inviteErrorMessage = 'Erro de conexão. Verifique se o backend está rodando.';
+        } else {
+          this.inviteErrorMessage = 'Erro ao enviar convite. Tente novamente.';
+        }
+      }
+    });
+    */
+
+    // VERSÃO MOCK PARA TESTE
+    setTimeout(() => {
+      // Simula diferentes cenários para teste
+      const random = Math.random();
+      
+      if (random < 0.7) { // 70% de sucesso
+        this.inviteSuccessMessage = `Convite enviado com sucesso para ${this.inviteEmail}!`;
+        this.inviteEmail = '';
+        
+        // Fecha o dialog após 2 segundos
+        setTimeout(() => {
+          this.closeInviteDialog();
+        }, 2000);
+      } else if (random < 0.9) { // 20% erro de email duplicado
+        this.inviteErrorMessage = 'Este e-mail já possui um convite ativo.';
+      } else { // 10% erro genérico
+        this.inviteErrorMessage = 'Erro ao enviar convite. Tente novamente.';
+      }
+      
+      this.inviteLoading = false;
+    }, 1500); // Simula delay de 1.5 segundos
   }
 }
