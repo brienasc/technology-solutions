@@ -1,17 +1,17 @@
 <!-- frontend/src/app/pages/convites/convites.component.html -->
-
+<app-header></app-header>
 <div class="convites-container">
-    <label class="theme-switch">
+    <!-- <label class="theme-switch">
     <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
     <span class="slider round"></span>
-  </label>
+  </label> -->
     <div class="header-section">
         <h1>Gerenciar Convites</h1>
         <button class="create-invite-button" (click)="onCreateNewInvite()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            Criar Novo Convite
+            Criar Novo Convite 
         </button>
     </div>
 
@@ -26,10 +26,11 @@
         (filterApplied)="onFilterApplied($event)"
         (pageChanged)="onPageChange($event)"
         (pageSizeChanged)="onPageSizeChange($event)"
-        (viewDetails)="onViewDetails($event)"
+       
     ></app-lista-convites>
 
     <button class="back-button" (click)="goBack()">Voltar</button>
 </div>
 
-
+<!-- 
+(viewDetails)="onViewDetails($event)" -->

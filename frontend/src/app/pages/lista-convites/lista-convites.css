@@ -2,11 +2,14 @@
 
 .lista-convites-container {
     padding: 20px;
-    background-color: var(--theme-form-bg); /* Fundo do contêiner, adaptável ao tema */
-    color: var(--theme-body-text); /* Cor do texto, adaptável ao tema */
+
+    background-color: var(--color-white); /* Fundo branco, como o card do Menu Gerencial */
+    color: var(--theme-body-text);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.5s ease, color 0.5s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+    border: 1px solid var(--color-light-gray); /* Borda sutil para definir o card */
+    
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease; /* Adiciona transição para a borda */
     font-family: var(--font-nunito-sans);
 }
 
@@ -196,3 +199,20 @@ tbody tr:hover {
         gap: 10px;
     }
 }
+
+    .secondary-button-outline {
+        padding: 12px 24px; /* Botão um pouco maior */
+        color: var(--theme-button-primary-bg);
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        width: auto;
+        max-width: none;
+        text-align: center;
+        background-color: transparent;
+        border: 2px solid var(--theme-button-primary-bg);
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
