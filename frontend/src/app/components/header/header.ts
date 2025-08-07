@@ -23,7 +23,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   isLoggedIn: boolean = false;
 
   // agora uso private renderer para adicionar ou remover classes diretamente do body da pagina
-  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, private authService: AuthService) { } 
+  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, public authService: AuthService) { } 
 
   ngOnInit(): void { // aqui vou assumir o tema claro por padrão, mas carregar o dark quando for preciso
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
@@ -102,6 +102,12 @@ export class Header implements OnInit { // << usarei o OnInit que importei
 
   onMenuGerencialClick(): void {
     this.router.navigate(['/menu-gerencial']);
+  }
+
+  // Método para navegar para a tela de convites >>
+  onConvitesClick(): void {
+    this.closeMobileMenu();
+    this.router.navigate(['/convites']);
   }
 }
 

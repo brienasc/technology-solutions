@@ -13,6 +13,9 @@
         <li><a routerLink="/servicos" (click)="closeMobileMenu()">Serviços</a></li>
         <li><a routerLink="/vagas" (click)="closeMobileMenu()">Vagas</a></li>
         <li><a routerLink="/contato" (click)="closeMobileMenu()">Contato</a></li>
+        <li *ngIf="authService.isRH() || authService.isAdmin()">
+          <a routerLink="/convites" (click)="onConvitesClick()">Menu Convites</a>
+        </li>
       </ul>
 
       <!-- Toggle de Tema Desktop -->
@@ -99,6 +102,12 @@
           <a routerLink="/contato" (click)="closeMobileMenu()" class="mobile-nav-link">
             <i class="fas fa-envelope"></i>
             Contato
+          </a>
+        </li>
+        <li *ngIf="authService.isRH() || authService.isAdmin()">
+          <a routerLink="/convites" (click)="onConvitesClick()" class="mobile-nav-link">
+            <i class="fas fa-users"></i> <!-- Ícone de usuários/convites -->
+            Menu Convites
           </a>
         </li>
       </ul>

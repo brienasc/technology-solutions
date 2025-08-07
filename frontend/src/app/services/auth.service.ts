@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root' // Disponível em toda a aplicação
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/login'; // Substuir pela URL real da sua API de login da do backend
+  private apiUrl = 'http://localhost:8080/api/login'; // Substuir pela URL API de login da do backend
 
   constructor(private http: HttpClient) { }
 
@@ -27,9 +27,54 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('authToken'); // Remove o token
+    localStorage.removeItem('userAbilities'); // Remove as habilidades
+    localStorage.removeItem('userProfile'); // Remove o perfil (se estiver sendo salvo)
   }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('authToken'); // Verifica se há um token
   }
-}
+
+/**
+   * Obtém o perfil do usuário logado a partir das habilidades salvas no localStorage.
+   * Adapta-se ao formato de string de habilidades (ex: "admin,rh,user").
+   */
+  getUserProfile(): string {
+    const abilitiesString = localStorage.getItem('userAbilities');
+    let profile = 'Convidado'; // Valor padrão
+    if (abilitiesString) {
+      const abilities = abilitiesString.split(','); // Divide a string em um array de habilidades
+      
+      // Verifica as habilidades com base no formato do backend
+      if (abilities.includes('access:menu-gerencial') && abilities.includes('access:menu-convidar')) {
+        // Se o usuário tem acesso a ambos os menus, assumimos que é Administrador
+        profile = 'Administrador';
+      } else if (abilities.includes('access:menu-convidar')) {
+        // Se tem apenas acesso ao menu de convites, assumimos que é RH
+        profile = 'RH';
+      } else if (abilities.includes('access:menu-gerencial')) {
+        // Se tem apenas acesso ao menu gerencial (mas não convites), pode ser outro tipo de admin ou user
+        profile = 'Administrador'; // Ou 'Gerencial', dependendo da  regra de negócio
+      } else {
+        profile = 'Comum'; // Perfil padrão para outras habilidades
+      }
+    }
+    console.log('Perfil do usuário detectado (AuthService):', profile); // Para debug
+    return profile;
+  }
+
+
+  /**
+   * Verifica se o usuário logado tem o perfil de Administrador.
+   */
+  isAdmin(): boolean {
+    return this.getUserProfile() === 'Administrador';
+  }
+
+  /**
+   * Verifica se o usuário logado tem o perfil de RH.
+   */
+  isRH(): boolean {
+    return this.getUserProfile() === 'RH';
+  }
+  }
