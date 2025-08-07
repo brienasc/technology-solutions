@@ -14,6 +14,7 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 # Colabs routes
 Route::post('/colabs', [ColabsController::class,'store']);
 Route::get('/colabs', [ColabsController::class,'index']);
+Route::get('/colabs/export', [ColabsController::class,'export']);
 Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
 
 Route::post('/login', [ColabsController::class, 'login']);
