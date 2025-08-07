@@ -1,88 +1,148 @@
 /* frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.css */
 
 .lista-colaboradores-container {
-  margin-top: 30px;
-  padding: 20px;
-  
-  /* Usar variáveis de tema para as cores de fundo e borda */
-  border: 1px solid var(--theme-input-border); /* Borda */
-  border-radius: 8px;
+  max-width: 3000px;
+  margin: 2rem auto; /* Mudança aqui: era margin-top: 30px */
+  padding: 2rem;
+  border: 1px solid var(--theme-input-border);
+  border-radius: 12px;
   background-color: var(--theme-card-bg); /* Fundo do contêiner da lista */
   color: var(--theme-body-text); /* Cor do texto */
 }
 
-/* Seção de Filtro e Exportação */
-.filter-export-section {
+/* Nova seção de controles */
+.controls-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap; 
-  gap: 15px; 
+  margin-bottom: 2rem;
+  padding: 0;
+  gap: 2rem;
 }
 
+/* Container da barra de pesquisa (lado esquerdo) */
+.search-container {
+  flex: 1;
+  max-width: 450px;
+}
+
+/* Barra de pesquisa */
 .search-bar {
   display: flex;
-  flex-grow: 1; 
-  max-width: 400px; 
-  border: 1px solid var(--theme-input-border); /* Borda da barra de pesquisa */
-  border-radius: 5px;
-  overflow: hidden; 
+  position: relative;
+  width: 100%;
 }
 
 .search-bar input {
-  flex-grow: 1;
-  padding: 10px;
-  border: none;
+  flex: 1;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 2px solid var(--theme-border, #e2e8f0);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--theme-input-bg, white);
+  color: var(--theme-text-primary, #333);
+  transition: border-color 0.3s ease;
+  min-width: 0; /* Permite que o input encolha se necessário */
+}
+
+.search-bar input::placeholder {
+  color: var(--theme-text-secondary, #9ca3af);
+  font-size: 0.9rem;
+}
+
+.search-bar input:focus {
   outline: none;
-  font-size: 1em;
-  color: var(--theme-input-text); /* Cor do texto do input de pesquisa */
-  background-color: var(--theme-form-bg); /* Fundo do input de pesquisa */
+  border-color: var(--theme-button-primary-bg, #667eea);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .search-button {
-  background-color: var(--theme-button-secondary-bg); /* Cor de fundo do botão de pesquisa */
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  padding: 10px 15px;
+  color: var(--theme-text-secondary, #6b7280);
   cursor: pointer;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
-}
-
-.search-button:hover {
-  background-color: var(--theme-button-disabled-bg); /* Cor de hover do botão de pesquisa */
 }
 
 .search-button svg {
-  width: 20px;
-  height: 20px;
-  color: var(--theme-button-text); /* Cor do ícone do botão de pesquisa */
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
-.export-button {
-  background-color: var(--color-success); /* Verde para exportar (não muda com o tema) */
-  color: var(--color-white);
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
+/* Container dos botões (lado direito) */
+.buttons-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Botão de convite */
+.invite-button {
   display: flex;
   align-items: center;
-  gap: 8px; 
-  transition: background-color 0.3s ease;
+  gap: 0.5rem;
+  background: #7120bd;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  height: 46px;
+}
+
+.invite-button:hover {
+  background: #652b94;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.invite-button:active {
+  transform: translateY(0);
+}
+
+.invite-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Botão de exportar */
+.export-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #059669;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  height: 46px;
 }
 
 .export-button:hover {
-  background-color: #218838; /* Verde mais escuro no hover */
+  background: #047857;
+  transform: translateY(-1px);
 }
 
 .export-button svg {
-  width: 20px;
-  height: 20px;
-  color: var(--color-white);
+  width: 1rem;
+  height: 1rem;
 }
 
 /* Tabela */
@@ -150,8 +210,8 @@
 
 /* Botão de Detalhes */
 .details-button {
-  background-color: var(--theme-button-primary-bg); /* Fundo do botão de detalhes */
-  color: var(--theme-button-text); /* Texto do botão de detalhes */
+  background: #7120bd;
+  color: white;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
@@ -161,7 +221,7 @@
 }
 
 .details-button:hover {
-  background-color: var(--theme-button-primary-hover); /* Hover do botão de detalhes */
+  background: #652b94;
 }
 
 /* Controles de Paginação */
@@ -181,7 +241,7 @@
   cursor: pointer;
   font-size: 0.95em;
   transition: background-color 0.3s ease, border-color 0.3s ease;
-  color: var(--theme-button-text); /* Cor do texto do botão de paginação */
+  color: var(--theme-button-text);
 }
 
 .pagination-controls button:hover:not(:disabled) {
@@ -417,78 +477,292 @@
   transform: translateY(-1px);
 }
 
-/* Animações */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Header Section com botão de convite */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
 }
 
-@keyframes slideIn {
-  from { 
-    opacity: 0;
-    transform: translateY(-40px) scale(0.95); /* Reduzido movimento */
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.header-section h1 {
+  margin: 0;
+  color: var(--theme-text-primary, #333);
+  font-size: 2rem;
+  font-weight: 600;
 }
 
-/* Responsividade */
+/* Dialog de convite */
+.invite-dialog {
+  max-width: 500px;
+  width: 90%;
+}
+
+.invite-dialog .modal-body {
+  padding: 1.5rem;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--theme-label-text);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid var(--theme-input-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--theme-input-bg);
+  color: var(--theme-body-text);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control.error {
+  border-color: #ef4444;
+}
+
+.form-control.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Error messages */
+.error-messages {
+  margin-top: 0.5rem;
+}
+
+.error-text {
+  color: #ef4444;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Success/Error message container */
+.message-container {
+  margin-bottom: 1rem;
+}
+
+.success-message,
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.success-message {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.error-message {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.success-message svg,
+.error-message svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Botões do modal de convite */
+.invite-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--theme-input-border);
+}
+
+.invite-modal-buttons .btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.invite-modal-buttons .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.btn-send {
+  background: #7120bd;
+  color: white;
+}
+
+.btn-send:hover:not(:disabled) {
+  background: #652b94;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsividade para mobile */
 @media (max-width: 768px) {
-  .filter-export-section {
-    flex-direction: column; 
-    align-items: stretch; 
+  .invite-dialog {
+    margin: 1rem;
+    width: calc(100% - 2rem);
   }
-
-  .search-bar {
-    max-width: 100%; 
+  
+  .invite-modal-buttons {
+    flex-direction: column;
   }
+  
+  .invite-modal-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 
+/* RESPONSIVIDADE DOS BOTÕES */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .controls-section {
+    gap: 1.5rem;
+  }
+  
+  .invite-button,
   .export-button {
-    width: 100%; 
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
   }
+}
 
-  .colaboradores-table th,
-  .colaboradores-table td {
-    padding: 10px; 
+/* Tablets pequenos e celulares grandes */
+@media (max-width: 768px) {
+  .controls-section {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
   }
-
-  .pagination-controls {
+  
+  .search-container {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .buttons-container {
+    width: 100%;
+    justify-content: center;
     flex-wrap: wrap;
-    gap: 10px;
   }
+  
+  .invite-button,
+  .export-button {
+    flex: 1;
+    min-width: 180px;
+    max-width: 250px;
+    justify-content: center;
+  }
+}
 
-  .modal-dialog {
-    width: 95%;
-    margin: 0.5rem;
-    max-height: 90vh;
+/* Celulares médios */
+@media (max-width: 640px) {
+  .controls-section {
+    padding: 0 0.5rem;
+    gap: 1rem;
   }
   
-  .info-grid {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
+  .buttons-container {
+    flex-direction: column;
+    gap: 0.75rem;
   }
   
-  .modal-header {
-    padding: 1rem;
+  .invite-button,
+  .export-button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    height: 50px;
+    font-size: 0.9rem;
   }
   
-  .modal-title {
-    font-size: 1.2rem;
+  .search-bar input {
+    font-size: 16px; /* Evita zoom no iOS */
+    height: 50px;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+  .controls-section {
+    margin-bottom: 1.5rem;
   }
   
-  .modal-body {
-    padding: 1rem;
+  .invite-button,
+  .export-button {
+    height: 52px;
+    border-radius: 8px;
   }
   
-  .modal-footer {
-    padding: 0.8rem 1rem;
+  .search-bar input::placeholder {
+    font-size: 0.85rem;
   }
-  
-  .info-item span {
-    padding: 0.2rem 0;
-  }
+}
+
+/* Dark theme support */
+:root.dark .success-message {
+  background: #064e3b;
+  color: #6ee7b7;
+  border-color: #047857;
+}
+
+:root.dark .error-message {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-color: #dc2626;
 }
 
 /* TEMA DARK DIALOG - Estilos específicos para modo escuro */

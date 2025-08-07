@@ -1,30 +1,48 @@
 <!-- frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.html -->
 
 <div class="lista-colaboradores-container">
-  <!-- Seção de Pesquisa e Exportação -->
-  <div class="filter-export-section">
-    <div class="search-bar">
-      <input
-        type="text"
-        placeholder="Pesquisar por nome, e-mail ou CPF..."
-        [(ngModel)]="searchTerm"
-        (input)="onSearchChange()"
+
+  <div class="controls-section">
+    <!-- Barra de pesquisa à esquerda -->
+    <div class="search-container">
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Pesquisar por nome, e-mail ou CPF..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+        >
+        <button class="search-button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+            <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Botões à direita: Convidar + Exportar -->
+    <div class="buttons-container">
+      <!-- Botão de convite -->
+      <button 
+        class="invite-button" 
+        (click)="openInviteDialog()"
+        title="Convidar novo colaborador"
       >
-      <button class="search-button">
-        <!-- Ícone de lupa (exemplo com SVG inline ou Font Awesome) -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+          <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.875 7.875 0 0 1 15.75 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
         </svg>
+        Convidar Colaborador
+      </button>
+      
+      <!-- Botão de exportar -->
+      <button class="export-button" (click)="exportToExcel()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.18 1.18 3.712 3.712 1.18-1.18a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.336 2.025l-.353 1.059A.75.75 0 0 0 5.003 18.5l1.059-.353a5.25 5.25 0 0 0 2.025-1.336l8.4-8.4Z" />
+          <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+        </svg>
+        Exportar para Excel
       </button>
     </div>
-    <button class="export-button" (click)="exportToExcel()">
-      <!-- Ícone de Excel (exemplo com SVG inline ou Font Awesome) -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-        <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.18 1.18 3.712 3.712 1.18-1.18a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.336 2.025l-.353 1.059A.75.75 0 0 0 5.003 18.5l1.059-.353a5.25 5.25 0 0 0 2.025-1.336l8.4-8.4Z" />
-        <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
-      </svg>
-      Exportar para Excel
-    </button>
   </div>
 
   <!-- Tabela de Colaboradores -->
@@ -179,6 +197,98 @@
           <i class="fas fa-times"></i>
           Fechar
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Modal para Convite de Colaborador -->
+  <div class="modal-overlay" *ngIf="showInviteDialog" (click)="closeInviteDialog()">
+    <div class="modal-dialog invite-dialog" (click)="$event.stopPropagation()">
+      <!-- Header do Modal -->
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+            <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
+            <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
+          </svg>
+          Convidar Colaborador
+        </h2>
+        <button 
+          type="button" 
+          class="close-button" 
+          (click)="closeInviteDialog()"
+          aria-label="Fechar"
+        >
+        </button>
+      </div>
+
+      <!-- Conteúdo do Modal -->
+      <div class="modal-body">
+        <form (ngSubmit)="sendInvite()" #inviteForm="ngForm">
+          <div class="form-group">
+            <label for="inviteEmail">E-mail do colaborador:</label>
+            <input
+              type="email"
+              id="inviteEmail"
+              name="inviteEmail"
+              [(ngModel)]="inviteEmail"
+              #emailInput="ngModel"
+              required
+              email
+              class="form-control"
+              [class.error]="emailInput.invalid && emailInput.touched"
+              placeholder="Digite o e-mail do colaborador"
+              autocomplete="email"
+            >
+            
+            <!-- Mensagens de validação -->
+            <div class="error-messages" *ngIf="emailInput.invalid && emailInput.touched">
+              <small *ngIf="emailInput.errors?.['required']" class="error-text">
+                O e-mail é obrigatório.
+              </small>
+              <small *ngIf="emailInput.errors?.['email']" class="error-text">
+                Por favor, digite um e-mail válido.
+              </small>
+            </div>
+          </div>
+
+          <!-- Mensagens de sucesso/erro -->
+          <div class="message-container">
+            <div *ngIf="inviteSuccessMessage" class="success-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+              </svg>
+              {{ inviteSuccessMessage }}
+            </div>
+            
+            <div *ngIf="inviteErrorMessage" class="error-message">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+              </svg>
+              {{ inviteErrorMessage }}
+            </div>
+          </div>
+
+          <!-- Botões do footer -->
+          <div class="invite-modal-buttons">
+            <button 
+              type="button" 
+              class="btn btn-cancel" 
+              (click)="closeInviteDialog()"
+              [disabled]="inviteLoading"
+            >
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              class="btn btn-send" 
+              [disabled]="inviteForm.invalid || inviteLoading"
+            >
+              <span *ngIf="inviteLoading" class="loading-spinner"></span>
+              {{ inviteLoading ? 'Enviando...' : 'Enviar Convite' }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

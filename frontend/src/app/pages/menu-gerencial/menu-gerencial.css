@@ -16,63 +16,6 @@
   position: relative; /* Necessário para posicionar o botão de tema fixo */
 }
 
-/* Estilos para o botão de alternância de tema (toggle switch) */
-.theme-switch {
-  position: fixed; /* Posição fixa na tela */
-  top: 20px; /* Distância do topo */
-  right: 20px; /* Distância da direita */
-  z-index: 100; /* Garante que fique acima de outros elementos */
-  display: inline-block; /* Permite que o switch tenha largura e altura definidas */
-  width: 60px; /* Largura do switch */
-  height: 34px; /* Altura do switch */
-  cursor: pointer;
-}
-
-/* Esconde o checkbox padrão do HTML */
-.theme-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* O 'slider' é a parte visual do switch */
-.slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--theme-button-primary-bg); /* Usa variável de tema para o fundo do switch (light) */
-  -webkit-transition: .4s; /* Transição para o WebKit (Chrome, Safari) */
-  transition: .4s; /* Transição suave */
-  border-radius: 34px; /* Arredonda o fundo do switch */
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px; /* Altura do "círculo" do switch */
-  width: 26px; /* Largura do "círculo" do switch */
-  left: 4px; /* Distância da esquerda */
-  bottom: 4px; /* Distância da base */
-  background-color: var(--theme-button-text); /* Usa variável de tema para a cor do "círculo" (branco/claro) */
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%; /* Faz o "círculo" ser um círculo perfeito */
-}
-
-/* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
-.theme-switch input:checked + .slider {
-  background-color: var(--theme-button-primary-hover); /* Usa variável de tema para o fundo do switch (dark) */
-}
-
-.theme-switch input:checked + .slider:before {
-  -webkit-transform: translateX(26px); /* Move o "círculo" para a direita */
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-
 /* Estilos para a seção do formulário*/
 .login-form-section {
   flex: 1.5; /* Faz a seção do formulário ser 1.5x maior que a seção da imagem. */
@@ -239,75 +182,231 @@ button[type="submit"]:disabled {
 }
 
 
-/* Estilos para Responsividade Básica (telas com largura máxima de 768px). */
-@media (max-width: 768px) {
-  /* Altera a direção do layout principal de linha para coluna em telas menores. */
-  .login-page-container {
-    flex-direction: column;
+/* Seção do título principal */
+.menu-gerencial-title {
+  background: #f8f8f8; /* Tema claro */
+  border-bottom: 1px solid var(--theme-input-border);
+  padding: 1rem 0 1rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-gerencial-title-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Título principal */
+.menu-gerencial-title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 2rem;
+  color: var(--theme-heading-text);
+  text-shadow: none;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+/* Subtítulo */
+.menu-gerencial-title p {
+  font-size: 1.25rem;
+  color: var(--theme-text-secondary);
+  margin: 0 0 0 2rem;
+  line-height: 1.6;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* Linha decorativa - ajustada para a esquerda */
+.menu-gerencial-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 2rem;
+  width: 400px;
+  height: 4px;
+  background: linear-gradient(135deg, #3e2292 0%, #7120bd 100%);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+/* Container principal */
+.menu-gerencial-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+}
+
+/* RESPONSIVIDADE PARA TABLETS (768px - 1023px) */
+@media (max-width: 1023px) {
+  .menu-gerencial-title {
+    padding: 1.5rem 0 1rem;
+    margin-bottom: 1.5rem;
   }
 
-  /* Ajusta a seção da imagem em telas menores. */
-  .login-image-section {
-    min-height: 200px; /* Altura mínima para a imagem em mobile. */
-    order: -1; /* Muda a ordem para que a imagem apareça antes do formulário em mobile. */
-    
-    /* Em mobile, a imagem pode voltar a ser centralizada se desejar. */
-    justify-content: center;
-    align-items: center;
+  .menu-gerencial-title-content {
+    padding: 0 1.5rem;
   }
 
-  /* Ajustes para a seção do formulário em mobile */
-  .login-form-section {
-    margin: 10px; /* Reduz a margem externa em telas menores */
-    border-radius: 10px; /* Ajusta o arredondamento do cartão em mobile */
-    /* Remove o flex: 1.5 e max-width para que ocupe a largura total disponível */
-    flex: 1 1 auto; /* Permite que cresça e encolha automaticamente */
-    max-width: 100%; /* Ocupa a largura total */
+  .menu-gerencial-title h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.75rem 1.5rem;
   }
 
-  /* Ajustes para o wrapper do conteúdo do formulário em mobile */
-  .login-content-wrapper {
-    padding: 30px; /* Reduz o padding interno em mobile */
+  .menu-gerencial-title p {
+    font-size: 1.125rem;
+    margin: 0 0 0 1.5rem;
   }
 
-  /* Ajustes para tipografia em mobile, se necessário */
-  .login-content-wrapper h1 {
-    font-size: 2em; /* Reduz o tamanho do título em mobile */
+  .menu-gerencial-title::after {
+    left: 1.5rem;
+    width: 300px;
   }
 
-  .form-group input {
-    font-size: 0.9em; /* Reduz o tamanho da fonte do input em mobile */
-    padding: 10px 15px; /* Ajusta padding do input em mobile */
-  }
-
-  button[type="submit"], .back-to-home-button {
-    font-size: 1em; /* Ajusta o tamanho da fonte dos botões em mobile */
-    padding: 10px 15px; /* Ajusta o padding dos botões em mobile */
-  }
-
-  .forgot-password-link, .signup-link {
-    font-size: 0.85em; /* Ajusta o tamanho da fonte dos links em mobile */
-  }
-
-  /* Ajustes para o toggle switch em mobile, se necessário */
-  .theme-switch {
-    top: 10px; /* Ajusta a posição do toggle em mobile */
-    right: 10px; /* Ajusta a posição do toggle em mobile */
-    transform: none; /* Remove transform se não for mais necessário */
+  .menu-gerencial-container {
+    padding: 0 1.5rem 2rem;
   }
 }
 
-/* Ajustes para tipografia em mobile, se necessário */
-  .login-content-wrapper h1 {
-    font-size: 2em; /* Reduz o tamanho do título em mobile */
+/* RESPONSIVIDADE PARA MOBILE GRANDE (481px - 767px) */
+@media (max-width: 767px) {
+  .menu-gerencial-title {
+    padding: 1.25rem 0 1rem;
+    margin-bottom: 1.25rem;
   }
 
-  .form-group input {
-    font-size: 0.9em; /* Reduz o tamanho da fonte do input em mobile */
-    padding: 10px 15px; /* Ajusta padding do input em mobile */
+  .menu-gerencial-title-content {
+    padding: 0 1rem;
   }
 
-  button[type="submit"], .back-to-home-button {
-    font-size: 1em; /* Ajusta o tamanho da fonte dos botões em mobile */
-    padding: 10px 15px; /* Ajusta o padding dos botões em mobile */
+  .menu-gerencial-title h1 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 1rem;
+    letter-spacing: -0.015em;
   }
+
+  .menu-gerencial-title p {
+    font-size: 1rem;
+    margin: 0 0 0 1rem;
+    line-height: 1.5;
+  }
+
+  .menu-gerencial-title::after {
+    left: 1rem;
+    width: 200px;
+    height: 3px;
+  }
+
+  .menu-gerencial-container {
+    padding: 0 1rem 1.5rem;
+  }
+}
+
+/* RESPONSIVIDADE PARA MOBILE PEQUENO (até 480px) */
+@media (max-width: 480px) {
+  .menu-gerencial-title {
+    padding: 1rem 0 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .menu-gerencial-title-content {
+    padding: 0 0.75rem;
+  }
+
+  .menu-gerencial-title h1 {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0.75rem;
+    font-weight: 600;
+  }
+
+  .menu-gerencial-title p {
+    font-size: 0.9rem;
+    margin: 0 0 0 0.75rem;
+    line-height: 1.4;
+  }
+
+  .menu-gerencial-title::after {
+    left: 0.75rem;
+    width: 150px;
+    height: 2px;
+  }
+
+  .menu-gerencial-container {
+    padding: 0 0.75rem 1rem;
+  }
+}
+
+/* RESPONSIVIDADE PARA TELAS MUITO PEQUENAS (até 360px) */
+@media (max-width: 360px) {
+  .menu-gerencial-title {
+    padding: 0.75rem 0 0.5rem;
+  }
+
+  .menu-gerencial-title-content {
+    padding: 0 0.5rem;
+  }
+
+  .menu-gerencial-title h1 {
+    font-size: 1.125rem;
+    margin: 0 0 0.25rem 0.5rem;
+  }
+
+  .menu-gerencial-title p {
+    font-size: 0.85rem;
+    margin: 0 0 0 0.5rem;
+  }
+
+  .menu-gerencial-title::after {
+    left: 0.5rem;
+    width: 100px;
+  }
+
+  .menu-gerencial-container {
+    padding: 0 0.5rem 0.75rem;
+  }
+}
+
+/* TEMA ESCURO - Mantém responsividade */
+body.dark-theme .menu-gerencial-title {
+  background: #1a1a1a !important;
+  background-color: #1a1a1a !important;
+  border-bottom-color: #333333 !important;
+}
+
+body.dark-theme .menu-gerencial-title h1 {
+  color: #ffffff !important;
+}
+
+body.dark-theme .menu-gerencial-title p {
+  color: #cccccc !important;
+}
+
+body.dark-theme .menu-gerencial-title::after {
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%) !important;
+}
+
+/* FORÇA O TEMA ESCURO COM MÁXIMA ESPECIFICIDADE */
+body.dark-theme .menu-gerencial-title,
+html body.dark-theme .menu-gerencial-title,
+body.dark-theme div.menu-gerencial-title {
+  background: #1a1a1a !important;
+  background-color: #1a1a1a !important;
+  border-bottom-color: #333333 !important;
+}
+
+body.dark-theme .menu-gerencial-title h1,
+html body.dark-theme .menu-gerencial-title h1,
+body.dark-theme div.menu-gerencial-title h1 {
+  color: #ffffff !important;
+}
+
+body.dark-theme .menu-gerencial-title p,
+html body.dark-theme .menu-gerencial-title p,
+body.dark-theme div.menu-gerencial-title p {
+  color: #cccccc !important;
+}

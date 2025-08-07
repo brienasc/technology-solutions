@@ -22,7 +22,7 @@ services:
     volumes:
       - ../frontend:/app/
       - /app/node_modules
-    command: sh -c "npm ci --silent && npm run start -- --host 0.0.0.0"
+    command: sh -c "npm ci --silent && npm run start -- --host 0.0.0.0 --poll=1000"
     container_name: angular
     networks:
       - internal
