@@ -35,6 +35,9 @@ class ConvitesController extends Controller{
             ]);
        
             $convite = $this->conviteService->enviarConvite($validateData['email']);
+            if($convite == null){
+                return $this->apiResponse->badRequest(null, 'Já existe um convite em aberto para esse email.');
+            }
 
             $conviteArray = $convite->toArray();
             $conviteArray['status_description'] = $convite->status_code->description();
