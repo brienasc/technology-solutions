@@ -16,7 +16,7 @@
         <!-- Busca por E-mail -->
         <div class="search-group">
             <label for="email-search">Buscar por E-mail:</label>
-            <input type="text" id="email-search" placeholder="Digite o e-mail do convidado" [(ngModel)]="emailFilter" (keyup.enter)="applyFilter()">
+            <input type="text" id="email-search" placeholder="Digite o e-mail do convidado" [(ngModel)]="emailFilter" (ngModelChange)="applyFilter()">
             <button (click)="applyFilter()">Buscar</button>
         </div>
     </div>
@@ -49,9 +49,9 @@
                             {{ invitation.status }}
                         </span>
                     </td>
-                    <td>
+                    <!-- <td>
                         <button class="details-button" (click)="onViewDetails(invitation)">Ver Detalhes</button>
-                    </td>
+                    </td> -->
                 </tr>
                 <tr *ngIf="invitations.length === 0">
                     <td colspan="5" class="no-data-message">Nenhum convite encontrado.</td>

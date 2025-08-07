@@ -11,7 +11,9 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: background-color 0.5s ease, color 0.5s ease;
     font-family: var(--font-nunito-sans);
-}
+    font-style: normal;
+ }
+
 
 /* Estilos para a seção do cabeçalho (título e botão "Criar Novo Convite" e toggle de tema) */
 .header-section {
@@ -35,7 +37,7 @@
 /* Estilos para o título principal da tela */
 .header-section h1 {
     font-family: var(--font-playfair-display);
-    font-style: italic;
+    font-style: normal;
     font-size: 2.5em;
     color: var(--theme-heading-text);
     margin-bottom: 0; /* Remove margem inferior para alinhar com o botão */
@@ -141,6 +143,23 @@
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
+    .secondary-button-outline {
+        padding: 12px 24px; /* Botão um pouco maior */
+        color: var(--theme-button-primary-bg);
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        width: auto;
+        max-width: none;
+        text-align: center;
+        background-color: transparent;
+        border: 2px solid var(--theme-button-primary-bg);
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
 
 /* Media Queries para Responsividade */
 
