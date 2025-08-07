@@ -1,4 +1,3 @@
-
 import { NgOptimizedImage } from '@angular/common';
 import { Component, OnInit, Renderer2, ElementRef} from '@angular/core'; 
 import { Router, RouterLink } from '@angular/router';
@@ -35,6 +34,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   toggleTheme(): void {
     this.isDarkTheme = !this.isDarkTheme; // inverto o estado do tema
     this.applyThemeClass(); // aplico a classe CSS dele
+    this.applyMobileMenuTheme(); // Adicione esta linha
     localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light'); // Salvo o que será usado agora, se é o dark ou light
   }
 
@@ -44,6 +44,21 @@ export class Header implements OnInit { // << usarei o OnInit que importei
       this.renderer.addClass(document.body, 'dark-theme'); // Adiciona a classe 'dark-theme' ao body
     } else {
       this.renderer.removeClass(document.body, 'dark-theme'); // Remove a classe 'dark-theme' do body
+    }
+  }
+
+  private applyMobileMenuTheme() {
+    const mobileMenu = document.querySelector('.mobile-menu') as HTMLElement;
+    const isDark = document.body.classList.contains('dark-theme');
+    
+    if (mobileMenu) {
+      if (isDark) {
+        mobileMenu.style.setProperty('background', '#1a1a1a', 'important');
+        mobileMenu.style.setProperty('color', '#ffffff', 'important');
+      } else {
+        mobileMenu.style.setProperty('background', '#ffffff', 'important');
+        mobileMenu.style.setProperty('color', '#1a1a1a', 'important');
+      }
     }
   }
 

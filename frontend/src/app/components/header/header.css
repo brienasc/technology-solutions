@@ -192,6 +192,10 @@
     color: #58a6ff;
 }
 
+.mobile-nav-link i {
+    color: #6c757d; /* Ícones cinza */
+}
+
 /* Seção de Tema Mobile */
 .mobile-theme-section {
     padding: 20px;
@@ -461,5 +465,156 @@
     .theme-switch {
         margin-left: 60px;
     }
+}
+
+
+
+/* Menu Mobile - Tema Claro (padrão) */
+.mobile-menu {
+  background: #f8f9fa; /* Fundo branco no tema claro */
+  color: #1a1a1a; /* Texto escuro no tema claro */
+}
+
+.mobile-menu-header {
+  background: #f8f9fa; /* Fundo cinza claro no header */
+  border-bottom: 1px solid #e9ecef;
+}
+
+.mobile-menu-title {
+  color: #1a1a1a; /* Título escuro */
+}
+
+.mobile-close-btn {
+  color: #1a1a1a; /* Botão X escuro */
+  background: transparent;
+}
+
+.mobile-nav-link {
+  color: #1a1a1a; /* Links escuros */
+  border-bottom: 1px solid #e9ecef;
+}
+
+.mobile-nav-link:hover {
+  background: #f8f9fa; /* Hover cinza claro */
+  color: #7c3aed; /* Texto roxo no hover */
+}
+
+.mobile-nav-link i {
+  color: #6c757d; /* Ícones cinza */
+}
+
+.mobile-theme-section {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.theme-label {
+  color: #1a1a1a; /* Label escuro */
+}
+
+.mobile-actions {
+  background: #ffffff;
+}
+
+.mobile-btn {
+  color: #1a1a1a; /* Botões escuros */
+  border: 1px solid #e9ecef;
+  background: #ffffff;
+}
+
+.mobile-btn:hover {
+  background: #7c3aed; /* Fundo roxo no hover */
+  color: #ffffff; /* Texto branco no hover */
+}
+
+.mobile-btn i {
+  color: inherit;
+}
+
+/* TEMA ESCURO - Sobrepõe as cores do tema claro */
+body.dark-theme .mobile-menu,
+[data-theme="dark"] .mobile-menu {
+  background: #1a1a1a !important; /* Fundo escuro */
+  color: #ffffff !important; /* Texto claro */
+}
+
+body.dark-theme .mobile-menu-header,
+[data-theme="dark"] .mobile-menu-header {
+  background: #2d2d2d !important;
+  border-bottom-color: #404040 !important;
+}
+
+body.dark-theme .mobile-menu-title,
+[data-theme="dark"] .mobile-menu-title {
+  color: #ffffff !important;
+}
+
+body.dark-theme .mobile-close-btn,
+[data-theme="dark"] .mobile-close-btn {
+  color: #ffffff !important;
+}
+
+body.dark-theme .mobile-nav-link,
+[data-theme="dark"] .mobile-nav-link {
+  color: #ffffff !important;
+  border-bottom-color: #404040 !important;
+}
+
+body.dark-theme .mobile-nav-link:hover,
+[data-theme="dark"] .mobile-nav-link:hover {
+  background: #404040 !important;
+  color: #a855f7 !important;
+}
+
+body.dark-theme .mobile-nav-link i,
+[data-theme="dark"] .mobile-nav-link i {
+  color: #cccccc !important;
+}
+
+body.dark-theme .mobile-theme-section,
+[data-theme="dark"] .mobile-theme-section {
+  background: #2d2d2d !important;
+  border-top-color: #404040 !important;
+  border-bottom-color: #404040 !important;
+}
+
+body.dark-theme .theme-label,
+[data-theme="dark"] .theme-label {
+  color: #ffffff !important;
+}
+
+body.dark-theme .mobile-actions,
+[data-theme="dark"] .mobile-actions {
+  background: #1a1a1a !important;
+}
+
+body.dark-theme .mobile-btn,
+[data-theme="dark"] .mobile-btn {
+  color: #ffffff !important;
+  border-color: #404040 !important;
+  background: #2d2d2d !important;
+}
+
+body.dark-theme .mobile-btn:hover,
+[data-theme="dark"] .mobile-btn:hover {
+  background: #a855f7 !important;
+  color: #ffffff !important;
+  border-color: #a855f7 !important;
+}
+
+body.dark-theme .mobile-btn i,
+[data-theme="dark"] .mobile-btn i {
+  color: inherit !important;
+}
+
+/* Overlay do menu mobile */
+.mobile-menu-overlay {
+  background: rgba(0, 0, 0, 0.5); /* Tema claro */
+}
+
+body.dark-theme .mobile-menu-overlay,
+[data-theme="dark"] .mobile-menu-overlay {
+  background: rgba(0, 0, 0, 0.8) !important; /* Mais escuro no tema escuro */
 }
 
