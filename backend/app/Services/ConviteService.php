@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Enums\ConviteStatus;
+use App\Mail\RegistrationMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class ConviteService{
     public function enviarConvite(string $email): Convites{
@@ -16,7 +19,11 @@ class ConviteService{
             'expires_at' => Carbon::now()->addDay(),
         ]);
 
-        // Tratar o envio do convite por email
+        $frontendUrl = config('app.frontend_url');
+
+        $confirmationLink = "{$frontendUrl}/cadastro/{$convite->id_convite}";
+
+        Mail::to($email)->send(new RegistrationMail('Convidado', confirmationLink: $confirmationLink));
 
         return $convite;
     }
