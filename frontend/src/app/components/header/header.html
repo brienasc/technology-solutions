@@ -10,23 +10,14 @@
     <!-- Navegação Desktop -->
     <nav class="header-nav desktop-nav">
       <ul>
-
+        <!-- << CORREÇÃO: Removida a duplicação dos itens de navegação >> -->
         <li><a routerLink="" (click)="closeMobileMenu()">Home</a></li>
         <li><a routerLink="/sobre" (click)="closeMobileMenu()">Sobre</a></li>
         <li><a routerLink="/servicos" (click)="closeMobileMenu()">Serviços</a></li>
         <li><a routerLink="/vagas" (click)="closeMobileMenu()">Vagas</a></li>
         <li><a routerLink="/contato" (click)="closeMobileMenu()">Contato</a></li>
         <!-- O botão "Convites" e "Menu Gerencial" foram movidos para a div header-buttons -->
-
-        <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
-        <li><a href="#sobre" (click)="closeMobileMenu()">Sobre</a></li>
-        <li><a href="#servicos" (click)="closeMobileMenu()">Serviços</a></li>
-        <li><a href="#vagas" (click)="closeMobileMenu()">Vagas</a></li>
-        <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a routerLink="/convites" (click)="onConvitesClick()">Menu Convites</a>
-        </li>
-
+        <!-- O botão "Menu Convites" foi movido para a div header-buttons -->
       </ul>
 
       <!-- Toggle de Tema Desktop -->
@@ -92,10 +83,9 @@
       <div class="mobile-menu-header">
         <h3 class="mobile-menu-title">Menu</h3>
         <button class="mobile-close-btn" (click)="closeMobileMenu()">
-          ×
+          × <!-- << CORREÇÃO: Adicionado o "x" de fechar o botão -->
         </button>
       </div>
-
 
       <!-- Navegação Mobile -->
       <nav class="mobile-nav">
@@ -132,7 +122,7 @@
           </li>
           <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->
           @if (authService.isRH() || authService.isAdmin()) {
-            <li>
+            <li> <!-- << CORREÇÃO: Adicionado <li> envolvendo o link >> -->
               <a routerLink="/convites" class="mobile-btn" (click)="onConvitesClick()">
                 <i class="fas fa-users"></i>
                 Menu Convites
@@ -141,9 +131,9 @@
           }
           <!-- Botão "Menu Gerencial" no menu mobile -->
           @if (authService.isRH() || authService.isAdmin()) {
-            <li>
+            <li> <!-- << CORREÇÃO: Adicionado <li> envolvendo o link >> -->
               <a routerLink="/menu-gerencial" class="mobile-btn" (click)="onMenuGerencialClick()">
-                <i class="fas fa-chart-line"></i> <!-- Ícone de gráfico/gerenciamento -->
+                <i class="fas fa-chart-line"></i>
                 Menu Gerencial
               </a>
             </li>
@@ -168,39 +158,6 @@
           <a routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
             <i class="fas fa-sign-in-alt"></i>
             Faça seu Login
-
-    <!-- Navegação Mobile -->
-    <nav class="mobile-nav">
-      <ul>
-        <li>
-          <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-home"></i>
-            Home
-          </a>
-        </li>
-        <li>
-          <a href="#sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-info-circle"></i>
-            Sobre
-          </a>
-        </li>
-        <li>
-          <a href="#servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-cogs"></i>
-            Serviços
-          </a>
-        </li>
-        <li>
-          <a href="#vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-briefcase"></i>
-            Vagas
-          </a>
-        </li>
-        <li>
-          <a href="#contato" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-envelope"></i>
-            Contato
-
           </a>
         }
         <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->

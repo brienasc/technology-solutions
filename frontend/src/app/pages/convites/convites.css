@@ -11,36 +11,34 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: background-color 0.5s ease, color 0.5s ease;
     font-family: var(--font-nunito-sans);
-    font-style: normal;
- }
-
+}
 
 /* Estilos para a seção do cabeçalho (título e botão "Criar Novo Convite" e toggle de tema) */
 .header-section {
     display: flex;
-    justify-content: space-between; /* Distribui o espaço entre os itens (grupo do título/botão e toggle de tema) */
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
-    flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
-    gap: 10px; /* Espaçamento entre os itens */
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* Estilos para o grupo do título e botão de criar convite */
 .title-and-button-group {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espaçamento entre o título e o botão */
-    flex-wrap: wrap; /* Permite que o título e o botão quebrem a linha em telas muito pequenas */
-    /* Por padrão (mobile-first), este grupo ficará à esquerda se header-section for column */
+    gap: 20px;
+    flex-wrap: wrap;
+    order: 2; /* Em desktop, este grupo ficará à direita do toggle */
 }
 
 /* Estilos para o título principal da tela */
 .header-section h1 {
     font-family: var(--font-playfair-display);
-    font-style: normal;
+    font-style: italic;
     font-size: 2.5em;
     color: var(--theme-heading-text);
-    margin-bottom: 0; /* Remove margem inferior para alinhar com o botão */
+    margin-bottom: 0;
 }
 
 /* Estilos para o botão "Criar Novo Convite" */
@@ -97,7 +95,9 @@
   height: 34px;
   position: relative; 
   cursor: pointer;
-  margin-left: 20px; /* Espaçamento à esquerda para separar do botão "Criar Novo Convite" em desktop */
+  order: 1; /* Coloca o toggle de tema à esquerda */
+  margin-left: 0;
+  margin-right: auto; /* Empurra o grupo de título/botão para a direita em desktop */
 }
 
 /* Esconde o checkbox padrão do HTML */
@@ -139,31 +139,173 @@
 }
 
 .theme-switch input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
-    .secondary-button-outline {
-        padding: 12px 24px; /* Botão um pouco maior */
-        color: var(--theme-button-primary-bg);
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 0.95em;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        width: auto;
-        max-width: none;
-        text-align: center;
-        background-color: transparent;
-        border: 2px solid var(--theme-button-primary-bg);
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
+/*
+* -----------------------------------------------------------
+* Estilos para o Modal de Criar Convite
+* -----------------------------------------------------------
+*/
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+    z-index: 1000; /* Acima de outros elementos */
+    display: none; /* Oculto por padrão */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
-/* Media Queries para Responsividade */
+.modal-overlay.active {
+    display: block;
+    opacity: 1;
+}
 
-/* Estilos para telas menores que 768px (mobile e tablets pequenos) */
+.modal-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centraliza o modal */
+    background-color: var(--theme-form-bg); /* Fundo do modal, adaptável ao tema */
+    color: var(--theme-body-text); /* Cor do texto do modal, adaptável ao tema */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1001; /* Acima do overlay */
+    width: 90%;
+    max-width: 500px;
+    display: none; /* Oculto por padrão */
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9); /* Inicia um pouco menor */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-dialog.active {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* Expande para o tamanho normal */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--theme-input-border); /* Borda inferior do cabeçalho */
+    padding-bottom: 15px;
+}
+
+.modal-header h2 {
+    font-family: var(--font-playfair-display);
+    font-style: normal;
+    color: var(--theme-heading-text);
+    margin: 0;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--theme-body-text);
+    transition: color 0.2s ease;
+}
+
+.close-modal-btn:hover {
+    color: var(--color-danger);
+}
+
+.modal-body .form-group {
+    margin-bottom: 15px;
+}
+
+.modal-body label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--theme-label-text);
+}
+
+.modal-body input[type="email"] {
+    width: calc(100% - 22px); /* Ajusta para padding e borda */
+    padding: 10px;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: var(--theme-card-bg);
+    color: var(--theme-input-text);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.modal-body input[type="email"].is-invalid {
+    border-color: var(--color-danger);
+}
+
+.modal-body .invalid-feedback {
+    color: var(--theme-invalid-feedback-text);
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid var(--theme-input-border);
+    padding-top: 15px;
+}
+
+.modal-actions button {
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.modal-actions .cancel-button {
+    background-color: transparent;
+    color: var(--theme-body-text);
+    border: 1px solid var(--theme-input-border);
+}
+
+.modal-actions .cancel-button:hover {
+    background-color: var(--theme-background);
+}
+
+.modal-actions .send-button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 1px solid var(--color-primary);
+}
+
+.modal-actions .send-button:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+}
+
+.modal-actions .send-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--theme-button-disabled-bg);
+    border-color: var(--theme-button-disabled-bg);
+}
+
+.success-message {
+    color: var(--color-success);
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+
+/* Responsividade */
 @media (max-width: 768px) {
     .convites-container {
         margin: 20px;
@@ -171,35 +313,39 @@
     }
     .header-section {
         flex-direction: column;
-        align-items: flex-start; /* Alinha os itens à esquerda quando empilhados */
+        align-items: flex-start;
     }
-    /* Ajusta o espaçamento do botão de tema em mobile para não ficar muito colado */
     .header-section .theme-switch {
+        order: -1;
         margin-left: 0;
-        margin-top: 10px;
-        align-self: flex-end; /* Alinha o toggle à direita quando empilhado */
+        margin-top: 0;
+        align-self: flex-end;
     }
 
-    /* Responsividade para o botão "+ Criar Novo Convite" em mobile */
     .title-and-button-group {
-        width: 100%; /* Ocupa a largura total */
-        justify-content: space-between; /* Espaço entre título e botão */
-        gap: 10px; /* Reduz o gap */
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        order: 2;
     }
     .create-invite-button {
-        flex-grow: 1; /* Permite que o botão cresça */
-        max-width: 180px; /* Limita a largura em telas pequenas */
+        flex-grow: 1;
+        max-width: 180px;
         font-size: 0.9em;
         padding: 10px 15px;
-        justify-content: center; /* Centraliza o conteúdo do botão */
+        justify-content: center;
     }
     .header-section h1 {
         flex-grow: 1;
-        font-size: 2em; /* Reduz o tamanho do título */
+        font-size: 2em;
+    }
+
+    .modal-dialog {
+        width: 95%;
+        padding: 20px;
     }
 }
 
-/* Estilos para telas muito pequenas (smartphones) */
 @media (max-width: 480px) {
     .header-section h1 {
         font-size: 1.8em;
@@ -208,35 +354,12 @@
         font-size: 0.9em;
         padding: 10px 15px;
     }
-    /* Em telas muito pequenas, o botão de criar convite pode ocupar 100% da largura */
     .title-and-button-group {
-        flex-direction: column; /* Empilha título e botão */
-        align-items: flex-start; /* Alinha à esquerda */
+        flex-direction: column;
+        align-items: flex-start;
     }
     .create-invite-button {
-        width: 100%; /* Ocupa toda a largura */
-        max-width: none; /* Remove o limite de largura */
-    }
-}
-
-/* Desktop (a partir de 769px) */
-@media (min-width: 769px) {
-    .header-section {
-        flex-direction: row; /* Volta para layout em linha */
-        justify-content: space-between; /* Mantém o espaço entre os grupos */
-        align-items: center;
-    }
-
-    /* << MUDANÇA AQUI: Inverte a ordem para o toggle ficar à esquerda e o grupo à direita >> */
-    .theme-switch {
-        order: 1; /* Coloca o toggle de tema à esquerda */
-        margin-left: 0; /* Remove margem extra se houver */
-    }
-
-    .title-and-button-group {
-        order: 2; /* Coloca o grupo de título/botão à direita */
-        flex-grow: 0; /* Não cresce desnecessariamente */
-        width: auto; /* Volta para largura automática */
-        flex-wrap: nowrap; /* Impede quebra de linha em desktop */
+        width: 100%;
+        max-width: none;
     }
 }
