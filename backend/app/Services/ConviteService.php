@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Models\Convites;
+use Exception;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 
 use App\Enums\ConviteStatus;
 use App\Mail\RegistrationMail;
-use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
+use App\Models\Convites;
 
 class ConviteService{
     public function enviarConvite(string $email): Convites | null{
@@ -46,8 +46,22 @@ class ConviteService{
     }
 
     
-    public function indexAllConvites(): Collection{
-        return Convites::all();
+    public function indexFilteredConvites($filtros): LengthAwarePaginator{
+        $query = Convites::query();
+
+        if(isset($filtros['email'])){
+            $query->where('email_colab', 'like', '%' . $filtros['email'] . '%');
+        }
+
+        if(isset($filtros['status'])){
+            $query->where('status_code', $filtros['status']);
+        }
+
+        $query->latest();
+
+        $per_page = $filtros['per_page'] ?? 15;
+
+        return $query->paginate($per_page);
     }
 
     public function getConviteById(string $id): ?Convites{
