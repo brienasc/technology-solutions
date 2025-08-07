@@ -1,19 +1,19 @@
 // frontend/src/app/app.component.ts
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, provideRouter } from '@angular/router'; 
+import { provideHttpClient } from '@angular/common/http'; 
 import { ReactiveFormsModule } from '@angular/forms'; 
-// Estes imports são para as funções usadas no 'appConfig.providers'
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
 import { provideNgxMask } from 'ngx-mask';
+
+// Importa as rotas aqui, que estão em './app.routes'
 import { routes } from './app.routes';
 
 
 export const appConfig = {
   providers: [
-    provideRouter(routes),
-    provideHttpClient(),
-    provideNgxMask() 
+    provideRouter(routes), 
+    provideHttpClient(),   
+     provideNgxMask(),
   ]
 };
 
@@ -21,7 +21,7 @@ export const appConfig = {
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet,
+    RouterOutlet, 
     ReactiveFormsModule 
   ],
   templateUrl: './app.component.html',

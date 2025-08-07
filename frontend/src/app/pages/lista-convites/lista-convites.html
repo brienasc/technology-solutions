@@ -1,0 +1,75 @@
+<!-- frontend/src/app/components/lista-convites/lista-convites.component.html -->
+
+<div class="lista-convites-container">
+    <div class="controls-section">
+        <!-- Filtro por Status -->
+        <div class="filter-group">
+            <label for="status-filter">Filtrar por Status:</label>
+            <select id="status-filter" [(ngModel)]="statusFilter" (change)="applyFilter()">
+                <option value="all">Todos</option>
+                <option value="Em Aberto">Em Aberto</option>
+                <option value="Finalizado">Finalizado</option>
+                <option value="Vencido">Vencido</option>
+            </select>
+        </div>
+        
+        <!-- Busca por E-mail -->
+        <div class="search-group">
+            <label for="email-search">Buscar por E-mail:</label>
+            <input type="text" id="email-search" placeholder="Digite o e-mail do convidado" [(ngModel)]="emailFilter" (keyup.enter)="applyFilter()">
+            <button (click)="applyFilter()">Buscar</button>
+        </div>
+    </div>
+
+    <div class="table-section">
+        <table>
+            <thead>
+                <tr>
+                    <th>E-mail do Convidado</th>
+                    <th>Data de Envio</th>
+                    <th>Data de Expiração</th>
+                    <th>Status</th>
+                    <!-- <th>Ações</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let invitation of invitations">
+                    <td>{{ invitation.email }}</td>
+                    <td>{{ invitation.sentDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ invitation.expirationDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>
+                        <span 
+                            class="status-badge"
+                            [ngClass]="{
+                                'status-em-aberto': invitation.status === 'Em Aberto',
+                                'status-finalizado': invitation.status === 'Finalizado',
+                                'status-vencido': invitation.status === 'Vencido'
+                            }"
+                        >
+                            {{ invitation.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="details-button" (click)="onViewDetails(invitation)">Ver Detalhes</button>
+                    </td>
+                </tr>
+                <tr *ngIf="invitations.length === 0">
+                    <td colspan="5" class="no-data-message">Nenhum convite encontrado.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-section">
+        <button class="nav-button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Anterior</button>
+        <span class="page-info">Página {{ currentPage }} de {{ totalPages() }}</span>
+        <button class="nav-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages()">Próxima</button>
+        
+        <div class="page-size-group">
+            <label for="page-size">Itens por página:</label>
+            <select id="page-size" [ngModel]="pageSize" (change)="onPageSizeChange($event)">
+                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
+            </select>
+        </div>
+    </div>
+</div>

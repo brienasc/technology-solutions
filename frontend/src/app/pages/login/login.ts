@@ -1,12 +1,13 @@
-
 // src/app/pages/login/login.component.ts
 import { CommonModule } from '@angular/common'; 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef} from '@angular/core';
 // Importa os módulos necessários para formulários reativos e máscara
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { Router } from '@angular/router';
 import { NgxMaskDirective } from 'ngx-mask'; 
+import { RouterLink } from '@angular/router'; // Importa RouterLink para usar a diretiva routerLink no HTML
+import { AuthService } from '../../services/auth.service'; // Importa o serviço de autenticação
 
 // *** VALIDADORES CUSTOMIZADOS ***
 // Validador de CPF
@@ -115,75 +116,108 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
 
   return isValid ? null : { passwordStrength: errors };
 }
+// }
 
+// Decorador @Component: Metadata que define esta classe como um componente Angular.
 @Component({
-  selector: 'app-login',
-  standalone: true, 
-  imports: [ 
-    CommonModule, 
-    ReactiveFormsModule, 
-    NgxMaskDirective 
+  selector: 'app-login', // O nome da tag HTML que representa este componente (ex: <app-login>).
+  standalone: true, // Indica que este é um componente "standalone" (autônomo), que pode ser usado sem um NgModule.
+  imports: [ // Array de módulos e componentes standalone que este componente utiliza diretamente em seu template ou lógica.
+    CommonModule, // Contém diretivas comuns do Angular como ngIf, ngFor, ngClass.
+    ReactiveFormsModule, // Módulo para usar os formulários reativos do Angular (FormGroup, FormControl).
+    NgxMaskDirective, // Diretiva da biblioteca ngx-mask para aplicar máscaras em inputs.
+    RouterLink // Importa RouterLink para usar a diretiva routerLink no HTML (links de navegação)
   ],
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  templateUrl: './login.html', // Caminho para o arquivo HTML do template deste componente (relativo ao .ts).
+  styleUrls: ['./login.css'] // Caminho para o arquivo CSS de estilos deste componente (relativo ao .ts).
 })
 
-//Contém a lógica e os dados do componente de login.
+// Classe LoginComponent: Define o comportamento e os dados do componente de login
+// será executado uma vez após a inicialização do componente.
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup; //  ! para dizer ao TypeScript que será inicializado em ngOnInit
+  loginForm!: FormGroup; // Declaração do FormGroup que representará o formulário de login.
+                         // O '!' informa ao TypeScript que 'loginForm' será inicializado em ngOnInit.
+  isDarkTheme: boolean = false; // Propriedade para controlar o tema claro/escuro.
+  passwordVisible: boolean = false; // Propriedade para controlar a visibilidade da senha.
 
-  // Injete o FormBuilder para criar o formulário reativo
-  // Injete o Router para navegação após o login
-  // Injete o AuthService quando criá-lo (para fazer a chamada de API)
-  constructor(private fb: FormBuilder, private router: Router /*, private authService: AuthService */) {}
+  // Construtor do componente: Usado para injetar dependências.
+  // private fb: FormBuilder: Injeta o serviço FormBuilder para construir o formulário reativo.
+  // private router: Router: Injeta o serviço Router para navegação programática.
+  // private renderer: Renderer2: Injeta Renderer2 para manipular classes CSS no DOM (para o tema).
+  // private el: ElementRef: Injeta ElementRef para obter uma referência ao elemento DOM host do componente (para o tema).
+  // private authService: AuthService: Injeta o serviço AuthService para lidar com a autenticação via API.
+  constructor(private fb: FormBuilder, private router: Router, private renderer: Renderer2, private el: ElementRef, private authService: AuthService) {}
 
+  // Método de ciclo de vida OnInit: Executado uma vez após a inicialização do componente.
   ngOnInit(): void {
-    // Inicializa o formulário com os controles e validadores
+    // Inicializa o 'loginForm' usando o FormBuilder.
+    // Define os controles 'cpf' e 'password', com seus valores iniciais e validadores.
     this.loginForm = this.fb.group({
-      cpf: ['', [Validators.required, cpfValidator]], // CPF obrigatório e validação de CPF
+      cpf: ['', [Validators.required, cpfValidator]], // Campo CPF: obrigatório e usa o validador customizado 'cpfValidator'.
       password: ['', [
-        Validators.required,
-        Validators.minLength(8), // Mínimo 8 caracteres
-        passwordStrengthValidator // Validador de força da senha
+        Validators.required, // Campo Senha: obrigatório.
+        Validators.minLength(8), // Senha deve ter no mínimo 8 caracteres.
+        passwordStrengthValidator // Usa o validador customizado 'passwordStrengthValidator' para verificar a força da senha.
       ]]
     });
+
+this.isDarkTheme = localStorage.getItem('theme') === 'dark';
+    this.applyThemeClass();
   }
 
+  toggleTheme(): void {
+    this.isDarkTheme = !this.isDarkTheme; 
+    this.applyThemeClass(); 
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light'); 
+  }
+
+  // Aplica a classe 'dark-theme' ao document.body >>
+  private applyThemeClass(): void {
+    if (this.isDarkTheme) {
+      this.renderer.addClass(document.body, 'dark-theme'); // Adiciona a classe 'dark-theme' ao body
+    } else {
+      this.renderer.removeClass(document.body, 'dark-theme'); // Remove a classe 'dark-theme' do body
+    }
+ 
+  }
+
+ 
+  // Método para alternar a visibilidade da senha no campo de input.
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible; // Inverte o estado da propriedade 'passwordVisible'.
+  }
+
+  // Método onLogin: Chamado quando o formulário é submetido (ex: ao clicar no botão 'Logar').
   onLogin(): void {
-    // Verifica se o formulário é válido antes de tentar logar
+    // Verifica se o formulário é válido (todos os campos atendem às validações definidas).
     if (this.loginForm.valid) {
+      // Desestrutura o objeto 'value' do formulário para obter os valores de 'cpf' e 'password'.
       const { cpf, password } = this.loginForm.value;
       console.log('Dados do login:', { cpf, password });
 
-      // *** AQUI INTEGRARIA O SERVIÇO DE AUTENTICAÇÃO ***
-      // Exemplo:
-      /*
+      // *** AQUI INTEGRARIA O SERVIÇO DE AUTENTICAÇÃO REAL ***
+      // Este bloco de código faz a chamada real ao AuthService para autenticar o usuário.
       this.authService.login(cpf, password).subscribe(
         response => {
           console.log('Login bem-sucedido!', response);
-          // Armazenar token, redirecionar
-          this.router.navigate(['/menu-gerencial']);
+          alert(response.message); // Exibe uma mensagem de sucesso (pode ser substituído por um modal).
+          this.router.navigate(['/']); // Redireciona o usuário para a página inicial ('/').
         },
         error => {
-          console.error('Erro no login:', error);
-          // Exibir mensagem de erro para o usuário
+          console.error('Erro no login: ', error);
+          alert(error.error.message); // Exibe uma mensagem de erro para o usuário (pode ser substituído por um modal).
+          // TODO: Melhorar a exibição de erros para o usuário.
         }
       );
-      */
 
-      // *** SIMULAÇÃO DE LOGIN PARA TESTE LOCAL ***
-          if (cpf === '98765432100' && password === 'Senha+123') { 
-            alert('Login de teste bem-sucedido! Redirecionando...');
-            this.router.navigate(['/menu-gerencial']);
-          } else {
-            alert('Login de teste falhou. Verifique CPF ou senha (987.654.321-00 / Senha+123)'); // Aqui pode deixar com máscara para o alerta
-          }
-
-          } else {
-            // Se o formulário não for válido, será marcado todos os campos como "touched"
-            // para exibir as mensagens de erro
-            this.loginForm.markAllAsTouched();
-            console.log('Formulário inválido, verifique os campos.');
-          }
+   
+    } else {
+      // Se o formulário não for válido (algum campo não atende às validações):
+      // Marca todos os controles do formulário como 'touched' (tocados).
+      // Isso faz com que as mensagens de erro (definidas com *ngIf e .touched no HTML) sejam exibidas ao usuário.
+      this.loginForm.markAllAsTouched();
+      console.log('Formulário inválido, verifique os campos.'); // Loga no console que o formulário é inválido.
+    }
   }
 }
+

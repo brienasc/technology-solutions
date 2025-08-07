@@ -1,0 +1,223 @@
+/* frontend/src/app/pages/convites/convites.component.css */
+
+/* Estilos para o contêiner principal da tela de convites */
+.convites-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--theme-form-bg);
+    color: var(--theme-body-text);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    font-family: var(--font-nunito-sans);
+}
+
+/* Estilos para a seção do cabeçalho (título e botão "Criar Novo Convite" e toggle de tema) */
+.header-section {
+    display: flex;
+    justify-content: space-between; /* Distribui o espaço entre os itens (grupo do título/botão e toggle de tema) */
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas menores */
+    gap: 10px; /* Espaçamento entre os itens */
+}
+
+/* Estilos para o grupo do título e botão de criar convite */
+.title-and-button-group {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaçamento entre o título e o botão */
+    flex-wrap: wrap; /* Permite que o título e o botão quebrem a linha em telas muito pequenas */
+    /* Por padrão (mobile-first), este grupo ficará à esquerda se header-section for column */
+}
+
+/* Estilos para o título principal da tela */
+.header-section h1 {
+    font-family: var(--font-playfair-display);
+    font-style: italic;
+    font-size: 2.5em;
+    color: var(--theme-heading-text);
+    margin-bottom: 0; /* Remove margem inferior para alinhar com o botão */
+}
+
+/* Estilos para o botão "Criar Novo Convite" */
+.create-invite-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: var(--theme-button-primary-bg);
+    color: var(--theme-button-text);
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Efeito de hover para o botão "Criar Novo Convite" */
+.create-invite-button:hover {
+    background-color: var(--theme-button-primary-hover);
+    color: var(--theme-button-text);
+}
+
+/* Estilos para o ícone SVG dentro do botão "Criar Novo Convite" */
+.create-invite-button svg {
+    width: 20px;
+    height: 20px;
+    color: var(--theme-button-text);
+}
+
+/* Estilos para o botão "Voltar" */
+.back-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: var(--theme-button-primary-bg);
+    color: var(--theme-button-text);
+    border: 1px solid var(--theme-button-primary-bg);
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Efeito de hover para o botão "Voltar" */
+.back-button:hover {
+    background-color: var(--theme-button-primary-hover);
+    border-color: var(--theme-button-primary-hover);
+}
+
+/* Estilos para o Botão de Alternância de Tema (Toggle Switch) */
+.theme-switch {
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  position: relative; 
+  cursor: pointer;
+  margin-left: 20px; /* Espaçamento à esquerda para separar do botão "Criar Novo Convite" em desktop */
+}
+
+/* Esconde o checkbox padrão do HTML */
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* O 'slider' é a parte visual do switch */
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--theme-button-primary-bg);
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--theme-button-text);
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+/* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
+.theme-switch input:checked + .slider {
+  background-color: var(--theme-button-primary-hover);
+}
+
+.theme-switch input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Media Queries para Responsividade */
+
+/* Estilos para telas menores que 768px (mobile e tablets pequenos) */
+@media (max-width: 768px) {
+    .convites-container {
+        margin: 20px;
+        padding: 15px;
+    }
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start; /* Alinha os itens à esquerda quando empilhados */
+    }
+    /* Ajusta o espaçamento do botão de tema em mobile para não ficar muito colado */
+    .header-section .theme-switch {
+        margin-left: 0;
+        margin-top: 10px;
+        align-self: flex-end; /* Alinha o toggle à direita quando empilhado */
+    }
+
+    /* Responsividade para o botão "+ Criar Novo Convite" em mobile */
+    .title-and-button-group {
+        width: 100%; /* Ocupa a largura total */
+        justify-content: space-between; /* Espaço entre título e botão */
+        gap: 10px; /* Reduz o gap */
+    }
+    .create-invite-button {
+        flex-grow: 1; /* Permite que o botão cresça */
+        max-width: 180px; /* Limita a largura em telas pequenas */
+        font-size: 0.9em;
+        padding: 10px 15px;
+        justify-content: center; /* Centraliza o conteúdo do botão */
+    }
+    .header-section h1 {
+        flex-grow: 1;
+        font-size: 2em; /* Reduz o tamanho do título */
+    }
+}
+
+/* Estilos para telas muito pequenas (smartphones) */
+@media (max-width: 480px) {
+    .header-section h1 {
+        font-size: 1.8em;
+    }
+    .create-invite-button {
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+    /* Em telas muito pequenas, o botão de criar convite pode ocupar 100% da largura */
+    .title-and-button-group {
+        flex-direction: column; /* Empilha título e botão */
+        align-items: flex-start; /* Alinha à esquerda */
+    }
+    .create-invite-button {
+        width: 100%; /* Ocupa toda a largura */
+        max-width: none; /* Remove o limite de largura */
+    }
+}
+
+/* Desktop (a partir de 769px) */
+@media (min-width: 769px) {
+    .header-section {
+        flex-direction: row; /* Volta para layout em linha */
+        justify-content: space-between; /* Mantém o espaço entre os grupos */
+        align-items: center;
+    }
+
+    /* << MUDANÇA AQUI: Inverte a ordem para o toggle ficar à esquerda e o grupo à direita >> */
+    .theme-switch {
+        order: 1; /* Coloca o toggle de tema à esquerda */
+        margin-left: 0; /* Remove margem extra se houver */
+    }
+
+    .title-and-button-group {
+        order: 2; /* Coloca o grupo de título/botão à direita */
+        flex-grow: 0; /* Não cresce desnecessariamente */
+        width: auto; /* Volta para largura automática */
+        flex-wrap: nowrap; /* Impede quebra de linha em desktop */
+    }
+}

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {LoginComponent} from './login'; 
-// Importa o componente que será testado
+
+
 
 ///Define uma suíte de testes para o componente de Login.
 describe('Login', () => {

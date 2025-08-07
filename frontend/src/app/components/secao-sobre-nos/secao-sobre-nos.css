@@ -1,0 +1,211 @@
+/* mobile */
+.about-us-section {
+    padding: 40px 20px;
+    background-color: var(--theme-background); 
+    text-align: center;
+    transition: background-color 0.5s ease; 
+}
+/* estilo para o título "Sobre nós" */
+.about-us-section .section-title {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: var(--color-light-primary); /*  cor é a mesma do +120 */
+    transition: color 0.5s ease;
+}
+
+.about-us-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text {
+    flex: 1;
+    line-height: 1.6;
+    color: var(--theme-body-text); 
+    font-size: 1em;
+    text-align: center;
+    transition: color 0.5s ease; 
+}
+
+.about-text p {
+    margin-bottom: 12px;
+}
+
+.about-stats {
+    flex: 0 0 auto;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-left: 3px solid var(--color-secondary); 
+    background-color: var(--theme-light-background); 
+    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.05); 
+    transition: background-color 0.5s ease, border-color 0.5s ease; 
+}
+
+.about-stats .stat-item {
+    font-size: 1.1em;
+    color: var(--theme-heading-text); 
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: color 0.5s ease;
+}
+
+.about-stats .stat-item span {
+    font-weight: bold;
+    color: var(--color-light-primary);
+    margin-right: 8px;
+    font-size: 1.1em;
+    transition: color 0.5s ease;
+}
+
+.about-stats .stat-item::before {
+    margin-right: 8px;
+    color: var(--color-light-primary); 
+    transition: color 0.5s ease; 
+}
+
+/* Mobile específico - telas pequenas */
+@media (max-width: 480px) {
+    .about-us-section {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .about-us-section .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .about-us-content {
+        gap: 1.5rem;
+    }
+    
+    .about-text {
+        font-size: 0.9rem;
+    }
+    
+    .about-stats {
+        padding: 15px;
+        max-width: 280px;
+        gap: 15px;
+    }
+    
+    .about-stats .stat-item {
+        font-size: 1rem;
+    }
+    
+    .about-stats .stat-item span {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile landscape / tablet pequeno */
+@media (max-width: 767px) {
+    .about-us-section {
+        padding: 2rem 1rem;
+    }
+    
+    .about-us-content {
+        gap: 2rem;
+    }
+    
+    .about-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+}
+
+/* tablet 768px */
+@media (min-width: 768px) {
+    .about-us-section {
+        padding: 60px 30px;
+    }
+
+    .about-us-content {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 60px;
+        max-width: 900px;
+        text-align: left;
+    }
+
+    .about-text {
+        font-size: 1em;
+        text-align: left;
+    }
+
+    .about-text p {
+        margin-bottom: 15px;
+    }
+
+    .about-stats {
+        flex: 0 0 300px;
+        width: auto;
+        max-width: none;
+        gap: 22px;
+        padding: 25px;
+        border-left: 4px solid var(--color-secondary); 
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+    }
+
+    .about-stats .stat-item {
+        font-size: 1.2em;
+    }
+
+    .about-stats .stat-item span {
+        margin-right: 9px;
+        font-size: 1.15em;
+    }
+
+    .about-stats .stat-item::before {
+        margin-right: 9px;
+    }
+}
+
+/* desktop 1200px */
+@media (min-width: 1200px) {
+    .about-us-section {
+        padding: 80px 50px;
+    }
+
+    .about-us-content {
+        gap: 80px;
+        max-width: 1100px;
+    }
+
+    .about-text {
+        font-size: 1.05em;
+    }
+
+    .about-stats {
+        flex: 0 0 350px;
+        gap: 25px;
+        padding: 30px;
+        border-left: 5px solid var(--color-secondary);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .about-stats .stat-item {
+        font-size: 1.25em;
+    }
+
+    .about-stats .stat-item span {
+        margin-right: 10px;
+        font-size: 1.2em;
+    }
+
+    .about-stats .stat-item::before {
+        margin-right: 10px;
+    }
+}
