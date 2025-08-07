@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Exception;
 
 use App\Http\Responses\ApiResponse;
+use App\Models\Convites;
 use App\Services\ConviteService;
 
 class ConvitesController extends Controller{
@@ -52,7 +53,9 @@ class ConvitesController extends Controller{
 
     public function index(Request $request): JsonResponse{
         try {
-            $convites = $this->conviteService->indexAllConvites();
+            $filtros = $request->only(['email', 'status', 'page', 'per_page']);
+
+            $convites = $this->conviteService->indexFilteredConvites($filtros);
 
             $mappedConvites = $convites->map(function ($convite) {
                 if($convite->status_code !== ConviteStatus::FINALIZADO &&
