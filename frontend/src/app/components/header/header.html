@@ -10,12 +10,23 @@
     <!-- Navegação Desktop -->
     <nav class="header-nav desktop-nav">
       <ul>
+
         <li><a routerLink="" (click)="closeMobileMenu()">Home</a></li>
         <li><a routerLink="/sobre" (click)="closeMobileMenu()">Sobre</a></li>
         <li><a routerLink="/servicos" (click)="closeMobileMenu()">Serviços</a></li>
         <li><a routerLink="/vagas" (click)="closeMobileMenu()">Vagas</a></li>
         <li><a routerLink="/contato" (click)="closeMobileMenu()">Contato</a></li>
         <!-- O botão "Convites" e "Menu Gerencial" foram movidos para a div header-buttons -->
+
+        <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
+        <li><a href="#sobre" (click)="closeMobileMenu()">Sobre</a></li>
+        <li><a href="#servicos" (click)="closeMobileMenu()">Serviços</a></li>
+        <li><a href="#vagas" (click)="closeMobileMenu()">Vagas</a></li>
+        <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
+        <li *ngIf="authService.isRH() || authService.isAdmin()">
+          <a routerLink="/convites" (click)="onConvitesClick()">Menu Convites</a>
+        </li>
+
       </ul>
 
       <!-- Toggle de Tema Desktop -->
@@ -84,6 +95,7 @@
           ×
         </button>
       </div>
+
 
       <!-- Navegação Mobile -->
       <nav class="mobile-nav">
@@ -156,6 +168,39 @@
           <a routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
             <i class="fas fa-sign-in-alt"></i>
             Faça seu Login
+
+    <!-- Navegação Mobile -->
+    <nav class="mobile-nav">
+      <ul>
+        <li>
+          <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
+            <i class="fas fa-home"></i>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
+            <i class="fas fa-info-circle"></i>
+            Sobre
+          </a>
+        </li>
+        <li>
+          <a href="#servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
+            <i class="fas fa-cogs"></i>
+            Serviços
+          </a>
+        </li>
+        <li>
+          <a href="#vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
+            <i class="fas fa-briefcase"></i>
+            Vagas
+          </a>
+        </li>
+        <li>
+          <a href="#contato" (click)="closeMobileMenu()" class="mobile-nav-link">
+            <i class="fas fa-envelope"></i>
+            Contato
+
           </a>
         }
         <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->
