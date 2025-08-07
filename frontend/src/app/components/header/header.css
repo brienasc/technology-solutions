@@ -467,7 +467,7 @@
     }
 }
 
-/* CORREÇÃO PARA O MENU MOBILE - TEMA CLARO */
+
 
 /* Menu Mobile - Tema Claro (padrão) */
 .mobile-menu {
@@ -617,3 +617,4 @@ body.dark-theme .mobile-menu-overlay,
 [data-theme="dark"] .mobile-menu-overlay {
   background: rgba(0, 0, 0, 0.8) !important; /* Mais escuro no tema escuro */
 }
+

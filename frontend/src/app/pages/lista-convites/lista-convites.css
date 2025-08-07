@@ -1,0 +1,198 @@
+/* frontend/src/app/components/lista-convites/lista-convites.component.css */
+
+.lista-convites-container {
+    padding: 20px;
+    background-color: var(--theme-form-bg); /* Fundo do contêiner, adaptável ao tema */
+    color: var(--theme-body-text); /* Cor do texto, adaptável ao tema */
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    font-family: var(--font-nunito-sans);
+}
+
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.filter-group, .search-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label, .search-group label {
+    font-weight: bold;
+    color: var(--theme-label-text);
+}
+
+.controls-section select, .controls-section input {
+    padding: 8px 12px;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: var(--theme-card-bg);
+    color: var(--theme-input-text);
+}
+
+.search-group button {
+    padding: 8px 15px;
+    background-color: var(--theme-button-secondary-bg);
+    color: var(--theme-button-text);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-group button:hover {
+    background-color: var(--color-light-primary);
+}
+
+.table-section {
+    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas para a tabela */
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--theme-input-border);
+    color: var(--theme-body-text);
+}
+
+thead th {
+    background-color: var(--theme-background);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--theme-label-text);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--theme-card-bg);
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Um leve destaque no hover */
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+}
+
+.status-em-aberto {
+    background-color: var(--color-warning);
+}
+
+.status-finalizado {
+    background-color: var(--color-success);
+}
+
+.status-vencido {
+    background-color: var(--color-danger);
+}
+
+.details-button {
+    padding: 6px 10px;
+    background-color: var(--theme-button-primary-bg);
+    color: var(--theme-button-text);
+    border: 1px solid var(--theme-button-primary-bg);
+    border-radius: 5px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.details-button:hover {
+    background-color: var(--theme-button-primary-hover);
+    border-color: var(--theme-button-primary-hover);
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: var(--theme-muted-text);
+}
+
+.pagination-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.pagination-section .nav-button {
+    padding: 8px 15px;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 5px;
+    background-color: var(--theme-form-bg);
+    color: var(--theme-body-text);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.pagination-section .nav-button:hover:not(:disabled) {
+    background-color: var(--theme-background);
+    border-color: var(--theme-focus-border);
+}
+
+.pagination-section .nav-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.pagination-section .page-info {
+    font-weight: bold;
+    color: var(--theme-body-text);
+}
+
+.page-size-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.page-size-group label {
+    color: var(--theme-label-text);
+    font-size: 0.9em;
+}
+
+.page-size-group select {
+    padding: 6px 10px;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 5px;
+    background-color: var(--theme-card-bg);
+    color: var(--theme-input-text);
+    font-size: 0.9em;
+}
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-group, .search-group {
+        width: 100%;
+    }
+    .pagination-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

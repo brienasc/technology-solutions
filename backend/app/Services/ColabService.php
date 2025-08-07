@@ -42,11 +42,11 @@ class ColabService{
         }
 
         $token = $user->createToken('api-token', ['access:menu-convidar', 'access:menu-gerencial']);
-        $abilities = $token->accessToken->abilities;
+        $abilitiesString = implode( ',', $token->accessToken->abilities);
 
         $data = [
             "token" => $token->plainTextToken,
-            "abilities" => $abilities,
+            "abilities" => $abilitiesString,
         ];
         return $data;
     }
