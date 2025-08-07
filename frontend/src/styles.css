@@ -159,3 +159,34 @@ html, body {
   overflow-x: hidden;
   width: 100%;
 }
+
+/* Para telas mobile */
+#home,
+#sobre,
+#servicos,
+#vagas,
+#contato {
+  scroll-margin-top: 48px;
+}
+
+/*  tablet e desktop (768px) */
+@media (min-width: 768px) {
+  #home,
+  #sobre,
+  #servicos,
+  #vagas,
+  #contato {
+    scroll-margin-top: 160px;
+  }
+}
+
+/* desktop grandes (1200px+) */
+@media (min-width: 1200px) {
+  #home,
+  #sobre,
+  #servicos,
+  #vagas,
+  #contato {
+    scroll-margin-top: 190px;
+  }
+}
