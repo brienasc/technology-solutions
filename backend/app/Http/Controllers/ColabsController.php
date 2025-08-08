@@ -28,9 +28,50 @@ class ColabsController extends Controller{
     public function store(ColabsRequest $request): JsonResponse{
         try{
 
-            $validated = $request->validated();
+            $validated = $request->validated([
+                'name' => 'required|string|max:255',
+                'cpf' => 'required|cpf|unique:colab,cpf',
+                'email' => 'required|email|unique:colab,email',
+                'celular' => 'required|string',
+                'cep' => 'required|size:8',
+                'convite_id' => 'required|exists:convites,id_convite',
+            ]);
+
+            // Verifica se o convite existe
+            $convite = $this->colabService->getConviteById($validated['convite_id']);
+            if (!$convite) {
+                return response()->json(['error' => 'Convite não encontrado'], 404);
+            }
+
+            // Verifica se email do convite bate com email do usuário
+            if ($convite->email !== $validated['email']) {
+                return response()->json(['error' => 'E-mail do convite não confere'], 400);
+            }
+
+            // Integração com ViaCEP
+            $cepResponse = \Illuminate\Support\Facades\Http::get("https://viacep.com.br/ws/{$validated['cep']}/json/");
+            if ($cepResponse->failed() || isset($cepResponse['erro'])) {
+                return response()->json(['error' => 'CEP inválido'], 400);
+            }
 
             $colab = $this->colabService->create($validated);
+
+            // Criação do colaborador
+            $colab = Colab::create([
+                'name' => $validated['name'],
+                'cpf' => $validated['cpf'],
+                'email' => $validated['email'],
+                'celular' => $validated['celular'],
+                'cep' => $validated['cep'],
+                'estado' => $cepResponse['uf'] ?? '',
+                'cidade' => $cepResponse['localidade'] ?? '',
+                'bairro' => $cepResponse['bairro'] ?? '',
+                'logradouro' => $cepResponse['logradouro'] ?? '',
+                'numero' => $request->input('numero'),
+                'perfil_id' => $request->input('perfil_id'),
+            ]);
+
+            return response()->json(['message' => 'Colaborador cadastrado com sucesso', 'colab' => $colab]);
         
             return $this->apiResponse->success($colab, 'Colaborador cadastrado com sucesso.');
         }catch(Exception $e){
