@@ -9,12 +9,10 @@ import { Invitation } from '../interfaces/invitation.interface';
   providedIn: 'root'
 })
 export class InvitationService {
-  // Simula a URL da API do seu colega
   private apiUrl = 'http://localhost:8080/api/convites'; 
   
   constructor(private http: HttpClient) { }
 
-  // Método para buscar convites da API com filtros e paginação
   getInvitations(
     page: number = 1,
     pageSize: number = 10,
@@ -25,21 +23,30 @@ export class InvitationService {
     params = params.set('page', page.toString());
     params = params.set('per_page', pageSize.toString());
 
-    if (status && status !== 'all') {
-      params = params.set('status', status);
+    enum StatusEnum {
+      'em aberto' = 0,
+      'finalizado' = 1,
+      'vencido' = 2
+    }
+
+    let statusCode = undefined
+
+    if(status !== undefined){
+      statusCode = StatusEnum[status.toLowerCase() as keyof typeof StatusEnum];
+    }
+    
+    if (statusCode !== undefined) {
+      params = params.set('status', statusCode);
     }
     if (email) {
       params = params.set('email', email);
     }
 
-    // Faz a requisição GET para a API com os parâmetros de filtro e paginação
     return this.http.get<any>(this.apiUrl, { params });
   }
 
-  // Método para criar um novo convite (exemplo de chamada POST)
   createInvitation(email: string): Observable<any> {
     const payload = { email };
-    // Faz a requisição POST para a API
     return this.http.post<any>(this.apiUrl, payload);
   }
 }
