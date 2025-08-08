@@ -2,15 +2,19 @@
 
 /* HEADER BASE - MOBILE FIRST */
 .app-header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    background-color: var(--theme-form-bg);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex; /* conteiner flexivel, permitindo alinhamento de itens */
+    flex-direction: column; /*organiza os itens (logo, botoes) numa coluna*/
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px; /*espaçamento interno */
+    background-color: var(--theme-form-bg); /* cor do fundo do cabeçalho */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* sombra*/
+    position: sticky; /* pra colar no topo da tela */
+    top: 0; /* pra nao vir nada acima do header */
+    gap: 10px; /* espaço entre os itens flexiveis*/
+    z-index: 1000; /* valor mt alto pra ficar la em cima*/
     transition: background-color 0.5s ease, color 0.5s ease;
-}
+ }
 
 /* CONTAINER DO HEADER */
 .header-container {
@@ -31,11 +35,12 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    margin: 0;
+    margin-bottom: 10px; /* margem abaixo do container */
 }
 
 .header-logo img {
-    height: 32px;
+    height: 90px;
+    height: 90px; /* altura da imagem*/
     width: auto;
 }
 
@@ -44,9 +49,22 @@
     display: none;
 }
 
+.header-nav ul li a {
+    text-decoration: none;
+    color: var(--theme-heading-text);
+    font-weight: 500;
+    font-size: 1.6em;
+    display: block;
+    transition: color 0.3s ease; 
+}
+
+.header-nav ul li a:hover {
+    color: var(--color-light-primary); 
+}
+
 /* BOTÕES DESKTOP (escondidos no mobile) */
 .header-buttons {
-    display: none;
+    display: none; 
 }
 
 /* BOTÃO HAMBURGUER MOBILE */
