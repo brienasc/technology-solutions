@@ -10,6 +10,7 @@ use Exception;
 use Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
@@ -40,18 +41,18 @@ class ColabsController extends Controller{
             // Verifica se o convite existe
             $convite = $this->colabService->getConviteById($validated['convite_id']);
             if (!$convite) {
-                return response()->json(['error' => 'Convite não encontrado'], 404);
+                return $this->apiResponse->badRequest(['error' => 'Convite não encontrado'], 404);
             }
 
             // Verifica se email do convite bate com email do usuário
             if ($convite->email !== $validated['email']) {
-                return response()->json(['error' => 'E-mail do convite não confere'], 400);
+                return $this->apiResponse->badRequest(['error' => 'E-mail do convite não confere'], 400);
             }
 
             // Integração com ViaCEP
             $cepResponse = \Illuminate\Support\Facades\Http::get("https://viacep.com.br/ws/{$validated['cep']}/json/");
             if ($cepResponse->failed() || isset($cepResponse['erro'])) {
-                return response()->json(['error' => 'CEP inválido'], 400);
+                return $this->apiResponse->badRequest(['error' => 'CEP inválido'], 400);
             }
 
             $colab = $this->colabService->create($validated);
@@ -71,8 +72,8 @@ class ColabsController extends Controller{
                 'perfil_id' => $request->input('perfil_id'),
             ]);
 
-            return response()->json(['message' => 'Colaborador cadastrado com sucesso', 'colab' => $colab]);
-        
+            return $this->apiResponse->success(['message' => 'Colaborador cadastrado com sucesso', 'colab' => $colab]);
+
             return $this->apiResponse->success($colab, 'Colaborador cadastrado com sucesso.');
         }catch(Exception $e){
             return $this->apiResponse->error( null, 'Erro ao criar colaborador.');
