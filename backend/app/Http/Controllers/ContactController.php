@@ -40,9 +40,9 @@ class ContactController extends Controller
 
             return $this->apiResponse->success(null, 'Mensagem enviada com sucesso!');
         } catch (ValidationException $e) {
-            return $this->apiResponse->badRequest($e->errors(), 'Bad request');
+            return $this->apiResponse->badRequest($e->errors(), 'Erro ao enviar mensagem');
         } catch (Exception $e){
-            return $this->apiResponse->badRequest(null, $e->getMessage());
+            return $this->apiResponse->badRequest(null, "Erro ao enviar mensagem");
         }
     }
 }

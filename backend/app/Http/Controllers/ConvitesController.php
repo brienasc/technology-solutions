@@ -47,7 +47,7 @@ class ConvitesController extends Controller{
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         } catch (Exception $e) {
-            return $this->apiResponse->error('', $e->getMessage(), 400);
+            return $this->apiResponse->error(null, 'Erro ao enviar convite', 400);
         }
     }
 
@@ -98,7 +98,7 @@ class ConvitesController extends Controller{
 
             return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
         } catch(Exception $e) {
-            return $this->apiResponse->error($e->getMessage(), 'Erro ao buscar convite', 400);
+            return $this->apiResponse->error(null, 'Erro ao buscar convite', 400);
         }
     }
 }
