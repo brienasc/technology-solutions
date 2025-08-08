@@ -1,3 +1,5 @@
+<!-- frontend/src/app/components/header/header.html -->
+
 <header class="app-header">
   <div class="header-container">
     <!-- Logo -->
@@ -8,14 +10,14 @@
     <!-- Navegação Desktop -->
     <nav class="header-nav desktop-nav">
       <ul>
+        <!-- << CORREÇÃO: Removida a duplicação dos itens de navegação >> -->
         <li><a routerLink="" (click)="closeMobileMenu()">Home</a></li>
         <li><a routerLink="/sobre" (click)="closeMobileMenu()">Sobre</a></li>
         <li><a routerLink="/servicos" (click)="closeMobileMenu()">Serviços</a></li>
         <li><a routerLink="/vagas" (click)="closeMobileMenu()">Vagas</a></li>
         <li><a routerLink="/contato" (click)="closeMobileMenu()">Contato</a></li>
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a routerLink="/convites" (click)="onConvitesClick()">Menu Convites</a>
-        </li>
+        <!-- O botão "Convites" e "Menu Gerencial" foram movidos para a div header-buttons -->
+        <!-- O botão "Menu Convites" foi movido para a div header-buttons -->
       </ul>
 
       <!-- Toggle de Tema Desktop -->
@@ -27,15 +29,28 @@
 
     <!-- Botões Desktop -->
     <div class="header-buttons desktop-buttons">
-      <a *ngIf="!isLoggedIn" routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()">
-        Entrar
-      </a>
-      <a *ngIf="isLoggedIn" (click)="onMenuGerencialClick()" class="secondary-button-outline">
-        Menu Gerencial
-      </a>
-      <a *ngIf="isLoggedIn" (click)="onLogout()" class="secondary-button-outline">
-        Sair
-      </a>
+      @if (!isLoggedIn) {
+        <a routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()">
+          Faça seu Login
+        </a>
+      }
+      <!-- Botão "Menu Convites" com estilo de botão e visibilidade condicional -->
+      @if (authService.isRH() || authService.isAdmin()) {
+        <a routerLink="/convites" class="secondary-button-outline" (click)="onConvitesClick()">
+          Menu Convites
+        </a>
+      }
+      <!-- Botão "Menu Gerencial" com estilo de botão e visibilidade condicional -->
+      @if (authService.isRH() || authService.isAdmin()) {
+        <a routerLink="/menu-gerencial" class="secondary-button-outline" (click)="onMenuGerencialClick()">
+          Menu Gerencial
+        </a>
+      }
+      @if (isLoggedIn) {
+        <button class="secondary-button-outline" (click)="onLogout()">
+          Sair
+        </button>
+      }
     </div>
 
     <!-- Botão Hamburguer Mobile -->
@@ -52,90 +67,120 @@
   </div>
 
   <!-- Overlay Mobile -->
-  <div 
-    class="mobile-menu-overlay" 
-    [class.active]="isMobileMenuOpen"
-    (click)="closeMobileMenu()"
-  ></div>
+  @if (isMobileMenuOpen) {
+    <div 
+      class="mobile-menu-overlay" 
+      (click)="closeMobileMenu()"
+    ></div>
+  }
 
   <!-- Menu Mobile -->
-  <div 
-    class="mobile-menu" 
-    [class.active]="isMobileMenuOpen"
-  >
-    <!-- Header do Menu Mobile -->
-    <div class="mobile-menu-header">
-      <h3 class="mobile-menu-title">Menu</h3>
-      <button class="mobile-close-btn" (click)="closeMobileMenu()">
-        ×
-      </button>
-    </div>
+  @if (isMobileMenuOpen) {
+    <div 
+      class="mobile-menu" 
+    >
+      <!-- Header do Menu Mobile -->
+      <div class="mobile-menu-header">
+        <h3 class="mobile-menu-title">Menu</h3>
+        <button class="mobile-close-btn" (click)="closeMobileMenu()">
+          × <!-- << CORREÇÃO: Adicionado o "x" de fechar o botão -->
+        </button>
+      </div>
 
-    <!-- Navegação Mobile -->
-    <nav class="mobile-nav">
-      <ul>
-        <li>
-          <a routerLink="" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-home"></i>
-            Home
+      <!-- Navegação Mobile -->
+      <nav class="mobile-nav">
+        <ul>
+          <li>
+            <a routerLink="" (click)="closeMobileMenu()" class="mobile-nav-link">
+              <i class="fas fa-home"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a routerLink="/sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
+              <i class="fas fa-info-circle"></i>
+              Sobre
+            </a>
+          </li>
+          <li>
+            <a routerLink="/servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
+              <i class="fas fa-cogs"></i>
+              Serviços
+            </a>
+          </li>
+          <li>
+            <a routerLink="/vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
+              <i class="fas fa-briefcase"></i>
+              Vagas
+            </a>
+          </li>
+          <li>
+            <a routerLink="/contato" (click)="closeMobileMenu()" class="mobile-nav-link">
+              <i class="fas fa-envelope"></i>
+              Contato
+            </a>
+          </li>
+          <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->
+          @if (authService.isRH() || authService.isAdmin()) {
+            <li> <!-- << CORREÇÃO: Adicionado <li> envolvendo o link >> -->
+              <a routerLink="/convites" class="mobile-btn" (click)="onConvitesClick()">
+                <i class="fas fa-users"></i>
+                Menu Convites
+              </a>
+            </li>
+          }
+          <!-- Botão "Menu Gerencial" no menu mobile -->
+          @if (authService.isRH() || authService.isAdmin()) {
+            <li> <!-- << CORREÇÃO: Adicionado <li> envolvendo o link >> -->
+              <a routerLink="/menu-gerencial" class="mobile-btn" (click)="onMenuGerencialClick()">
+                <i class="fas fa-chart-line"></i>
+                Menu Gerencial
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <!-- Toggle de Tema Mobile -->
+      <div class="mobile-theme-section">
+        <label class="mobile-theme-switch">
+          <span class="theme-label">Modo Escuro</span>
+          <div class="theme-switch">
+            <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
+            <span class="slider round"></span>
+          </div>
+        </label>
+      </div>
+
+      <!-- Botões Mobile -->
+      <div class="mobile-actions">
+        @if (!isLoggedIn) {
+          <a routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
+            <i class="fas fa-sign-in-alt"></i>
+            Faça seu Login
           </a>
-        </li>
-        <li>
-          <a routerLink="/sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-info-circle"></i>
-            Sobre
-          </a>
-        </li>
-        <li>
-          <a routerLink="/servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-cogs"></i>
-            Serviços
-          </a>
-        </li>
-        <li>
-          <a routerLink="/vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-briefcase"></i>
-            Vagas
-          </a>
-        </li>
-        <li>
-          <a routerLink="/contato" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-envelope"></i>
-            Contato
-          </a>
-        </li>
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a routerLink="/convites" (click)="onConvitesClick()" class="mobile-nav-link">
-            <i class="fas fa-users"></i> <!-- Ícone de usuários/convites -->
+        }
+        <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->
+        @if (authService.isRH() || authService.isAdmin()) {
+          <a routerLink="/convites" class="mobile-btn" (click)="onConvitesClick()">
+            <i class="fas fa-users"></i>
             Menu Convites
           </a>
-        </li>
-      </ul>
-    </nav>
-
-    <!-- Toggle de Tema Mobile -->
-    <div class="mobile-theme-section">
-      <label class="mobile-theme-switch">
-        <span class="theme-label">Modo Escuro</span>
-        <div class="theme-switch">
-          <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-          <span class="slider round"></span>
-        </div>
-      </label>
+        }
+        <!-- Botão "Menu Gerencial" no menu mobile -->
+        @if (authService.isRH() || authService.isAdmin()) {
+          <a routerLink="/menu-gerencial" class="mobile-btn" (click)="onMenuGerencialClick()">
+            <i class="fas fa-chart-line"></i>
+            Menu Gerencial
+          </a>
+        }
+        @if (isLoggedIn) {
+          <button class="mobile-btn" (click)="onLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Sair
+          </button>
+        }
+      </div>
     </div>
-
-    <!-- Botões Mobile -->
-    <div class="mobile-actions">
-      <a *ngIf="!isLoggedIn" routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
-        <i class="fas fa-sign-in-alt"></i>
-        Entrar
-      </a>
-      <a *ngIf="isLoggedIn" (click)="onMenuGerencialClick()" class="mobile-btn">
-        Menu Gerencial
-      </a>
-      <a *ngIf="isLoggedIn" (click)="onLogout()" class="mobile-btn">
-        Sair
-      </a>
-    </div>
-  </div>
+  }
 </header>
