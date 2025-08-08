@@ -32,7 +32,7 @@ export class ListaConvitesComponent implements OnInit {
   @Output() filterApplied = new EventEmitter<{ status: string; email: string }>(); // Emite quando filtros são aplicados
   @Output() pageChanged = new EventEmitter<number>(); // Emite quando a página é alterada
   @Output() pageSizeChanged = new EventEmitter<number>(); // Emite quando o tamanho da página é alterado
-  @Output() viewDetails = new EventEmitter<Invitation>(); // Emite quando detalhes de um convite são solicitados
+  // @Output() viewDetails = new EventEmitter<Invitation>(); // Emite quando detalhes de um convite são solicitados
 
   // Opções de tamanho de página para o select
   pageSizes = [10, 25, 50, 100];
@@ -74,7 +74,7 @@ export class ListaConvitesComponent implements OnInit {
 
   /**
    * Dispara o evento 'filterApplied' com os valores atuais dos filtros de status e e-mail.
-   * Chamado quando o usuário aplica um filtro ou busca.
+   * Chamado quando o usuário aplica um filtro ou busca e em tempo real.
    */
   applyFilter(): void {
     this.filterApplied.emit({ status: this.statusFilter, email: this.emailFilter });
@@ -88,13 +88,13 @@ export class ListaConvitesComponent implements OnInit {
     this.pageSizeChanged.emit(Number(event.target.value));
   }
 
-  /**
-   * Dispara o evento 'viewDetails' com o objeto do convite cujos detalhes foram solicitados.
-   * @param invitation O objeto Invitation a ser visualizado.
-   */
-  onViewDetails(invitation: Invitation): void {
-    this.viewDetails.emit(invitation);
-  }
+  // /**
+  //  * Dispara o evento 'viewDetails' com o objeto do convite cujos detalhes foram solicitados.
+  //  * @param invitation O objeto Invitation a ser visualizado.
+  //  */
+  // onViewDetails(invitation: Invitation): void {
+  //   this.viewDetails.emit(invitation);
+  //}
 }
 
 
