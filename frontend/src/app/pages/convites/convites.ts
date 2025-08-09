@@ -70,7 +70,8 @@ ngOnInit(): void {
     this.invitationService.getInvitations(this.currentPage, this.pageSize, this.statusFilter, this.emailFilter).subscribe({
       next: (response) => {
         this.invitations = response.data;
-        this.totalItems = response.meta.total;
+
+        this.totalItems = response.data.length;
         this.loading = false;
       },
       error: (err) => {
@@ -221,7 +222,7 @@ ngOnInit(): void {
   }
 
   onViewDetails(invitation: Invitation): void {
-    alert(`Visualizar detalhes do convite: ${invitation.email}`);
+    alert(`Visualizar detalhes do convite: ${invitation.email_colab}`);
   }
 }
 

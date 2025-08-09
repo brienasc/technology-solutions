@@ -87,7 +87,7 @@ class ColabsController extends Controller{
         }catch(ValidationException $e){
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         }catch(Exception $e){
-            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
+            return $this->apiResponse->badRequest(null, 'Bad request');
         }
     }
 

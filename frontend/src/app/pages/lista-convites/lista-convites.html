@@ -34,19 +34,19 @@
             </thead>
             <tbody>
                 <tr *ngFor="let invitation of invitations">
-                    <td>{{ invitation.email }}</td>
-                    <td>{{ invitation.sentDate | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ invitation.expirationDate | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ invitation.email_colab }}</td>
+                    <td>{{ invitation.created_at | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ invitation.expires_at | date: 'dd/MM/yyyy' }}</td>
                     <td>
                         <span 
                             class="status-badge"
                             [ngClass]="{
-                                'status-em-aberto': invitation.status === 'Em Aberto',
-                                'status-finalizado': invitation.status === 'Finalizado',
-                                'status-vencido': invitation.status === 'Vencido'
+                                'status-em-aberto': invitation.status_code === 0,
+                                'status-finalizado': invitation.status_code === 1,
+                                'status-vencido': invitation.status_code === 2
                             }"
                         >
-                            {{ invitation.status }}
+                            {{ invitation.status_description }}
                         </span>
                     </td>
                     <!-- <td>
