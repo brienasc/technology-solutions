@@ -3,11 +3,11 @@
 .lista-convites-container {
     padding: 20px;
 
-    background-color: var(--color-white); /* Fundo branco, como o card do Menu Gerencial */
+    background-color: var(--theme-card-bg);
     color: var(--theme-body-text);
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
-    border: 1px solid var(--color-light-gray); /* Borda sutil para definir o card */
+    border: 1px solid var(--theme-input-border); /* Borda sutil para definir o card */
     
     transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease; /* Adiciona transição para a borda */
     font-family: var(--font-nunito-sans);
@@ -129,6 +129,44 @@ tbody tr:hover {
     padding: 20px;
     font-style: italic;
     color: var(--theme-muted-text);
+}
+
+/* Estilos para MatPaginator  */
+.mat-paginator {
+    background-color: var(--theme-form-bg); /* Fundo do paginator */
+    color: var(--theme-body-text); /* Cor do texto do paginator */
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Estilos para os botões de navegação do paginator */
+:host ::ng-deep .mat-paginator-navigation-previous,
+:host ::ng-deep .mat-paginator-navigation-next {
+    background-color: var(--theme-button-primary-bg);
+    color: var(--theme-button-text);
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:host ::ng-deep .mat-paginator-navigation-previous:not([disabled]):hover,
+:host ::ng-deep .mat-paginator-navigation-next:not([disabled]):hover {
+    background-color: var(--theme-button-primary-hover);
+}
+
+/* Estilos para o seletor de itens por página */
+:host ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+:host ::ng-deep .mat-form-field-underline {
+    display: none;
+}
+:host ::ng-deep .mat-select-value-text,
+:host ::ng-deep .mat-select-arrow,
+:host ::ng-deep .mat-paginator-page-size-label,
+:host ::ng-deep .mat-paginator-range-label {
+    color: var(--theme-body-text);
 }
 
 .pagination-section {
