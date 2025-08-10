@@ -54,22 +54,20 @@
                     </td> -->
                 </tr>
                 <tr *ngIf="invitations.length === 0">
-                    <td colspan="5" class="no-data-message">Nenhum convite encontrado.</td>
+                    <td colspan="4" class="no-data-message">Nenhum convite encontrado.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="pagination-section">
-        <button class="nav-button" (click)="goToPreviousPage()" [disabled]="currentPage === 1">Anterior</button>
-        <span class="page-info">Página {{ currentPage }} de {{ totalPages() }}</span>
-        <button class="nav-button" (click)="goToNextPage()" [disabled]="currentPage === totalPages()">Próxima</button>
-        
-        <div class="page-size-group">
-            <label for="page-size">Itens por página:</label>
-            <select id="page-size" [ngModel]="pageSize" (change)="onPageSizeChange($event)">
-                <option *ngFor="let size of pageSizes" [value]="size">{{ size }}</option>
-            </select>
-        </div>
-    </div>
+<!--MatPaginator -->
+    <mat-paginator 
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage - 1"
+        [pageSizeOptions]="pageSizes"
+        (page)="handlePageEvent($event)"
+        aria-label="Selecione a página de convites"
+    >
+    </mat-paginator>
 </div>
