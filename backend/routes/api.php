@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
+use App\Http\Controllers\ContactController;
+
+# Contact Route
+Route::post('/contact-form', [ContactController::class, 'recv']);
 
 # Convites routes
 Route::post('/convites', [ConvitesController::class,'store']);

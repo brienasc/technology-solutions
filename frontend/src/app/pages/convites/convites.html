@@ -1,0 +1,72 @@
+<!-- frontend/src/app/pages/convites/convites.component.html -->
+<app-header></app-header>
+<div class="convites-container">
+    <!-- <label class="theme-switch">
+    <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
+    <span class="slider round"></span>
+  </label> -->
+    <div class="header-section">
+        <h1>Gerenciar Convites</h1>
+        <button class="create-invite-button" (click)="onCreateNewInvite()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Criar Novo Convite 
+        </button>
+    </div>
+
+    <!-- Componente filho para a listagem, filtros e paginação -->
+    <app-lista-convites 
+        [invitations]="invitations"
+        [totalItems]="totalItems"
+        [pageSize]="pageSize"
+        [currentPage]="currentPage"
+        [statusFilter]="statusFilter"
+        [emailFilter]="emailFilter"
+        (filterApplied)="onFilterApplied($event)"
+        (pageChanged)="onPageChange($event)"
+        (pageSizeChanged)="onPageSizeChange($event)"
+       
+    ></app-lista-convites>
+
+    <button class="back-button" (click)="goBack()">Voltar</button>
+
+    
+    <!--Estrutura do Modal de Criar Convite -->
+    <div class="modal-overlay" [class.active]="showInviteDialog" (click)="closeInviteDialog()"></div>
+    <div class="modal-dialog" [class.active]="showInviteDialog">
+        <div class="modal-header">
+            <h2>Convidar Novo Colaborador</h2>
+            <button class="close-modal-btn" (click)="closeInviteDialog()">×</button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="sendInvite()">
+                <div class="form-group">
+                    <label for="inviteEmail">E-mail do Colaborador:</label>
+                    <input 
+                        type="email" 
+                        id="inviteEmail" 
+                        [(ngModel)]="inviteEmail" 
+                        name="inviteEmail" 
+                        placeholder="nome@exemplo.com"
+                        (ngModelChange)="onEmailChange()"
+                        [class.is-invalid]="inviteErrorMessage && !isValidEmail"
+                    >
+                    <div *ngIf="inviteErrorMessage" class="invalid-feedback">
+                        {{ inviteErrorMessage }}
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="cancel-button" (click)="closeInviteDialog()">Cancelar</button>
+                    <button type="submit" class="send-button" [disabled]="inviteLoading || !isValidEmail">
+                        <span *ngIf="!inviteLoading">Enviar Convite</span>
+                        <span *ngIf="inviteLoading">Enviando...</span>
+                    </button>
+                </div>
+            </form>
+            <div *ngIf="inviteSuccessMessage" class="success-message">
+                {{ inviteSuccessMessage }}
+            </div>
+        </div>
+    </div>
+</div>

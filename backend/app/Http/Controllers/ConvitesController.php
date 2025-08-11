@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Exception;
 
 use App\Http\Responses\ApiResponse;
+use App\Models\Convites;
 use App\Services\ConviteService;
 
 class ConvitesController extends Controller{
@@ -35,6 +36,9 @@ class ConvitesController extends Controller{
             ]);
        
             $convite = $this->conviteService->enviarConvite($validateData['email']);
+            if($convite == null){
+                return $this->apiResponse->badRequest(null, 'Já existe um convite em aberto para esse email.');
+            }
 
             $conviteArray = $convite->toArray();
             $conviteArray['status_description'] = $convite->status_code->description();
@@ -43,13 +47,15 @@ class ConvitesController extends Controller{
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         } catch (Exception $e) {
-            return $this->apiResponse->error('', $e->getMessage(), 400);
+            return $this->apiResponse->error(null, 'Erro ao enviar convite', 400);
         }
     }
 
     public function index(Request $request): JsonResponse{
         try {
-            $convites = $this->conviteService->indexAllConvites();
+            $filtros = $request->only(['email', 'status', 'page', 'per_page']);
+
+            $convites = $this->conviteService->indexFilteredConvites($filtros);
 
             $mappedConvites = $convites->map(function ($convite) {
                 if($convite->status_code !== ConviteStatus::FINALIZADO &&
@@ -92,7 +98,7 @@ class ConvitesController extends Controller{
 
             return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
         } catch(Exception $e) {
-            return $this->apiResponse->error($e->getMessage(), 'Erro ao buscar convite', 400);
+            return $this->apiResponse->error(null, 'Erro ao buscar convite', 400);
         }
     }
 }
