@@ -6,14 +6,15 @@
     flex-direction: column; /*organiza os itens (logo, botoes) numa coluna*/
     justify-content: center;
     align-items: center;
-    padding: 15px 20px; /*espaçamento interno */
+    padding: 1rem 1.25rem; /*espaçamento interno */
     background-color: var(--theme-form-bg); /* cor do fundo do cabeçalho */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* sombra*/
+    box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.05); /* sombra*/
     position: sticky; /* pra colar no topo da tela */
     top: 0; /* pra nao vir nada acima do header */
-    gap: 10px; /* espaço entre os itens flexiveis*/
     z-index: 1000; /* valor mt alto pra ficar la em cima*/
     transition: background-color 0.5s ease, color 0.5s ease;
+    width: 100%;
+    box-sizing: border-box;
  }
 
 /* CONTAINER DO HEADER */
@@ -23,8 +24,8 @@
     justify-content: space-between;
     width: 100%;
     max-width: 100%;
-    padding: 12px 16px;
-    height: 48px;
+    padding: 0.75rem 1rem;
+    min-height: 3rem;
     margin: 0;
     box-sizing: border-box;
 }
@@ -33,15 +34,16 @@
 .header-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     cursor: pointer;
-    margin-bottom: 10px; /* margem abaixo do container */
+    margin-bottom: 0;
+    flex-shrink: 0;
 }
 
 .header-logo img {
-    height: 90px;
-    height: 90px; /* altura da imagem*/
+    height: clamp(2.5rem, 4vw, 5.625rem); /* ← CORRIGIR: estava sem height: */
     width: auto;
+    max-width: none;
 }
 
 /* NAVEGAÇÃO DESKTOP (escondida no mobile) */
@@ -49,7 +51,7 @@
     display: none;
 }
 
-.header-nav ul li a {
+/*.header-nav ul li a {
     text-decoration: none;
     color: var(--theme-heading-text);
     font-weight: 500;
@@ -60,7 +62,7 @@
 
 .header-nav ul li a:hover {
     color: var(--color-light-primary); 
-}
+}*/
 
 /* BOTÕES DESKTOP (escondidos no mobile) */
 .header-buttons {
@@ -72,26 +74,27 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 24px;
-    height: 18px;
+    width: 1.5rem;
+    height: 1.125rem;
     background: transparent;
     border: none;
     cursor: pointer;
     padding: 0;
     z-index: 1001;
+    flex-shrink: 0;
 }
 
 .hamburger-line {
     width: 100%;
-    height: 2px;
+    height: 0.125rem;
     background: var(--theme-heading-text);
-    border-radius: 1px;
+    border-radius: 0.0625rem;
     transition: all 0.3s ease;
     transform-origin: center;
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(3px, 3px);
+    transform: rotate(45deg) translate(0.1875rem, 0.1875rem);
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(2) {
@@ -99,12 +102,11 @@
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(3px, -3px);
+    transform: rotate(-45deg) translate(0.1875rem, -0.1875rem);
 }
 
 /* OVERLAY MOBILE */
 .mobile-menu-overlay {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -123,19 +125,18 @@
 
 /* MENU MOBILE */
 .mobile-menu {
-    display: none;
     position: fixed;
     top: 0;
-    right: -100%;
-    width: 300px;
+    right: 0;
+    width: min(18.75rem, 80vw);
     height: 100vh;
     background: #0d1117;
     border-left: 1px solid #30363d;
     z-index: 1000;
     transition: right 0.3s ease-out;
-    padding: 48px 0 2rem 0;
+    padding: 3rem 0 2rem 0;
     overflow-y: auto;
-    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+    box-shadow: -0.5rem 0 1.5rem rgba(0, 0, 0, 0.15);
 }
 
 .mobile-menu.active {
@@ -145,7 +146,7 @@
 
 /* Header do Menu Mobile */
 .mobile-menu-header {
-    padding: 16px 20px;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid #30363d;
     /* background: #161b22; */
     display: flex;
@@ -164,10 +165,10 @@
     background: none;
     border: none;
     color: #7d8590;
-    font-size: 20px;
+    font-size: 1.25rem;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
     transition: all 0.2s ease;
 }
 
@@ -194,13 +195,13 @@
 .mobile-nav-link {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
     /* color: #000000; */
     color: inherit;
     text-decoration: none;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 0.9375rem;
     transition: all 0.2s ease;
     border-left: none;
     background: transparent;
@@ -285,25 +286,25 @@
 
 /* Botões Mobile */
 .mobile-actions {
-    padding: 20px;
+    padding: 1.25rem;
     /* background: #0d1117; */
 }
 
 .mobile-actions > a{
-    margin-top: 3px;
+    margin-top: 0.1875rem;
 }
 
 .mobile-btn {
     width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
     font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0.5rem;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 0.375rem;
     transition: all 0.2s ease;
     border: 1px solid #30363d;
     /* background: #21262d; */
@@ -321,71 +322,93 @@
     color: #f0f6fc;
 }
 
+/* CONTAINER DO SWITCH - ESCONDIDO NO MOBILE */
+.header-theme-container {
+    display: none;
+}
+
 /* TABLET 768px+ */
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
     .app-header {
-        width: 100%; /* Voltar ao normal no desktop */
+        flex-direction: row;
+        padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 3vw, 1.875rem);
     }
     
     .header-container {
-        padding: 20px 30px;
+        padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 3vw, 1.875rem);
         height: auto;
         max-width: none;
+        min-height: auto;
     }
 
+    /* LOGO MENOR EM TELAS PEQUENAS */
     .header-logo img {
-        height: 120px;
+        height: clamp(2rem, 4vw, 5rem); /* ← MENOR: de 2rem até 5rem */
     }
 
-    /* Mostrar navegação desktop */
+    /* Navegação desktop */
     .header-nav {
         display: flex;
-        margin: 0 40px; /* Mais espaço entre logo e nav */
+        margin: 0 clamp(0.5rem, 2vw, 2.5rem); /* ← MARGEM MENOR */
         width: auto;
-        flex: 1; /* Ocupar espaço disponível */
-        justify-content: center; /* Centralizar os links */
+        flex: 1;
+        justify-content: center;
+        overflow: hidden;
     }
 
     .header-nav ul {
         list-style: none;
         display: flex;
         flex-direction: row;
-        gap: 40px; /* Mais espaço entre links */
+        gap: clamp(0.5rem, 2vw, 2.5rem); /* ← GAP MENOR: mínimo 0.25rem */
         margin: 0;
         padding: 0;
         align-items: center;
+        flex-wrap: nowrap;
     }
 
+    .header-nav ul li {
+        flex-shrink: 1;
+        min-width: 0;
+    }
+
+    /* FONTE MAIS RESPONSIVA - DIMINUI MAIS */
     .header-nav ul li a {
         text-decoration: none;
         color: var(--theme-heading-text);
         font-weight: 500;
-        font-size: 1.8em;
+        font-size: clamp(0.7rem, 1.5vw, 2rem); /* ← DIMINUI MAIS: de 0.7rem até 2rem */
         display: inline-block;
         transition: color 0.3s ease;
-        padding: 8px 12px; /* Área clicável maior */
+        padding: clamp(0.15rem, 0.8vw, 0.75rem) clamp(0.15rem, 0.8vw, 0.5rem); /* ← PADDING MENOR */
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .header-nav ul li a:hover {
         color: var(--color-light-primary);
     }
 
-    /* Mostrar botões desktop */
+    /* Botões desktop - MENORES */
     .header-buttons {
         display: flex;
         flex-direction: row;
-        gap: 15px;
+        gap: clamp(0.1rem, 0.5vw, 0.4rem); /* ← ALTERAR: linha 396 */
         width: auto;
         margin-top: 0;
         align-items: center;
+        flex-shrink: 0;
+        flex-wrap: nowrap;
     }
 
+    /* BOTÕES MENORES E MAIS RESPONSIVOS */
     .secondary-button-outline {
-        padding: 12px 24px; /* Botão um pouco maior */
+        padding: clamp(0.4rem, 1vw, 0.75rem) clamp(0.5rem, 1.5vw, 1.2rem); /* ← PADDING MENOR */
         color: var(--theme-button-primary-bg);
-        border-radius: 25px;
+        border-radius: 1.5625rem;
         cursor: pointer;
-        font-size: 0.95em;
+        font-size: clamp(0.6rem, 1vw, 0.9rem); /* ← FONTE MENOR: de 0.6rem até 0.9rem */
         font-weight: 600;
         text-decoration: none;
         display: inline-block;
@@ -393,8 +416,10 @@
         max-width: none;
         text-align: center;
         background-color: transparent;
-        border: 2px solid var(--theme-button-primary-bg);
+        border: 0.125rem solid var(--theme-button-primary-bg);
         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        white-space: nowrap;
+        min-width: 0;
     }
 
     .secondary-button-outline:hover {
@@ -403,15 +428,16 @@
         border-color: var(--theme-button-primary-hover);
     }
 
-    /* Toggle de tema desktop */
+    /* SWITCH MENOR E MAIS RESPONSIVO */
     .theme-switch {
         display: inline-block;
-        width: 60px;
-        height: 34px;
+        width: clamp(40px, 6vw, 60px); /* ← MENOR: de 40px até 60px */
+        height: clamp(22px, 3.5vw, 34px); /* ← MENOR: de 22px até 34px */
         position: relative;
         cursor: pointer;
-        margin-left: 0;
+        margin-left: clamp(0.5rem, 1vw, 1rem); /* ← ALTERAR: linha 431 */
         align-self: center;
+        flex-shrink: 0;
     }
 
     .theme-switch input {
@@ -428,16 +454,16 @@
         bottom: 0;
         background-color: var(--theme-button-primary-bg);
         transition: .4s;
-        border-radius: 34px;
+        border-radius: 25px;
     }
 
     .slider:before {
         position: absolute;
         content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
+        height: calc(100% - 6px); /* ← MENOR */
+        width: calc(100% - 32px); /* ← MENOR */
+        left: 3px;
+        bottom: 3px;
         background-color: var(--theme-button-text);
         transition: .4s;
         border-radius: 50%;
@@ -448,49 +474,62 @@
     }
 
     .theme-switch input:checked + .slider:before {
-        transform: translateX(26px);
+        transform: translateX(26px); /* ← MOVIMENTO MENOR */
+    }
+
+    /* CONTAINER DO SWITCH */
+    .header-theme-container {
+        display: flex;
+        align-items: center;
+        margin-left: clamp(1rem, 2vw, 2rem); /* ← CONTROLE TOTAL DO ESPAÇAMENTO */
+        margin-right: clamp(0.5rem, 1vw, 1rem); /* ← ESPAÇAMENTO DOS BOTÕES */
+    }
+    
+    /* SWITCH SEM MARGEM (a div controla) */
+    .theme-switch {
+        display: inline-block;
+        width: clamp(40px, 6vw, 60px);
+        height: clamp(22px, 3.5vw, 34px);
+        position: relative;
+        cursor: pointer;
+        margin-left: 0; /* ← REMOVER: a div controla o espaçamento */
+        align-self: center;
+        flex-shrink: 0;
     }
 
     /* Esconder elementos mobile */
     .mobile-menu-toggle {
-        display: none;
+        display: none; /* ← ADICIONAR: esconder o hamburger no desktop */
     }
 }
 
-/* DESKTOP 1200px+ */
-@media (min-width: 1200px) {
-    .header-container {
-        padding: 20px 50px;
-        max-width: none;
-    }
-
-    .header-logo img {
-        height: 150px;
-    }
-
-    .header-nav {
-        margin: 0 60px;
-    }
-
-    .header-nav ul {
-        gap: 65px; /* Mais espaço entre links */
-    }
-
+/* REMOVER CONFLITOS - COMENTAR ESSAS REGRAS */
+/*
+@media (min-width: 75rem) {
     .header-nav ul li a {
-        font-size: 2.0em;
-        padding: 10px 15px;
-    }
-
-    .header-buttons {
-        gap: 15px;
-    }
-
-    .theme-switch {
-        margin-left: 60px;
+        font-size: 2.0em; ← CONFLITA COM clamp()
     }
 }
 
+@media (min-width: 48rem) and (min-resolution: 120dpi) {
+    .header-nav ul li a {
+        font-size: 2rem; ← CONFLITA COM clamp()
+    }
+}
+*/
 
+/* DESKTOP MUITO LARGO - apenas container */
+@media (min-width: 90rem) {
+    .header-container {
+        max-width: 100rem;
+        margin: 0 auto;
+    }
+    
+    /* Logo pode ser maior em telas muito grandes */
+    .header-logo img {
+        height: clamp(4rem, 5vw, 6rem);
+    }
+}
 
 /* Menu Mobile - Tema Claro (padrão) */
 .mobile-menu {
@@ -547,7 +586,7 @@
 }
 
 .mobile-btn:hover {
-  background: #7c3aed !important; /* Fundo roxo no hover */
+  /*background: #7c3aed !important; /* Fundo roxo no hover */
   /* color: #ffffff !important; Texto branco no hover */
   border-color: #7c3aed !important;
 }
