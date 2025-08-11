@@ -79,8 +79,8 @@ export class ListaColaboradoresComponent implements OnInit {
   emailError: string = '';
   isValidEmail: boolean = false;
 
-  private http = inject(HttpClient); // Use inject ao invés de constructor
-  private conviteService = inject(ConvitesService); // Adicione esta linha
+  private http = inject(HttpClient);
+  private conviteService = inject(ConvitesService);
 
   // Método de ciclo de vida: Executado uma vez após a inicialização do componente.
   ngOnInit(): void {
@@ -341,8 +341,8 @@ export class ListaColaboradoresComponent implements OnInit {
     document.body.style.overflow = 'auto';
   }
 
-  /* Substitua o método sendInvite() por esta versão com verificação: */
-
+  // Método para enviar convite
+  // Verifica se já existe um convite em aberto para o e-mail antes de enviar.
   async sendInvite(): Promise<void> {
     if (!this.inviteEmail.trim()) {
       this.inviteErrorMessage = 'Por favor, insira um e-mail válido.';
@@ -527,8 +527,6 @@ export class ListaColaboradoresComponent implements OnInit {
     
     return perfis[perfilId] || `Perfil ${perfilId}`;
   }
-
-  /* Adicione este método na classe ListaColaboradoresComponent: */
 
   private async verificarConviteExistente(email: string): Promise<boolean> {
     try {

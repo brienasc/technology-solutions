@@ -129,14 +129,14 @@
 .mobile-menu-header {
     padding: 16px 20px;
     border-bottom: 1px solid #30363d;
-    background: #161b22;
+    /* background: #161b22; */
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
 .mobile-menu-title {
-    color: #f0f6fc;
+    /* color: #f0f6fc; */
     font-weight: 600;
     font-size: 16px;
     margin: 0;
@@ -155,7 +155,7 @@
 
 .mobile-close-btn:hover {
     background: #21262d;
-    color: #f0f6fc;
+    /* color: #f0f6fc; */
 }
 
 /* Navegação Mobile */
@@ -178,7 +178,8 @@
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
-    color: #f0f6fc;
+    /* color: #000000; */
+    color: inherit;
     text-decoration: none;
     font-weight: 500;
     font-size: 15px;
@@ -188,12 +189,12 @@
 }
 
 .mobile-nav-link:hover {
-    background: #21262d;
-    color: #58a6ff;
+    /* background: #21262d; */
+    /* color: #58a6ff; */
 }
 
 .mobile-nav-link i {
-    color: #6c757d; /* Ícones cinza */
+    /* color: #6c757d; Ícones cinza */
 }
 
 /* Seção de Tema Mobile */
@@ -201,7 +202,7 @@
     padding: 20px;
     border-top: 1px solid #21262d;
     border-bottom: 1px solid #21262d;
-    background: #0d1117;
+    /* background: #0d1117; */
 }
 
 .mobile-theme-switch {
@@ -213,7 +214,7 @@
 
 .theme-label {
     font-weight: 500;
-    color: #f0f6fc;
+    /* color: #f0f6fc; */
     font-size: 15px;
 }
 
@@ -267,7 +268,7 @@
 /* Botões Mobile */
 .mobile-actions {
     padding: 20px;
-    background: #0d1117;
+    /* background: #0d1117; */
 }
 
 .mobile-actions > a{
@@ -287,9 +288,13 @@
     border-radius: 6px;
     transition: all 0.2s ease;
     border: 1px solid #30363d;
-    background: #21262d;
-    color: #f0f6fc;
+    /* background: #21262d; */
+    /* color: #f0f6fc; */
     text-decoration: none;
+}
+
+.mobile-close-btn {
+  display: none !important;
 }
 
 .mobile-btn:hover {
@@ -471,136 +476,144 @@
 
 /* Menu Mobile - Tema Claro (padrão) */
 .mobile-menu {
-  background: #f8f9fa; /* Fundo branco no tema claro */
-  color: #1a1a1a; /* Texto escuro no tema claro */
+  background: #ffffff !important; /* Fundo branco no tema claro */
+  color: #1a1a1a !important; /* Texto escuro no tema claro */
+  border-left: 1px solid #e9ecef !important;
 }
 
 .mobile-menu-header {
-  background: #f8f9fa; /* Fundo cinza claro no header */
-  border-bottom: 1px solid #e9ecef;
+  /* background: #ffffff !important; Fundo branco no header */
+  border-bottom: 1px solid #e9ecef !important;
 }
 
 .mobile-menu-title {
-  color: #1a1a1a; /* Título escuro */
+  /* color: #1a1a1a !important; Título escuro */
 }
 
 .mobile-close-btn {
-  color: #1a1a1a; /* Botão X escuro */
-  background: transparent;
+  color: #1a1a1a !important; /* Botão X escuro */
+  background: transparent !important;
 }
 
 .mobile-nav-link {
-  color: #1a1a1a; /* Links escuros */
-  border-bottom: 1px solid #e9ecef;
+  /* color: #1a1a1a !important; Links escuros */
+  border-bottom: 1px solid #e9ecef !important;
 }
 
 .mobile-nav-link:hover {
-  background: #f8f9fa; /* Hover cinza claro */
-  color: #7c3aed; /* Texto roxo no hover */
+  /* background: #f8f9fa !important; Hover cinza claro */
+  /* color: #7c3aed !important; Texto roxo no hover */
 }
 
 .mobile-nav-link i {
-  color: #6c757d; /* Ícones cinza */
+  /* color: #6c757d !important; Ícones cinza */
 }
 
 .mobile-theme-section {
-  background: #f8f9fa;
-  border-top: 1px solid #e9ecef;
-  border-bottom: 1px solid #e9ecef;
+  border-top: 1px solid #e9ecef !important;
+  border-bottom: 1px solid #e9ecef !important;
 }
 
 .theme-label {
-  color: #1a1a1a; /* Label escuro */
+  /* color: #1a1a1a !important; Label escuro */
 }
 
 .mobile-actions {
-  background: #ffffff;
+  /* background: #ffffff !important; */
 }
 
 .mobile-btn {
-  color: #1a1a1a; /* Botões escuros */
-  border: 1px solid #e9ecef;
-  background: #ffffff;
+  /* color: #1a1a1a !important; Botões escuros */
+  border: 1px solid #e9ecef !important;
+  /* background: #ffffff !important; */
 }
 
 .mobile-btn:hover {
-  background: #7c3aed; /* Fundo roxo no hover */
-  color: #ffffff; /* Texto branco no hover */
+  background: #7c3aed !important; /* Fundo roxo no hover */
+  /* color: #ffffff !important; Texto branco no hover */
+  border-color: #7c3aed !important;
 }
 
 .mobile-btn i {
-  color: inherit;
+  color: inherit !important;
 }
 
 /* TEMA ESCURO - Sobrepõe as cores do tema claro */
 body.dark-theme .mobile-menu,
 [data-theme="dark"] .mobile-menu {
-  background: #1a1a1a !important; /* Fundo escuro */
-  color: #ffffff !important; /* Texto claro */
+  background: #0d1117 !important; /* Fundo escuro original */
+  color: #f0f6fc !important; /* Texto claro */
+  border-left: 1px solid #30363d !important;
 }
 
 body.dark-theme .mobile-menu-header,
 [data-theme="dark"] .mobile-menu-header {
-  background: #2d2d2d !important;
-  border-bottom-color: #404040 !important;
+  /* background: #161b22 !important; */
+  border-bottom: 1px solid #30363d !important;
 }
 
 body.dark-theme .mobile-menu-title,
 [data-theme="dark"] .mobile-menu-title {
-  color: #ffffff !important;
+  color: #f0f6fc !important;
 }
 
 body.dark-theme .mobile-close-btn,
 [data-theme="dark"] .mobile-close-btn {
-  color: #ffffff !important;
+  color: #7d8590 !important;
+}
+
+body.dark-theme .mobile-close-btn:hover,
+[data-theme="dark"] .mobile-close-btn:hover {
+  background: #21262d !important;
+  color: #f0f6fc !important;
 }
 
 body.dark-theme .mobile-nav-link,
 [data-theme="dark"] .mobile-nav-link {
-  color: #ffffff !important;
-  border-bottom-color: #404040 !important;
+  /* color: #f0f6fc !important; */
+  border-bottom: 1px solid #21262d !important;
 }
 
 body.dark-theme .mobile-nav-link:hover,
 [data-theme="dark"] .mobile-nav-link:hover {
-  background: #404040 !important;
-  color: #a855f7 !important;
+  /* background: #21262d !important; */
+  /* color: #58a6ff !important; */
 }
 
 body.dark-theme .mobile-nav-link i,
 [data-theme="dark"] .mobile-nav-link i {
-  color: #cccccc !important;
+  /* color: #6c757d !important; */
 }
 
 body.dark-theme .mobile-theme-section,
 [data-theme="dark"] .mobile-theme-section {
-  background: #2d2d2d !important;
-  border-top-color: #404040 !important;
-  border-bottom-color: #404040 !important;
+  background: #0d1117 !important;
+  border-top: 1px solid #21262d !important;
+  border-bottom: 1px solid #21262d !important;
 }
 
 body.dark-theme .theme-label,
 [data-theme="dark"] .theme-label {
-  color: #ffffff !important;
+  /* color: #f0f6fc !important; */
 }
 
 body.dark-theme .mobile-actions,
 [data-theme="dark"] .mobile-actions {
-  background: #1a1a1a !important;
+  /* background: #0d1117 !important; */
 }
 
 body.dark-theme .mobile-btn,
 [data-theme="dark"] .mobile-btn {
-  color: #ffffff !important;
-  border-color: #404040 !important;
-  background: #2d2d2d !important;
+  background: #21262d !important;
+  /* color: #f0f6fc !important; */
+  border: 1px solid #30363d !important;
 }
 
 body.dark-theme .mobile-btn:hover,
 [data-theme="dark"] .mobile-btn:hover {
-  background: #a855f7 !important;
-  color: #ffffff !important;
-  border-color: #a855f7 !important;
+  background: #30363d !important;
+  color: #f0f6fc !important;
+  border-color: #8b949e !important;
 }
 
 body.dark-theme .mobile-btn i,
@@ -610,10 +623,26 @@ body.dark-theme .mobile-btn i,
 
 /* Overlay do menu mobile */
 .mobile-menu-overlay {
-  background: rgba(0, 0, 0, 0.5); /* Tema claro */
+  background: rgba(0, 0, 0, 0.5) !important; /* Tema claro */
 }
 
 body.dark-theme .mobile-menu-overlay,
 [data-theme="dark"] .mobile-menu-overlay {
   background: rgba(0, 0, 0, 0.8) !important; /* Mais escuro no tema escuro */
+}
+
+/* Correção adicional para o toggle de tema mobile */
+body.dark-theme .mobile-theme-switch .slider,
+[data-theme="dark"] .mobile-theme-switch .slider {
+  background-color: #21262d !important;
+}
+
+body.dark-theme .mobile-theme-switch input:checked + .slider,
+[data-theme="dark"] .mobile-theme-switch input:checked + .slider {
+  background-color: #238636 !important;
+}
+
+body.dark-theme .mobile-theme-switch .slider:before,
+[data-theme="dark"] .mobile-theme-switch .slider:before {
+  background-color: #ffffff !important;
 }

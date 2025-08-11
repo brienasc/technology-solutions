@@ -10,7 +10,7 @@ import { Header } from '../../components/header/header';
   imports: [
     CommonModule, 
     ListaColaboradoresComponent, 
-    Header,  // Adicionar aqui
+    Header,
   ],
   templateUrl: './menu-gerencial.html', 
   styleUrls: ['./menu-gerencial.css'] 
