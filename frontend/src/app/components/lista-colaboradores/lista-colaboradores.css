@@ -1,16 +1,23 @@
-/* frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.css */
+/* ============================================================================== */
+/*                            CONTAINER PRINCIPAL                                */
+/* ============================================================================== */
 
+/* Container principal da página - define largura máxima e estilo geral */
 .lista-colaboradores-container {
   max-width: 3000px;
-  margin: 2rem auto; /* Mudança aqui: era margin-top: 30px */
+  margin: 2rem auto; /* Centraliza o container na página */
   padding: 2rem;
   border: 1px solid var(--theme-input-border);
   border-radius: 12px;
-  background-color: var(--theme-card-bg); /* Fundo do contêiner da lista */
-  color: var(--theme-body-text); /* Cor do texto */
+  background-color: var(--theme-card-bg); /* Fundo adaptável ao tema */
+  color: var(--theme-body-text); /* Cor do texto adaptável ao tema */
 }
 
-/* Nova seção de controles */
+/* ============================================================================== */
+/*                      SEÇÃO DE CONTROLES (PESQUISA + BOTÕES)                   */
+/* ============================================================================== */
+
+/* Container principal dos controles - pesquisa à esquerda, botões à direita */
 .controls-section {
   display: flex;
   justify-content: space-between;
@@ -22,20 +29,21 @@
 
 /* Container da barra de pesquisa (lado esquerdo) */
 .search-container {
-  flex: 1;
-  max-width: 450px;
+  flex: 1; /* Ocupa espaço disponível */
+  max-width: 450px; /* Limite máximo de largura */
 }
 
-/* Barra de pesquisa */
+/* Wrapper da barra de pesquisa com posicionamento relativo para o botão */
 .search-bar {
   display: flex;
   position: relative;
   width: 100%;
 }
 
+/* Input de pesquisa */
 .search-bar input {
   flex: 1;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem; /* Espaço extra à direita para o ícone */
   border: 2px solid var(--theme-border, #e2e8f0);
   border-radius: 6px;
   font-size: 1rem;
@@ -45,17 +53,20 @@
   min-width: 0; /* Permite que o input encolha se necessário */
 }
 
+/* Placeholder do input de pesquisa */
 .search-bar input::placeholder {
   color: var(--theme-text-secondary, #9ca3af);
   font-size: 0.9rem;
 }
 
+/* Estado de foco do input de pesquisa */
 .search-bar input:focus {
   outline: none;
   border-color: var(--theme-button-primary-bg, #667eea);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Botão de pesquisa (ícone lupa) posicionado dentro do input */
 .search-button {
   position: absolute;
   right: 0.5rem;
@@ -71,19 +82,24 @@
   justify-content: center;
 }
 
+/* Ícone do botão de pesquisa */
 .search-button svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-/* Container dos botões (lado direito) */
+/* Container dos botões principais (lado direito) - Convidar e Exportar */
 .buttons-container {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-/* Botão de convite */
+/* ============================================================================== */
+/*                          BOTÕES PRINCIPAIS DE AÇÃO                            */
+/* ============================================================================== */
+
+/* Botão "Convidar Colaborador" - roxo */
 .invite-button {
   display: flex;
   align-items: center;
@@ -98,26 +114,29 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
+  white-space: nowrap; /* Evita quebra de linha */
   height: 46px;
 }
 
+/* Efeito hover do botão convidar */
 .invite-button:hover {
   background: #652b94;
-  transform: translateY(-1px);
+  transform: translateY(-1px); /* Efeito de "levitar" */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Efeito de clique do botão convidar */
 .invite-button:active {
   transform: translateY(0);
 }
 
+/* Ícone do botão convidar */
 .invite-button svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-/* Botão de exportar */
+/* Botão "Exportar para Excel" - verde */
 .export-button {
   display: flex;
   align-items: center;
@@ -135,80 +154,103 @@
   height: 46px;
 }
 
+/* Efeito hover do botão exportar */
 .export-button:hover {
   background: #047857;
   transform: translateY(-1px);
 }
 
+/* Ícone do botão exportar */
 .export-button svg {
   width: 1rem;
   height: 1rem;
 }
 
-/* Tabela */
+/* ============================================================================== */
+/*                            TABELA DE COLABORADORES                            */
+/* ============================================================================== */
+
+/* Container responsivo da tabela */
 .table-responsive {
-  overflow-x: auto; 
+  overflow-x: auto; /* Scroll horizontal em telas pequenas */
   margin-bottom: 20px;
 }
 
+/* Tabela principal de colaboradores */
 .colaboradores-table {
   width: 100%;
-  border-collapse: collapse; 
+  border-collapse: collapse; /* Remove espaços entre bordas */
   margin-top: 15px;
 }
 
+/* Células da tabela (cabeçalho e dados) */
 .colaboradores-table th,
 .colaboradores-table td {
-  border: 1px solid var(--theme-input-border); /* Borda da tabela */
+  border: 1px solid var(--theme-input-border);
   padding: 12px 15px;
   text-align: left;
   font-size: 0.95em;
-  color: var(--theme-body-text); /* Cor do texto da tabela */
+  color: var(--theme-body-text);
 }
 
+/* Cabeçalho da tabela */
 .colaboradores-table th {
-  background-color: var(--theme-form-bg); /* Fundo do cabeçalho da tabela */
+  background-color: var(--theme-form-bg);
   font-weight: bold;
   text-transform: uppercase;
-  color: var(--theme-label-text); /* Cor do texto do cabeçalho da tabela */
+  color: var(--theme-label-text);
 }
 
+/* Efeito zebrado - linhas pares com fundo diferente */
 .colaboradores-table tbody tr:nth-child(even) {
-  background-color: var(--theme-card-bg); /* Fundo zebrado (light) */
+  background-color: var(--theme-card-bg);
 }
 
+/* Efeito hover nas linhas da tabela */
 .colaboradores-table tbody tr:hover {
-  background-color: var(--theme-background); /* Efeito de hover na tabela */
+  background-color: var(--theme-background);
 }
 
+/* Classe utilitária para centralizar texto */
 .text-center {
   text-align: center;
 }
 
-/* Badges de Status */
+/* ============================================================================== */
+/*                              BADGES DE STATUS                                 */
+/* ============================================================================== */
+
+/* Badge base para status */
 .status-badge {
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 0.85em;
   font-weight: bold;
-  color: var(--color-white); /* Cor do texto do badge */
+  color: var(--color-white);
   text-transform: capitalize; 
 }
 
+/* Badge status finalizado - verde */
 .status-finalizado {
   background-color: var(--color-success); 
 }
 
+/* Badge status em aberto - amarelo */
 .status-emaberto {
   background-color: var(--color-warning); 
-  color: var(--color-text-dark); /* Texto escuro para contraste no amarelo */
+  color: var(--color-text-dark); /* Texto escuro para contraste */
 }
 
+/* Badge status vencido - vermelho */
 .status-vencido {
   background-color: var(--color-danger); 
 }
 
-/* Botão de Detalhes */
+/* ============================================================================== */
+/*                         BOTÃO DE DETALHES NA TABELA                           */
+/* ============================================================================== */
+
+/* Botão "Detalhes" em cada linha da tabela */
 .details-button {
   background: #7120bd;
   color: white;
@@ -220,11 +262,16 @@
   transition: background-color 0.3s ease;
 }
 
+/* Hover do botão detalhes */
 .details-button:hover {
   background: #652b94;
 }
 
-/* Controles de Paginação */
+/* ============================================================================== */
+/*                           CONTROLES DE PAGINAÇÃO                              */
+/* ============================================================================== */
+
+/* Container dos controles de paginação */
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -233,9 +280,10 @@
   gap: 15px;
 }
 
+/* Botões de paginação (Anterior/Próxima) */
 .pagination-controls button {
-  background-color: var(--theme-button-secondary-bg); /* Fundo do botão de paginação */
-  border: 1px solid var(--theme-input-border); /* Borda do botão de paginação */
+  background-color: var(--theme-button-secondary-bg);
+  border: 1px solid var(--theme-input-border);
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
@@ -244,23 +292,30 @@
   color: var(--theme-button-text);
 }
 
+/* Hover dos botões de paginação */
 .pagination-controls button:hover:not(:disabled) {
-  background-color: var(--theme-button-disabled-bg); /* Hover do botão de paginação */
-  border-color: var(--theme-focus-border); /* Borda no hover */
+  background-color: var(--theme-button-disabled-bg);
+  border-color: var(--theme-focus-border);
 }
 
+/* Botões desabilitados */
 .pagination-controls button:disabled {
-  background-color: var(--theme-button-disabled-bg); /* Fundo do botão desabilitado */
-  color: var(--color-muted-text); /* Texto muted para desabilitado */
+  background-color: var(--theme-button-disabled-bg);
+  color: var(--color-muted-text);
   cursor: not-allowed;
 }
 
+/* Texto informativo da paginação */
 .pagination-controls span {
   font-size: 1em;
-  color: var(--theme-body-text); /* Cor do texto da paginação */
+  color: var(--theme-body-text);
 }
 
-/* Estilos do Modal Dialog */
+/* ============================================================================== */
+/*                              MODAL DIALOG BASE                                */
+/* ============================================================================== */
+
+/* Overlay escuro que cobre toda a tela quando modal está aberto */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -275,6 +330,7 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Container principal do modal */
 .modal-dialog {
   background: var(--theme-form-bg);
   color: var(--theme-body-text);
@@ -288,7 +344,11 @@
   animation: slideIn 0.3s ease-out;
 }
 
-/* Header do Modal */
+/* ============================================================================== */
+/*                              HEADER DO MODAL                                  */
+/* ============================================================================== */
+
+/* Cabeçalho do modal com gradiente */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -300,6 +360,7 @@
   border-radius: 10px 10px 0 0;
 }
 
+/* Título do modal */
 .modal-title {
   margin: 0;
   font-size: 1.4rem;
@@ -309,6 +370,7 @@
   gap: 0.5rem;
 }
 
+/* Botão de fechar (X) no canto superior direito */
 .close-button {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
@@ -330,13 +392,15 @@
   position: relative;
 }
 
+/* Adiciona o símbolo "×" via CSS */
 .close-button::before {
-  content: "×"; /* Adicionar o X via CSS */
+  content: "×";
   font-size: 1.8rem;
   color: white;
   line-height: 1;
 }
 
+/* Hover do botão fechar */
 .close-button:hover {
   background-color: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.6);
@@ -344,12 +408,16 @@
   color: white !important;
 }
 
-/* Corpo do Modal */
+/* ============================================================================== */
+/*                        CONTEÚDO DO MODAL (DETALHES)                           */
+/* ============================================================================== */
+
+/* Corpo principal do modal */
 .modal-body {
   padding: 1.2rem 1.5rem;
 }
 
-/* Seções de Informação */
+/* Seção de informações (Pessoais, Profissionais, Endereço) */
 .info-section {
   margin-bottom: 1.5rem;
 }
@@ -358,6 +426,7 @@
   margin-bottom: 0;
 }
 
+/* Título de cada seção */
 .section-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -370,23 +439,26 @@
   border-bottom: 2px solid var(--theme-input-border);
 }
 
+/* Ícones dos títulos das seções */
 .section-title i {
   color: #667eea;
 }
 
-/* Grid de Informações */
+/* Grid de informações em cada seção */
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 0.8rem;
 }
 
+/* Item individual de informação */
 .info-item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
 
+/* Label do item de informação */
 .info-item label {
   font-weight: 600;
   color: var(--theme-label-text);
@@ -395,13 +467,18 @@
   letter-spacing: 0.5px;
 }
 
+/* Valor do item de informação */
 .info-item span {
   color: var(--theme-body-text);
   font-size: 0.95rem;
   padding: 0.3rem 0;
 }
 
-/* Badges */
+/* ============================================================================== */
+/*                              BADGES DE PERFIL                                 */
+/* ============================================================================== */
+
+/* Badge base para perfil e status */
 .perfil-badge, .status-badge {
   display: inline-flex;
   align-items: center;
@@ -416,43 +493,52 @@
   color: white !important;
 }
 
-/* Estilos por Perfil */
+/* Badge para perfil Administrador - vermelho */
 .perfil-badge.administrador {
   background-color: #dc3545;
   color: white !important;
 }
 
+/* Badge para perfil Gente e Cultura - laranja */
 .perfil-badge.gente.e.cultura {
   background-color: #fd7e14;
   color: white !important;
 }
 
+/* Badge para perfil Colaborador Comum - cinza */
 .perfil-badge.colaborador.comum {
   background-color: #6c757d;
   color: white !important;
 }
 
-/* Estilos por Status */
+/* Badge para status Finalizado - verde */
 .status-badge.finalizado {
   background-color: #28a745;
   color: white !important;
 }
 
+/* Badge para status Em Aberto - amarelo */
 .status-badge.em.aberto {
   background-color: #ffc107;
   color: #212529 !important;
 }
 
+/* Badge para status Vencido - vermelho */
 .status-badge.vencido {
   background-color: #dc3545;
   color: white !important;
 }
 
-/* Footer do Modal */
+/* ============================================================================== */
+/*                           FOOTER DO MODAL BASE                                */
+/* ============================================================================== */
+
+/* Footer do modal - inicialmente oculto */
 .modal-footer {
   display: none !important;
 }
 
+/* Classe base para botões */
 .btn {
   padding: 0.5rem 1rem;
   border: none;
@@ -467,6 +553,7 @@
   font-size: 0.9rem;
 }
 
+/* Botão secundário - vermelho */
 .btn-secondary {
   background-color: #e74c3c;
   color: white;
@@ -477,7 +564,11 @@
   transform: translateY(-1px);
 }
 
-/* Header Section com botão de convite */
+/* ============================================================================== */
+/*                        MODAL DE CONVITE - ESTRUTURA                           */
+/* ============================================================================== */
+
+/* Seção header (não usada atualmente) */
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -493,7 +584,7 @@
   font-weight: 600;
 }
 
-/* Dialog de convite */
+/* Modal específico para convites - menor */
 .invite-dialog {
   max-width: 500px;
   width: 90%;
@@ -503,11 +594,16 @@
   padding: 1.5rem;
 }
 
-/* Form styles */
+/* ============================================================================== */
+/*                       FORMULÁRIO DO MODAL DE CONVITE                          */
+/* ============================================================================== */
+
+/* Grupo de campos do formulário */
 .form-group {
   margin-bottom: 1.5rem;
 }
 
+/* Labels dos campos do formulário */
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
@@ -515,6 +611,7 @@
   color: var(--theme-label-text);
 }
 
+/* Campos de entrada do formulário */
 .form-control {
   width: 100%;
   padding: 0.75rem;
@@ -526,12 +623,14 @@
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Estado de foco dos campos */
 .form-control:focus {
   outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Campo com erro */
 .form-control.error {
   border-color: #ef4444;
 }
@@ -541,11 +640,16 @@
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-/* Error messages */
+/* ============================================================================== */
+/*                      MENSAGENS DE ERRO E SUCESSO                              */
+/* ============================================================================== */
+
+/* Container das mensagens de erro */
 .error-messages {
   margin-top: 0.5rem;
 }
 
+/* Texto de erro */
 .error-text {
   color: #ef4444;
   font-size: 0.875rem;
@@ -553,11 +657,12 @@
   margin-top: 0.25rem;
 }
 
-/* Success/Error message container */
+/* Container das mensagens de feedback */
 .message-container {
   margin-bottom: 1rem;
 }
 
+/* Mensagens de sucesso e erro */
 .success-message,
 .error-message {
   display: flex;
@@ -569,18 +674,21 @@
   font-weight: 500;
 }
 
+/* Mensagem de sucesso - verde */
 .success-message {
   background: #f0fdf4;
   color: #166534;
   border: 1px solid #bbf7d0;
 }
 
+/* Mensagem de erro - vermelho */
 .error-message {
   background: #fef2f2;
   color: #dc2626;
   border: 1px solid #fecaca;
 }
 
+/* Ícones das mensagens */
 .success-message svg,
 .error-message svg {
   width: 1.25rem;
@@ -588,7 +696,11 @@
   flex-shrink: 0;
 }
 
-/* Botões do modal de convite */
+/* ============================================================================== */
+/*                        BOTÕES DO MODAL DE CONVITE                             */
+/* ============================================================================== */
+
+/* Container dos botões do modal de convite */
 .invite-modal-buttons {
   display: flex;
   justify-content: flex-end;
@@ -598,6 +710,7 @@
   border-top: 1px solid var(--theme-input-border);
 }
 
+/* Estilo dos botões do modal de convite */
 .invite-modal-buttons .btn {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -611,11 +724,13 @@
   gap: 0.5rem;
 }
 
+/* Botões desabilitados */
 .invite-modal-buttons .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+/* Botão Cancelar */
 .btn-cancel {
   background: #dc2626;
   color: white;
@@ -625,6 +740,7 @@
   background: #b91c1c;
 }
 
+/* Botão Enviar */
 .btn-send {
   background: #7120bd;
   color: white;
@@ -634,7 +750,11 @@
   background: #652b94;
 }
 
-/* Loading spinner */
+/* ============================================================================== */
+/*                              LOADING SPINNER                                  */
+/* ============================================================================== */
+
+/* Spinner de carregamento */
 .loading-spinner {
   width: 1rem;
   height: 1rem;
@@ -644,164 +764,604 @@
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* ============================================================================== */
+/*                        ALTERAÇÃO DE PERFIL - LAYOUT                           */
+/* ============================================================================== */
+
+/* Container para badges lado a lado */
+.perfil-badges-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
 }
 
-/* Responsividade para mobile */
+/* Badge de perfil ocupa metade da largura */
+.perfil-badge {
+  flex: 1;
+  max-width: calc(50% - 4px);
+}
+
+/* Badge invisível para manter layout */
+.perfil-badge.invisible {
+  opacity: 0;
+  background: transparent !important;
+  color: transparent !important;
+  border: 1px solid transparent !important;
+  pointer-events: none;
+}
+
+/* Footer do modal de detalhes - visível */
+.modal-footer {
+  display: block !important;
+  padding: 20px 24px;
+  border-top: 1px solid var(--theme-input-border);
+  background: var(--theme-form-bg);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Footer em modo normal */
+.modal-footer-normal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Footer em modo edição */
+.modal-footer-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================================== */
+/*                    ALTERAÇÃO DE PERFIL - CAMPOS ANTIGOS                       */
+/* ============================================================================== */
+
+/* Container de edição (não usado mais) */
+.perfil-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.perfil-edit-container label {
+  font-weight: 500;
+  color: var(--theme-body-text);
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+/* Select de perfil (estilo antigo) */
+.perfil-select {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-input-border);
+  border-radius: 6px;
+  background: var(--theme-input-bg);
+  color: var(--theme-body-text);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.perfil-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.perfil-select:disabled {
+  background: var(--theme-button-disabled-bg);
+  cursor: not-allowed;
+}
+
+/* Ações de edição (não usado mais) */
+.edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ============================================================================== */
+/*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
+/* ============================================================================== */
+
+/* Botão primário (Alterar Perfil) */
+.modal-footer .btn-primary {
+  background: #7120bd;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(113, 32, 189, 0.2);
+}
+
+.modal-footer .btn-primary:hover:not(:disabled) {
+  background: #652b94;
+  transform: translateY(-1px);
+}
+
+/* Botão de sucesso */
+.modal-footer .btn-success {
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.modal-footer .btn-success:hover:not(:disabled) {
+  background: #1e7e34;
+  transform: translateY(-1px);
+}
+
+/* Botão cancelar do footer */
+.modal-footer .btn-cancel {
+  background: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.modal-footer .btn-cancel:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+/* Botões desabilitados do footer */
+.modal-footer .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================== */
+/*                           CAMPOS DE SENHA                                     */
+/* ============================================================================== */
+
+/* Formulário de senha */
+.password-form {
+  margin-top: 12px;
+}
+
+/* Informação sobre senha */
+.password-info {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1565c0;
+}
+
+.password-info i {
+  margin-right: 8px;
+  color: #2196f3;
+}
+
+/* Container de erros de senha */
+.password-errors {
+  margin-top: 8px;
+}
+
+/* Inputs de senha específicos */
+.password-form .form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-input-border);
+  border-radius: 6px;
+  background: var(--theme-input-bg);
+  color: var(--theme-body-text);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.password-form .form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Spinner do footer */
+.modal-footer .loading-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animação de rotação */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================================================== */
+/*                    EDIÇÃO DE PERFIL INLINE (MODO ATUAL)                       */
+/* ============================================================================== */
+
+/* Container inline para edição - substitui o badge */
+.perfil-edit-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Container do select - primeira metade */
+.perfil-select-container {
+  flex: 1;
+  max-width: calc(50% - 4px);
+}
+
+/* Select inline com estilo de badge */
+.perfil-edit-inline .perfil-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--theme-input-border);
+  border-radius: 20px; /* Mesmo border-radius do badge */
+  background: var(--theme-input-bg);
+  color: var(--theme-body-text);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: border-color 0.2s ease;
+  min-width: 0;
+}
+
+.perfil-edit-inline .perfil-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.perfil-edit-inline .perfil-select:disabled {
+  background: var(--theme-button-disabled-bg);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Container dos botões - segunda metade */
+.perfil-actions {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  max-width: calc(50% - 4px);
+}
+
+/* Botões inline com estilo de badge */
+.btn-perfil {
+  flex: 1;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 20px; /* Mesmo border-radius do badge */
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+  text-align: center;
+}
+
+.btn-perfil:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botão cancelar inline - vermelho */
+.btn-cancel-perfil {
+  background: #dc3545;
+  color: white;
+  box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3);
+}
+
+.btn-cancel-perfil:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+}
+
+/* Botão salvar inline - verde */
+.btn-save-perfil {
+  background: #28a745;
+  color: white;
+  box-shadow: 0 1px 3px rgba(40, 167, 69, 0.3);
+}
+
+.btn-save-perfil:hover:not(:disabled) {
+  background: #1e7e34;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.4);
+}
+
+/* Spinner inline menor */
+.loading-spinner-inline {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid transparent;
+  border-top: 1px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Footer simplificado (modo atual) */
+.modal-footer-normal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+}
+
+.modal-footer-edit {
+  display: none;
+}
+
+/* Elementos antigos ocultos */
+.perfil-edit-container,
+.edit-actions {
+  display: none;
+}
+
+/* ============================================================================== */
+/*                            TEMA ESCURO - SELECT                               */
+/* ============================================================================== */
+
+/* Suporte ao tema escuro com [data-theme="dark"] */
+[data-theme="dark"] .perfil-select {
+  background: #2d3748;
+  color: #e2e8f0;
+  border-color: #4a5568;
+}
+
+[data-theme="dark"] .password-info {
+  background: linear-gradient(135deg, #1a365d, #2d3748);
+  color: #90cdf4;
+  border-left-color: #3182ce;
+}
+
+[data-theme="dark"] .password-info i {
+  color: #3182ce;
+}
+
+[data-theme="dark"] .password-form .form-control {
+  background: #2d3748;
+  color: #e2e8f0;
+  border-color: #4a5568;
+}
+
+/* Edição inline no tema escuro */
+[data-theme="dark"] .perfil-edit-inline .perfil-select {
+  background: #2d3748;
+  color: #e2e8f0;
+  border-color: #4a5568;
+}
+
+[data-theme="dark"] .perfil-edit-inline .perfil-select:focus {
+  border-color: #667eea;
+}
+
+/* Força estilo para tema escuro com classe .dark-theme */
+.dark-theme select[id="perfil-change-select"] {
+  background: #2d3748 !important;
+  color: #e2e8f0 !important;
+  border-color: #4a5568 !important;
+}
+
+.dark-theme select[id="perfil-change-select"] option {
+  background: #2d3748 !important;
+  color: #e2e8f0 !important;
+}
+
+/* ============================================================================== */
+/*                              RESPONSIVIDADE                                   */
+/* ============================================================================== */
+
+/* ===== RESPONSIVIDADE DOS BOTÕES DE EDIÇÃO DE PERFIL ===== */
 @media (max-width: 768px) {
-  .invite-dialog {
-    margin: 1rem;
-    width: calc(100% - 2rem);
+  /* Edição de perfil antigo */
+  .perfil-edit-container {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .invite-modal-buttons {
+  .perfil-edit-container label {
+    min-width: auto;
+  }
+  
+  .edit-actions {
     flex-direction: column;
   }
   
-  .invite-modal-buttons .btn {
+  .modal-footer .btn {
     width: 100%;
     justify-content: center;
   }
-}
 
-/* RESPONSIVIDADE DOS BOTÕES */
-
-/* Tablets */
-@media (max-width: 992px) {
-  .controls-section {
-    gap: 1.5rem;
+  /* Edição inline responsiva */
+  .perfil-edit-inline {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .invite-button,
-  .export-button {
-    padding: 0.65rem 1rem;
-    font-size: 0.875rem;
+  .perfil-select-container,
+  .perfil-actions {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .perfil-actions {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .btn-perfil {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 11px;
   }
 }
 
-/* Tablets pequenos e celulares grandes */
-@media (max-width: 768px) {
-  .controls-section {
+/* ===== RESPONSIVIDADE DOS CONTROLES PRINCIPAIS ===== */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+  .lista-colaboradores-container > .controls-section {
     flex-direction: column;
     gap: 1.5rem;
     align-items: stretch;
   }
   
-  .search-container {
+  .lista-colaboradores-container > .controls-section > .search-container {
     max-width: 100%;
-    width: 100%;
   }
   
-  .buttons-container {
-    width: 100%;
+  .lista-colaboradores-container > .controls-section > .buttons-container {
     justify-content: center;
     flex-wrap: wrap;
   }
-  
-  .invite-button,
-  .export-button {
-    flex: 1;
-    min-width: 180px;
-    max-width: 250px;
-    justify-content: center;
-  }
 }
 
-/* Celulares médios */
-@media (max-width: 640px) {
-  .controls-section {
-    padding: 0 0.5rem;
+/* Smartphones (até 768px) */
+@media (max-width: 768px) {
+  .lista-colaboradores-container > .controls-section {
     gap: 1rem;
   }
   
-  .buttons-container {
+  /* Botões principais em coluna */
+  .lista-colaboradores-container > .controls-section > .buttons-container {
     flex-direction: column;
     gap: 0.75rem;
+    width: 100%;
   }
   
-  .invite-button,
-  .export-button {
+  /* Botões ocupam 100% da largura */
+  .lista-colaboradores-container > .controls-section > .buttons-container > .invite-button,
+  .lista-colaboradores-container > .controls-section > .buttons-container > .export-button {
     width: 100%;
-    max-width: 100%;
-    min-width: 100%;
-    height: 50px;
+    justify-content: center;
+    height: 48px;
     font-size: 0.9rem;
   }
   
-  .search-bar input {
-    font-size: 16px; /* Evita zoom no iOS */
-    height: 50px;
+  /* Barra de pesquisa responsiva */
+  .lista-colaboradores-container > .controls-section > .search-container > .search-bar > input {
+    font-size: 0.9rem;
+    padding: 0.7rem 2.5rem 0.7rem 0.9rem;
+  }
+  
+  /* Proteção: botões de perfil não são afetados */
+  .perfil-actions .btn-perfil {
+    width: auto !important;
+    height: auto !important;
+    font-size: 10px !important;
+    padding: 6px 8px !important;
+    flex: 1 !important;
   }
 }
 
-/* Celulares pequenos */
+/* Smartphones pequenos (até 480px) */
 @media (max-width: 480px) {
-  .controls-section {
-    margin-bottom: 1.5rem;
+  .lista-colaboradores-container {
+    padding: 1rem;
+    margin: 1rem auto;
   }
   
-  .invite-button,
-  .export-button {
-    height: 52px;
-    border-radius: 8px;
+  .lista-colaboradores-container > .controls-section {
+    gap: 0.75rem;
   }
   
-  .search-bar input::placeholder {
+  .lista-colaboradores-container > .controls-section > .buttons-container {
+    gap: 0.5rem;
+  }
+  
+  /* Botões principais ainda menores */
+  .lista-colaboradores-container .controls-section .buttons-container .invite-button,
+  .lista-colaboradores-container .controls-section .buttons-container .export-button {
+    height: 44px;
     font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  /* Ícones menores */
+  .lista-colaboradores-container .controls-section .buttons-container .invite-button svg,
+  .lista-colaboradores-container .controls-section .buttons-container .export-button svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  
+  /* Input de pesquisa menor */
+  .lista-colaboradores-container .controls-section .search-container .search-bar input {
+    font-size: 0.85rem;
+    padding: 0.6rem 2rem 0.6rem 0.8rem;
+  }
+  
+  /* Proteção dupla para botões de perfil */
+  .modal-dialog .perfil-actions .btn-perfil {
+    height: auto !important;
+    font-size: 10px !important;
+    padding: 6px 8px !important;
+    width: auto !important;
   }
 }
 
-/* Dark theme support */
-:root.dark .success-message {
-  background: #064e3b;
-  color: #6ee7b7;
-  border-color: #047857;
-}
-
-:root.dark .error-message {
-  background: #7f1d1d;
-  color: #fca5a5;
-  border-color: #dc2626;
-}
-
-/* TEMA DARK DIALOG - Estilos específicos para modo escuro */
-[data-theme="dark"] .modal-dialog {
-  background: #2d3748 !important;
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-body {
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .section-title {
-  color: #e2e8f0;
-  border-bottom-color: #4a5568;
-}
-
-[data-theme="dark"] .info-item label {
-  color: #a0aec0;
-}
-
-[data-theme="dark"] .info-item span {
-  color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-footer {
-  background-color: #1a202c !important;
-  border-top-color: #4a5568;
-}
-
-[data-theme="dark"] .close-button {
-  color: white !important;
-}
-
-[data-theme="dark"] .perfil-badge,
-[data-theme="dark"] .status-badge {
-  color: white !important;
-}
-
-[data-theme="dark"] .status-badge.em.aberto {
-  color: #212529 !important;
+/* Landscape em mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Botões principais voltam lado a lado */
+  .lista-colaboradores-container > .controls-section > .buttons-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .lista-colaboradores-container > .controls-section > .buttons-container > .invite-button,
+  .lista-colaboradores-container > .controls-section > .buttons-container > .export-button {
+    width: calc(50% - 0.5rem);
+  }
+  
+  /* Botões de perfil permanecem inalterados */
+  .perfil-actions {
+    flex-direction: row !important;
+  }
+  
+  .perfil-actions .btn-perfil {
+    width: auto !important;
+    flex: 1 !important;
+  }
 }

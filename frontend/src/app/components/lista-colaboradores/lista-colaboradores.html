@@ -143,15 +143,108 @@
           <div class="info-grid">
             <div class="info-item" *ngIf="selectedColaborador.perfil">
               <label>Perfil de Acesso:</label>
-              <span class="perfil-badge" [ngClass]="selectedColaborador.perfil | lowercase">
-                {{ selectedColaborador.perfil }}
-              </span>
+              
+              <!-- MODO NORMAL: Mostra badges lado a lado -->
+              <div *ngIf="!isEditingProfile" class="perfil-badges-container">
+                <span class="perfil-badge" [ngClass]="selectedColaborador.perfil | lowercase">
+                  {{ selectedColaborador.perfil }}
+                </span>
+                <!-- Badge invisível para manter o layout -->
+                <span class="perfil-badge invisible">Placeholder</span>
+              </div>
+              <!-- MODO EDIÇÃO: Substitui badges por select e botões -->
+              <div *ngIf="isEditingProfile" class="perfil-edit-inline">
+                <div class="perfil-select-container">
+                  <select 
+                    id="perfil-change-select"
+                    name="perfil-change-select"
+                    class="perfil-select"
+                    [value]="getPerfilId(selectedColaborador?.perfil || '')"
+                    (change)="onPerfilChange($event)"
+                    [disabled]="isChangingProfile"
+                    autocomplete="off"
+                  >
+                    <option *ngFor="let perfil of getPerfisPermitidos()" [value]="perfil.id">
+                      {{ perfil.nome }}
+                    </option>
+                  </select>
+                </div>
+                
+                <div class="perfil-actions">
+                  <button 
+                    type="button"
+                    class="btn-perfil btn-cancel-perfil"
+                    (click)="cancelEditingProfile()"
+                    [disabled]="isChangingProfile"
+                  >
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn-perfil btn-save-perfil"
+                    (click)="saveProfileChange()"
+                    [disabled]="isChangingProfile || (showPasswordField && (!newPassword || !confirmPassword))"
+                  >
+                    <span *ngIf="isChangingProfile" class="loading-spinner-inline"></span>
+                    <i *ngIf="!isChangingProfile" class="fas fa-check"></i>
+                    {{ isChangingProfile ? 'Salvando...' : 'Salvar' }}
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="info-item">
-              <label>Status do Convite:</label>
-              <span class="status-badge" [ngClass]="selectedColaborador.status | lowercase">
-                {{ selectedColaborador.status }}
-              </span>
+          </div>
+        </div>
+
+        <!-- Campo de Senha (aparece apenas quando necessário) -->
+        <div class="info-section" *ngIf="showPasswordField">
+          <h3 class="section-title">
+            <i class="fas fa-key"></i>
+            Configuração de Acesso
+          </h3>
+          <div class="password-form">
+            <p class="password-info">
+              <i class="fas fa-info-circle"></i>
+              Este perfil requer acesso ao sistema. Defina uma senha para o colaborador:
+            </p>
+            <div class="info-grid">
+              <div class="info-item">
+                <label for="perfil-new-password">Nova Senha:</label>
+                <input 
+                  id="perfil-new-password"
+                  name="perfil-new-password"
+                  type="password" 
+                  class="form-control"
+                  [(ngModel)]="newPassword"
+                  placeholder="Mínimo 6 caracteres"
+                  [disabled]="isChangingProfile"
+                  autocomplete="new-password"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                >
+              </div>
+              <div class="info-item">
+                <label for="perfil-confirm-password">Confirmar Senha:</label>
+                <input 
+                  id="perfil-confirm-password"
+                  name="perfil-confirm-password"
+                  type="password" 
+                  class="form-control"
+                  [(ngModel)]="confirmPassword"
+                  placeholder="Confirme a senha"
+                  [disabled]="isChangingProfile"
+                  autocomplete="new-password"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                >
+              </div>
+            </div>
+            
+            <!-- Mensagens de erro da senha -->
+            <div class="password-errors" *ngIf="passwordError">
+              <small class="error-text">{{ passwordError }}</small>
             </div>
           </div>
         </div>
@@ -185,18 +278,41 @@
             </div>
           </div>
         </div>
+
+        <!-- Mensagens de feedback -->
+        <div class="message-container" *ngIf="profileChangeSuccess || profileChangeError">
+          <div *ngIf="profileChangeSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i>
+            {{ profileChangeSuccess }}
+          </div>
+          
+          <div *ngIf="profileChangeError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ profileChangeError }}
+          </div>
+        </div>
       </div>
 
       <!-- Footer do Modal -->
       <div class="modal-footer">
-        <button 
-          type="button" 
-          class="btn btn-secondary" 
-          (click)="closeColaboradorDialog()"
-        >
-          <i class="fas fa-times"></i>
-          Fechar
-        </button>
+        <!-- Botão "Alterar Perfil" -->
+        <div *ngIf="!isEditingProfile" class="modal-footer-normal">        
+          <!-- Botão "Alterar Perfil" (só aparece se usuário pode alterar) -->
+          <button 
+            *ngIf="canChangeProfile()"
+            type="button"
+            class="btn btn-primary"
+            (click)="startEditingProfile()"
+          >
+            <i class="fas fa-user-cog"></i>
+            Alterar Perfil
+          </button>
+        </div>
+
+        <!-- Modo edição: vazio (select e botões estão no lugar do badge) -->
+        <div *ngIf="isEditingProfile" class="modal-footer-edit">
+          <!-- Vazio - controles estão inline no lugar do badge -->
+        </div>
       </div>
     </div>
   </div>
