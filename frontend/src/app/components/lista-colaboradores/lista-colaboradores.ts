@@ -79,6 +79,23 @@ export class ListaColaboradoresComponent implements OnInit {
   emailError: string = '';
   isValidEmail: boolean = false;
 
+  // Novas propriedades para alteração de perfil
+  isEditingProfile: boolean = false;
+  showPasswordField: boolean = false;
+  newPassword: string = '';
+  confirmPassword: string = '';
+  isChangingProfile: boolean = false;
+  profileChangeError: string = '';
+  profileChangeSuccess: string = '';
+  passwordError: string = '';
+
+    // Lista de perfis disponíveis
+  perfisDisponiveis = [
+    { id: 1, nome: 'Administrador' },
+    { id: 2, nome: 'Gente e Cultura' },
+    { id: 3, nome: 'Colaborador Comum' }
+  ];
+
   private http = inject(HttpClient);
   private conviteService = inject(ConvitesService);
 
@@ -312,6 +329,8 @@ export class ListaColaboradoresComponent implements OnInit {
   closeColaboradorDialog(): void {
     this.showColaboradorDialog = false;
     this.selectedColaborador = null;
+    //  Limpar estados de edição
+    this.resetEditingState();
     // Restaura o scroll da página
     document.body.style.overflow = 'auto';
   }
@@ -548,4 +567,194 @@ export class ListaColaboradoresComponent implements OnInit {
       return false; // Em caso de erro, permite o envio
     }
   }
+
+  // ==================== NOVOS MÉTODOS PARA ALTERAÇÃO DE PERFIL ====================
+
+  // Verifica se o usuário pode alterar perfis
+  canChangeProfile(): boolean {
+    // Por enquanto, sempre retorna true para teste visual
+    // No futuro: integrar com AuthService quando backend estiver pronto
+    return true;
+  }
+
+  // Inicia a edição de perfil
+  startEditingProfile(): void {
+    this.isEditingProfile = true;
+    this.resetPasswordFields();
+    this.clearMessages();
+  }
+
+  // Cancela a edição de perfil
+  cancelEditingProfile(): void {
+    this.resetEditingState();
+  }
+
+  // Método chamado quando o select de perfil muda
+  onPerfilChange(event: any): void {
+    const novoPerfilId = +event.target.value;
+    
+    // Verificar se precisa mostrar campo de senha
+    this.showPasswordField = (novoPerfilId === 1 || novoPerfilId === 2);
+    
+    if (!this.showPasswordField) {
+      this.resetPasswordFields();
+    } else {
+      this.newPassword = '';
+      this.confirmPassword = '';
+      this.passwordError = '';
+    }
+  }
+
+  // Salva a alteração de perfil
+  saveProfileChange(): void {
+    if (!this.selectedColaborador) return;
+
+    const selectElement = document.querySelector('#perfil-select') as HTMLSelectElement;
+    if (!selectElement) return;
+
+    const novoPerfilId = +selectElement.value;
+    const perfilAtualId = this.getPerfilId(this.selectedColaborador.perfil || '');
+
+    // Se não mudou o perfil, apenas cancela
+    if (novoPerfilId === perfilAtualId) {
+      this.cancelEditingProfile();
+      return;
+    }
+
+    // Validar senha se necessário
+    if (this.showPasswordField) {
+      if (!this.validatePassword()) {
+        return;
+      }
+    }
+
+    // SIMULAÇÃO - aplicar mudança apenas no frontend
+    this.simulateProfileChange(novoPerfilId);
+  }
+
+  // Valida os campos de senha
+  private validatePassword(): boolean {
+    if (!this.newPassword) {
+      this.passwordError = 'A senha é obrigatória para este perfil.';
+      return false;
+    }
+
+    if (this.newPassword.length < 6) {
+      this.passwordError = 'A senha deve ter pelo menos 6 caracteres.';
+      return false;
+    }
+
+    if (this.newPassword !== this.confirmPassword) {
+      this.passwordError = 'As senhas não coincidem.';
+      return false;
+    }
+
+    this.passwordError = '';
+    return true;
+  }
+
+  // SIMULAÇÃO - Aplica mudança apenas no frontend (sem backend)
+  private simulateProfileChange(novoPerfilId: number): void {
+    if (!this.selectedColaborador) return;
+
+    this.isChangingProfile = true;
+    this.clearMessages();
+
+    // Simular delay de 1 segundo (como se fosse uma chamada de API)
+    setTimeout(() => {
+      try {
+        // Atualizar o perfil localmente
+        const novoPerfilNome = this.mapearPerfilPorId(novoPerfilId);
+        
+        // Atualizar na lista de colaboradores
+        const index = this.colaboradores.findIndex(c => c.id === this.selectedColaborador!.id);
+        if (index !== -1) {
+          this.colaboradores[index].perfil = novoPerfilNome;
+        }
+        
+        // Atualizar no modal
+        if (this.selectedColaborador) {
+          this.selectedColaborador.perfil = novoPerfilNome;
+        }
+        
+        this.profileChangeSuccess = 'Perfil atualizado com sucesso! (Simulação)';
+        this.isChangingProfile = false;
+        this.resetEditingState();
+        
+        // Reaplica filtros para atualizar a tabela
+        this.applyFilterAndPaginate();
+        
+        // Limpar mensagem após 3 segundos
+        setTimeout(() => {
+          this.profileChangeSuccess = '';
+        }, 3000);
+        
+      } catch (error) {
+        this.isChangingProfile = false;
+        this.profileChangeError = 'Erro na simulação. Tente novamente.';
+      }
+    }, 1000); // Simula 1 segundo de loading
+  }
+
+  // Método para obter perfis permitidos
+  getPerfisPermitidos(): { id: number, nome: string }[] {
+    // Simulação - definir perfil do usuário logado hardcoded
+    // No futuro: pegar de AuthService quando backend estiver pronto
+    const userProfile = 'Administrador'; // ou 'Gente e Cultura' para testar
+    
+    if (userProfile === 'Administrador') {
+      return this.perfisDisponiveis; // Pode alterar todos
+    } else if (userProfile === 'Gente e Cultura') {
+      return this.perfisDisponiveis.filter(p => p.id !== 1); // Não pode criar Administrador
+    } else {
+      return []; // Colaborador comum não pode alterar perfis
+    }
+  }
+
+  // Método público para obter ID do perfil pelo nome
+  getPerfilId(perfilNome: string): number {
+    if (!perfilNome) return 3;
+    
+    const perfil = this.perfisDisponiveis.find(p => 
+      p.nome.toLowerCase() === perfilNome.toLowerCase()
+    );
+    return perfil ? perfil.id : 3;
+  }
+
+  // Novo método para mapear ID para nome (diferente do existente)
+  private mapearPerfilPorId(perfilId: number): string {
+    const perfil = this.perfisDisponiveis.find(p => p.id === perfilId);
+    return perfil ? perfil.nome : 'Colaborador Comum';
+  }
+
+  // Reseta o estado de edição
+  private resetEditingState(): void {
+    this.isEditingProfile = false;
+    this.showPasswordField = false;
+    this.resetPasswordFields();
+    this.clearMessages();
+  }
+
+  // Reseta os campos de senha
+  private resetPasswordFields(): void {
+    this.newPassword = '';
+    this.confirmPassword = '';
+    this.passwordError = '';
+  }
+
+  // Limpa as mensagens de feedback
+  private clearMessages(): void {
+    this.profileChangeError = '';
+    this.profileChangeSuccess = '';
+  }
+
+  // Atualizar apenas o método closeColaboradorDialog para limpar estado de edição
+  // closeColaboradorDialog(): void {
+  //   this.showColaboradorDialog = false;
+  //   this.selectedColaborador = null;
+  //   // Limpar estados de edição
+  //   this.resetEditingState();
+  //   // Restaura o scroll da página
+  //   document.body.style.overflow = 'auto';
+  // }
 }
