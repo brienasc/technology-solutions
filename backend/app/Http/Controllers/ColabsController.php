@@ -49,12 +49,6 @@ class ColabsController extends Controller{
                 return $this->apiResponse->badRequest(['error' => 'E-mail do convite não confere'], 400);
             }
 
-            // Integração com ViaCEP
-            $cepResponse = \Illuminate\Support\Facades\Http::get("https://viacep.com.br/ws/{$validated['cep']}/json/");
-            if ($cepResponse->failed() || isset($cepResponse['erro'])) {
-                return $this->apiResponse->badRequest(['error' => 'CEP inválido'], 400);
-            }
-
             $colab = $this->colabService->create($validated);
 
             // Criação do colaborador
