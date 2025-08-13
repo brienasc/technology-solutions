@@ -101,4 +101,24 @@ class ConvitesController extends Controller{
             return $this->apiResponse->error(null, 'Erro ao buscar convite', 400);
         }
     }
+
+    public function show($id_convite){
+    $convite = Convite::find($id_convite);
+
+        if (!$convite) {
+            return response()->json(['error' => 'Convite não encontrado'], 400);
+        }
+
+        return response()->json([
+            'email' => $convite->email,
+            'status' => $convite->status,
+        ]);
+
+        // Verifica convite
+        $convite = Convite::find($validated['convite_id']);
+        if (!$convite || $convite->status !== 'valido') {
+            return response()->json(['error' => 'Convite inválido'], 400);
+        }
+    }
+
 }
