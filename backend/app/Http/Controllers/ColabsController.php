@@ -76,11 +76,21 @@ class ColabsController extends Controller{
         }
     }
 
-    public function index(){
+    public function index(Request $request): JsonResponse{
         try{
-            $colabs = $this->colabService->indexAllColabs();
+            $filters = $request->only(['email', 'nome', 'cpf', 'page', 'per_page']);
 
-            return $this->apiResponse->success($colabs, 'Lista de colaboradores retornada com sucesso.');
+            $colabsPaginate = $this->colabService->indexFilteredColabs($filters);
+
+            $responseData = [
+                'colabs' => $colabsPaginate->getCollection(),
+                'current_page' => $colabsPaginate->currentPage(),
+                'per_page' => $colabsPaginate->perPage(),
+                'total' => $colabsPaginate->total(),
+                'last_page' => $colabsPaginate->lastPage(),
+            ];
+
+            return $this->apiResponse->success($responseData, 'Lista de colaboradores retornada com sucesso.');
         }catch(Exception $e){
             return $this->apiResponse->badRequest( null, 'Erro ao buscar colaboradores.');
         }
