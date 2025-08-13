@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\PerfilType;
 use App\Models\Colab;
-use App\Models\Perfis;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
 use Exception;
-use Hash;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Responses\ApiResponse;
@@ -252,7 +249,7 @@ class ColabsController extends Controller{
         try{
             $validateData = $request->validate([
                 'password' => [
-                    'required',
+                    'nullable',
                     Password::min(8)
                         ->mixedCase()
                         ->numbers()
@@ -267,11 +264,15 @@ class ColabsController extends Controller{
                 'password.symbols' => 'A senha deve conter pelo menos um caractere especial.',
                 'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
             ]);
+
             
             $new_perfil = PerfilType::from($validateData['perfil']);
+            $password = $validateData['password'] ?? null;
+            $actor = $request->user();
 
-            $user = $this->colabService->updateRoleColab($id,  $validateData['password'], 
-                                                      $request->user(), $new_perfil);
+            $user = $this->colabService->updateRoleColab($id,  $password, 
+                                                      $actor, $new_perfil);
+
             if($user == null){
                 return $this->apiResponse->badRequest(null, "Falha ao atualizar usuário");
             }
@@ -280,11 +281,8 @@ class ColabsController extends Controller{
         }catch(ValidationException $e){
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         }catch(Exception $e){
-            return $this->apiResponse->badRequest(null, 'Bad request');
+            Log::info(message: ''. $e->getMessage());
+            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
         }
-    }
-
-    public function teste(){
-        return $this->apiResponse->success(null, 'teste com sucesso');
     }
 }

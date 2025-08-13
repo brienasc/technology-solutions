@@ -65,7 +65,7 @@ class ColabService{
         return $data;
     }
 
-    public function updateRoleColab(string $id, string $password, Colab $actor, PerfilType $new_profile): ?Colab{
+    public function updateRoleColab(string $id, ?string $password = null, Colab $actor, PerfilType $new_profile): ?Colab{
         $permissions = [
             PerfilType::Administrador->value => [
                 PerfilType::Administrador->value,
@@ -88,10 +88,14 @@ class ColabService{
         {
             return null;
         }
-        
+
         if($new_profile->value == PerfilType::ColaboradorComum->value){
             $user->password = null;
         }else if($user->perfil_id == PerfilType::ColaboradorComum->value){
+            if($password == null){
+                return null;
+            }
+
             $user->password = Hash::make($password);
         }
 
