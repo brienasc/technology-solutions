@@ -16,7 +16,7 @@ import { ConvitesService } from '../../services/convite.service';
 // Interface para o modelo de dados do Colaborador.
 // Define a estrutura esperada para cada objeto de colaborador.
 interface Colaborador {
-  id: number;
+  id: string;
   nome: string;
   email: string;
   cpf: string;
@@ -114,7 +114,7 @@ export class ListaColaboradoresComponent implements OnInit {
     this.http.get<any>(apiUrl).pipe(
       map(response => {
         // A API retorna um objeto com propriedade 'data'
-        const colaboradores = response.data || response;
+        const colaboradores = response.data.colabs || response;
         
         // Verificar se é array válido
         if (!Array.isArray(colaboradores)) {
@@ -124,7 +124,7 @@ export class ListaColaboradoresComponent implements OnInit {
         // Mapear os dados da API para o formato do frontend
         return colaboradores.map((colab: any): Colaborador => {
           return {
-            id: colab.id_colab || 0,
+            id: colab.id_colab || "",
             nome: colab.name || 'Nome não informado',
             email: colab.email || 'Email não informado',
             cpf: colab.cpf || 'CPF não informado',
@@ -608,10 +608,10 @@ export class ListaColaboradoresComponent implements OnInit {
   // Salva a alteração de perfil
   saveProfileChange(): void {
     if (!this.selectedColaborador) return;
-
-    const selectElement = document.querySelector('#perfil-select') as HTMLSelectElement;
+    
+    const selectElement = document.querySelector('.perfil-select') as HTMLSelectElement;
     if (!selectElement) return;
-
+    
     const novoPerfilId = +selectElement.value;
     const perfilAtualId = this.getPerfilId(this.selectedColaborador.perfil || '');
 
@@ -628,8 +628,35 @@ export class ListaColaboradoresComponent implements OnInit {
       }
     }
 
-    // SIMULAÇÃO - aplicar mudança apenas no frontend
-    this.simulateProfileChange(novoPerfilId);
+    let payload: { perfil: number; password?: string } = {
+      perfil: novoPerfilId
+    };
+
+    const colaboradorComum = this.perfisDisponiveis.find(perfil => perfil.nome === 'Colaborador Comum');
+    if (!colaboradorComum) {
+      return; 
+    }
+
+    if (novoPerfilId !== colaboradorComum.id) {
+      payload.password = this.newPassword;
+    }
+    
+    const apiUrl = `http://localhost:8080/api/colabs/${this.selectedColaborador.id}`;
+    this.http.put(apiUrl, payload).subscribe({
+      next: (resposta) => {
+        if (this.selectedColaborador) {
+          this.selectedColaborador.perfil = this.mapearPerfilPorId(novoPerfilId)
+        }
+        
+        this.profileChangeSuccess = 'Perfil atualizado com sucesso!';
+        this.isChangingProfile = false;
+        this.resetEditingState();
+      },
+      error: (error) => {
+        console.error('Erro ao alterar perfil', error);
+      }
+    });
+
   }
 
   // Valida os campos de senha
