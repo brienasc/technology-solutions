@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
 
-Route::post('/login', [ColabsController::class, 'login']);
+Route::post('/login', [ColabsController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('abilities:access:menu-convidar')->group(function () {
@@ -21,4 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/colabs', [ColabsController::class,'index']);
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
     });
+});
+
+Route::get('/ping', function() {
+    return response()->json(['pong' => true]);
 });
