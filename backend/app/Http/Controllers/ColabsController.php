@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PerfilType;
 use App\Models\Colab;
 use App\Models\Perfis;
 use App\Rules\Cpf;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
 use App\Services\ColabService;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Str;
 
 class ColabsController extends Controller{
@@ -243,5 +246,45 @@ class ColabsController extends Controller{
         ];
         
         return $perfis[$perfilId] ?? "Perfil {$perfilId}";
+    }
+
+    public function update(Request $request, $id): JsonResponse{
+        try{
+            $validateData = $request->validate([
+                'password' => [
+                    'required',
+                    Password::min(8)
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                ],
+                'perfil' => ['required', 'integer', Rule::in(array_column(PerfilType::cases(), 'value'))],
+            ],
+            [
+                'required' => 'O :attribute é obrigatório',
+                'password.mixed' => 'A senha deve conter letras maiúsculas e minúsculas.',
+                'password.numbers' => 'A senha deve conter pelo menos um número.',
+                'password.symbols' => 'A senha deve conter pelo menos um caractere especial.',
+                'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
+            ]);
+            
+            $new_perfil = PerfilType::from($validateData['perfil']);
+
+            $user = $this->colabService->updateRoleColab($id,  $validateData['password'], 
+                                                      $request->user(), $new_perfil);
+            if($user == null){
+                return $this->apiResponse->badRequest(null, "Falha ao atualizar usuário");
+            }
+            
+            return $this->apiResponse->success($user, 'Usuario atualizado!');
+        }catch(ValidationException $e){
+            return $this->apiResponse->badRequest($e->errors(), 'Bad request');
+        }catch(Exception $e){
+            return $this->apiResponse->badRequest(null, 'Bad request');
+        }
+    }
+
+    public function teste(){
+        return $this->apiResponse->success(null, 'teste com sucesso');
     }
 }

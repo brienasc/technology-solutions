@@ -64,4 +64,40 @@ class ColabService{
         ];
         return $data;
     }
+
+    public function updateRoleColab(string $id, string $password, Colab $actor, PerfilType $new_profile): ?Colab{
+        $permissions = [
+            PerfilType::Administrador->value => [
+                PerfilType::Administrador->value,
+                PerfilType::GenteECultura->value,
+                PerfilType::ColaboradorComum->value,
+            ],
+            PerfilType::GenteECultura->value => [
+                PerfilType::GenteECultura->value,
+                PerfilType::ColaboradorComum->value,
+            ],
+        ];
+
+        $user = Colab::find($id);
+        if($user == null){
+            return null;
+        }
+
+        if (!isset($permissions[$actor->perfil_id]) ||
+            !in_array($new_profile->value, $permissions[$actor->perfil_id]))
+        {
+            return null;
+        }
+        
+        if($new_profile->value == PerfilType::ColaboradorComum->value){
+            $user->password = null;
+        }else if($user->perfil_id == PerfilType::ColaboradorComum->value){
+            $user->password = Hash::make($password);
+        }
+
+        $user->perfil_id = $new_profile->value;
+        $user->save();
+
+        return $user;
+    }
 }
