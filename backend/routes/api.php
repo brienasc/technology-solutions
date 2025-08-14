@@ -16,9 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('abilities:access:menu-convidar')->group(function () {
         Route::post('/convites', [ConvitesController::class,'store']);
         Route::get('/convites', [ConvitesController::class,'index']);
-        Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
     });
-
+    
     # Rotas de Colabs
     Route::middleware('abilities:access:menu-gerencial')->group(function () {
         Route::post('/colabs', [ColabsController::class,'store']);
@@ -28,6 +27,4 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::get('/ping', function() {
-    return response()->json(['pong' => true]);
-});
+Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
