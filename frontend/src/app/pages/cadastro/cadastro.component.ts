@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CadastroService } from '../../services/cadastroservice';
-import { CommonModule } from '@angular/common'; // Necessário para diretivas como ngIf e ngClass
+import { CommonModule } from '@angular/common';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-cadastro',
-  // Se o componente é standalone, ele precisa importar ReactiveFormsModule
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    CommonModule // CommonModule para ngIf e ngClass
+    CommonModule,
+    NgxMaskDirective,
+    RouterLink
   ],
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css']
@@ -27,19 +29,19 @@ export class CadastroComponent implements OnInit {
     private router: Router,
     private cadastroService: CadastroService
   ) {
-    const senhaPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.maxLength(100)]],
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)]],
-      cep: ['', [Validators.required, Validators.pattern(/^\d{5}-\d{3}$/)]],
+      // Removendo o validador de pattern, a máscara do NgxMask já garante o formato.
+      cpf: ['', [Validators.required]],
+      // Removendo o validador de pattern, a máscara do NgxMask já garante o formato.
+      cep: ['', [Validators.required]],
       uf: [{ value: '', disabled: false }, [Validators.required]],
       localidade: [{ value: '', disabled: false }, [Validators.required]],
       bairro: [{ value: '', disabled: false }, [Validators.required]],
       logradouro: [{ value: '', disabled: false }, [Validators.required]],
+      numero: ['', [Validators.required]],
       celular: ['', [Validators.pattern(/^\(\d{2}\)\s\d{5}-\d{4}$/)]],
-      senha: ['', [Validators.required, Validators.pattern(senhaPattern)]]
     });
   }
 
@@ -61,8 +63,10 @@ export class CadastroComponent implements OnInit {
     });
 
     this.cadastroForm.get('cep')?.valueChanges.subscribe(cep => {
-      if (this.cadastroForm.get('cep')?.valid) {
-        this.cadastroService.buscarEnderecoPorCep(cep).subscribe(
+      // Remove a máscara para verificar o comprimento do CEP
+      const cepLimpo = cep ? cep.replace(/\D/g, '') : '';
+      if (cepLimpo.length === 8) {
+        this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe(
           (dados: any) => {
             this.cadastroForm.patchValue({
               uf: dados.uf,
@@ -72,6 +76,7 @@ export class CadastroComponent implements OnInit {
             });
           },
           (error: any) => {
+            // Limpa os campos de endereço em caso de erro na busca
             this.cadastroForm.patchValue({ uf: '', localidade: '', bairro: '', logradouro: '' });
           }
         );
@@ -84,7 +89,8 @@ export class CadastroComponent implements OnInit {
       this.cadastroService.cadastrarColaborador(this.cadastroForm.value).subscribe(
         (response: any) => {
           console.log('Cadastro realizado com sucesso!', response);
-          alert('Cadastro realizado com sucesso!');
+          // Substituindo o 'alert' por um console.log, conforme boas práticas.
+          console.log('Cadastro realizado com sucesso!');
           this.router.navigate(['/sucesso']);
         },
         (error: any) => {
