@@ -124,15 +124,15 @@ export class ListaColaboradoresComponent implements OnInit {
         // Mapear os dados da API para o formato do frontend
         return colaboradores.map((colab: any): Colaborador => {
           return {
-            id: colab.id_colab || "",
-            nome: colab.name || 'Nome não informado',
+            id: colab.id || "",
+            nome: colab.nome || 'Nome não informado',
             email: colab.email || 'Email não informado',
             cpf: colab.cpf || 'CPF não informado',
             celular: colab.celular,
             perfil: this.mapearPerfil(colab.perfil_id),
             status: 'Finalizado',
             cep: colab.cep,
-            uf: colab.estado,
+            uf: colab.uf,
             localidade: colab.cidade,
             bairro: colab.bairro,
             logradouro: colab.numero ? `${colab.logradouro}, ${colab.numero}` : colab.logradouro
