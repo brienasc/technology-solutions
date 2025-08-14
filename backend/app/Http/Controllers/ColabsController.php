@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
 use App\Services\ColabService;
-use Str;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ColabsController extends Controller{
     protected ApiResponse $apiResponse;
@@ -96,8 +97,8 @@ class ColabsController extends Controller{
         try {
             set_time_limit(300);
             
-            \Log::info('🚀 Export iniciado');
-            \Log::info('📦 Parâmetros recebidos: ' . json_encode($request->all()));
+            Log::info('🚀 Export iniciado');
+            Log::info('📦 Parâmetros recebidos: ' . json_encode($request->all()));
             
             // Iniciar query
             $query = Colab::query();
@@ -105,7 +106,7 @@ class ColabsController extends Controller{
             // APLICAR FILTRO DE PESQUISA se fornecido
             if ($request->has('search') && !empty($request->search)) {
                 $searchTerm = $request->search;
-                \Log::info("🔍 Aplicando filtro de pesquisa: '{$searchTerm}'");
+                Log::info("🔍 Aplicando filtro de pesquisa: '{$searchTerm}'");
                 
                 $query->where(function($q) use ($searchTerm) {
                     $q->where('name', 'LIKE', "%{$searchTerm}%")
@@ -114,16 +115,16 @@ class ColabsController extends Controller{
                       ->orWhere('celular', 'LIKE', "%{$searchTerm}%");
                 });
             } else {
-                \Log::info('📋 Nenhum filtro aplicado - exportando todos');
+                Log::info('📋 Nenhum filtro aplicado - exportando todos');
             }
             
             // Buscar colaboradores
             $colaboradores = $query->get();
             
-            \Log::info("📊 Colaboradores encontrados: {$colaboradores->count()}");
+            Log::info("📊 Colaboradores encontrados: {$colaboradores->count()}");
             
             if ($colaboradores->isEmpty()) {
-                \Log::warning('⚠️ Nenhum colaborador encontrado com os filtros aplicados');
+                Log::warning('⚠️ Nenhum colaborador encontrado com os filtros aplicados');
                 
                 // Retornar arquivo vazio com mensagem
                 $csvContent = "Nome,Email,CPF,Celular,Perfil\n";
@@ -162,7 +163,7 @@ class ColabsController extends Controller{
                 $csvContent .= implode(';', $row) . "\n";
             }
             
-            \Log::info('✅ CSV gerado com sucesso');
+            Log::info('✅ CSV gerado com sucesso');
             
             // Nome do arquivo indica se teve filtro
             $filename = 'colaboradores_' . date('Y-m-d_H-i-s');
@@ -177,7 +178,7 @@ class ColabsController extends Controller{
             ]);
             
         } catch (\Exception $e) {
-            \Log::error('❌ Erro: ' . $e->getMessage());
+            Log::error('❌ Erro: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao exportar',
