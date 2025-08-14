@@ -7,9 +7,11 @@ use App\Models\Colab;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Hash;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Responses\ApiResponse;
