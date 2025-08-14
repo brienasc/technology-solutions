@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CadastroService {
-  private apiUrl = 'http://localhost:8000/api'; // Substituir pela URL da sua API
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
@@ -27,8 +27,8 @@ export class CadastroService {
    * @returns Um Observable com a resposta da API.
    */
   cadastrarColaborador(data: any): Observable<any> {
-    // A propriedade 'data' contem todos os campos do formulário, incluindo a senha
-    // A API em Laravel deve receber esses dados, validar e salvar no banco.
+    // 'data' contem todos os campos do formulário, incluindo a senha
+    // A API Laravel recebe esses dados, valida e salva no banco
     return this.http.post(`${this.apiUrl}/colaboradores/cadastrar`, data);
   }
 
@@ -38,7 +38,7 @@ export class CadastroService {
    * @returns Um Observable com a resposta da API.
    */
   validarConvite(token: string): Observable<any> {
-    // Chamada GET para o endpoint de validação de convite na sua API Laravel
-    return this.http.get(`${this.apiUrl}/convites/validar/${token}`);
+    // Chamada GET para o endpoint de validação de convite na API Laravel
+    return this.http.get(`${this.apiUrl}/convites/${token}`);
   }
 }
