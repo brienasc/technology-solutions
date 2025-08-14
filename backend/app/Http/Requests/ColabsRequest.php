@@ -21,16 +21,17 @@ class ColabsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
+            'nome' => 'required|max:255',
             'email' => '|required|email|max:255|unique:colab,email',
             'cpf' => ['required','digits:11', new Cpf(), 'unique:colab,cpf'],
             'celular' => 'required|digits:11',
             'cep' => 'required|digits:8',
-            'estado' => 'required|max:2',
+            'uf' => 'required|max:2',
             'cidade' => 'required|max:30',
             'bairro' => 'required|max:40',
             'logradouro' => 'required|max:100',
-            'numero' => 'required|max:5'
+            'numero' => 'required|max:5',
+            'token' => 'requeired'
         ];
     }
 
