@@ -4,14 +4,19 @@
     <span class="slider round"></span>
   </label>
 
-  <div *ngIf="conviteValido === null" class="cadastro-loading-section">
-    <p>Verificando convite...</p>
+  <!-- **Nova seção de carregamento** -->
+  <div *ngIf="conviteValido === null" class="cadastro-form-section">
+    <div class="cadastro-content-wrapper cadastro-loading-content">
+      <p>Verificando convite...</p>
     </div>
+  </div>
 
+  <!-- Seção do formulário (só aparece se o convite for válido) -->
   <div *ngIf="conviteValido" class="cadastro-form-section">
     <div class="cadastro-content-wrapper">
       <h1>Efetue seu cadastro</h1>
       <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+        <!--  campos de formulário-->
         <div class="form-group">
           <label for="nome">Nome</label>
           <input type="text" id="nome" formControlName="nome" placeholder="Preencha seu nome"
@@ -89,10 +94,14 @@
       </form>
     </div>
   </div>
-    
-  <div *ngIf="conviteValido === false" class="cadastro-error-section">
-    <div class="error-message">
-      <h2>Oops!</h2>
+  
+  <!-- Seção de erro para convite inválido -->
+  <div *ngIf="conviteValido === false" class="cadastro-form-section cadastro-error-container">
+    <div class="cadastro-content-wrapper cadastro-error-content">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h2>ATENÇÃO!</h2>
       <p>{{ mensagemErro }}</p>
     </div>
   </div>
@@ -100,6 +109,4 @@
   <div class="cadastro-image-section">
     <img src="app/assets/imagens/img-cadastro.png" alt="Imagem relacionada ao cadastro">
   </div>
-
-  <button [routerLink]="['/']" class="back-to-home-button cadastro-button-style">Voltar ao Início</button>
 </div>

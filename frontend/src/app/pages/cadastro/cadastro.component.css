@@ -95,6 +95,21 @@ body.dark-theme {
   max-height: 100vh; /*  garante que o formulário não exceda a altura da tela */
 }
 
+/* **Novos estilos para a seção de carregamento** */
+.cadastro-loading-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+}
+
+.cadastro-loading-content p {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
 .cadastro-content-wrapper {
   background-color: var(--theme-card-bg, #fff);
   padding: 60px 40px;
@@ -114,6 +129,44 @@ body.dark-theme {
   font-weight: 700;
   text-align: left;
   white-space: nowrap; /*Garante que o texto não quebre */
+}
+
+/* **Novos estilos para a seção de erro** */
+.cadastro-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centraliza verticalmente o conteúdo de erro */
+  text-align: center;
+  flex-direction: column;
+}
+
+.cadastro-error-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.cadastro-error-content h2 {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: var(--theme-heading-text, #333);
+  margin-bottom: 10px;
+}
+
+.cadastro-error-content p {
+  font-size: 1.2em;
+  color: var(--theme-body-text, #555);
+  margin-bottom: 20px;
+}
+
+.error-icon {
+  color: #e53e3e; /* Vermelho para o ícone de erro */
+  font-size: 4em;
+  margin-bottom: 20px;
 }
 
 /* Estilos para textos regulares */
