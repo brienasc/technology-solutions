@@ -32,6 +32,13 @@ class ColabsController extends Controller{
 
     public function store(ColabsRequest $request): JsonResponse{
         try{
+            $validated = $request->validated();
+
+            // Verifica convite
+            $convite = Convite::find($validated['convite_id']);
+            if (!$convite || $convite->status !== 'valido') {
+                return $this->apiResponse->badRequest(null, 'Convite inválido');
+            }
 
             $validated = $request->validated([
                 'name' => 'required|string|max:255',
