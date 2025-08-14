@@ -17,12 +17,12 @@ class Colab extends Authenticatable
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
+        'nome',
         'cpf',
         'email',
         'celular',
         'cep',
-        'estado',
+        'uf',
         'cidade',
         'bairro',
         'logradouro',
