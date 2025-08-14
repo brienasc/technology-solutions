@@ -49,13 +49,19 @@ export class CadastroComponent implements OnInit {
     if (token) {
       this.cadastroService.validarConvite(token).subscribe({
         next: (response: any) => {
-          this.conviteValido = true;
-          this.cadastroForm.patchValue({ email: response.email });
+          const status = response.data.status_code
+
+          if(status === 0 ){
+            this.conviteValido = true;
+            this.cadastroForm.patchValue({ email: response.data.email_colab });
+          }else{
+            this.conviteValido = false;
+            this.mensagemErro = 'Convite expirado ou inválido.';
+          }
         },
         error: (error: any) => {
           this.conviteValido = false;
-          // Exibe a mensagem de erro específica do backend ou uma genérica
-          this.mensagemErro = error.error.message || 'Convite expirado ou inválido.';
+          this.mensagemErro = 'Convite expirado ou inválido.';
         }
       });
     } else {
@@ -93,7 +99,7 @@ export class CadastroComponent implements OnInit {
     
     // Adiciona o token e o e-mail ao objeto a ser enviado
     const cadastroData = { ...formData, token };
-    
+    console.log(cadastroData)
     if (this.cadastroForm.valid) {
       this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
         next: (response: any) => {
