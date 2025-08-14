@@ -12,6 +12,7 @@ use Exception;
 
 use App\Http\Responses\ApiResponse;
 use App\Services\ConviteService;
+use Illuminate\Support\Facades\Log;
 
 class ConvitesController extends Controller{
     protected $apiResponse;
@@ -35,6 +36,9 @@ class ConvitesController extends Controller{
             ]);
        
             $convite = $this->conviteService->enviarConvite($validateData['email']);
+            if($convite == null){
+                return $this->apiResponse->badRequest(null, 'Já existe um convite em aberto para esse email.');
+            }
 
             $conviteArray = $convite->toArray();
             $conviteArray['status_description'] = $convite->status_code->description();
@@ -43,27 +47,39 @@ class ConvitesController extends Controller{
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         } catch (Exception $e) {
-            return $this->apiResponse->error('', $e->getMessage(), 400);
+            return $this->apiResponse->error(null, 'Erro ao enviar convite', 400);
         }
     }
 
     public function index(Request $request): JsonResponse{
         try {
-            $convites = $this->conviteService->indexAllConvites();
+            $filters = $request->only(['email', 'status', 'page', 'per_page']);
 
-            $mappedConvites = $convites->map(function ($convite) {
-                if($convite->status_code !== ConviteStatus::FINALIZADO &&
-                   $convite->expires_at && Carbon::now()->greaterThan($convite->expires_at))
+            $invitationsPaginate = $this->conviteService->indexFilteredConvites($filters);
+
+            
+            $mappedConvites = $invitationsPaginate->map(function ($invitation): mixed {
+                if($invitation->status_code !== ConviteStatus::FINALIZADO &&
+                $invitation->expires_at && Carbon::now()->greaterThan($invitation->expires_at))
                 {
-                    $convite->status_code = ConviteStatus::EXPIRADO;
+                    $invitation->status_code = ConviteStatus::EXPIRADO;
                 }
-
-                $conviteArray = $convite->toArray();
-                $conviteArray['status_description'] = $convite->status_code->description();
-                return $conviteArray;
+                
+                $invitationArray = $invitation->toArray();
+                $invitationArray['status_description'] = $invitation->status_code->description();
+                return $invitationArray;
             });
+            
+            $responseData = [
+                'invitations' => $mappedConvites,
+                'current_page' => $invitationsPaginate->currentPage(),
+                'per_page' => $invitationsPaginate->perPage(),
+                'total' => $invitationsPaginate->total(),
+                'last_page' => $invitationsPaginate->lastPage(),
+            ];
+            
 
-            return $this->apiResponse->success($mappedConvites, 'Lista de convites retornada com sucesso.');
+            return $this->apiResponse->success($responseData, 'Lista de convites retornada com sucesso.');
         } catch (Exception $e) {
             return $this->apiResponse->error('Erro ao buscar convites', 400);
         }
@@ -92,7 +108,7 @@ class ConvitesController extends Controller{
 
             return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
         } catch(Exception $e) {
-            return $this->apiResponse->error($e->getMessage(), 'Erro ao buscar convite', 400);
+            return $this->apiResponse->error(null, 'Erro ao buscar convite', 400);
         }
     }
 }

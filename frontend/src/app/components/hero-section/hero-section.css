@@ -1,17 +1,24 @@
+:host {
+    display: block;
+    /* Remover todas as regras de overflow do host */
+}
+
 /* Mobile */
 .hero-section {
     display: flex;
-    flex-direction: column; /* pra empilhar em mobile */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 30px;
     padding: 60px 20px;
     background-color: var(--theme-background); 
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden; /* só esconder horizontal */
+    overflow-y: visible; /* vertical quando necessário */
     min-height: 80vh;
     text-align: center;
-    transition: background-color 0.5s ease; /* transição para o fundo */
+    transition: background-color 0.5s ease;
+    margin: 0 auto;
 }
 
 .hero-section::before,
@@ -22,23 +29,27 @@
     filter: blur(60px);
     opacity: 0.3;
     z-index: 0;
-    transition: background-color 0.5s ease; /* transição para a cor de fundo dos detalhes */
+    transition: background-color 0.5s ease;
 }
 
 .hero-section::before {
-    top: -50px;
-    left: -50px;
+    top: 20px; /* ← POSIÇÃO INTERNA */
+    left: 20px; /* ← POSIÇÃO INTERNA */
     width: 170px;
     height: 170px;
-    background-color: var(--color-background-detail); 
+    background: radial-gradient(circle, var(--color-background-detail) 30%, transparent 70%);
+    filter: blur(40px);
+    opacity: 0.4;
 }
 
 .hero-section::after {
-    bottom: -40px;
-    right: -40px;
+    bottom: 20px; /* ← POSIÇÃO INTERNA */
+    right: 20px; /* ← POSIÇÃO INTERNA */
     width: 150px;
     height: 150px;
-    background-color: var(--color-light-primary); 
+    background: radial-gradient(circle, var(--color-light-primary) 30%, transparent 70%);
+    filter: blur(40px);
+    opacity: 0.4;
 }
 
 .hero-content {
@@ -74,9 +85,10 @@
     transition: color 0.5s ease; 
 }
 
+/* IMAGEM DO HERO-SECTION */
 .hero-image-container {
-    width: 280px;
-    height: 280px;
+    width: clamp(250px, 35vw, 480px); /* responsiva em todas as telas */
+    height: clamp(250px, 35vw, 480px); /* se adapta automaticamente ao tamanho da tela */
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -85,14 +97,8 @@
     align-items: center;
     background-color: var(--theme-image-section-bg); 
     z-index: 1;
-    transition: background-color 0.5s ease; 
-}
-
-.hero-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    transition: background-color 0.5s ease;
+    flex-shrink: 0; /* nunca encolhe */
 }
 
 /* tablet- 768px */
@@ -103,19 +109,20 @@
         padding: 80px 40px;
         min-height: 70vh;
         text-align: left;
+        overflow: visible;
     }
 
     .hero-section::before {
-        top: -60px;
-        left: -60px;
+        top: -40px;
+        left: -40px;
         width: 200px;
         height: 200px;
         filter: blur(70px);
     }
 
     .hero-section::after {
-        bottom: -50px;
-        right: -50px;
+        bottom: -35px;
+        right: -35px;
         width: 180px;
         height: 180px;
         filter: blur(70px);
@@ -140,32 +147,29 @@
         font-size: 1.1em;
         margin-bottom: 35px;
     }
-
-    .hero-image-container {
-        width: 400px;
-        height: 400px;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-    }
 }
 
 /* desktop -acima de 1200px */
 @media (min-width: 1200px) {
     .hero-section {
-        gap: 500px;
-        padding: 100px 50px;
+        gap: clamp(80px, 8vw, 150px);
+        padding: 60px 50px;
+        max-width: 1400px;
+        margin: 0 auto;
+        overflow: visible;
     }
 
     .hero-section::before {
-        top: -80px;
-        left: -80px;
+        top: -50px;
+        left: -50px;
         width: 250px;
         height: 250px;
         filter: blur(80px);
     }
 
     .hero-section::after {
-        bottom: -60px;
-        right: -60px;
+        bottom: -40px;
+        right: -40px;
         width: 200px;
         height: 200px;
         filter: blur(80px);
@@ -173,6 +177,7 @@
 
     .hero-content {
         max-width: 650px;
+        flex-shrink: 0; /* não deixar encolher */
     }
 
     .hero-content .hero-tagline {
@@ -188,52 +193,28 @@
         font-size: 1.15em;
         margin-bottom: 40px;
     }
+}
 
-    .hero-image-container {
-        width: 620px;
-        height: 620px;
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+/* TELAS MUITO GRANDES */
+@media (min-width: 1600px) {
+    .hero-section {
+        gap: clamp(120px, 10vw, 200px);
+        padding: 120px 80px;
+        max-width: 1600px;
+        overflow: visible;
     }
-}
+    
+    .hero-section::before {
+        top: -60px;
+        left: -60px;
+    }
 
-/* Responsividade para Hero Section */
-@media (max-width: 768px) {
-  .hero-section {
-    padding: 2rem 1rem;
-    text-align: center;
-  }
-  
-  .hero-title {
-    font-size: 2rem;
-    line-height: 1.2;
-  }
-  
-  .hero-subtitle {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .hero-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .btn {
-    width: 100%;
-    padding: 0.8rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-section {
-    padding: 1.5rem 0.5rem;
-  }
-  
-  .hero-title {
-    font-size: 1.8rem;
-  }
-  
-  .hero-subtitle {
-    font-size: 0.9rem;
-  }
+    .hero-section::after {
+        bottom: -50px;
+        right: -50px;
+    }
+    
+    .hero-content {
+        max-width: 700px;
+    }
 }

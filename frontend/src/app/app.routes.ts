@@ -5,7 +5,7 @@ import { LoginComponent } from './pages/login/login';
 import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { ConvitesComponent } from './pages/convites/convites';
-//import { CadastroComponent } from './pages/cadastro/cadastro.component';
+import { CadastroComponent } from './pages/cadastro/cadastro.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -35,10 +35,10 @@ export const routes: Routes = [
         canActivate: [AuthGuard], // Aplica o guarda de rota
         data: { roles: ['Administrador', 'RH'] } // Define os perfis necessários
   },
-  // { 
-  //       path: 'cadastro', 
-  //       component: CadastroComponent 
-  //   },
+   { 
+         path: 'cadastro/:token', 
+         component: CadastroComponent 
+     },
   { 
     path: '**', 
     redirectTo: '' 
