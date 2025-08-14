@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Removido o RouterLink
 import { CadastroService } from '../../services/cadastroservice';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -12,7 +12,6 @@ import { NgxMaskDirective } from 'ngx-mask';
     ReactiveFormsModule,
     CommonModule,
     NgxMaskDirective,
-    RouterLink
   ],
   templateUrl: './cadastro.component.html',
   styleUrls: ['./cadastro.component.css']
@@ -33,18 +32,14 @@ export class CadastroComponent implements OnInit {
       nome: ['', [Validators.required, Validators.maxLength(100)]],
       // campo de e-mail é pré-preenchido e não editável
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      // CPF: Validação de formato e tamanho
-      cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
-      // CEP: Validação de formato e tamanho
-      cep: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-      // endereço: Preenchidos automaticamente, mas editáveis
+      cpf: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/^\d{11}$/)]],
+      cep: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^\d{8}$/)]],
       uf: ['', [Validators.required]],
       localidade: ['', [Validators.required]],
       bairro: ['', [Validators.required]],
       logradouro: ['', [Validators.required]],
       numero: ['', [Validators.required]],
-      // Celular: Campo opcional
-      celular: ['', [Validators.pattern(/^\(\d{2}\)\s\d{5}-\d{4}$/)]],
+      celular: ['', [Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/^\d{11}$/)]],
     });
   }
 
@@ -70,6 +65,7 @@ export class CadastroComponent implements OnInit {
 
     //  autocompletar CEP
     this.cadastroForm.get('cep')?.valueChanges.subscribe(cep => {
+      // Remove caracteres não numéricos para verificar o comprimento
       const cepLimpo = cep ? cep.replace(/\D/g, '') : '';
       if (cepLimpo.length === 8) {
         this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe({
