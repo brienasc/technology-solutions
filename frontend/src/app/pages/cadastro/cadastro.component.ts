@@ -19,7 +19,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 })
 export class CadastroComponent implements OnInit {
   cadastroForm: FormGroup;
-  conviteValido = false;
+  conviteValido: boolean | null = null; // null: carregando, true: válido, false: inválido
   mensagemErro = '';
   isDarkTheme = false;
 
@@ -31,43 +31,49 @@ export class CadastroComponent implements OnInit {
   ) {
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.maxLength(100)]],
+      // campo de e-mail é pré-preenchido e não editável
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-      // Removendo o validador de pattern, a máscara do NgxMask já garante o formato.
-      cpf: ['', [Validators.required]],
-      // Removendo o validador de pattern, a máscara do NgxMask já garante o formato.
-      cep: ['', [Validators.required]],
-      uf: [{ value: '', disabled: false }, [Validators.required]],
-      localidade: [{ value: '', disabled: false }, [Validators.required]],
-      bairro: [{ value: '', disabled: false }, [Validators.required]],
-      logradouro: [{ value: '', disabled: false }, [Validators.required]],
+      // CPF: Validação de formato e tamanho
+      cpf: ['', [Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
+      // CEP: Validação de formato e tamanho
+      cep: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      // endereço: Preenchidos automaticamente, mas editáveis
+      uf: ['', [Validators.required]],
+      localidade: ['', [Validators.required]],
+      bairro: ['', [Validators.required]],
+      logradouro: ['', [Validators.required]],
       numero: ['', [Validators.required]],
+      // Celular: Campo opcional
       celular: ['', [Validators.pattern(/^\(\d{2}\)\s\d{5}-\d{4}$/)]],
     });
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const token = params.get('token');
-      if (token) {
-        this.cadastroService.validarConvite(token).subscribe(
-          (response: any) => {
-            this.conviteValido = true;
-            this.cadastroForm.patchValue({ email: response.email });
-          },
-          (error: any) => {
-            this.conviteValido = false;
-            this.mensagemErro = error.error.message || 'Convite expirado ou inválido.';
-          }
-        );
-      }
-    });
+    const token = this.route.snapshot.paramMap.get('token');
 
+    if (token) {
+      this.cadastroService.validarConvite(token).subscribe({
+        next: (response: any) => {
+          this.conviteValido = true;
+          this.cadastroForm.patchValue({ email: response.email });
+        },
+        error: (error: any) => {
+          this.conviteValido = false;
+          // Exibe a mensagem de erro específica do backend ou uma genérica
+          this.mensagemErro = error.error.message || 'Convite expirado ou inválido.';
+        }
+      });
+    } else {
+      this.conviteValido = false;
+      this.mensagemErro = 'Nenhum token de convite fornecido. Por favor, acesse o link enviado por e-mail.';
+    }
+
+    //  autocompletar CEP
     this.cadastroForm.get('cep')?.valueChanges.subscribe(cep => {
-      // Remove a máscara para verificar o comprimento do CEP
       const cepLimpo = cep ? cep.replace(/\D/g, '') : '';
       if (cepLimpo.length === 8) {
-        this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe(
-          (dados: any) => {
+        this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe({
+          next: (dados: any) => {
             this.cadastroForm.patchValue({
               uf: dados.uf,
               localidade: dados.localidade,
@@ -75,28 +81,35 @@ export class CadastroComponent implements OnInit {
               logradouro: dados.logradouro
             });
           },
-          (error: any) => {
-            // Limpa os campos de endereço em caso de erro na busca
+          error: () => {
+            // Limpa os campos de endereço se o CEP não for encontrado
             this.cadastroForm.patchValue({ uf: '', localidade: '', bairro: '', logradouro: '' });
           }
-        );
+        });
       }
     });
   }
 
   onSubmit(): void {
+    // para enviar o e-mail que está desabilitado, é preciso obter o valor cru do formulário
+    const formData = this.cadastroForm.getRawValue();
+    const token = this.route.snapshot.paramMap.get('token');
+    
+    // Adiciona o token e o e-mail ao objeto a ser enviado
+    const cadastroData = { ...formData, token };
+    
     if (this.cadastroForm.valid) {
-      this.cadastroService.cadastrarColaborador(this.cadastroForm.value).subscribe(
-        (response: any) => {
+      this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
+        next: (response: any) => {
           console.log('Cadastro realizado com sucesso!', response);
-          // Substituindo o 'alert' por um console.log, conforme boas práticas.
-          console.log('Cadastro realizado com sucesso!');
           this.router.navigate(['/sucesso']);
         },
-        (error: any) => {
+        error: (error: any) => {
+          // Captura e exibe a mensagem de erro do backend (ex: CPF duplicado)
           this.mensagemErro = error.error.message || 'Erro ao realizar o cadastro. Tente novamente.';
+          console.error('Erro no cadastro:', error);
         }
-      );
+      });
     } else {
       this.mensagemErro = 'Por favor, preencha todos os campos obrigatórios corretamente.';
     }

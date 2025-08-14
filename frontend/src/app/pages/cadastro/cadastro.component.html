@@ -4,11 +4,14 @@
     <span class="slider round"></span>
   </label>
 
-  <div class="cadastro-form-section">
+  <div *ngIf="conviteValido === null" class="cadastro-loading-section">
+    <p>Verificando convite...</p>
+    </div>
+
+  <div *ngIf="conviteValido" class="cadastro-form-section">
     <div class="cadastro-content-wrapper">
       <h1>Efetue seu cadastro</h1>
       <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-        <!-- NOME-->
         <div class="form-group">
           <label for="nome">Nome</label>
           <input type="text" id="nome" formControlName="nome" placeholder="Preencha seu nome"
@@ -19,14 +22,12 @@
             <div *ngIf="cadastroForm.get('nome')?.errors?.['maxlength']">Nome deve ter no máximo 100 caracteres.</div>
           </div>
         </div>
-        
-        <!-- EMAIL -->
+          
         <div class="form-group">
           <label for="email">E-mail</label>
           <input type="email" id="email" formControlName="email" placeholder="Insira seu e-mail" readonly>
         </div>
-        
-        <!-- CPF -->
+          
         <div class="form-group">
           <label for="cpf">CPF</label>
           <input type="text" id="cpf" formControlName="cpf" placeholder="000.000.000-00" mask="000.000.000-00"
@@ -38,7 +39,6 @@
           </div>
         </div>
 
-        <!-- CEP -->
         <div class="form-group">
           <label for="cep">CEP</label>
           <input type="text" id="cep" formControlName="cep" placeholder="00000-000" mask="00000-000"
@@ -49,38 +49,32 @@
             <div *ngIf="cadastroForm.get('cep')?.errors?.['pattern']">CEP inválido. Use o formato 00000-000.</div>
           </div>
         </div>
-        
-        <!-- CELULAR -->
+          
         <div class="form-group">
           <label for="celular">Celular</label>
           <input type="text" id="celular" formControlName="celular" placeholder="(xx) xxxxx-xxxx" mask="(00) 00000-0000">
         </div>
-        
-        <!-- UF -->
+          
         <div class="form-group">
           <label for="uf">UF</label>
           <input type="text" id="uf" formControlName="uf" placeholder="UF">
         </div>
 
-        <!-- LOCALIDADE -->
         <div class="form-group">
           <label for="localidade">Localidade</label>
           <input type="text" id="localidade" formControlName="localidade" placeholder="Localidade">
         </div>
 
-        <!-- BAIRRO -->
         <div class="form-group">
           <label for="bairro">Bairro</label>
           <input type="text" id="bairro" formControlName="bairro" placeholder="Bairro">
         </div>
 
-        <!-- LOGRADOURO -->
         <div class="form-group">
           <label for="logradouro">Logradouro</label>
           <input type="text" id="logradouro" formControlName="logradouro" placeholder="Logradouro">
         </div>
-        
-        <!-- NÚMERO -->
+          
         <div class="form-group">
           <label for="numero">Número</label>
           <input type="text" id="numero" formControlName="numero" placeholder="Número da casa"
@@ -95,7 +89,14 @@
       </form>
     </div>
   </div>
-    <!-- FOTO AO LADO -->
+    
+  <div *ngIf="conviteValido === false" class="cadastro-error-section">
+    <div class="error-message">
+      <h2>Oops!</h2>
+      <p>{{ mensagemErro }}</p>
+    </div>
+  </div>
+
   <div class="cadastro-image-section">
     <img src="app/assets/imagens/img-cadastro.png" alt="Imagem relacionada ao cadastro">
   </div>
