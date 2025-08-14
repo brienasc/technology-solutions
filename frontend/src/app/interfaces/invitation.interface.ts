@@ -5,11 +5,12 @@
  * É utilizada para garantir a tipagem correta dos dados em toda a aplicação.
  */
 export interface Invitation {
-  id: number;
-  email: string;
-  sentDate: string; // A data de envio do convite
-  expirationDate: string; // A data de expiração do convite
-  status: 'Em Aberto' | 'Finalizado' | 'Vencido'; // O status atual do convite
+  id_convite: string;
+  email_colab: string;
+  created_at: string; // A data de envio do convite
+  expires_at: string; // A data de expiração do convite
+  status_code: number;
+  status_description: string; // O status atual do convite
 }
 
 

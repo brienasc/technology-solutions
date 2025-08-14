@@ -34,7 +34,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   toggleTheme(): void {
     this.isDarkTheme = !this.isDarkTheme; // inverto o estado do tema
     this.applyThemeClass(); // aplico a classe CSS dele
-    this.applyMobileMenuTheme(); // Adicione esta linha
+    this.applyMobileMenuTheme();
     localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light'); // Salvo o que será usado agora, se é o dark ou light
   }
 

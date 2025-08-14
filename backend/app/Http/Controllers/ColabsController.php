@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PerfilType;
 use App\Models\Colab;
-use App\Models\Perfis;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
 use Exception;
-use Hash;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
 use App\Services\ColabService;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Str;
 
 class ColabsController extends Controller{
@@ -76,11 +76,21 @@ class ColabsController extends Controller{
         }
     }
 
-    public function index(){
+    public function index(Request $request): JsonResponse{
         try{
-            $colabs = $this->colabService->indexAllColabs();
+            $filters = $request->only(['email', 'nome', 'cpf', 'page', 'per_page']);
 
-            return $this->apiResponse->success($colabs, 'Lista de colaboradores retornada com sucesso.');
+            $colabsPaginate = $this->colabService->indexFilteredColabs($filters);
+
+            $responseData = [
+                'colabs' => $colabsPaginate->getCollection(),
+                'current_page' => $colabsPaginate->currentPage(),
+                'per_page' => $colabsPaginate->perPage(),
+                'total' => $colabsPaginate->total(),
+                'last_page' => $colabsPaginate->lastPage(),
+            ];
+
+            return $this->apiResponse->success($responseData, 'Lista de colaboradores retornada com sucesso.');
         }catch(Exception $e){
             return $this->apiResponse->badRequest( null, 'Erro ao buscar colaboradores.');
         }
@@ -125,7 +135,7 @@ class ColabsController extends Controller{
         }catch(ValidationException $e){
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
         }catch(Exception $e){
-            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
+            return $this->apiResponse->badRequest(null, 'Bad request');
         }
     }
 
@@ -233,5 +243,46 @@ class ColabsController extends Controller{
         ];
         
         return $perfis[$perfilId] ?? "Perfil {$perfilId}";
+    }
+
+    public function update(Request $request, $id): JsonResponse{
+        try{
+            $validateData = $request->validate([
+                'password' => [
+                    'nullable',
+                    Password::min(8)
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                ],
+                'perfil' => ['required', 'integer', Rule::in(array_column(PerfilType::cases(), 'value'))],
+            ],
+            [
+                'required' => 'O :attribute é obrigatório',
+                'password.mixed' => 'A senha deve conter letras maiúsculas e minúsculas.',
+                'password.numbers' => 'A senha deve conter pelo menos um número.',
+                'password.symbols' => 'A senha deve conter pelo menos um caractere especial.',
+                'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
+            ]);
+
+            
+            $new_perfil = PerfilType::from($validateData['perfil']);
+            $password = $validateData['password'] ?? null;
+            $actor = $request->user();
+
+            $user = $this->colabService->updateRoleColab($id,  $password, 
+                                                      $actor, $new_perfil);
+
+            if($user == null){
+                return $this->apiResponse->badRequest(null, "Falha ao atualizar usuário");
+            }
+            
+            return $this->apiResponse->success($user, 'Usuario atualizado!');
+        }catch(ValidationException $e){
+            return $this->apiResponse->badRequest($e->errors(), 'Bad request');
+        }catch(Exception $e){
+            Log::info(message: ''. $e->getMessage());
+            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
+        }
     }
 }

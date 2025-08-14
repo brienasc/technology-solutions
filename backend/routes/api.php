@@ -1,25 +1,30 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
+use App\Http\Controllers\ContactController;
+
+# Contact Route
+Route::post('/contact-form', [ContactController::class, 'recv']);
 
 Route::post('/login', [ColabsController::class, 'login'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
+    # Rotas de Convites
     Route::middleware('abilities:access:menu-convidar')->group(function () {
-        # Rotas deConvites
         Route::post('/convites', [ConvitesController::class,'store']);
         Route::get('/convites', [ConvitesController::class,'index']);
         Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
     });
+
     # Rotas de Colabs
     Route::middleware('abilities:access:menu-gerencial')->group(function () {
         Route::post('/colabs', [ColabsController::class,'store']);
         Route::get('/colabs', [ColabsController::class,'index']);
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
+        Route::put('/colabs/{id}', [ColabsController::class,'update']);
     });
 });
 
