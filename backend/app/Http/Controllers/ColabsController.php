@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\PerfilType;
 use App\Models\Colab;
+use App\Models\Convites;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
 use Exception;
@@ -17,17 +18,20 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
 use App\Services\ColabService;
+use App\Services\ConviteService;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use Str;
+use Illuminate\Support\Str;
 
 class ColabsController extends Controller{
     protected ApiResponse $apiResponse;
     protected ColabService $colabService;
+    protected ConviteService $conviteService;
     
-    public function __construct(ApiResponse $apiResponse, ColabService $colabService){
+    public function __construct(ApiResponse $apiResponse, ColabService $colabService,  ConviteService $conviteService){
         $this->apiResponse = $apiResponse;
         $this->colabService = $colabService;
+        $this->conviteService = $conviteService;
     }
 
     public function store(ColabsRequest $request): JsonResponse{
@@ -35,7 +39,7 @@ class ColabsController extends Controller{
             $validated = $request->validated();
 
             // Verifica convite
-            $convite = Convite::find($validated['convite_id']);
+            $convite = Convites::find($validated['convite_id']);
             if (!$convite || $convite->status !== 'valido') {
                 return $this->apiResponse->badRequest(null, 'Convite inválido');
             }
@@ -50,7 +54,7 @@ class ColabsController extends Controller{
             ]);
 
             // Verifica se o convite existe
-            $convite = $this->colabService->getConviteById($validated['convite_id']);
+            $convite = $this->conviteService->getConviteById($validated['convite_id']);
             if (!$convite) {
                 return $this->apiResponse->badRequest(['error' => 'Convite não encontrado'], 404);
             }
@@ -153,8 +157,8 @@ class ColabsController extends Controller{
         try {
             set_time_limit(300);
             
-            Log::info('🚀 Export iniciado');
-            Log::info('📦 Parâmetros recebidos: ' . json_encode($request->all()));
+            Log::info('Export iniciado');
+            Log::info('Parâmetros recebidos: ' . json_encode($request->all()));
             
             // Iniciar query
             $query = Colab::query();
@@ -171,16 +175,16 @@ class ColabsController extends Controller{
                       ->orWhere('celular', 'LIKE', "%{$searchTerm}%");
                 });
             } else {
-                Log::info('📋 Nenhum filtro aplicado - exportando todos');
+                Log::info('Nenhum filtro aplicado - exportando todos');
             }
             
             // Buscar colaboradores
             $colaboradores = $query->get();
             
-            Log::info("📊 Colaboradores encontrados: {$colaboradores->count()}");
+            Log::info("Colaboradores encontrados: {$colaboradores->count()}");
             
             if ($colaboradores->isEmpty()) {
-                Log::warning('⚠️ Nenhum colaborador encontrado com os filtros aplicados');
+                Log::warning('Nenhum colaborador encontrado com os filtros aplicados');
                 
                 // Retornar arquivo vazio com mensagem
                 $csvContent = "Nome,Email,CPF,Celular,Perfil\n";
@@ -219,7 +223,7 @@ class ColabsController extends Controller{
                 $csvContent .= implode(';', $row) . "\n";
             }
             
-            Log::info('✅ CSV gerado com sucesso');
+            Log::info('CSV gerado com sucesso');
             
             // Nome do arquivo indica se teve filtro
             $filename = 'colaboradores_' . date('Y-m-d_H-i-s');
@@ -234,12 +238,8 @@ class ColabsController extends Controller{
             ]);
             
         } catch (\Exception $e) {
-            Log::error('❌ Erro: ' . $e->getMessage());
-            return $this->responseError([
-                'success' => false,
-                'message' => 'Erro ao exportar',
-                'error' => $e->getMessage()
-            ], 500);
+            Log::error('Erro: ' . $e->getMessage());
+            return $this->apiResponse->error('Erro ao exportar: ' . $e->getMessage(), 500);
         }
     }
 
