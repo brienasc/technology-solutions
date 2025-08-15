@@ -53,8 +53,18 @@ class ConviteService{
             $query->where('email_colab', 'like', '%' . $filtros['email'] . '%');
         }
 
-        if(isset($filtros['status'])){
-            $query->where('status_code', $filtros['status']);
+        if (isset($filtros['status'])) {
+            switch ($filtros['status']) {
+                case 0:
+                    $query->where('status_code', 0)->where('expires_at', '>', Carbon::now());
+                    break;
+                case 2:
+                    $query->where('expires_at', '<', Carbon::now());
+                    break;
+                default:
+                    $query->where('status_code', $filtros['status']);
+                    break;
+            }
         }
 
         $query->latest();
