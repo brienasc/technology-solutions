@@ -78,14 +78,14 @@ class ColabService{
             ],
         ];
 
-        $user = Colab::find($id);
-        if($user == null){
-            return null;
-        }
-
         if (!isset($permissions[$actor->perfil_id]) ||
             !in_array($new_profile->value, $permissions[$actor->perfil_id]))
         {
+            return null;
+        }
+        
+        $user = Colab::find($id);
+        if($user == null){
             return null;
         }
 
