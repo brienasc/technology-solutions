@@ -1,15 +1,73 @@
 /* frontend/src/app/components/lista-convites/lista-convites.component.css */
 
-.lista-convites-container {
-    padding: 20px;
 
-    background-color: var(--theme-card-bg);
+/* --- Estilização da Tabela --- */
+
+.table-section {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border: 1px solid var(--theme-input-border);
+    /* Borda ao redor da tabela inteira */
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    /* Garante que a borda arredondada se aplique */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Mantenha o collapse para bordas limpas */
+    background-color: transparent;
+}
+
+th,
+td {
+    padding: 1rem;
+    /* Adiciona padding para espaçamento interno */
+    text-align: left;
+    color: var(--theme-body-text);
+    border-right: 1px solid var(--theme-input-border);
+    /* Linhas verticais entre as colunas */
+}
+
+th:last-child,
+td:last-child {
+    border-right: none;
+    /* Remove a borda da última coluna */
+}
+
+thead th {
+    background-color: transparent;
+    font-weight: 700;
+    text-transform: none;
+    color: var(--theme-heading-text);
+    border-bottom: 1px solid var(--theme-input-border);
+    /* Linha horizontal no cabeçalho */
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--theme-input-border);
+    /* Linhas horizontais entre as linhas */
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+.lista-convites-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
     color: var(--theme-body-text);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
-    border: 1px solid var(--theme-input-border); /* Borda sutil para definir o card */
-    
-    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease; /* Adiciona transição para a borda */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Sombra mais pronunciada */
+    border: 1px solid var(--theme-input-border);
+    /* Borda sutil para definir o card */
+    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    /* Adiciona transição para a borda */
     font-family: var(--font-nunito-sans);
 }
 
@@ -22,18 +80,21 @@
     gap: 20px;
 }
 
-.filter-group, .search-group {
+.filter-group,
+.search-group {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.filter-group label, .search-group label {
+.filter-group label,
+.search-group label {
     font-weight: bold;
     color: var(--theme-label-text);
 }
 
-.controls-section select, .controls-section input {
+.controls-section select,
+.controls-section input {
     padding: 8px 12px;
     border: 1px solid var(--theme-input-border);
     border-radius: 5px;
@@ -44,7 +105,7 @@
 
 .search-group button {
     padding: 8px 15px;
-    background-color: var(--theme-button-secondary-bg);
+    background-color: var(--color-light-primary);
     color: var(--theme-button-text);
     border: none;
     border-radius: 5px;
@@ -53,20 +114,25 @@
 }
 
 .search-group button:hover {
-    background-color: var(--color-light-primary);
+    background-color: var(--color-secondary);
 }
 
 .table-section {
-    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas para a tabela */
+    overflow-x: auto;
+    /* Permite rolagem horizontal em telas pequenas para a tabela */
     margin-bottom: 20px;
+    /* margin-top: 20px; */
+    background-color: white;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    background-color: white;
 }
 
-th, td {
+th,
+td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid var(--theme-input-border);
@@ -85,7 +151,8 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Um leve destaque no hover */
+    background-color: rgba(0, 0, 0, 0.05);
+    /* Um leve destaque no hover */
 }
 
 .status-badge {
@@ -131,17 +198,23 @@ tbody tr:hover {
     color: var(--theme-muted-text);
 }
 
+
 /* Estilos para MatPaginator  */
+
 .mat-paginator {
-    background-color: var(--theme-form-bg); /* Fundo do paginator */
-    color: var(--theme-body-text); /* Cor do texto do paginator */
+    background-color: var(--theme-form-bg);
+    /* Fundo do paginator */
+    color: var(--theme-body-text);
+    /* Cor do texto do paginator */
     border-radius: 8px;
     margin-top: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
+
 /* Estilos para os botões de navegação do paginator */
+
 :host ::ng-deep .mat-paginator-navigation-previous,
 :host ::ng-deep .mat-paginator-navigation-next {
     background-color: var(--theme-button-primary-bg);
@@ -155,13 +228,17 @@ tbody tr:hover {
     background-color: var(--theme-button-primary-hover);
 }
 
+
 /* Estilos para o seletor de itens por página */
+
 :host ::ng-deep .mat-form-field-wrapper {
     padding-bottom: 0;
 }
+
 :host ::ng-deep .mat-form-field-underline {
     display: none;
 }
+
 :host ::ng-deep .mat-select-value-text,
 :host ::ng-deep .mat-select-arrow,
 :host ::ng-deep .mat-paginator-page-size-label,
@@ -224,12 +301,14 @@ tbody tr:hover {
 
 
 /* Responsividade */
+
 @media (max-width: 768px) {
     .controls-section {
         flex-direction: column;
         align-items: stretch;
     }
-    .filter-group, .search-group {
+    .filter-group,
+    .search-group {
         width: 100%;
     }
     .pagination-section {
@@ -238,19 +317,20 @@ tbody tr:hover {
     }
 }
 
-    .secondary-button-outline {
-        padding: 12px 24px; /* Botão um pouco maior */
-        color: var(--theme-button-primary-bg);
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 0.95em;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        width: auto;
-        max-width: none;
-        text-align: center;
-        background-color: transparent;
-        border: 2px solid var(--theme-button-primary-bg);
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
+.secondary-button-outline {
+    padding: 12px 24px;
+    /* Botão um pouco maior */
+    color: var(--theme-button-primary-bg);
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    width: auto;
+    max-width: none;
+    text-align: center;
+    background-color: transparent;
+    border: 2px solid var(--theme-button-primary-bg);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

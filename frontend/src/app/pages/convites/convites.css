@@ -1,54 +1,84 @@
 /* frontend/src/app/pages/convites/convites.component.css */
 
+
 /* Estilos para o contêiner principal da tela de convites */
+
 .convites-container {
-    max-width: 1200px;
+    max-width: 2000px;
     margin: 40px auto;
-    padding: 20px;
-    background-color: var(--theme-form-bg);
+    padding: 0 2rem;
+    background-color: transparent;
     color: var(--theme-body-text);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     transition: background-color 0.5s ease, color 0.5s ease;
     font-family: var(--font-nunito-sans);
 }
 
-/* Estilos para a seção do cabeçalho (título e botão "Criar Novo Convite" e toggle de tema) */
+
+/* Estilos para a seção do cabeçalho */
+
 .header-section {
+    background-color: var(--theme-background);
+    border-bottom: 1px solid var(--theme-input-border);
+    padding: 1rem 2rem 1rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-/* Estilos para o grupo do título e botão de criar convite */
-.title-and-button-group {
+.header-text-group {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    order: 2; /* Em desktop, este grupo ficará à direita do toggle */
+    flex-direction: column;
+    /* Organiza os itens (h1 e p) em uma coluna */
+    align-items: flex-start;
+    /* Alinha os itens à esquerda */
+    gap: 10px;
+    /* Adiciona um pequeno espaço entre o título e o subtítulo */
+    font-family: var(--font-nunito-sans);
 }
 
-/* Estilos para o título principal da tela */
 .header-section h1 {
-    font-family: var(--font-playfair-display);
-    font-style: italic;
-    font-size: 2.5em;
-    color: var(--theme-heading-text);
-    margin-bottom: 0;
+    font-family: var(--font-nunito-sans);
+    font-style: normal;
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    margin: 0;
+    text-shadow: none;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
 }
+
+.header-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 2rem;
+    width: 400px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-light-primary) 100%);
+    border-radius: 2px;
+    z-index: 1;
+    transition: background 0.5s ease;
+}
+
 
 /* Estilos para o botão "Criar Novo Convite" */
+
 .create-invite-button {
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    background-color: var(--theme-button-primary-bg);
-    color: var(--theme-button-text);
+    background-color: var(--color-light-primary);
+    color: var(--color-white);
     border: none;
     border-radius: 25px;
     font-size: 1em;
@@ -56,106 +86,67 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Efeito de hover para o botão "Criar Novo Convite" */
 .create-invite-button:hover {
-    background-color: var(--theme-button-primary-hover);
-    color: var(--theme-button-text);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
 }
 
-/* Estilos para o ícone SVG dentro do botão "Criar Novo Convite" */
 .create-invite-button svg {
     width: 20px;
     height: 20px;
-    color: var(--theme-button-text);
+    color: var(--color-white);
 }
 
+
+/* Estilos para o botão "Buscar" */
+
+.search-group button {
+    padding: 8px 15px;
+    background-color: var(--color-light-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-group button:hover {
+    background-color: var(--color-light-primary);
+    color: var(--color-white);
+}
+
+
 /* Estilos para o botão "Voltar" */
+
 .back-button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: var(--theme-button-primary-bg);
+    background-color: var(--color-light-primary);
     color: var(--theme-button-text);
-    border: 1px solid var(--theme-button-primary-bg);
+    border: 1px solid var(--color-light-primary);
     border-radius: 25px;
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Efeito de hover para o botão "Voltar" */
 .back-button:hover {
-    background-color: var(--theme-button-primary-hover);
-    border-color: var(--theme-button-primary-hover);
+    background-color: var(--color-secondary);
+    color: var(--color-white);
 }
 
-/* Estilos para o Botão de Alternância de Tema (Toggle Switch) */
-.theme-switch {
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  position: relative; 
-  cursor: pointer;
-  order: 1; /* Coloca o toggle de tema à esquerda */
-  margin-left: 0;
-  margin-right: auto; /* Empurra o grupo de título/botão para a direita em desktop */
-}
 
-/* Esconde o checkbox padrão do HTML */
-.theme-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+/* Estilos para o Modal de Criar Convite */
 
-/* O 'slider' é a parte visual do switch */
-.slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--theme-button-primary-bg);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: var(--theme-button-text);
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-/* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
-.theme-switch input:checked + .slider {
-  background-color: var(--theme-button-primary-hover);
-}
-
-.theme-switch input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/*
-* -----------------------------------------------------------
-* Estilos para o Modal de Criar Convite
-* -----------------------------------------------------------
-*/
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
-    z-index: 1000; /* Acima de outros elementos */
-    display: none; /* Oculto por padrão */
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: none;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -169,41 +160,66 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centraliza o modal */
-    background-color: var(--theme-form-bg); /* Fundo do modal, adaptável ao tema */
-    color: var(--theme-body-text); /* Cor do texto do modal, adaptável ao tema */
-    padding: 30px;
+    transform: translate(-50%, -50%);
+    background-color: var(--theme-form-bg);
+    color: var(--theme-body-text);
+    padding: 0;
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    z-index: 1001; /* Acima do overlay */
+    z-index: 1001;
     width: 90%;
     max-width: 500px;
-    display: none; /* Oculto por padrão */
+    display: none;
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9); /* Inicia um pouco menor */
+    transform: translate(-50%, -50%) scale(0.9);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+    border: none;
 }
 
 .modal-dialog.active {
     display: block;
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1); /* Expande para o tamanho normal */
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--theme-input-border); /* Borda inferior do cabeçalho */
-    padding-bottom: 15px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 0;
+    border-bottom: none;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px 10px 0 0;
 }
 
 .modal-header h2 {
-    font-family: var(--font-playfair-display);
-    font-style: normal;
-    color: var(--theme-heading-text);
+    font-family: var(--font-nunito-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Espaço entre o ícone e o texto */
+}
+
+.modal-header h2 svg {
+    width: 10px;
+    /* Tamanho do ícone */
+    height: 10px;
+    color: white;
+    /* margin-right: 10px; */
+    /* Cor do ícone branco */
+}
+
+.modal-header .modal-icon {
+    width: 5.5rem;
+    height: 5.5rem;
+    color: white;
 }
 
 .close-modal-btn {
@@ -212,34 +228,40 @@
     font-size: 1.8em;
     font-weight: bold;
     cursor: pointer;
-    color: var(--theme-body-text);
-    transition: color 0.2s ease;
+    color: white;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .close-modal-btn:hover {
-    color: var(--color-danger);
+    transform: rotate(90deg);
+    color: #f0f0f0;
+}
+
+.modal-body {
+    padding: 2rem;
 }
 
 .modal-body .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .modal-body label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
     color: var(--theme-label-text);
 }
 
 .modal-body input[type="email"] {
-    width: calc(100% - 22px); /* Ajusta para padding e borda */
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1em;
     background-color: var(--theme-card-bg);
     color: var(--theme-input-text);
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    box-sizing: border-box;
 }
 
 .modal-body input[type="email"].is-invalid {
@@ -255,57 +277,73 @@
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 2rem;
     border-top: 1px solid var(--theme-input-border);
-    padding-top: 15px;
+    padding-top: 20px;
 }
 
 .modal-actions button {
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    font-weight: 600;
+}
+
+.modal-actions .cancel-button {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ef4444;
+}
+
+.modal-actions .cancel-button:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+}
+
+.modal-actions .send-button {
+    background-color: var(--color-light-primary);
+    /* Fundo roxo */
+    color: var(--color-white);
+    /* Texto branco */
+    border: 1px solid var(--color-light-primary);
+    /* Borda roxa */
     padding: 10px 18px;
     border-radius: 20px;
     font-size: 0.95em;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.modal-actions .cancel-button {
-    background-color: transparent;
-    color: var(--theme-body-text);
-    border: 1px solid var(--theme-input-border);
-}
-
-.modal-actions .cancel-button:hover {
-    background-color: var(--theme-background);
-}
-
-.modal-actions .send-button {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    border: 1px solid var(--color-primary);
+    font-weight: 600;
 }
 
 .modal-actions .send-button:hover:not(:disabled) {
-    background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
+    background-color: var(--theme-background);
+    border-color: var(--theme-input-border);
 }
 
 .modal-actions .send-button:disabled {
-    opacity: 0.6;
+    background-color: var(--color-light-primary);
+    /* Fundo cinza */
+    color: var(--color-white);
+    /* Texto cinza */
+    border: 1px solid var(--color-light-primary);
+    /* Borda cinza */
+    opacity: 1;
     cursor: not-allowed;
-    background-color: var(--theme-button-disabled-bg);
-    border-color: var(--theme-button-disabled-bg);
 }
 
-.success-message {
-    color: var(--color-success);
-    text-align: center;
-    margin-top: 15px;
-    font-weight: bold;
+
+/* Garante que o hover não mude a cor do botão desabilitado */
+
+.modal-actions .send-button:hover:disabled {
+    background-color: var(--color-light-primary);
 }
 
 
 /* Responsividade */
+
 @media (max-width: 768px) {
     .convites-container {
         margin: 20px;
@@ -321,7 +359,6 @@
         margin-top: 0;
         align-self: flex-end;
     }
-
     .title-and-button-group {
         width: 100%;
         justify-content: space-between;
@@ -329,17 +366,30 @@
         order: 2;
     }
     .create-invite-button {
-        flex-grow: 1;
-        max-width: 180px;
-        font-size: 0.9em;
-        padding: 10px 15px;
-        justify-content: center;
+        display: flex;
+        align-items: center;
+        /* Alinha o ícone e o texto verticalmente */
+        gap: 8px;
+        /* Espaço entre o ícone e o texto */
+        padding: 12px 20px;
+        background-color: var(--color-light-primary);
+        color: var(--color-white);
+        border: none;
+        border-radius: 25px;
+        font-size: 1em;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .create-invite-button svg {
+        width: 20px;
+        height: 20px;
+        color: var(--color-white);
+        /* Garante que a cor do ícone seja branca */
     }
     .header-section h1 {
         flex-grow: 1;
         font-size: 2em;
     }
-
     .modal-dialog {
         width: 95%;
         padding: 20px;
@@ -362,4 +412,59 @@
         width: 100%;
         max-width: none;
     }
+}
+
+
+/* Desktop (a partir de 769px) */
+
+@media (min-width: 769px) {
+    .header-section {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem 1rem;
+    }
+    .theme-switch {
+        order: 1;
+        margin-left: 0;
+        margin-right: auto;
+    }
+    .title-and-button-group {
+        order: 2;
+        flex-grow: 0;
+        width: auto;
+        flex-wrap: nowrap;
+    }
+}
+
+
+/* Desktop 1200px+ */
+
+@media (min-width: 1200px) {
+    .header-section {
+        padding: 1rem 2rem 1rem;
+    }
+    .header-section h1 {
+        font-size: 2.5rem;
+    }
+    .header-section::after {
+        left: 2rem;
+        width: 400px;
+    }
+}
+
+
+/* TEMA ESCURO - Sobrepõe as cores do tema claro */
+
+body.dark-theme .header-section {
+    background-color: var(--theme-background) !important;
+    border-bottom-color: var(--theme-input-border) !important;
+}
+
+body.dark-theme .header-section h1 {
+    color: var(--theme-heading-text) !important;
+}
+
+body.dark-theme .header-section::after {
+    background: linear-gradient(135deg, var(--color-light-primary) 0%, var(--color-secondary) 100%) !important;
 }

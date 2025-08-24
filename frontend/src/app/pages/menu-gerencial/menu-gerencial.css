@@ -1,412 +1,469 @@
-/* src/app/pages/login/login.component.css */
-
 /* Contêiner principal da página de login.
    Define o layout base da página usando Flexbox para organizar as duas seções (formulário e imagem). */
+
 .login-page-container {
-  display: flex; /* Transforma o contêiner em um flex container. */
-  height: 100vh; /* Garante que o contêiner ocupe 100% da altura da viewport. */
-  width: 100vw; /* Garante que o contêiner ocupe 100% da largura da viewport. */
-  
-  /* Fundo transparente para que as seções internas definam suas próprias cores. */
-  background-color: transparent; 
-
-  color: var(--theme-body-text); /* As cores e fontes agora serão controladas pelas variáveis de tema definidas no :root ou .dark-theme */
-  font-family: var(--font-nunito-sans); 
-
-  position: relative; /* Necessário para posicionar o botão de tema fixo */
+    display: flex;
+    /* Transforma o contêiner em um flex container. */
+    height: 100vh;
+    /* Garante que o contêiner ocupe 100% da altura da viewport. */
+    width: 100vw;
+    /* Garante que o contêiner ocupe 100% da largura da viewport. */
+    /* Fundo transparente para que as seções internas definam suas próprias cores. */
+    background-color: transparent;
+    color: var(--theme-body-text);
+    /* As cores e fontes agora serão controladas pelas variáveis de tema definidas no :root ou .dark-theme */
+    font-family: var(--font-nunito-sans);
+    position: relative;
+    /* Necessário para posicionar o botão de tema fixo */
 }
+
 
 /* Estilos para a seção do formulário*/
+
 .login-form-section {
-  flex: 1.5; /* Faz a seção do formulário ser 1.5x maior que a seção da imagem. */
-  
-  display: flex; /* Transforma esta seção em um flex container para centralizar seu conteúdo. */
-  justify-content: center; /* Centraliza o conteúdo (o wrapper do formulário) horizontalmente. */
-  align-items: center;    /* Centraliza o conteúdo (o wrapper do formulário) verticalmente. */
-  
-  padding: 0; /* Remove padding desta seção para que o fundo vá até a borda. */
-  background-color: var(--theme-form-bg); /* Usa variável de tema para o fundo do formulário */
-  
-  border-radius: 20px; 
-  margin: 20px; 
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); 
+    flex: 1.5;
+    /* Faz a seção do formulário ser 1.5x maior que a seção da imagem. */
+    display: flex;
+    /* Transforma esta seção em um flex container para centralizar seu conteúdo. */
+    justify-content: center;
+    /* Centraliza o conteúdo (o wrapper do formulário) horizontalmente. */
+    align-items: center;
+    /* Centraliza o conteúdo (o wrapper do formulário) verticalmente. */
+    padding: 0;
+    /* Remove padding desta seção para que o fundo vá até a borda. */
+    background-color: var(--theme-form-bg);
+    /* Usa variável de tema para o fundo do formulário */
+    border-radius: 20px;
+    margin: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+
 
 /* Estilos para o wrapper do conteúdo interno do formulário. */
+
 .login-content-wrapper {
-  background-color: var(--theme-card-bg); /* Usa variável de tema para o fundo do cartão */
-  padding: 60px 40px; 
-  border-radius: 0; 
-  box-shadow: none; 
-  width: 100%; 
-  max-width: 450px; 
-  text-align: left; 
-  position: relative; 
+    background-color: var(--theme-card-bg);
+    /* Usa variável de tema para o fundo do cartão */
+    padding: 60px 40px;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    max-width: 450px;
+    text-align: left;
+    position: relative;
 }
+
 
 /* Estilos para o título "Login". */
-.login-content-wrapper h1 { 
-  font-family: var(--font-playfair-display); 
-  font-style: normal; 
-  color: var(--theme-heading-text); /* Usa variável de tema para a cor do título */
-  margin-bottom: 30px; 
-  font-size: 2.5em; 
-  font-weight: 700; 
-  text-align: left; 
+
+.login-content-wrapper h1 {
+    font-family: var(--font-playfair-display);
+    font-style: normal;
+    color: var(--theme-heading-text);
+    /* Usa variável de tema para a cor do título */
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: 700;
+    text-align: left;
 }
 
+
 /* Estilos para textos regulares (labels, p, a). */
+
 .form-group label,
 .login-content-wrapper p,
 .login-content-wrapper a {
-  font-family: var(--font-nunito-sans); 
-  font-style: normal; 
-  font-weight: 400; 
-  color: var(--theme-body-text); /* Usa variável de tema para a cor do texto do corpo */
+    font-family: var(--font-nunito-sans);
+    font-style: normal;
+    font-weight: 400;
+    color: var(--theme-body-text);
+    /* Usa variável de tema para a cor do texto do corpo */
 }
+
 
 /* Estilos para cada grupo de formulário (label + input). */
+
 .form-group {
-  margin-bottom: 20px; 
-  text-align: left; 
+    margin-bottom: 20px;
+    text-align: left;
 }
+
 
 /* Estilos para o rótulo de cada campo de formulário. */
+
 .form-group label {
-  display: block; 
-  margin-bottom: 8px; 
-  font-weight: bold; 
-  color: var(--theme-label-text); /* Usa variável de tema para a cor do texto do rótulo */
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--theme-label-text);
+    /* Usa variável de tema para a cor do texto do rótulo */
 }
+
 
 /* Wrapper para o input de senha e o ícone de mostrar/esconder */
+
 .password-input-wrapper {
-  position: relative; 
-  width: 100%; 
+    position: relative;
+    width: 100%;
 }
+
 
 /* Estilos para os campos de entrada (inputs). */
+
 .form-group input {
-  width: 100%; 
-  padding: 12px 15px; 
-  border: 1px solid var(--theme-input-border); /* Usa variável de tema para a borda do input */
-  border-radius: 25px; 
-  font-size: 1em; 
-  color: var(--theme-input-text); /* Usa variável de tema para a cor do texto do input */
-  background-color: var(--theme-form-bg); /* Fundo do input (geralmente o mesmo do form-bg) */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease; 
-  
-  padding-right: 45px; /* Espaço para o ícone */
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--theme-input-border);
+    /* Usa variável de tema para a borda do input */
+    border-radius: 25px;
+    font-size: 1em;
+    color: var(--theme-input-text);
+    /* Usa variável de tema para a cor do texto do input */
+    background-color: var(--theme-form-bg);
+    /* Fundo do input (geralmente o mesmo do form-bg) */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    padding-right: 45px;
+    /* Espaço para o ícone */
 }
+
 
 /* Estilo aplicado ao input quando ele está inválido. */
+
 .form-group input.is-invalid {
-  border-color: var(--color-danger); 
+    border-color: var(--color-danger);
 }
+
 
 /* Estilo para o input quando ele está em foco (clicado/ativo). */
-.form-group input:focus {
-  outline: none; 
-  border-color: var(--theme-focus-border); /* Usa variável de tema para a borda no foco */
-  box-shadow: 0 0 0 3px var(--theme-focus-shadow); /* Usa variável de tema para a sombra no foco */
-}
 
+.form-group input:focus {
+    outline: none;
+    border-color: var(--theme-focus-border);
+    /* Usa variável de tema para a borda no foco */
+    box-shadow: 0 0 0 3px var(--theme-focus-shadow);
+    /* Usa variável de tema para a sombra no foco */
+}
 
 .toggle-password-visibility svg {
-  width: 20px; 
-  height: 20px;
+    width: 20px;
+    height: 20px;
 }
 
+
 /* Estilos para as mensagens de feedback de validação. */
+
 .invalid-feedback {
-  color: var(--theme-invalid-feedback-text); /* Usa variável de tema para a cor do texto de feedback */
-  font-size: 0.85em; 
-  margin-top: 5px; 
-  text-align: left; 
+    color: var(--theme-invalid-feedback-text);
+    /* Usa variável de tema para a cor do texto de feedback */
+    font-size: 0.85em;
+    margin-top: 5px;
+    text-align: left;
 }
 
 
 /* Estilos para o botão de submissão. */
+
 button[type="submit"] {
-  width: 100%; 
-  padding: 12px 20px; 
-  background-color: var(--theme-button-primary-bg); /* Usa variável de tema */
-  color: var(--theme-button-text); /* Usa variável de tema */
-  border: 1px solid var(--theme-button-primary-bg); /* Borda acompanha o fundo */
-  border-radius: 25px; 
-  font-size: 1.1em; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
-  margin-top: 25px; 
+    width: 100%;
+    padding: 12px 20px;
+    background-color: var(--theme-button-primary-bg);
+    /* Usa variável de tema */
+    color: var(--theme-button-text);
+    /* Usa variável de tema */
+    border: 1px solid var(--theme-button-primary-bg);
+    /* Borda acompanha o fundo */
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin-top: 25px;
 }
+
 
 /* Estilo para o botão de submissão no hover. */
+
 button[type="submit"]:hover:not(:disabled) {
-  background-color: var(--theme-button-primary-hover); /* Usa variável de tema */
-  color: var(--theme-button-text); /* Usa variável de tema */
-  border-color: var(--theme-button-primary-hover); /* Borda acompanha o hover */
+    background-color: var(--theme-button-primary-hover);
+    /* Usa variável de tema */
+    color: var(--theme-button-text);
+    /* Usa variável de tema */
+    border-color: var(--theme-button-primary-hover);
+    /* Borda acompanha o hover */
 }
 
+
 /* Estilo para o botão de submissão desabilitado. */
+
 button[type="submit"]:disabled {
-  background-color: var(--theme-button-disabled-bg); /* Usa variável de tema */
-  cursor: not-allowed; 
+    background-color: var(--theme-button-disabled-bg);
+    /* Usa variável de tema */
+    cursor: not-allowed;
 }
 
 
 /* Estilos para o botão "Voltar ao Início" (caso nós coloque). */
+
 .back-to-home-button {
-  position: absolute; 
-  bottom: 5px; 
-  left: 5px; 
-  z-index: 10; 
-  width: 180px; 
-  text-align: center; 
-  padding: 12px 20px; 
-  background-color: var(--color-white); /* Fundo branco fixo */
-  color: var(--color-primary); /* Texto com a cor principal (roxo escuro) fixo */
-  border: 1px solid var(--color-primary); /* Borda com a cor principal (roxo escuro) fixo */
-  
-  border-radius: 25px; 
-  font-size: 1.1em; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
-  margin-top: 15px; 
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    z-index: 10;
+    width: 180px;
+    text-align: center;
+    padding: 12px 20px;
+    background-color: var(--color-white);
+    /* Fundo branco fixo */
+    color: var(--color-primary);
+    /* Texto com a cor principal (roxo escuro) fixo */
+    border: 1px solid var(--color-primary);
+    /* Borda com a cor principal (roxo escuro) fixo */
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    margin-top: 15px;
 }
 
+
 /*Estilo para o botão "Voltar ao Início" no hover. (caso tenhamos que usar) */
+
 .back-to-home-button:hover {
-  background-color: var(--color-primary); /* Fundo roxo escuro no hover (fixo) */
-  color: var(--color-white); /* Texto branco no hover (fixo) */
-  border-color: var(--color-primary); /* Borda roxa escura no hover (fixo) */
+    background-color: var(--color-primary);
+    /* Fundo roxo escuro no hover (fixo) */
+    color: var(--color-white);
+    /* Texto branco no hover (fixo) */
+    border-color: var(--color-primary);
+    /* Borda roxa escura no hover (fixo) */
 }
 
 
 /* Seção do título principal */
+
 .menu-gerencial-title {
-  background: #f8f8f8; /* Tema claro */
-  border-bottom: 1px solid var(--theme-input-border);
-  padding: 1rem 0 1rem;
-  margin-bottom: 2rem;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
+    background: #f8f8f8;
+    /* Tema claro */
+    border-bottom: 1px solid var(--theme-input-border);
+    padding: 1rem 0 1rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
 }
 
 .menu-gerencial-title-content {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
+
 
 /* Título principal */
+
 .menu-gerencial-title h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 1rem 2rem;
-  color: var(--theme-heading-text);
-  text-shadow: none;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1rem 2rem;
+    color: var(--theme-heading-text);
+    text-shadow: none;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
 }
+
 
 /* Subtítulo */
+
 .menu-gerencial-title p {
-  font-size: 1.25rem;
-  color: var(--theme-text-secondary);
-  margin: 0 0 0 2rem;
-  line-height: 1.6;
-  font-weight: 400;
-  opacity: 0.9;
+    font-size: 1.25rem;
+    color: var(--theme-text-secondary);
+    margin: 0 0 0 2rem;
+    line-height: 1.6;
+    font-weight: 400;
+    opacity: 0.9;
 }
+
 
 /* Linha decorativa - ajustada para a esquerda */
+
 .menu-gerencial-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 2rem;
-  width: 400px;
-  height: 4px;
-  background: linear-gradient(135deg, #3e2292 0%, #7120bd 100%);
-  border-radius: 2px;
-  z-index: 1;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 2rem;
+    width: 400px;
+    height: 4px;
+    background: linear-gradient(135deg, #3e2292 0%, #7120bd 100%);
+    border-radius: 2px;
+    z-index: 1;
 }
+
 
 /* Container principal */
+
 .menu-gerencial-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
 }
+
 
 /* RESPONSIVIDADE PARA TABLETS (768px - 1023px) */
+
 @media (max-width: 1023px) {
-  .menu-gerencial-title {
-    padding: 1.5rem 0 1rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .menu-gerencial-title-content {
-    padding: 0 1.5rem;
-  }
-
-  .menu-gerencial-title h1 {
-    font-size: 1.75rem;
-    margin: 0 0 0.75rem 1.5rem;
-  }
-
-  .menu-gerencial-title p {
-    font-size: 1.125rem;
-    margin: 0 0 0 1.5rem;
-  }
-
-  .menu-gerencial-title::after {
-    left: 1.5rem;
-    width: 300px;
-  }
-
-  .menu-gerencial-container {
-    padding: 0 1.5rem 2rem;
-  }
+    .menu-gerencial-title {
+        padding: 1.5rem 0 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .menu-gerencial-title-content {
+        padding: 0 1.5rem;
+    }
+    .menu-gerencial-title h1 {
+        font-size: 1.75rem;
+        margin: 0 0 0.75rem 1.5rem;
+    }
+    .menu-gerencial-title p {
+        font-size: 1.125rem;
+        margin: 0 0 0 1.5rem;
+    }
+    .menu-gerencial-title::after {
+        left: 1.5rem;
+        width: 300px;
+    }
+    .menu-gerencial-container {
+        padding: 0 1.5rem 2rem;
+    }
 }
+
 
 /* RESPONSIVIDADE PARA MOBILE GRANDE (481px - 767px) */
+
 @media (max-width: 767px) {
-  .menu-gerencial-title {
-    padding: 1.25rem 0 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .menu-gerencial-title-content {
-    padding: 0 1rem;
-  }
-
-  .menu-gerencial-title h1 {
-    font-size: 1.5rem;
-    margin: 0 0 0.5rem 1rem;
-    letter-spacing: -0.015em;
-  }
-
-  .menu-gerencial-title p {
-    font-size: 1rem;
-    margin: 0 0 0 1rem;
-    line-height: 1.5;
-  }
-
-  .menu-gerencial-title::after {
-    left: 1rem;
-    width: 200px;
-    height: 3px;
-  }
-
-  .menu-gerencial-container {
-    padding: 0 1rem 1.5rem;
-  }
+    .menu-gerencial-title {
+        padding: 1.25rem 0 1rem;
+        margin-bottom: 1.25rem;
+    }
+    .menu-gerencial-title-content {
+        padding: 0 1rem;
+    }
+    .menu-gerencial-title h1 {
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem 1rem;
+        letter-spacing: -0.015em;
+    }
+    .menu-gerencial-title p {
+        font-size: 1rem;
+        margin: 0 0 0 1rem;
+        line-height: 1.5;
+    }
+    .menu-gerencial-title::after {
+        left: 1rem;
+        width: 200px;
+        height: 3px;
+    }
+    .menu-gerencial-container {
+        padding: 0 1rem 1.5rem;
+    }
 }
+
 
 /* RESPONSIVIDADE PARA MOBILE PEQUENO (até 480px) */
+
 @media (max-width: 480px) {
-  .menu-gerencial-title {
-    padding: 1rem 0 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .menu-gerencial-title-content {
-    padding: 0 0.75rem;
-  }
-
-  .menu-gerencial-title h1 {
-    font-size: 1.25rem;
-    margin: 0 0 0.5rem 0.75rem;
-    font-weight: 600;
-  }
-
-  .menu-gerencial-title p {
-    font-size: 0.9rem;
-    margin: 0 0 0 0.75rem;
-    line-height: 1.4;
-  }
-
-  .menu-gerencial-title::after {
-    left: 0.75rem;
-    width: 150px;
-    height: 2px;
-  }
-
-  .menu-gerencial-container {
-    padding: 0 0.75rem 1rem;
-  }
+    .menu-gerencial-title {
+        padding: 1rem 0 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .menu-gerencial-title-content {
+        padding: 0 0.75rem;
+    }
+    .menu-gerencial-title h1 {
+        font-size: 1.25rem;
+        margin: 0 0 0.5rem 0.75rem;
+        font-weight: 600;
+    }
+    .menu-gerencial-title p {
+        font-size: 0.9rem;
+        margin: 0 0 0 0.75rem;
+        line-height: 1.4;
+    }
+    .menu-gerencial-title::after {
+        left: 0.75rem;
+        width: 150px;
+        height: 2px;
+    }
+    .menu-gerencial-container {
+        padding: 0 0.75rem 1rem;
+    }
 }
+
 
 /* RESPONSIVIDADE PARA TELAS MUITO PEQUENAS (até 360px) */
+
 @media (max-width: 360px) {
-  .menu-gerencial-title {
-    padding: 0.75rem 0 0.5rem;
-  }
-
-  .menu-gerencial-title-content {
-    padding: 0 0.5rem;
-  }
-
-  .menu-gerencial-title h1 {
-    font-size: 1.125rem;
-    margin: 0 0 0.25rem 0.5rem;
-  }
-
-  .menu-gerencial-title p {
-    font-size: 0.85rem;
-    margin: 0 0 0 0.5rem;
-  }
-
-  .menu-gerencial-title::after {
-    left: 0.5rem;
-    width: 100px;
-  }
-
-  .menu-gerencial-container {
-    padding: 0 0.5rem 0.75rem;
-  }
+    .menu-gerencial-title {
+        padding: 0.75rem 0 0.5rem;
+    }
+    .menu-gerencial-title-content {
+        padding: 0 0.5rem;
+    }
+    .menu-gerencial-title h1 {
+        font-size: 1.125rem;
+        margin: 0 0 0.25rem 0.5rem;
+    }
+    .menu-gerencial-title p {
+        font-size: 0.85rem;
+        margin: 0 0 0 0.5rem;
+    }
+    .menu-gerencial-title::after {
+        left: 0.5rem;
+        width: 100px;
+    }
+    .menu-gerencial-container {
+        padding: 0 0.5rem 0.75rem;
+    }
 }
 
+
 /* TEMA ESCURO - Mantém responsividade */
+
 body.dark-theme .menu-gerencial-title {
-  background: #1a1a1a !important;
-  background-color: #1a1a1a !important;
-  border-bottom-color: #333333 !important;
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    border-bottom-color: #333333 !important;
 }
 
 body.dark-theme .menu-gerencial-title h1 {
-  color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .menu-gerencial-title p {
-  color: #cccccc !important;
+    color: #cccccc !important;
 }
 
 body.dark-theme .menu-gerencial-title::after {
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%) !important;
+    background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%) !important;
 }
 
+
 /* FORÇA O TEMA ESCURO COM MÁXIMA ESPECIFICIDADE */
+
 body.dark-theme .menu-gerencial-title,
 html body.dark-theme .menu-gerencial-title,
 body.dark-theme div.menu-gerencial-title {
-  background: #1a1a1a !important;
-  background-color: #1a1a1a !important;
-  border-bottom-color: #333333 !important;
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    border-bottom-color: #333333 !important;
 }
 
 body.dark-theme .menu-gerencial-title h1,
 html body.dark-theme .menu-gerencial-title h1,
 body.dark-theme div.menu-gerencial-title h1 {
-  color: #ffffff !important;
+    color: #ffffff !important;
 }
 
 body.dark-theme .menu-gerencial-title p,
 html body.dark-theme .menu-gerencial-title p,
 body.dark-theme div.menu-gerencial-title p {
-  color: #cccccc !important;
+    color: #cccccc !important;
 }
