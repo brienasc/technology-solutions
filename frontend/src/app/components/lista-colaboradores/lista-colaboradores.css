@@ -815,57 +815,6 @@
 }
 
 /* ============================================================================== */
-/*                    ALTERAÇÃO DE PERFIL - CAMPOS ANTIGOS                       */
-/* ============================================================================== */
-
-/* Container de edição (não usado mais) */
-.perfil-edit-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.perfil-edit-container label {
-  font-weight: 500;
-  color: var(--theme-body-text);
-  white-space: nowrap;
-  min-width: 80px;
-}
-
-/* Select de perfil (estilo antigo) */
-.perfil-select {
-  flex: 1;
-  min-width: 200px;
-  padding: 10px 12px;
-  border: 1px solid var(--theme-input-border);
-  border-radius: 6px;
-  background: var(--theme-input-bg);
-  color: var(--theme-body-text);
-  font-size: 14px;
-  transition: border-color 0.2s ease;
-}
-
-.perfil-select:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-}
-
-.perfil-select:disabled {
-  background: var(--theme-button-disabled-bg);
-  cursor: not-allowed;
-}
-
-/* Ações de edição (não usado mais) */
-.edit-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  align-items: center;
-}
-
-/* ============================================================================== */
 /*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
 /* ============================================================================== */
 
