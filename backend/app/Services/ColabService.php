@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use Hash;
-use Illuminate\Database\Eloquent\Collection;
 
 use App\Enums\PerfilType;
 use App\Models\Colab;
-use Illuminate\Http\JsonResponse;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ColabService{
     public function create(array $data): Colab{
@@ -19,8 +17,24 @@ class ColabService{
         return $colab;
     }
 
-    public function indexAllColabs(): Collection{
-        return Colab::all();
+    public function indexFilteredColabs($filters): LengthAwarePaginator{
+        $query = Colab::query();
+
+        if(isset($filtros['email'])){
+            $query->where('email', 'like', '%' . $filters['email'] . '%');
+        }
+
+        if(isset($filtros['name'])){
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if(isset($filtros['cpf'])){
+            $query->where('cpf', 'like', '%' . $filters['cpf'] . '%');
+        }
+
+        $per_page = $filtros['per_page'] ?? 15;
+
+        return $query->paginate($per_page);
     }
 
     public function getColabById(string $id): ?Colab{
@@ -49,5 +63,45 @@ class ColabService{
             "abilities" => $abilitiesString,
         ];
         return $data;
+    }
+
+    public function updateRoleColab(string $id, ?string $password = null, Colab $actor, PerfilType $new_profile): ?Colab{
+        $permissions = [
+            PerfilType::Administrador->value => [
+                PerfilType::Administrador->value,
+                PerfilType::GenteECultura->value,
+                PerfilType::ColaboradorComum->value,
+            ],
+            PerfilType::GenteECultura->value => [
+                PerfilType::GenteECultura->value,
+                PerfilType::ColaboradorComum->value,
+            ],
+        ];
+
+        $user = Colab::find($id);
+        if($user == null){
+            return null;
+        }
+
+        if (!isset($permissions[$actor->perfil_id]) ||
+            !in_array($new_profile->value, $permissions[$actor->perfil_id]))
+        {
+            return null;
+        }
+
+        if($new_profile->value == PerfilType::ColaboradorComum->value){
+            $user->password = null;
+        }else if($user->perfil_id == PerfilType::ColaboradorComum->value){
+            if($password == null){
+                return null;
+            }
+
+            $user->password = Hash::make($password);
+        }
+
+        $user->perfil_id = $new_profile->value;
+        $user->save();
+
+        return $user;
     }
 }

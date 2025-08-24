@@ -1,7 +1,7 @@
 // frontend/src/app/app.component.ts
 import { Component } from '@angular/core';
 import { provideRouter, RouterOutlet } from '@angular/router'; 
-import { provideHttpClient } from '@angular/common/http'; 
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'; 
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { provideNgxMask } from 'ngx-mask';
 // import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
@@ -12,18 +12,27 @@ import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './utils/custom-mat-paginator-intl'; // Importa o MatPaginatorIntl personalizado
+import { AuthInterceptor } from './interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), 
     provideHttpClient(),   
-     provideNgxMask(),
-     provideAnimations(),
-      // Fornece o MatPaginatorIntl personalizado
-      {
-        provide: MatPaginatorIntl,
-        useClass: CustomMatPaginatorIntl
-      }
+    provideNgxMask(),
+    provideAnimations(),
+    // Fornece o MatPaginatorIntl personalizado
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomMatPaginatorIntl
+    },
+    provideHttpClient(
+      withInterceptorsFromDi()
+    ),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 };
 
