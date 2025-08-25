@@ -35,6 +35,10 @@ export class AuthService {
     return !!localStorage.getItem('authToken'); // Verifica se há um token
   }
 
+  getToken(): string | null{
+    return localStorage.getItem('authToken');
+  }
+
 /**
    * Obtém o perfil do usuário logado a partir das habilidades salvas no localStorage.
    * Adapta-se ao formato de string de habilidades (ex: "admin,rh,user").

@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 use Exception;
 
 use App\Http\Responses\ApiResponse;
-use App\Models\Convites;
 use App\Services\ConviteService;
+use Illuminate\Support\Facades\Log;
 
 class ConvitesController extends Controller{
     protected $apiResponse;
@@ -53,23 +53,33 @@ class ConvitesController extends Controller{
 
     public function index(Request $request): JsonResponse{
         try {
-            $filtros = $request->only(['email', 'status', 'page', 'per_page']);
+            $filters = $request->only(['email', 'status', 'page', 'per_page']);
 
-            $convites = $this->conviteService->indexFilteredConvites($filtros);
+            $invitationsPaginate = $this->conviteService->indexFilteredConvites($filters);
 
-            $mappedConvites = $convites->map(function ($convite) {
-                if($convite->status_code !== ConviteStatus::FINALIZADO &&
-                   $convite->expires_at && Carbon::now()->greaterThan($convite->expires_at))
+            
+            $mappedConvites = $invitationsPaginate->map(function ($invitation): mixed {
+                if($invitation->status_code !== ConviteStatus::FINALIZADO &&
+                $invitation->expires_at && Carbon::now()->greaterThan($invitation->expires_at))
                 {
-                    $convite->status_code = ConviteStatus::EXPIRADO;
+                    $invitation->status_code = ConviteStatus::EXPIRADO;
                 }
-
-                $conviteArray = $convite->toArray();
-                $conviteArray['status_description'] = $convite->status_code->description();
-                return $conviteArray;
+                
+                $invitationArray = $invitation->toArray();
+                $invitationArray['status_description'] = $invitation->status_code->description();
+                return $invitationArray;
             });
+            
+            $responseData = [
+                'invitations' => $mappedConvites,
+                'current_page' => $invitationsPaginate->currentPage(),
+                'per_page' => $invitationsPaginate->perPage(),
+                'total' => $invitationsPaginate->total(),
+                'last_page' => $invitationsPaginate->lastPage(),
+            ];
+            
 
-            return $this->apiResponse->success($mappedConvites, 'Lista de convites retornada com sucesso.');
+            return $this->apiResponse->success($responseData, 'Lista de convites retornada com sucesso.');
         } catch (Exception $e) {
             return $this->apiResponse->error('Erro ao buscar convites', 400);
         }

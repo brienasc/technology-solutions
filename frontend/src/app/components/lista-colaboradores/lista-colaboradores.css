@@ -42,6 +42,9 @@
     width: 100%;
 }
 
+
+/* Input de pesquisa */
+
 .search-bar input {
     flex: 1;
     padding: 0.75rem 2.5rem 0.75rem 1rem;
@@ -55,16 +58,25 @@
     /* Permite que o input encolha se necessário */
 }
 
+
+/* Placeholder do input de pesquisa */
+
 .search-bar input::placeholder {
     color: var(--theme-text-secondary, #9ca3af);
     font-size: 0.9rem;
 }
+
+
+/* Estado de foco do input de pesquisa */
 
 .search-bar input:focus {
     outline: none;
     border-color: var(--theme-button-primary-bg, #667eea);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
+
+
+/* Botão de pesquisa (ícone lupa) posicionado dentro do input */
 
 .search-button {
     position: absolute;
@@ -80,6 +92,9 @@
     align-items: center;
     justify-content: center;
 }
+
+
+/* Ícone do botão de pesquisa */
 
 .search-button svg {
     width: 1.25rem;
@@ -116,15 +131,24 @@
     height: 46px;
 }
 
+
+/* Efeito hover do botão convidar */
+
 .invite-button:hover {
     background: #652b94;
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+
+/* Efeito de clique do botão convidar */
+
 .invite-button:active {
     transform: translateY(0);
 }
+
+
+/* Ícone do botão convidar */
 
 .invite-button svg {
     width: 1.25rem;
@@ -151,10 +175,16 @@
     height: 46px;
 }
 
+
+/* Efeito hover do botão exportar */
+
 .export-button:hover {
     background: #047857;
     transform: translateY(-1px);
 }
+
+
+/* Ícone do botão exportar */
 
 .export-button svg {
     width: 1rem;
@@ -169,11 +199,17 @@
     margin-bottom: 20px;
 }
 
+
+/* Tabela principal de colaboradores */
+
 .colaboradores-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
 }
+
+
+/* Células da tabela (cabeçalho e dados) */
 
 .colaboradores-table th,
 .colaboradores-table td {
@@ -186,6 +222,9 @@
     /* Cor do texto da tabela */
 }
 
+
+/* Cabeçalho da tabela */
+
 .colaboradores-table th {
     background-color: var(--theme-form-bg);
     /* Fundo do cabeçalho da tabela */
@@ -195,15 +234,24 @@
     /* Cor do texto do cabeçalho da tabela */
 }
 
+
+/* Efeito zebrado - linhas pares com fundo diferente */
+
 .colaboradores-table tbody tr:nth-child(even) {
     background-color: var(--theme-card-bg);
     /* Fundo zebrado (light) */
 }
 
+
+/* Efeito hover nas linhas da tabela */
+
 .colaboradores-table tbody tr:hover {
     background-color: var(--theme-background);
     /* Efeito de hover na tabela */
 }
+
+
+/* Classe utilitária para centralizar texto */
 
 .text-center {
     text-align: center;
@@ -222,15 +270,24 @@
     text-transform: capitalize;
 }
 
+
+/* Badge status finalizado - verde */
+
 .status-finalizado {
     background-color: var(--color-success);
 }
+
+
+/* Badge status em aberto - amarelo */
 
 .status-emaberto {
     background-color: var(--color-warning);
     color: var(--color-text-dark);
     /* Texto escuro para contraste no amarelo */
 }
+
+
+/* Badge status vencido - vermelho */
 
 .status-vencido {
     background-color: var(--color-danger);
@@ -250,6 +307,9 @@
     transition: background-color 0.3s ease;
 }
 
+
+/* Hover do botão detalhes */
+
 .details-button:hover {
     background: #652b94;
 }
@@ -265,6 +325,9 @@
     gap: 15px;
 }
 
+
+/* Botões de paginação (Anterior/Próxima) */
+
 .pagination-controls button {
     background-color: var(--theme-button-secondary-bg);
     /* Fundo do botão de paginação */
@@ -278,12 +341,18 @@
     color: var(--theme-button-text);
 }
 
+
+/* Hover dos botões de paginação */
+
 .pagination-controls button:hover:not(:disabled) {
     background-color: var(--theme-button-disabled-bg);
     /* Hover do botão de paginação */
     border-color: var(--theme-focus-border);
     /* Borda no hover */
 }
+
+
+/* Botões desabilitados */
 
 .pagination-controls button:disabled {
     background-color: var(--theme-button-disabled-bg);
@@ -292,6 +361,9 @@
     /* Texto muted para desabilitado */
     cursor: not-allowed;
 }
+
+
+/* Texto informativo da paginação */
 
 .pagination-controls span {
     font-size: 1em;
@@ -315,6 +387,9 @@
     z-index: 1000;
     animation: fadeIn 0.3s ease-in-out;
 }
+
+
+/* Container principal do modal */
 
 .modal-dialog {
     background: var(--theme-form-bg);
@@ -343,6 +418,9 @@
     border-radius: 10px 10px 0 0;
 }
 
+
+/* Título do modal */
+
 .modal-title {
     margin: 0;
     font-size: 1.4rem;
@@ -351,6 +429,9 @@
     align-items: center;
     gap: 0.5rem;
 }
+
+
+/* Botão de fechar (X) no canto superior direito */
 
 .close-button {
     background: rgba(255, 255, 255, 0.1);
@@ -373,6 +454,9 @@
     position: relative;
 }
 
+
+/* Adiciona o símbolo "×" via CSS */
+
 .close-button::before {
     content: "×";
     /* Adicionar o X via CSS */
@@ -380,6 +464,9 @@
     color: white;
     line-height: 1;
 }
+
+
+/* Hover do botão fechar */
 
 .close-button:hover {
     background-color: rgba(255, 255, 255, 0.25);
@@ -406,6 +493,9 @@
     margin-bottom: 0;
 }
 
+
+/* Título de cada seção */
+
 .section-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -417,6 +507,9 @@
     padding-bottom: 0.4rem;
     border-bottom: 2px solid var(--theme-input-border);
 }
+
+
+/* Ícones dos títulos das seções */
 
 .section-title i {
     color: #667eea;
@@ -431,11 +524,17 @@
     gap: 0.8rem;
 }
 
+
+/* Item individual de informação */
+
 .info-item {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
 }
+
+
+/* Label do item de informação */
 
 .info-item label {
     font-weight: 600;
@@ -444,6 +543,9 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
+
+/* Valor do item de informação */
 
 .info-item span {
     color: var(--theme-body-text);
@@ -477,10 +579,16 @@
     color: white !important;
 }
 
+
+/* Badge para perfil Gente e Cultura - laranja */
+
 .perfil-badge.gente.e.cultura {
     background-color: #fd7e14;
     color: white !important;
 }
+
+
+/* Badge para perfil Colaborador Comum - cinza */
 
 .perfil-badge.colaborador.comum {
     background-color: #6c757d;
@@ -495,10 +603,16 @@
     color: white !important;
 }
 
+
+/* Badge para status Em Aberto - amarelo */
+
 .status-badge.em.aberto {
     background-color: #ffc107;
     color: #212529 !important;
 }
+
+
+/* Badge para status Vencido - vermelho */
 
 .status-badge.vencido {
     background-color: #dc3545;
@@ -511,6 +625,9 @@
 .modal-footer {
     display: none !important;
 }
+
+
+/* Classe base para botões */
 
 .btn {
     padding: 0.5rem 1rem;
@@ -525,6 +642,9 @@
     gap: 0.5rem;
     font-size: 0.9rem;
 }
+
+
+/* Botão secundário - vermelho */
 
 .btn-secondary {
     background-color: #e74c3c;
@@ -573,12 +693,18 @@
     margin-bottom: 1.5rem;
 }
 
+
+/* Labels dos campos do formulário */
+
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
     color: var(--theme-label-text);
 }
+
+
+/* Campos de entrada do formulário */
 
 .form-control {
     width: 100%;
@@ -591,11 +717,17 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+
+/* Estado de foco dos campos */
+
 .form-control:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
+
+
+/* Campo com erro */
 
 .form-control.error {
     border-color: #ef4444;
@@ -613,6 +745,9 @@
     margin-top: 0.5rem;
 }
 
+
+/* Texto de erro */
+
 .error-text {
     color: #ef4444;
     font-size: 0.875rem;
@@ -627,6 +762,9 @@
     margin-bottom: 1rem;
 }
 
+
+/* Mensagens de sucesso e erro */
+
 .success-message,
 .error-message {
     display: flex;
@@ -638,17 +776,26 @@
     font-weight: 500;
 }
 
+
+/* Mensagem de sucesso - verde */
+
 .success-message {
     background: #f0fdf4;
     color: #166534;
     border: 1px solid #bbf7d0;
 }
 
+
+/* Mensagem de erro - vermelho */
+
 .error-message {
     background: #fef2f2;
     color: #dc2626;
     border: 1px solid #fecaca;
 }
+
+
+/* Ícones das mensagens */
 
 .success-message svg,
 .error-message svg {
@@ -669,6 +816,9 @@
     border-top: 1px solid var(--theme-input-border);
 }
 
+
+/* Estilo dos botões do modal de convite */
+
 .invite-modal-buttons .btn {
     padding: 0.75rem 1.5rem;
     border: none;
@@ -682,10 +832,16 @@
     gap: 0.5rem;
 }
 
+
+/* Botões desabilitados */
+
 .invite-modal-buttons .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+
+/* Botão Cancelar */
 
 .btn-cancel {
     background: #dc2626;
@@ -695,6 +851,9 @@
 .btn-cancel:hover:not(:disabled) {
     background: #b91c1c;
 }
+
+
+/* Botão Enviar */
 
 .btn-send {
     background: #7120bd;

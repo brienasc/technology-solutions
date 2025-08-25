@@ -9,15 +9,25 @@ use App\Http\Controllers\ContactController;
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
 
-# Convites routes
-Route::post('/convites', [ConvitesController::class,'store']);
-Route::get('/convites', [ConvitesController::class,'index']);
-Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
+Route::post('/login', [ColabsController::class, 'login'])->name('login');
 
-# Colabs routes
-Route::post('/colabs', [ColabsController::class,'store']);
-Route::get('/colabs', [ColabsController::class,'index']);
-Route::get('/colabs/export', [ColabsController::class,'export']);
-Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
+Route::middleware('auth:sanctum')->group(function () {
+    # Rotas de Convites
+    Route::middleware('abilities:access:menu-convidar')->group(function () {
+        Route::post('/convites', [ConvitesController::class,'store']);
+        Route::get('/convites', [ConvitesController::class,'index']);
+        Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
+    });
 
-Route::post('/login', [ColabsController::class, 'login']);
+    # Rotas de Colabs
+    Route::middleware('abilities:access:menu-gerencial')->group(function () {
+        Route::post('/colabs', [ColabsController::class,'store']);
+        Route::get('/colabs', [ColabsController::class,'index']);
+        Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
+        Route::put('/colabs/{id}', [ColabsController::class,'update']);
+    });
+});
+
+Route::get('/ping', function() {
+    return response()->json(['pong' => true]);
+});

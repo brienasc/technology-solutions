@@ -8,7 +8,7 @@ import { Routes } from '@angular/router';
 
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { LoginComponent } from './pages/login/login';
-//import { CadastroComponent } from './pages/cadastro/cadastro.component';
+import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { ConvitesComponent } from './pages/convites/convites';
 import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial'; 
 
@@ -19,7 +19,7 @@ import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
 export const routes: Routes = [
   { path: '', component: LandingPageComponent }, // Rota para a Landing Page (página inicial)
   { path: 'login', component: LoginComponent }, // Rota para a tela de Login
- // { path: 'cadastro', component: CadastroComponent }, // Rota para a tela de Cadastro
+  { path: 'cadastro', component: CadastroComponent }, // Rota para a tela de Cadastro
  { path: 'convites', component: ConvitesComponent }, // Rota para Convites de Colaboradores
   { path: 'menu-gerencial', component: MenuGerencialComponent }, // Rota para o Painel Gerencial
   { path: '**', redirectTo: '' } // Rota coringa: Redireciona qualquer URL não mapeada para a Landing Page.
