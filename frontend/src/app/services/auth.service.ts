@@ -63,7 +63,6 @@ export class AuthService {
         profile = 'Comum'; // Perfil padrão para outras habilidades
       }
     }
-    console.log('Perfil do usuário detectado (AuthService):', profile); // Para debug
     return profile;
   }
 

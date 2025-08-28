@@ -107,7 +107,6 @@ export class ListaColaboradoresComponent implements OnInit {
 
   // Método de ciclo de vida: Executado uma vez após a inicialização do componente.
   ngOnInit(): void {
-    console.log('ListaColaboradoresComponent inicializado.'); 
     this.loadColaboradores();
   }
 
