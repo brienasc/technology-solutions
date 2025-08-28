@@ -38,9 +38,13 @@ interface Colaborador {
   imports: [
     CommonModule, 
     FormsModule, 
+
     Header,
     LowerCasePipe,
     MatPaginatorModule
+
+    LowerCasePipe 
+ 
   ],
   templateUrl: './lista-colaboradores.html', 
   styleUrls: ['./lista-colaboradores.css'] 
