@@ -41,7 +41,7 @@ interface Colaborador {
 
     Header,
     LowerCasePipe,
-    MatPaginatorModule
+    MatPaginatorModule,
 
     LowerCasePipe 
  
