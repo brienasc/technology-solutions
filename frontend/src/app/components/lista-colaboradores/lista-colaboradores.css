@@ -1,105 +1,118 @@
-/* ============================================================================== */
-/*                            CONTAINER PRINCIPAL                                */
-/* ============================================================================== */
+/* frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.css */
 
-/* Container principal da página - define largura máxima e estilo geral */
 .lista-colaboradores-container {
-  max-width: 3000px;
-  margin: 2rem auto; /* Centraliza o container na página */
-  padding: 2rem;
-  border: 1px solid var(--theme-input-border);
-  border-radius: 12px;
-  background-color: var(--theme-card-bg); /* Fundo adaptável ao tema */
-  color: var(--theme-body-text); /* Cor do texto adaptável ao tema */
+    max-width: 3000px;
+    margin: 2rem auto;
+    /* Mudança aqui: era margin-top: 30px */
+    padding: 2rem;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 12px;
+    background-color: var(--theme-card-bg);
+    /* Fundo do contêiner da lista */
+    color: var(--theme-body-text);
+    /* Cor do texto */
 }
 
-/* ============================================================================== */
-/*                      SEÇÃO DE CONTROLES (PESQUISA + BOTÕES)                   */
-/* ============================================================================== */
 
-/* Container principal dos controles - pesquisa à esquerda, botões à direita */
+/* Nova seção de controles */
+
 .controls-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 0;
-  gap: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0;
+    gap: 2rem;
 }
+
 
 /* Container da barra de pesquisa (lado esquerdo) */
+
 .search-container {
-  flex: 1; /* Ocupa espaço disponível */
-  max-width: 450px; /* Limite máximo de largura */
+    flex: 1;
+    max-width: 450px;
 }
 
-/* Wrapper da barra de pesquisa com posicionamento relativo para o botão */
+
+/* Barra de pesquisa */
+
 .search-bar {
-  display: flex;
-  position: relative;
-  width: 100%;
+    display: flex;
+    position: relative;
+    width: 100%;
 }
+
 
 /* Input de pesquisa */
+
 .search-bar input {
-  flex: 1;
-  padding: 0.75rem 2.5rem 0.75rem 1rem; /* Espaço extra à direita para o ícone */
-  border: 2px solid var(--theme-border, #e2e8f0);
-  border-radius: 6px;
-  font-size: 1rem;
-  background: var(--theme-input-bg, white);
-  color: var(--theme-text-primary, #333);
-  transition: border-color 0.3s ease;
-  min-width: 0; /* Permite que o input encolha se necessário */
+    flex: 1;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 2px solid var(--theme-border, #e2e8f0);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--theme-input-bg, white);
+    color: var(--theme-text-primary, #333);
+    transition: border-color 0.3s ease;
+    min-width: 0;
+    /* Permite que o input encolha se necessário */
 }
+
 
 /* Placeholder do input de pesquisa */
+
 .search-bar input::placeholder {
-  color: var(--theme-text-secondary, #9ca3af);
-  font-size: 0.9rem;
+    color: var(--theme-text-secondary, #9ca3af);
+    font-size: 0.9rem;
 }
+
 
 /* Estado de foco do input de pesquisa */
+
 .search-bar input:focus {
-  outline: none;
-  border-color: var(--theme-button-primary-bg, #667eea);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+    border-color: var(--theme-button-primary-bg, #667eea);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
+
 
 /* Botão de pesquisa (ícone lupa) posicionado dentro do input */
+
 .search-button {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: var(--theme-text-secondary, #6b7280);
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--theme-text-secondary, #6b7280);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 /* Ícone do botão de pesquisa */
+
 .search-button svg {
-  width: 1.25rem;
-  height: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
-/* Container dos botões principais (lado direito) - Convidar e Exportar */
+
+/* Container dos botões (lado direito) */
+
 .buttons-container {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-/* ============================================================================== */
-/*                          BOTÕES PRINCIPAIS DE AÇÃO                            */
-/* ============================================================================== */
 
-/* Botão "Convidar Colaborador" - roxo */
+/* Botão de convite */
+
 .invite-button {
   display: flex;
   align-items: center;
@@ -118,25 +131,33 @@
   height: 46px;
 }
 
+
 /* Efeito hover do botão convidar */
+
 .invite-button:hover {
-  background: #652b94;
-  transform: translateY(-1px); /* Efeito de "levitar" */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: #652b94;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
 
 /* Efeito de clique do botão convidar */
+
 .invite-button:active {
-  transform: translateY(0);
+    transform: translateY(0);
 }
+
 
 /* Ícone do botão convidar */
+
 .invite-button svg {
-  width: 1.25rem;
-  height: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
 }
 
-/* Botão "Exportar para Excel" - verde */
+
+/* Botão de exportar */
+
 .export-button {
   display: flex;
   align-items: center;
@@ -154,563 +175,650 @@
   height: 46px;
 }
 
+
 /* Efeito hover do botão exportar */
+
 .export-button:hover {
-  background: #047857;
-  transform: translateY(-1px);
+    background: #047857;
+    transform: translateY(-1px);
 }
+
 
 /* Ícone do botão exportar */
+
 .export-button svg {
-  width: 1rem;
-  height: 1rem;
+    width: 1rem;
+    height: 1rem;
 }
 
-/* ============================================================================== */
-/*                            TABELA DE COLABORADORES                            */
-/* ============================================================================== */
 
-/* Container responsivo da tabela */
+/* Tabela */
+
 .table-responsive {
-  overflow-x: auto; /* Scroll horizontal em telas pequenas */
-  margin-bottom: 20px;
+    overflow-x: auto;
+    margin-bottom: 20px;
 }
+
 
 /* Tabela principal de colaboradores */
+
 .colaboradores-table {
-  width: 100%;
-  border-collapse: collapse; /* Remove espaços entre bordas */
-  margin-top: 15px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
 }
+
 
 /* Células da tabela (cabeçalho e dados) */
+
 .colaboradores-table th,
 .colaboradores-table td {
-  border: 1px solid var(--theme-input-border);
-  padding: 12px 15px;
-  text-align: left;
-  font-size: 0.95em;
-  color: var(--theme-body-text);
+    border: 1px solid var(--theme-input-border);
+    /* Borda da tabela */
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 0.95em;
+    color: var(--theme-body-text);
+    /* Cor do texto da tabela */
 }
+
 
 /* Cabeçalho da tabela */
+
 .colaboradores-table th {
-  background-color: var(--theme-form-bg);
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--theme-label-text);
+    background-color: var(--theme-form-bg);
+    /* Fundo do cabeçalho da tabela */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--theme-label-text);
+    /* Cor do texto do cabeçalho da tabela */
 }
+
 
 /* Efeito zebrado - linhas pares com fundo diferente */
+
 .colaboradores-table tbody tr:nth-child(even) {
-  background-color: var(--theme-card-bg);
+    background-color: var(--theme-card-bg);
+    /* Fundo zebrado (light) */
 }
+
 
 /* Efeito hover nas linhas da tabela */
+
 .colaboradores-table tbody tr:hover {
-  background-color: var(--theme-background);
+    background-color: var(--theme-background);
+    /* Efeito de hover na tabela */
 }
+
 
 /* Classe utilitária para centralizar texto */
+
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
-/* ============================================================================== */
-/*                              BADGES DE STATUS                                 */
-/* ============================================================================== */
 
-/* Badge base para status */
+/* Badges de Status */
+
 .status-badge {
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-size: 0.85em;
-  font-weight: bold;
-  color: var(--color-white);
-  text-transform: capitalize; 
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: var(--color-white);
+    /* Cor do texto do badge */
+    text-transform: capitalize;
 }
+
 
 /* Badge status finalizado - verde */
+
 .status-finalizado {
-  background-color: var(--color-success); 
+    background-color: var(--color-success);
 }
+
 
 /* Badge status em aberto - amarelo */
+
 .status-emaberto {
-  background-color: var(--color-warning); 
-  color: var(--color-text-dark); /* Texto escuro para contraste */
+    background-color: var(--color-warning);
+    color: var(--color-text-dark);
+    /* Texto escuro para contraste no amarelo */
 }
+
 
 /* Badge status vencido - vermelho */
+
 .status-vencido {
-  background-color: var(--color-danger); 
+    background-color: var(--color-danger);
 }
 
-/* ============================================================================== */
-/*                         BOTÃO DE DETALHES NA TABELA                           */
-/* ============================================================================== */
 
-/* Botão "Detalhes" em cada linha da tabela */
+/* Botão de Detalhes */
+
 .details-button {
-  background: #7120bd;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9em;
-  transition: background-color 0.3s ease;
+    background: #7120bd;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
 }
+
 
 /* Hover do botão detalhes */
+
 .details-button:hover {
-  background: #652b94;
+    background: #652b94;
 }
 
-/* ============================================================================== */
-/*                           CONTROLES DE PAGINAÇÃO                              */
-/* ============================================================================== */
 
-/* Container dos controles de paginação */
+/* Controles de Paginação */
+
 .pagination-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  gap: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 15px;
 }
+
 
 /* Botões de paginação (Anterior/Próxima) */
+
 .pagination-controls button {
-  background-color: var(--theme-button-secondary-bg);
-  border: 1px solid var(--theme-input-border);
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.95em;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  color: var(--theme-button-text);
+    background-color: var(--theme-button-secondary-bg);
+    /* Fundo do botão de paginação */
+    border: 1px solid var(--theme-input-border);
+    /* Borda do botão de paginação */
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    color: var(--theme-button-text);
 }
+
 
 /* Hover dos botões de paginação */
+
 .pagination-controls button:hover:not(:disabled) {
-  background-color: var(--theme-button-disabled-bg);
-  border-color: var(--theme-focus-border);
+    background-color: var(--theme-button-disabled-bg);
+    /* Hover do botão de paginação */
+    border-color: var(--theme-focus-border);
+    /* Borda no hover */
 }
+
 
 /* Botões desabilitados */
+
 .pagination-controls button:disabled {
-  background-color: var(--theme-button-disabled-bg);
-  color: var(--color-muted-text);
-  cursor: not-allowed;
+    background-color: var(--theme-button-disabled-bg);
+    /* Fundo do botão desabilitado */
+    color: var(--color-muted-text);
+    /* Texto muted para desabilitado */
+    cursor: not-allowed;
 }
+
 
 /* Texto informativo da paginação */
+
 .pagination-controls span {
-  font-size: 1em;
-  color: var(--theme-body-text);
+    font-size: 1em;
+    color: var(--theme-body-text);
+    /* Cor do texto da paginação */
 }
 
-/* ============================================================================== */
-/*                              MODAL DIALOG BASE                                */
-/* ============================================================================== */
 
-/* Overlay escuro que cobre toda a tela quando modal está aberto */
+/* Estilos do Modal Dialog */
+
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease-in-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
 }
+
 
 /* Container principal do modal */
+
 .modal-dialog {
-  background: var(--theme-form-bg);
-  color: var(--theme-body-text);
-  border: 2px solid #34363d;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  width: 90%;
-  max-width: 580px;
-  max-height: 85vh;
-  overflow-y: auto;
-  animation: slideIn 0.3s ease-out;
+    background: var(--theme-form-bg);
+    color: var(--theme-body-text);
+    border: 2px solid #34363d;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 580px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: slideIn 0.3s ease-out;
 }
 
-/* ============================================================================== */
-/*                              HEADER DO MODAL                                  */
-/* ============================================================================== */
 
-/* Cabeçalho do modal com gradiente */
+/* Header do Modal */
+
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid var(--theme-input-border);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--theme-input-border);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px 10px 0 0;
 }
+
 
 /* Título do modal */
+
 .modal-title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
+
 
 /* Botão de fechar (X) no canto superior direito */
+
 .close-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  font-size: 1.8rem;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: all 0.2s;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px;
-  min-height: 38px;
-  padding: 0 !important;
-  line-height: 1;
-  font-weight: bold;
-  position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 0 !important;
+    line-height: 1;
+    font-weight: bold;
+    position: relative;
 }
+
 
 /* Adiciona o símbolo "×" via CSS */
+
 .close-button::before {
-  content: "×";
-  font-size: 1.8rem;
-  color: white;
-  line-height: 1;
+    content: "×";
+    /* Adicionar o X via CSS */
+    font-size: 1.8rem;
+    color: white;
+    line-height: 1;
 }
+
 
 /* Hover do botão fechar */
+
 .close-button:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: scale(1.08);
-  color: white !important;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.08);
+    color: white !important;
 }
 
-/* ============================================================================== */
-/*                        CONTEÚDO DO MODAL (DETALHES)                           */
-/* ============================================================================== */
 
-/* Corpo principal do modal */
+/* Corpo do Modal */
+
 .modal-body {
-  padding: 1.2rem 1.5rem;
+    padding: 1.2rem 1.5rem;
 }
 
-/* Seção de informações (Pessoais, Profissionais, Endereço) */
+
+/* Seções de Informação */
+
 .info-section {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .info-section:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
+
 
 /* Título de cada seção */
+
 .section-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--theme-body-text);
-  margin-bottom: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--theme-input-border);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-body-text);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--theme-input-border);
 }
+
 
 /* Ícones dos títulos das seções */
+
 .section-title i {
-  color: #667eea;
+    color: #667eea;
 }
 
-/* Grid de informações em cada seção */
+
+/* Grid de Informações */
+
 .info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.8rem;
 }
+
 
 /* Item individual de informação */
+
 .info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
+
 
 /* Label do item de informação */
+
 .info-item label {
-  font-weight: 600;
-  color: var(--theme-label-text);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+    font-weight: 600;
+    color: var(--theme-label-text);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
+
 
 /* Valor do item de informação */
+
 .info-item span {
-  color: var(--theme-body-text);
-  font-size: 0.95rem;
-  padding: 0.3rem 0;
+    color: var(--theme-body-text);
+    font-size: 0.95rem;
+    padding: 0.3rem 0;
 }
 
-/* ============================================================================== */
-/*                              BADGES DE PERFIL                                 */
-/* ============================================================================== */
 
-/* Badge base para perfil e status */
-.perfil-badge, .status-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem; 
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: center; 
-  color: white !important;
+/* Badges */
+
+.perfil-badge,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: white !important;
 }
 
-/* Badge para perfil Administrador - vermelho */
+
+/* Estilos por Perfil */
+
 .perfil-badge.administrador {
-  background-color: #dc3545;
-  color: white !important;
+    background-color: #dc3545;
+    color: white !important;
 }
+
 
 /* Badge para perfil Gente e Cultura - laranja */
+
 .perfil-badge.gente.e.cultura {
-  background-color: #fd7e14;
-  color: white !important;
+    background-color: #fd7e14;
+    color: white !important;
 }
+
 
 /* Badge para perfil Colaborador Comum - cinza */
+
 .perfil-badge.colaborador.comum {
-  background-color: #6c757d;
-  color: white !important;
+    background-color: #6c757d;
+    color: white !important;
 }
 
-/* Badge para status Finalizado - verde */
+
+/* Estilos por Status */
+
 .status-badge.finalizado {
-  background-color: #28a745;
-  color: white !important;
+    background-color: #28a745;
+    color: white !important;
 }
+
 
 /* Badge para status Em Aberto - amarelo */
+
 .status-badge.em.aberto {
-  background-color: #ffc107;
-  color: #212529 !important;
+    background-color: #ffc107;
+    color: #212529 !important;
 }
+
 
 /* Badge para status Vencido - vermelho */
+
 .status-badge.vencido {
-  background-color: #dc3545;
-  color: white !important;
+    background-color: #dc3545;
+    color: white !important;
 }
 
-/* ============================================================================== */
-/*                           FOOTER DO MODAL BASE                                */
-/* ============================================================================== */
 
-/* Footer do modal - inicialmente oculto */
+/* Footer do Modal */
+
 .modal-footer {
-  display: none !important;
+    display: none !important;
 }
+
 
 /* Classe base para botões */
+
 .btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
 }
 
+
 /* Botão secundário - vermelho */
+
 .btn-secondary {
-  background-color: #e74c3c;
-  color: white;
+    background-color: #e74c3c;
+    color: white;
 }
 
 .btn-secondary:hover {
-  background-color: #c0392b;
-  transform: translateY(-1px);
+    background-color: #c0392b;
+    transform: translateY(-1px);
 }
 
-/* ============================================================================== */
-/*                        MODAL DE CONVITE - ESTRUTURA                           */
-/* ============================================================================== */
 
-/* Seção header (não usada atualmente) */
+/* Header Section com botão de convite */
+
 .header-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
 }
 
 .header-section h1 {
-  margin: 0;
-  color: var(--theme-text-primary, #333);
-  font-size: 2rem;
-  font-weight: 600;
+    margin: 0;
+    color: var(--theme-text-primary, #333);
+    font-size: 2rem;
+    font-weight: 600;
 }
 
-/* Modal específico para convites - menor */
+
+/* Dialog de convite */
+
 .invite-dialog {
-  max-width: 500px;
-  width: 90%;
+    max-width: 500px;
+    width: 90%;
 }
 
 .invite-dialog .modal-body {
-  padding: 1.5rem;
+    padding: 1.5rem;
 }
 
-/* ============================================================================== */
-/*                       FORMULÁRIO DO MODAL DE CONVITE                          */
-/* ============================================================================== */
 
-/* Grupo de campos do formulário */
+/* Form styles */
+
 .form-group {
-  margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
 }
+
 
 /* Labels dos campos do formulário */
+
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--theme-label-text);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--theme-label-text);
 }
+
 
 /* Campos de entrada do formulário */
+
 .form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid var(--theme-input-border);
-  border-radius: 6px;
-  font-size: 1rem;
-  background: var(--theme-input-bg);
-  color: var(--theme-body-text);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--theme-input-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
 
 /* Estado de foco dos campos */
+
 .form-control:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+
 /* Campo com erro */
+
 .form-control.error {
-  border-color: #ef4444;
+    border-color: #ef4444;
 }
 
 .form-control.error:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
-/* ============================================================================== */
-/*                      MENSAGENS DE ERRO E SUCESSO                              */
-/* ============================================================================== */
 
-/* Container das mensagens de erro */
+/* Error messages */
+
 .error-messages {
-  margin-top: 0.5rem;
+    margin-top: 0.5rem;
 }
+
 
 /* Texto de erro */
+
 .error-text {
-  color: #ef4444;
-  font-size: 0.875rem;
-  display: block;
-  margin-top: 0.25rem;
+    color: #ef4444;
+    font-size: 0.875rem;
+    display: block;
+    margin-top: 0.25rem;
 }
 
-/* Container das mensagens de feedback */
+
+/* Success/Error message container */
+
 .message-container {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
+
 
 /* Mensagens de sucesso e erro */
+
 .success-message,
 .error-message {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
+
 
 /* Mensagem de sucesso - verde */
+
 .success-message {
-  background: #f0fdf4;
-  color: #166534;
-  border: 1px solid #bbf7d0;
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
 }
+
 
 /* Mensagem de erro - vermelho */
+
 .error-message {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fecaca;
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
 }
+
 
 /* Ícones das mensagens */
+
 .success-message svg,
 .error-message svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
 }
 
-/* ============================================================================== */
-/*                        BOTÕES DO MODAL DE CONVITE                             */
-/* ============================================================================== */
 
-/* Container dos botões do modal de convite */
+/* Botões do modal de convite */
+
 .invite-modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--theme-input-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--theme-input-border);
 }
+
 
 /* Estilo dos botões do modal de convite */
+
 .invite-modal-buttons .btn {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -724,44 +832,48 @@
   gap: 0.5rem;
 }
 
+
 /* Botões desabilitados */
+
 .invite-modal-buttons .btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
+
 /* Botão Cancelar */
+
 .btn-cancel {
-  background: #dc2626;
-  color: white;
+    background: #dc2626;
+    color: white;
 }
 
 .btn-cancel:hover:not(:disabled) {
-  background: #b91c1c;
+    background: #b91c1c;
 }
 
+
 /* Botão Enviar */
+
 .btn-send {
-  background: #7120bd;
-  color: white;
+    background: #7120bd;
+    color: white;
 }
 
 .btn-send:hover:not(:disabled) {
-  background: #652b94;
+    background: #652b94;
 }
 
-/* ============================================================================== */
-/*                              LOADING SPINNER                                  */
-/* ============================================================================== */
 
-/* Spinner de carregamento */
+/* Loading spinner */
+
 .loading-spinner {
-  width: 1rem;
-  height: 1rem;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 /* ============================================================================== */
@@ -1246,71 +1358,60 @@
   }
 }
 
-/* Smartphones pequenos (até 480px) */
-@media (max-width: 480px) {
-  .lista-colaboradores-container {
-    padding: 1rem;
-    margin: 1rem auto;
-  }
-  
-  .lista-colaboradores-container > .controls-section {
-    gap: 0.75rem;
-  }
-  
-  .lista-colaboradores-container > .controls-section > .buttons-container {
-    gap: 0.5rem;
-  }
-  
-  /* Botões principais ainda menores */
-  .lista-colaboradores-container .controls-section .buttons-container .invite-button,
-  .lista-colaboradores-container .controls-section .buttons-container .export-button {
-    height: 44px;
-    font-size: 0.85rem;
-    padding: 0.6rem 1rem;
-  }
-  
-  /* Ícones menores */
-  .lista-colaboradores-container .controls-section .buttons-container .invite-button svg,
-  .lista-colaboradores-container .controls-section .buttons-container .export-button svg {
-    width: 1rem;
-    height: 1rem;
-  }
-  
-  /* Input de pesquisa menor */
-  .lista-colaboradores-container .controls-section .search-container .search-bar input {
-    font-size: 0.85rem;
-    padding: 0.6rem 2rem 0.6rem 0.8rem;
-  }
-  
-  /* Proteção dupla para botões de perfil */
-  .modal-dialog .perfil-actions .btn-perfil {
-    height: auto !important;
-    font-size: 10px !important;
-    padding: 6px 8px !important;
-    width: auto !important;
-  }
+
+/* Dark theme support */
+
+:root.dark .success-message {
+    background: #064e3b;
+    color: #6ee7b7;
+    border-color: #047857;
 }
 
-/* Landscape em mobile */
-@media (max-width: 768px) and (orientation: landscape) {
-  /* Botões principais voltam lado a lado */
-  .lista-colaboradores-container > .controls-section > .buttons-container {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .lista-colaboradores-container > .controls-section > .buttons-container > .invite-button,
-  .lista-colaboradores-container > .controls-section > .buttons-container > .export-button {
-    width: calc(50% - 0.5rem);
-  }
-  
-  /* Botões de perfil permanecem inalterados */
-  .perfil-actions {
-    flex-direction: row !important;
-  }
-  
-  .perfil-actions .btn-perfil {
-    width: auto !important;
-    flex: 1 !important;
-  }
+:root.dark .error-message {
+    background: #7f1d1d;
+    color: #fca5a5;
+    border-color: #dc2626;
+}
+
+
+/* TEMA DARK DIALOG - Estilos específicos para modo escuro */
+
+[data-theme="dark"] .modal-dialog {
+    background: #2d3748 !important;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .modal-body {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .section-title {
+    color: #e2e8f0;
+    border-bottom-color: #4a5568;
+}
+
+[data-theme="dark"] .info-item label {
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .info-item span {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .modal-footer {
+    background-color: #1a202c !important;
+    border-top-color: #4a5568;
+}
+
+[data-theme="dark"] .close-button {
+    color: white !important;
+}
+
+[data-theme="dark"] .perfil-badge,
+[data-theme="dark"] .status-badge {
+    color: white !important;
+}
+
+[data-theme="dark"] .status-badge.em.aberto {
+    color: #212529 !important;
 }

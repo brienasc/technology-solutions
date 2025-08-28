@@ -34,7 +34,7 @@ override  lastPageLabel = 'Última página';
     }
     length = Math.max(length, 0);
     const startIndex = page * pageSize;
-    // If the start index exceeds the list length, do not try and fix the end index to the end.
+    // Se o índice inicial exceder o comprimento da lista, não tenta fixar o índice final no final.
     const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
     return `${startIndex + 1} - ${endIndex} de ${length}`;
   };
