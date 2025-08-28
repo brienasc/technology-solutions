@@ -78,12 +78,10 @@ export class MenuGerencialComponent implements OnInit, AfterViewInit {
   onViewColaboradorDetails(colaborador: any): void {
     this.selectedColaborador = colaborador;
     this.showModal = true;
-    console.log('Abrindo modal para:', colaborador);
   }
 
   closeModal(): void {
     this.showModal = false;
     this.selectedColaborador = null;
-    console.log('Fechando modal.');
   }
 }

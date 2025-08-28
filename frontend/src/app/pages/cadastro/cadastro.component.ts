@@ -99,11 +99,9 @@ export class CadastroComponent implements OnInit {
     
     // Adiciona o token e o e-mail ao objeto a ser enviado
     const cadastroData = { ...formData, token };
-    console.log(cadastroData)
     if (this.cadastroForm.valid) {
       this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
         next: (response: any) => {
-          console.log('Cadastro realizado com sucesso!', response);
           this.router.navigate(['/sucesso']);
         },
         error: (error: any) => {

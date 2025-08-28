@@ -15,25 +15,15 @@ import { AuthService } from '../../services/auth.service'; // Importa o serviço
 function cpfValidator(control: AbstractControl): ValidationErrors | null {
   const cpf = control.value?.replace(/[^\d]+/g, ''); // Remove máscara
 
-//Linhas de Log para Depuração
-  console.log('--- Validador CPF ---'); // Marcador para o início da validação
-  console.log('Valor original do campo (com máscara):', control.value);
-  console.log('CPF sem máscara (após replace):', cpf);
-  console.log('Tamanho do CPF sem máscara:', cpf.length);
-  // ---------------------------------------------------------------------
-
-
 // Verifica se o campo CPF está vazio.
 // Se estiver vazio, retorna 'null', indicando que a validação customizada não encontrou erro.
 // A validação de campo obrigatório (Validators.required) cuida da obrigatoriedade.
   if (!cpf) {
-    console.log('CPF vazio. Retornando null (válido para validação de obrigatoriedade).');
     return null; 
   }
   
   // Verifica se o CPF tem 11 dígitos e se não são todos iguais (ex: "11111111111"). Se forem iguais, retorna invalidação.
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
-    console.log('CPF não tem 11 dígitos ou tem todos os dígitos iguais.');
     return { cpfInvalido: true };
   }
 
@@ -50,18 +40,12 @@ function cpfValidator(control: AbstractControl): ValidationErrors | null {
   // Calcula o resto da divisão da soma por 11, e depois multiplica por 10 e pega o resto por 11 novamente.
   remainder = (sum * 10) % 11;
   
-  // --- Linhas de Log para Depuração ---
-  console.log('Primeiro dígito verificador calculado (remainder):', remainder);
-  console.log('Primeiro dígito verificador no CPF (charAt 9):', parseInt(cpf.charAt(9)));
-  // ------------------------------------
-
   // Se o resto for 10 ou 11, o dígito verificador é 0 (regra padrão do CPF).
   if (remainder === 10 || remainder === 11) {
     remainder = 0; 
   }
   // Compara o dígito verificador calculado com o 10º dígito real do CPF.
   if (remainder !== parseInt(cpf.charAt(9))) { 
-    console.log('Primeiro dígito verificador não corresponde!');
     return { cpfInvalido: true }; // Retorna erro se não coincidir.
   }
 
@@ -74,23 +58,16 @@ function cpfValidator(control: AbstractControl): ValidationErrors | null {
   }
   remainder = (sum * 10) % 11; // Calcula o resto da divisão da soma por 11.
   
-  //Log para Depuração ---
-  console.log('Segundo dígito verificador calculado (remainder):', remainder);
-  console.log('Segundo dígito verificador no CPF (charAt 10):', parseInt(cpf.charAt(10)));
-  // ------------------------------------
-
   // Se o resto for 10 ou 11, o dígito verificador é 0.
   if (remainder === 10 || remainder === 11) {
     remainder = 0; 
   }
   // Compara o dígito verificador calculado com o 11º dígito real do CPF.
   if (remainder !== parseInt(cpf.charAt(10))) { 
-    console.log('Segundo dígito verificador não corresponde!');
     return { cpfInvalido: true }; // Retorna erro se não coincidir.
   }
 
   // Se todas as verificações passarem, o CPF é considerado válido.
-  console.log('CPF validado com sucesso! Retornando null.');
   return null; // Retorna null para indicar que não há erros de validação.
 }
 
@@ -193,13 +170,11 @@ this.isDarkTheme = localStorage.getItem('theme') === 'dark';
     if (this.loginForm.valid) {
       // Desestrutura o objeto 'value' do formulário para obter os valores de 'cpf' e 'password'.
       const { cpf, password } = this.loginForm.value;
-      console.log('Dados do login:', { cpf, password });
 
       // *** AQUI INTEGRARIA O SERVIÇO DE AUTENTICAÇÃO REAL ***
       // Este bloco de código faz a chamada real ao AuthService para autenticar o usuário.
       this.authService.login(cpf, password).subscribe(
         response => {
-          console.log('Login bem-sucedido!', response);
           alert(response.message); // Exibe uma mensagem de sucesso (pode ser substituído por um modal).
           this.router.navigate(['/']); // Redireciona o usuário para a página inicial ('/').
         },
@@ -216,7 +191,6 @@ this.isDarkTheme = localStorage.getItem('theme') === 'dark';
       // Marca todos os controles do formulário como 'touched' (tocados).
       // Isso faz com que as mensagens de erro (definidas com *ngIf e .touched no HTML) sejam exibidas ao usuário.
       this.loginForm.markAllAsTouched();
-      console.log('Formulário inválido, verifique os campos.'); // Loga no console que o formulário é inválido.
     }
   }
 }
