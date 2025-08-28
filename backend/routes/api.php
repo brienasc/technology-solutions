@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConvitesController;
@@ -25,6 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
     });
+
+    Route::get('/auth', [AuthController::class,'show']);
 });
 
 Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
