@@ -114,6 +114,23 @@
 /* Botão de convite */
 
 .invite-button {
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #7120bd;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1.5625rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap; /* Evita quebra de linha */
+  height: 46px;
+
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -129,6 +146,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
     height: 46px;
+
 }
 
 
@@ -159,6 +177,22 @@
 /* Botão de exportar */
 
 .export-button {
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #059669;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 1.5625rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  height: 46px;
+
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -173,6 +207,7 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     height: 46px;
+
 }
 
 
@@ -820,6 +855,18 @@
 /* Estilo dos botões do modal de convite */
 
 .invite-modal-buttons .btn {
+
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 1.5625rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 6px;
@@ -830,6 +877,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
 }
 
 
@@ -885,6 +933,165 @@
 
 /* Responsividade para mobile */
 
+
+/* Footer do modal de detalhes - visível */
+.modal-footer {
+  display: block !important;
+  padding: 20px 24px;
+  border-top: 1px solid var(--theme-input-border);
+  background: var(--theme-form-bg);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Footer em modo normal */
+.modal-footer-normal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Footer em modo edição */
+.modal-footer-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ============================================================================== */
+/*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
+/* ============================================================================== */
+
+/* Botão primário (Alterar Perfil) */
+.modal-footer .btn-primary {
+  background: #7120bd;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(113, 32, 189, 0.2);
+}
+
+.modal-footer .btn-primary:hover:not(:disabled) {
+  background: #652b94;
+  transform: translateY(-1px);
+}
+
+/* Botão de sucesso */
+.modal-footer .btn-success {
+  background: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.modal-footer .btn-success:hover:not(:disabled) {
+  background: #1e7e34;
+  transform: translateY(-1px);
+}
+
+/* Botão cancelar do footer */
+.modal-footer .btn-cancel {
+  background: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.modal-footer .btn-cancel:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+/* Botões desabilitados do footer */
+.modal-footer .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================== */
+/*                           CAMPOS DE SENHA                                     */
+/* ============================================================================== */
+
+/* Formulário de senha */
+.password-form {
+  margin-top: 12px;
+}
+
+/* Informação sobre senha */
+.password-info {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  border-left: 4px solid #2196f3;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1565c0;
+}
+
+.password-info i {
+  margin-right: 8px;
+  color: #2196f3;
+}
+
+/* Container de erros de senha */
+.password-errors {
+  margin-top: 8px;
+}
+
+/* Inputs de senha específicos */
+.password-form .form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--theme-input-border);
+  border-radius: 6px;
+  background: var(--theme-input-bg);
+  color: var(--theme-body-text);
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.password-form .form-control:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Spinner do footer */
+.modal-footer .loading-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
 @media (max-width: 768px) {
     .invite-dialog {
         margin: 1rem;
@@ -897,6 +1104,7 @@
         width: 100%;
         justify-content: center;
     }
+
 }
 
 
