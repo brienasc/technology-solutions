@@ -12,6 +12,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Header } from '../header/header'
 import { ConvitesService } from '../../services/convite.service';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 // Interface para o modelo de dados do Colaborador.
 // Define a estrutura esperada para cada objeto de colaborador.
@@ -38,7 +39,8 @@ interface Colaborador {
     CommonModule, 
     FormsModule, 
     Header,
-    LowerCasePipe 
+    LowerCasePipe,
+    MatPaginatorModule
   ],
   templateUrl: './lista-colaboradores.html', 
   styleUrls: ['./lista-colaboradores.css'] 
@@ -773,6 +775,19 @@ export class ListaColaboradoresComponent implements OnInit {
   private clearMessages(): void {
     this.profileChangeError = '';
     this.profileChangeSuccess = '';
+  }
+
+  
+  updatePaginatedColaboradores() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.itemsPerPage = event.pageSize;
+    this.currentPage = event.pageIndex + 1; // pageIndex é 0-based
+    this.updatePaginatedColaboradores();
   }
 
   // Atualizar apenas o método closeColaboradorDialog para limpar estado de edição

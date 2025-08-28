@@ -80,13 +80,6 @@
     </table>
   </div>
 
-  <!-- Controles de Paginação -->
-  <div class="pagination-controls">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-    <span>Página {{ currentPage }} de {{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
-  </div>
-
   <!-- Dialog Modal para Detalhes do Colaborador -->
   <div class="modal-overlay" *ngIf="showColaboradorDialog" (click)="closeColaboradorDialog()">
     <div class="modal-dialog" (click)="$event.stopPropagation()">
@@ -408,4 +401,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Paginador Mat -->
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="itemsPerPage"
+    [pageIndex]="currentPage - 1"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    (page)="handlePageEvent($event)"
+    aria-label="Selecione a página de colaboradores"
+  >
+  </mat-paginator>
 </div>
