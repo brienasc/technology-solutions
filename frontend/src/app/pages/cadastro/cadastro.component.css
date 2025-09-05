@@ -85,7 +85,7 @@ body.dark-theme {
   flex: 1.5;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /*  Altera para alinhar ao topo */
+  align-items: flex-start; 
   padding: 20px;
   background-color: var(--theme-form-bg, #fff);
   border-radius: 20px;
@@ -95,7 +95,7 @@ body.dark-theme {
   max-height: 100vh; /*  garante que o formulário não exceda a altura da tela */
 }
 
-/* **Novos estilos para a seção de carregamento** */
+/* seção de carregamento** */
 .cadastro-loading-content {
   display: flex;
   justify-content: center;

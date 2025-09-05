@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router'; // Removido o RouterLink
+import { ActivatedRoute, Router } from '@angular/router';
 import { CadastroService } from '../../services/cadastroservice';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -71,7 +71,6 @@ export class CadastroComponent implements OnInit {
 
     //  autocompletar CEP
     this.cadastroForm.get('cep')?.valueChanges.subscribe(cep => {
-      // Remove caracteres não numéricos para verificar o comprimento
       const cepLimpo = cep ? cep.replace(/\D/g, '') : '';
       if (cepLimpo.length === 8) {
         this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe({
@@ -93,19 +92,17 @@ export class CadastroComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // para enviar o e-mail que está desabilitado, é preciso obter o valor cru do formulário
     const formData = this.cadastroForm.getRawValue();
     const token = this.route.snapshot.paramMap.get('token');
     
-    // Adiciona o token e o e-mail ao objeto a ser enviado
     const cadastroData = { ...formData, token };
     if (this.cadastroForm.valid) {
       this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
         next: (response: any) => {
-          this.router.navigate(['/sucesso']);
+          this.router.navigate(['/']);
         },
         error: (error: any) => {
-          // Captura e exibe a mensagem de erro do backend (ex: CPF duplicado)
+          // exibe a mensagem de erro do backend 
           this.mensagemErro = error.error.message || 'Erro ao realizar o cadastro. Tente novamente.';
           console.error('Erro no cadastro:', error);
         }
