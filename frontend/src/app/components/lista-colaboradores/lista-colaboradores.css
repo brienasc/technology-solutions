@@ -114,23 +114,22 @@
 /* Botão de convite */
 
 .invite-button {
-
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #7120bd;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 1.5625rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap; /* Evita quebra de linha */
-  height: 46px;
-
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #7120bd;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1.5625rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    /* Evita quebra de linha */
+    height: 46px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -146,7 +145,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
     height: 46px;
-
 }
 
 
@@ -177,22 +175,20 @@
 /* Botão de exportar */
 
 .export-button {
-
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #059669;
-  color: white;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 1.5625rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  height: 46px;
-
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 1.5625rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    height: 46px;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -207,7 +203,6 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     height: 46px;
-
 }
 
 
@@ -855,18 +850,16 @@
 /* Estilo dos botões do modal de convite */
 
 .invite-modal-buttons .btn {
-
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 1.5625rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 1.5625rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     border: none;
     border-radius: 6px;
@@ -877,7 +870,6 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-
 }
 
 
@@ -935,320 +927,323 @@
 
 
 /* Footer do modal de detalhes - visível */
+
 .modal-footer {
-  display: block !important;
-  padding: 20px 24px;
-  border-top: 1px solid var(--theme-input-border);
-  background: var(--theme-form-bg);
-  border-radius: 0 0 12px 12px;
+    display: block !important;
+    padding: 20px 24px;
+    border-top: 1px solid var(--theme-input-border);
+    background: var(--theme-form-bg);
+    border-radius: 0 0 12px 12px;
 }
+
 
 /* Footer em modo normal */
+
 .modal-footer-normal {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    align-items: center;
 }
+
 
 /* Footer em modo edição */
+
 .modal-footer-edit {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-/* ============================================================================== */
-/*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
+
 /* ============================================================================== */
 
+
+/*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
+
+
+/* ============================================================================== */
+
+
 /* Botão primário (Alterar Perfil) */
+
 .modal-footer .btn-primary {
-  background: #7120bd;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 4px rgba(113, 32, 189, 0.2);
+    background: #7120bd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(113, 32, 189, 0.2);
 }
 
 .modal-footer .btn-primary:hover:not(:disabled) {
-  background: #652b94;
-  transform: translateY(-1px);
+    background: #652b94;
+    transform: translateY(-1px);
 }
 
+
 /* Botão de sucesso */
+
 .modal-footer .btn-success {
-  background: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
 
 .modal-footer .btn-success:hover:not(:disabled) {
-  background: #1e7e34;
-  transform: translateY(-1px);
+    background: #1e7e34;
+    transform: translateY(-1px);
 }
 
+
 /* Botão cancelar do footer */
+
 .modal-footer .btn-cancel {
-  background: #dc3545;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+    background: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
 }
 
 .modal-footer .btn-cancel:hover:not(:disabled) {
-  background: #c82333;
-  transform: translateY(-1px);
+    background: #c82333;
+    transform: translateY(-1px);
 }
+
 
 /* Botões desabilitados do footer */
+
 .modal-footer .btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
+
 /* ============================================================================== */
+
+
 /*                           CAMPOS DE SENHA                                     */
+
+
 /* ============================================================================== */
+
 
 /* Formulário de senha */
+
 .password-form {
-  margin-top: 12px;
+    margin-top: 12px;
 }
 
+
 /* Informação sobre senha */
+
 .password-info {
-  margin-bottom: 16px;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-  border-left: 4px solid #2196f3;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #1565c0;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-left: 4px solid #2196f3;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #1565c0;
 }
 
 .password-info i {
-  margin-right: 8px;
-  color: #2196f3;
+    margin-right: 8px;
+    color: #2196f3;
 }
+
 
 /* Container de erros de senha */
+
 .password-errors {
-  margin-top: 8px;
+    margin-top: 8px;
 }
 
+
 /* Inputs de senha específicos */
+
 .password-form .form-control {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--theme-input-border);
-  border-radius: 6px;
-  background: var(--theme-input-bg);
-  color: var(--theme-body-text);
-  font-size: 14px;
-  transition: border-color 0.2s ease;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 6px;
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    font-size: 14px;
+    transition: border-color 0.2s ease;
 }
 
 .password-form .form-control:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
 }
+
 
 /* Spinner do footer */
+
 .modal-footer .loading-spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-
-@media (max-width: 768px) {
-    .invite-dialog {
-        margin: 1rem;
-        width: calc(100% - 2rem);
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    @media (max-width: 768px) {
+        .invite-dialog {
+            margin: 1rem;
+            width: calc(100% - 2rem);
+        }
+        .invite-modal-buttons {
+            flex-direction: column;
+        }
+        .invite-modal-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
     }
-    .invite-modal-buttons {
-        flex-direction: column;
+    /* RESPONSIVIDADE DOS BOTÕES */
+    /* Tablets */
+    @media (max-width: 992px) {
+        .controls-section {
+            gap: 1.5rem;
+        }
+        .invite-button,
+        .export-button {
+            padding: 0.65rem 1rem;
+            font-size: 0.875rem;
+        }
     }
-    .invite-modal-buttons .btn {
-        width: 100%;
-        justify-content: center;
+    /* Tablets pequenos e celulares grandes */
+    @media (max-width: 768px) {
+        .controls-section {
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+        .search-container {
+            max-width: 100%;
+            width: 100%;
+        }
+        .buttons-container {
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .invite-button,
+        .export-button {
+            flex: 1;
+            min-width: 180px;
+            max-width: 250px;
+            justify-content: center;
+        }
     }
-
-}
-
-
-/* RESPONSIVIDADE DOS BOTÕES */
-
-
-/* Tablets */
-
-@media (max-width: 992px) {
-    .controls-section {
-        gap: 1.5rem;
+    /* Celulares médios */
+    @media (max-width: 640px) {
+        .controls-section {
+            padding: 0 0.5rem;
+            gap: 1rem;
+        }
+        .buttons-container {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .invite-button,
+        .export-button {
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+            height: 50px;
+            font-size: 0.9rem;
+        }
+        .search-bar input {
+            font-size: 16px;
+            /* Evita zoom no iOS */
+            height: 50px;
+        }
     }
-    .invite-button,
-    .export-button {
-        padding: 0.65rem 1rem;
-        font-size: 0.875rem;
+    /* Celulares pequenos */
+    @media (max-width: 480px) {
+        .controls-section {
+            margin-bottom: 1.5rem;
+        }
+        .invite-button,
+        .export-button {
+            height: 52px;
+            border-radius: 8px;
+        }
+        .search-bar input::placeholder {
+            font-size: 0.85rem;
+        }
     }
-}
-
-
-/* Tablets pequenos e celulares grandes */
-
-@media (max-width: 768px) {
-    .controls-section {
-        flex-direction: column;
-        gap: 1.5rem;
-        align-items: stretch;
+    /* Dark theme support */
+    :root.dark .success-message {
+        background: #064e3b;
+        color: #6ee7b7;
+        border-color: #047857;
     }
-    .search-container {
-        max-width: 100%;
-        width: 100%;
+    :root.dark .error-message {
+        background: #7f1d1d;
+        color: #fca5a5;
+        border-color: #dc2626;
     }
-    .buttons-container {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
+    /* TEMA DARK DIALOG - Estilos específicos para modo escuro */
+    [data-theme="dark"] .modal-dialog {
+        background: #2d3748 !important;
+        color: #e2e8f0;
     }
-    .invite-button,
-    .export-button {
-        flex: 1;
-        min-width: 180px;
-        max-width: 250px;
-        justify-content: center;
+    [data-theme="dark"] .modal-body {
+        color: #e2e8f0;
     }
-}
-
-
-/* Celulares médios */
-
-@media (max-width: 640px) {
-    .controls-section {
-        padding: 0 0.5rem;
-        gap: 1rem;
+    [data-theme="dark"] .section-title {
+        color: #e2e8f0;
+        border-bottom-color: #4a5568;
     }
-    .buttons-container {
-        flex-direction: column;
-        gap: 0.75rem;
+    [data-theme="dark"] .info-item label {
+        color: #a0aec0;
     }
-    .invite-button,
-    .export-button {
-        width: 100%;
-        max-width: 100%;
-        min-width: 100%;
-        height: 50px;
-        font-size: 0.9rem;
+    [data-theme="dark"] .info-item span {
+        color: #e2e8f0;
     }
-    .search-bar input {
-        font-size: 16px;
-        /* Evita zoom no iOS */
-        height: 50px;
+    [data-theme="dark"] .modal-footer {
+        background-color: #1a202c !important;
+        border-top-color: #4a5568;
     }
-}
-
-
-/* Celulares pequenos */
-
-@media (max-width: 480px) {
-    .controls-section {
-        margin-bottom: 1.5rem;
+    [data-theme="dark"] .close-button {
+        color: white !important;
     }
-    .invite-button,
-    .export-button {
-        height: 52px;
-        border-radius: 8px;
+    [data-theme="dark"] .perfil-badge,
+    [data-theme="dark"] .status-badge {
+        color: white !important;
     }
-    .search-bar input::placeholder {
-        font-size: 0.85rem;
+    [data-theme="dark"] .status-badge.em.aberto {
+        color: #212529 !important;
     }
-}
-
-
-/* Dark theme support */
-
-:root.dark .success-message {
-    background: #064e3b;
-    color: #6ee7b7;
-    border-color: #047857;
-}
-
-:root.dark .error-message {
-    background: #7f1d1d;
-    color: #fca5a5;
-    border-color: #dc2626;
-}
-
-
-/* TEMA DARK DIALOG - Estilos específicos para modo escuro */
-
-[data-theme="dark"] .modal-dialog {
-    background: #2d3748 !important;
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-body {
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .section-title {
-    color: #e2e8f0;
-    border-bottom-color: #4a5568;
-}
-
-[data-theme="dark"] .info-item label {
-    color: #a0aec0;
-}
-
-[data-theme="dark"] .info-item span {
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-footer {
-    background-color: #1a202c !important;
-    border-top-color: #4a5568;
-}
-
-[data-theme="dark"] .close-button {
-    color: white !important;
-}
-
-[data-theme="dark"] .perfil-badge,
-[data-theme="dark"] .status-badge {
-    color: white !important;
-}
-
-[data-theme="dark"] .status-badge.em.aberto {
-    color: #212529 !important;
 }

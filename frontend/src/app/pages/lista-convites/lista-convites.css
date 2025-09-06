@@ -10,7 +10,7 @@
     /* Borda ao redor da tabela inteira */
     border-radius: 8px;
     overflow: hidden;
-    background-color: white;
+    background-color: var(--theme-card-bg);
     /* Garante que a borda arredondada se aplique */
 }
 
@@ -18,7 +18,8 @@ table {
     width: 100%;
     border-collapse: collapse;
     /* Mantenha o collapse para bordas limpas */
-    background-color: transparent;
+    /* background-color: transparent; */
+    background-color: var(--theme-card-bg);
 }
 
 th,
@@ -59,7 +60,7 @@ tbody tr:last-child {
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
-    background-color: white;
+    background-color: var(--theme-card-bg);
     color: var(--theme-body-text);
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -153,6 +154,28 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.05);
     /* Um leve destaque no hover */
+}
+
+
+/* cor de fundo para TODAS as linhas */
+
+tbody tr {
+    background-color: var(--theme-card-bg);
+    /* Cor padrão para todas as linhas */
+    border-bottom: 1px solid var(--theme-input-border);
+}
+
+
+/* Use uma cor de fundo um pouco diferente para as linhas pares,
+   criando o efeito de listra */
+
+tbody tr:nth-child(even) {
+    background-color: var(--theme-background);
+    /* Uma cor um pouco mais escura/clara */
+}
+
+tbody tr:last-child {
+    border-bottom: none;
 }
 
 .status-badge {
