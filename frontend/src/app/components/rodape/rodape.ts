@@ -54,7 +54,6 @@ export class Rodape implements OnInit {
       }
     } else {
       // Se o formulário for inválido, não acontece nada
-      console.log('Formulário inválido');      // vai exibir as mensagens de erro
     }
   }
 }

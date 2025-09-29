@@ -41,11 +41,10 @@ class ConviteService{
             return $convite;
         } catch (Exception $e) {
             DB::rollBack();
-            return null;
+            throw $e;
         }
     }
 
-    
     public function indexFilteredConvites($filtros): LengthAwarePaginator{
         $query = Convites::query();
 
@@ -53,8 +52,18 @@ class ConviteService{
             $query->where('email_colab', 'like', '%' . $filtros['email'] . '%');
         }
 
-        if(isset($filtros['status'])){
-            $query->where('status_code', $filtros['status']);
+        if (isset($filtros['status'])) {
+            switch ($filtros['status']) {
+                case 0:
+                    $query->where('status_code', 0)->where('expires_at', '>', Carbon::now());
+                    break;
+                case 2:
+                    $query->where('expires_at', '<', Carbon::now())->where('status_code', '!=', 1);
+                    break;
+                default:
+                    $query->where('status_code', $filtros['status']);
+                    break;
+            }
         }
 
         $query->latest();
@@ -64,7 +73,9 @@ class ConviteService{
         return $query->paginate($per_page);
     }
 
+
     public function getConviteById(string $id): ?Convites{
         return Convites::find($id);
     }
 }
+

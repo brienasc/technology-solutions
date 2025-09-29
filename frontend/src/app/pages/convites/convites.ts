@@ -72,7 +72,6 @@ ngOnInit(): void {
         this.invitations = response.data.invitations;
 
         this.totalItems = response.data.total;
-        console.log(this.totalItems)
         this.loading = false;
       },
       error: (err) => {

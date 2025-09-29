@@ -63,3 +63,5 @@ testem.log
 db-data/
 **/*.log
 logs/
+
+**/*.pgsql

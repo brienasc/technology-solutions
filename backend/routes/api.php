@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ConvitesController;
@@ -16,9 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('abilities:access:menu-convidar')->group(function () {
         Route::post('/convites', [ConvitesController::class,'store']);
         Route::get('/convites', [ConvitesController::class,'index']);
-        Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
     });
-
+    
     # Rotas de Colabs
     Route::middleware('abilities:access:menu-gerencial')->group(function () {
         Route::post('/colabs', [ColabsController::class,'store']);
@@ -26,8 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
     });
+
+    Route::get('/auth', [AuthController::class,'show']);
 });
 
-Route::get('/ping', function() {
-    return response()->json(['pong' => true]);
-});
+Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);

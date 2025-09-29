@@ -14,15 +14,15 @@ class Colab extends Authenticatable
 
     protected $table = 'colab';
 
-    protected $primaryKey = 'id_colab';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
+        'nome',
         'cpf',
         'email',
         'celular',
         'cep',
-        'estado',
+        'uf',
         'cidade',
         'bairro',
         'logradouro',
@@ -31,7 +31,7 @@ class Colab extends Authenticatable
     ];
 
     protected $casts = [
-        'id_colab' => 'string',
+        'id' => 'string',
     ];
 
     public function perfil(){
