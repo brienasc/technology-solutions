@@ -311,7 +311,7 @@
   </div>
 
   <!-- Dialog Modal para Convite de Colaborador -->
-  <!-- Modal de Convite (ATUALIZAR APENAS ESTE BLOCO) -->
+  <!-- Modal de Convite -->
   <div class="modal-overlay" *ngIf="showInviteDialog" (click)="closeInviteDialog()">
     <div class="modal-dialog invite-dialog" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -328,7 +328,7 @@
       <div class="modal-body">
         <form (ngSubmit)="sendInvite()" #inviteForm="ngForm">
           
-          <!-- Campo de E-mail (MANTER EXISTENTE) -->
+          <!-- Campo de E-mail -->
           <div class="form-group">
             <label for="inviteEmail">E-mail do colaborador: <span class="required">*</span></label>
             <input
@@ -405,7 +405,7 @@
             </div>
           </div>
 
-          <!-- Mensagens de Sucesso/Erro (MANTER EXISTENTE) -->
+          <!-- Mensagens de Sucesso/Erro -->
           <div class="message-container">
             <div *ngIf="inviteSuccessMessage" class="success-message">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -421,7 +421,7 @@
             </div>
           </div>
 
-          <!-- Botões (MANTER EXISTENTE) -->
+          <!-- BotõeS-->
           <div class="invite-modal-buttons">
             <button type="button" class="btn btn-cancel" (click)="closeInviteDialog()" [disabled]="inviteLoading">
               Cancelar

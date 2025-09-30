@@ -95,7 +95,7 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeSuccess: string = '';
   passwordError: string = '';
 
-// NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE (APENAS ADICIONAR)
+// NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE
   selectedPerfilConvite: number = 3; // Default: Colaborador Comum
   selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
 

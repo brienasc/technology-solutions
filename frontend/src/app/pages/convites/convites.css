@@ -478,7 +478,7 @@ body.dark-theme .header-section::after {
     background: linear-gradient(135deg, var(--color-light-primary) 0%, var(--color-secondary) 100%) !important;
 }
 
-/* ===================== ESTILOS DOS SELECTS PARA FICAR IGUAL AO LISTA-COLABORADORES ===================== */
+/* ===================== ESTILOS DOS SELECTS ===================== */
 
 /* Campos select do formulário - igual ao lista-colaboradores */
 .form-control select,
@@ -567,7 +567,7 @@ body.dark-theme .header-section::after {
     }
 }
 
-/* ===================== CORREÇÃO FINAL DAS OPÇÕES DO SELECT NO TEMA ESCURO ===================== */
+/* ===================== SELECT NO TEMA ESCURO ===================== */
 
 /* Estilos base dos selects - funciona na maioria dos navegadores */
 body.dark-theme select,
@@ -602,12 +602,66 @@ body.dark-theme select option:hover {
     color: #ffffff !important;
 }
 
-/* ADICIONAR no final - TEMA ESCURO PARA O INPUT DE EMAIL */
-
-/* Input de email no tema escuro - igual aos selects */
+/* Input de email no tema escuro */
 body.dark-theme .modal-body input[type="email"],
 .dark-theme .modal-body input[type="email"] {
     background-color: var(--theme-input-bg) !important;
     color: var(--theme-body-text) !important;
     border-color: var(--theme-input-border) !important;
+}
+
+/* MENSAGENS ESTILIZADAS */
+
+/* Success/Error message container */
+.message-container {
+    margin-bottom: 1rem;
+}
+
+/* Mensagens de sucesso e erro estilizadas */
+.success-message,
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Mensagem de sucesso - verde */
+.success-message {
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #bbf7d0;
+}
+
+/* Mensagem de erro - vermelho */
+.error-message {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* Ícones das mensagens */
+.success-message svg,
+.error-message svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* Tema escuro para as mensagens */
+body.dark-theme .success-message,
+.dark-theme .success-message {
+    background: #065f46;
+    color: #86efac;
+    border-color: #047857;
+}
+
+body.dark-theme .error-message,
+.dark-theme .error-message {
+    background: #7f1d1d;
+    color: #fca5a5;
+    border-color: #dc2626;
 }
