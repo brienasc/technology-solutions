@@ -95,7 +95,29 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeSuccess: string = '';
   passwordError: string = '';
 
-    // Lista de perfis disponíveis
+// NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE (APENAS ADICIONAR)
+  selectedPerfilConvite: number = 3; // Default: Colaborador Comum
+  selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
+
+  // Listas hardcoded APENAS para visual do modal de convite
+  perfisConvite = [
+    { id: 1, nome: 'Administrador' },
+    { id: 2, nome: 'Gente e Cultura' },
+    { id: 3, nome: 'Colaborador Comum' }
+  ];
+
+  cursosConvite = [
+    { id: 1, nome: 'Desenvolvimento Web Full Stack' },
+    { id: 2, nome: 'Análise e Desenvolvimento de Sistemas' },
+    { id: 3, nome: 'Ciência da Computação' },
+    { id: 4, nome: 'Engenharia de Software' },
+    { id: 5, nome: 'Tecnologia da Informação' },
+    { id: 6, nome: 'Marketing Digital' },
+    { id: 7, nome: 'Gestão de Projetos' },
+    { id: 8, nome: 'Design UX/UI' }
+  ];
+
+  // Lista de perfis disponíveis para alteração de perfil
   perfisDisponiveis = [
     { id: 1, nome: 'Administrador' },
     { id: 2, nome: 'Gente e Cultura' },
@@ -350,6 +372,8 @@ export class ListaColaboradoresComponent implements OnInit {
   openInviteDialog(): void {
     this.showInviteDialog = true;
     this.inviteEmail = '';
+    this.selectedPerfilConvite = 3; // Reset para Colaborador Comum
+    this.selectedCursoConvite = 0; // Reset para nenhum curso
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     document.body.style.overflow = 'hidden';
@@ -359,17 +383,42 @@ export class ListaColaboradoresComponent implements OnInit {
   closeInviteDialog(): void {
     this.showInviteDialog = false;
     this.inviteEmail = '';
+    this.selectedPerfilConvite = 3; // Reset
+    this.selectedCursoConvite = 0; // Reset
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     this.inviteLoading = false;
     document.body.style.overflow = 'auto';
   }
 
-  // Método para enviar convite
-  // Verifica se já existe um convite em aberto para o e-mail antes de enviar.
+  // NOVOS MÉTODOS APENAS PARA OS SELECTS DO MODAL DE CONVITE
+  onPerfilConviteChange(event: any): void {
+    this.selectedPerfilConvite = +event.target.value;
+    console.log('Perfil selecionado no convite:', this.selectedPerfilConvite);
+    this.inviteErrorMessage = ''; // Limpar erro quando mudar
+  }
+
+  onCursoConviteChange(event: any): void {
+    this.selectedCursoConvite = +event.target.value;
+    console.log('Curso selecionado no convite:', this.selectedCursoConvite);
+    this.inviteErrorMessage = ''; // Limpar erro quando mudar
+  }
+
+  // ATUALIZAR APENAS O MÉTODO sendInvite (adicionar validação dos selects)
   async sendInvite(): Promise<void> {
     if (!this.inviteEmail.trim()) {
       this.inviteErrorMessage = 'Por favor, insira um e-mail válido.';
+      return;
+    }
+
+    // NOVAS VALIDAÇÕES PARA OS SELECTS
+    if (this.selectedPerfilConvite === 0) {
+      this.inviteErrorMessage = 'Por favor, selecione um perfil.';
+      return;
+    }
+
+    if (this.selectedCursoConvite === 0) {
+      this.inviteErrorMessage = 'Por favor, selecione um curso.';
       return;
     }
 
@@ -387,6 +436,13 @@ export class ListaColaboradoresComponent implements OnInit {
         return;
       }
 
+      // ADICIONAR LOG DOS DADOS QUE SERIAM ENVIADOS
+      console.log('Dados do convite que seriam enviados:', {
+        email: this.inviteEmail.trim(),
+        perfil_id: this.selectedPerfilConvite,
+        curso_id: this.selectedCursoConvite
+      });
+
       // Se não existe convite em aberto, prosseguir com o envio
       this.conviteService.enviarConvite(this.inviteEmail).subscribe({
         next: (response: any) => {
@@ -395,6 +451,8 @@ export class ListaColaboradoresComponent implements OnInit {
           if (response.status === 'success') {
             this.inviteSuccessMessage = response.message || 'Convite enviado com sucesso!';
             this.inviteEmail = '';
+            this.selectedPerfilConvite = 3; // Reset
+            this.selectedCursoConvite = 0; // Reset
             
             setTimeout(() => {
               this.closeInviteDialog();

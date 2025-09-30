@@ -1274,167 +1274,38 @@
   color: #e2e8f0 !important;
 }
 
-/* ============================================================================== */
-/*                              RESPONSIVIDADE                                   */
-/* ============================================================================== */
+/* ===================== SELECTS DO MODAL DE CONVITE COM SETA BONITA ===================== */
 
-/* ===== RESPONSIVIDADE DOS BOTÕES DE EDIÇÃO DE PERFIL ===== */
+/* Override para garantir que os selects do modal de convite tenham a seta */
+.invite-dialog .form-select {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 18px 18px !important;
+    padding-right: 3.25rem !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+/* Seta no estado de erro */
+.invite-dialog .form-select.error {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
+}
+
+/* Seta no tema escuro */
+[data-theme="dark"] .invite-dialog .form-select {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
+}
+
+.dark-theme .invite-dialog .form-select {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
-  /* Edição de perfil antigo */
-  .perfil-edit-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .perfil-edit-container label {
-    min-width: auto;
-  }
-  
-  .edit-actions {
-    flex-direction: column;
-  }
-  
-  .modal-footer .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Edição inline responsiva */
-  .perfil-edit-inline {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .perfil-select-container,
-  .perfil-actions {
-    max-width: 100%;
-    width: 100%;
-  }
-  
-  .perfil-actions {
-    flex-direction: column;
-    gap: 6px;
-  }
-  
-  .btn-perfil {
-    width: 100%;
-    padding: 8px 12px;
-    font-size: 11px;
-  }
-}
-
-/* ===== RESPONSIVIDADE DOS CONTROLES PRINCIPAIS ===== */
-
-/* Tablets (até 1024px) */
-@media (max-width: 1024px) {
-  .lista-colaboradores-container > .controls-section {
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: stretch;
-  }
-  
-  .lista-colaboradores-container > .controls-section > .search-container {
-    max-width: 100%;
-  }
-  
-  .lista-colaboradores-container > .controls-section > .buttons-container {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-}
-
-/* Smartphones (até 768px) */
-@media (max-width: 768px) {
-  .lista-colaboradores-container > .controls-section {
-    gap: 1rem;
-  }
-  
-  /* Botões principais em coluna */
-  .lista-colaboradores-container > .controls-section > .buttons-container {
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-  }
-  
-  /* Botões ocupam 100% da largura */
-  .lista-colaboradores-container > .controls-section > .buttons-container > .invite-button,
-  .lista-colaboradores-container > .controls-section > .buttons-container > .export-button {
-    width: 100%;
-    justify-content: center;
-    height: 48px;
-    font-size: 0.9rem;
-  }
-  
-  /* Barra de pesquisa responsiva */
-  .lista-colaboradores-container > .controls-section > .search-container > .search-bar > input {
-    font-size: 0.9rem;
-    padding: 0.7rem 2.5rem 0.7rem 0.9rem;
-  }
-  
-  /* Proteção: botões de perfil não são afetados */
-  .perfil-actions .btn-perfil {
-    width: auto !important;
-    height: auto !important;
-    font-size: 10px !important;
-    padding: 6px 8px !important;
-    flex: 1 !important;
-  }
-}
-
-
-/* Dark theme support */
-
-:root.dark .success-message {
-    background: #064e3b;
-    color: #6ee7b7;
-    border-color: #047857;
-}
-
-:root.dark .error-message {
-    background: #7f1d1d;
-    color: #fca5a5;
-    border-color: #dc2626;
-}
-
-
-/* TEMA DARK DIALOG - Estilos específicos para modo escuro */
-
-[data-theme="dark"] .modal-dialog {
-    background: #2d3748 !important;
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-body {
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .section-title {
-    color: #e2e8f0;
-    border-bottom-color: #4a5568;
-}
-
-[data-theme="dark"] .info-item label {
-    color: #a0aec0;
-}
-
-[data-theme="dark"] .info-item span {
-    color: #e2e8f0;
-}
-
-[data-theme="dark"] .modal-footer {
-    background-color: #1a202c !important;
-    border-top-color: #4a5568;
-}
-
-[data-theme="dark"] .close-button {
-    color: white !important;
-}
-
-[data-theme="dark"] .perfil-badge,
-[data-theme="dark"] .status-badge {
-    color: white !important;
-}
-
-[data-theme="dark"] .status-badge.em.aberto {
-    color: #212529 !important;
+    .invite-dialog .form-select {
+        background-size: 16px 16px !important;
+        padding-right: 2.75rem !important;
+    }
 }

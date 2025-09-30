@@ -255,23 +255,31 @@
 .modal-body input[type="email"] {
     width: 100%;
     padding: 12px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 8px;
+    border: 2px solid var(--theme-input-border); /* Mudança: borda igual aos selects */
+    border-radius: 6px; /* Mudança: border-radius igual aos selects */
     font-size: 1em;
-    background-color: var(--theme-card-bg);
+    background-color: var(--theme-input-bg); /* Mudança: fundo igual aos selects */
     color: var(--theme-input-text);
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Adicionado box-shadow */
     box-sizing: border-box;
 }
 
-.modal-body input[type="email"].is-invalid {
-    border-color: var(--color-danger);
+.modal-body input[type="email"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.modal-body .invalid-feedback {
-    color: var(--theme-invalid-feedback-text);
-    font-size: 0.85em;
-    margin-top: 5px;
+/* MODIFICAR o estado de erro para ficar igual aos selects: */
+.modal-body input[type="email"].is-invalid,
+.modal-body input[type="email"].error {
+    border-color: #ef4444;
+}
+
+.modal-body input[type="email"].is-invalid:focus,
+.modal-body input[type="email"].error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .modal-actions {
@@ -340,6 +348,7 @@
 .modal-actions .send-button:hover:disabled {
     background-color: var(--color-light-primary);
 }
+
 
 
 /* Responsividade */
@@ -467,4 +476,138 @@ body.dark-theme .header-section h1 {
 
 body.dark-theme .header-section::after {
     background: linear-gradient(135deg, var(--color-light-primary) 0%, var(--color-secondary) 100%) !important;
+}
+
+/* ===================== ESTILOS DOS SELECTS PARA FICAR IGUAL AO LISTA-COLABORADORES ===================== */
+
+/* Campos select do formulário - igual ao lista-colaboradores */
+.form-control select,
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--theme-input-border);
+    border-radius: 6px;
+    font-size: 1rem;
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    
+    /* Seta personalizada do select */
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 18px 18px;
+    padding-right: 3.25rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Estado de foco dos selects - igual ao lista-colaboradores */
+.form-control select:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Select com erro - igual ao lista-colaboradores */
+.form-control select.error,
+.form-select.error {
+    border-color: #ef4444;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+}
+
+.form-control select.error:focus,
+.form-select.error:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Opções do select - igual ao lista-colaboradores */
+.form-control select option,
+.form-select option {
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    padding: 0.5rem;
+}
+
+/* Tema escuro para os selects */
+[data-theme="dark"] .form-control select,
+[data-theme="dark"] .form-select {
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    border-color: var(--theme-input-border);
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+}
+
+.dark-theme .form-control select,
+.dark-theme .form-select {
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+    border-color: var(--theme-input-border);
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+}
+
+[data-theme="dark"] .form-control select option,
+[data-theme="dark"] .form-select option,
+.dark-theme .form-control select option,
+.dark-theme .form-select option {
+    background: var(--theme-input-bg);
+    color: var(--theme-body-text);
+}
+
+/* Mobile - ajuste do tamanho da seta */
+@media (max-width: 768px) {
+    .form-control select,
+    .form-select {
+        background-size: 16px 16px;
+        padding-right: 2.75rem;
+    }
+}
+
+/* ===================== CORREÇÃO FINAL DAS OPÇÕES DO SELECT NO TEMA ESCURO ===================== */
+
+/* Estilos base dos selects - funciona na maioria dos navegadores */
+body.dark-theme select,
+.dark-theme select {
+    background-color: var(--theme-input-bg) !important;
+    color: var(--theme-body-text) !important;
+    border-color: var(--theme-input-border) !important;
+}
+
+/* Força estilos das opções - Firefox principalmente */
+body.dark-theme select option,
+.dark-theme select option {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Para WebKit browsers - força cores específicas */
+body.dark-theme select option:not(:checked) {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Seleção ativa */
+body.dark-theme select option:checked {
+    background-color: #4a5568 !important;
+    color: #ffffff !important;
+}
+
+/* Hover */
+body.dark-theme select option:hover {
+    background-color: #4a5568 !important;
+    color: #ffffff !important;
+}
+
+/* ADICIONAR no final - TEMA ESCURO PARA O INPUT DE EMAIL */
+
+/* Input de email no tema escuro - igual aos selects */
+body.dark-theme .modal-body input[type="email"],
+.dark-theme .modal-body input[type="email"] {
+    background-color: var(--theme-input-bg) !important;
+    color: var(--theme-body-text) !important;
+    border-color: var(--theme-input-border) !important;
 }

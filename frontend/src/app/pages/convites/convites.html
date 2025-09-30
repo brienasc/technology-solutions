@@ -54,6 +54,57 @@
                         {{ inviteErrorMessage }}
                     </div>
                 </div>
+
+                <!-- Campo de Perfil -->
+                <div class="form-group">
+                  <label for="invitePerfilSelect">Perfil de acesso: <span class="required">*</span></label>
+                  <select
+                    id="invitePerfilSelect"
+                    name="invitePerfilSelect"
+                    [(ngModel)]="selectedPerfilConvite"
+                    #perfilSelect="ngModel"
+                    required
+                    class="form-control form-select"
+                    [class.error]="perfilSelect.invalid && perfilSelect.touched"
+                    (change)="onPerfilConviteChange($event)"
+                  >
+                    <option value="0" disabled>Selecione um perfil</option>
+                    <option *ngFor="let perfil of perfisConvite" [value]="perfil.id">
+                      {{ perfil.nome }}
+                    </option>
+                  </select>
+                  <div class="error-messages" *ngIf="perfilSelect.invalid && perfilSelect.touched">
+                    <small *ngIf="perfilSelect.errors?.['required']" class="error-text">
+                      O perfil é obrigatório.
+                    </small>
+                  </div>
+                </div>
+
+                <!-- Campo de Curso -->
+                <div class="form-group">
+                  <label for="inviteCursoSelect">Curso: <span class="required">*</span></label>
+                  <select
+                    id="inviteCursoSelect"
+                    name="inviteCursoSelect"
+                    [(ngModel)]="selectedCursoConvite"
+                    #cursoSelect="ngModel"
+                    required
+                    class="form-control form-select"
+                    [class.error]="cursoSelect.invalid && cursoSelect.touched"
+                    (change)="onCursoConviteChange($event)"
+                  >
+                    <option value="0" disabled>Selecione um curso</option>
+                    <option *ngFor="let curso of cursosConvite" [value]="curso.id">
+                      {{ curso.nome }}
+                    </option>
+                  </select>
+                  <div class="error-messages" *ngIf="cursoSelect.invalid && cursoSelect.touched">
+                    <small *ngIf="cursoSelect.errors?.['required']" class="error-text">
+                      O curso é obrigatório.
+                    </small>
+                  </div>
+                </div>
+
                 <div class="modal-actions">
                     <button type="button" class="cancel-button" (click)="closeInviteDialog()">Cancelar</button>
                     <button type="submit" class="send-button" [disabled]="inviteLoading || !isValidEmail">
