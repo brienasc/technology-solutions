@@ -6,14 +6,14 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 
 // Decorador @Component que define o componente Angular.
 @Component({
-  selector: 'app-quadro-vantagens', // Seletor CSS para usar este componente.
+  selector: 'app-sobre', // Seletor CSS para usar este componente.
   standalone: true, // Indica que este é um componente standalone (não precisa de NgModule).
   imports: [CommonModule, NgOptimizedImage], // Módulos que este componente utiliza.
-  templateUrl: './quadro-vantagens.html', // Caminho para o arquivo de template HTML do componente.
-  styleUrls: ['./quadro-vantagens.css'] // Caminho para o arquivo de estilos CSS do componente.
+  templateUrl: './sobre.html', // Caminho para o arquivo de template HTML do componente.
+  styleUrls: ['./sobre.css'] // Caminho para o arquivo de estilos CSS do componente.
 })
 // Definição da classe do componente, implementando interfaces de ciclo de vida do Angular.
-export class QuadroVantagensComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
   // @ViewChild para obter uma referência ao elemento HTML com a tag 'benefitsGrid'.
   // O '!' garante que a propriedade será inicializada e não será nula.
   @ViewChild('benefitsGrid') benefitsGrid!: ElementRef;
