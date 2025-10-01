@@ -12,7 +12,6 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Header } from '../header/header'
 import { ConvitesService } from '../../services/convite.service';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 // Interface para o modelo de dados do Colaborador.
 // Define a estrutura esperada para cada objeto de colaborador.
@@ -40,10 +39,7 @@ interface Colaborador {
     FormsModule, 
 
     Header,
-    LowerCasePipe,
-    MatPaginatorModule,
-
-    LowerCasePipe 
+    LowerCasePipe
  
   ],
   templateUrl: './lista-colaboradores.html', 
@@ -65,7 +61,6 @@ export class ListaColaboradoresComponent implements OnInit {
   currentPage: number = 1; // Página atual exibida.
   itemsPerPage: number = 10; // Número de itens por página.
   totalItems: number = 0; // Total de itens após a filtragem.
-  totalPages: number = 1; // Total de páginas disponíveis.
 
   // Propriedades para o dialog
   showColaboradorDialog: boolean = false;
@@ -217,7 +212,6 @@ export class ListaColaboradoresComponent implements OnInit {
 
     this.filteredColaboradores = tempColaboradores; // Atualiza a lista de colaboradores filtrados.
     this.totalItems = this.filteredColaboradores.length; // Atualiza o total de itens filtrados.
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage); // Recalcula o total de páginas.
 
     // Garante que a página atual seja válida após a filtragem (evita página em branco se o filtro reduzir muito os itens).
     if (this.currentPage > this.totalPages && this.totalPages > 0) {
@@ -225,30 +219,14 @@ export class ListaColaboradoresComponent implements OnInit {
     } else if (this.totalPages === 0) { // Se não houver itens, volta para a página 1.
       this.currentPage = 1;
     }
-    this.paginate(); // Aplica a paginação para a página atual.
+    
+    this.updatePaginatedData();
   }
 
-  // Aplica a lógica de paginação para exibir apenas os itens da página atual.
-  paginate(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage; // Índice de início da fatia.
-    const endIndex = startIndex + this.itemsPerPage; // Índice de fim da fatia.
-    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex); // Pega a fatia de colaboradores para a página atual.
-  }
-
-  // Navega para a próxima página na paginação.
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) { // Verifica se não é a última página.
-      this.currentPage++; // Incrementa a página atual.
-      this.paginate(); // Atualiza os itens paginados.
-    }
-  }
-
-  // Navega para a página anterior na paginação.
-  previousPage(): void {
-    if (this.currentPage > 1) { // Verifica se não é a primeira página.
-      this.currentPage--; // Decrementa a página atual.
-      this.paginate(); // Atualiza os itens paginados.
-    }
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
   }
 
   // Chamada a cada digitação no campo de pesquisa.
@@ -838,26 +816,50 @@ export class ListaColaboradoresComponent implements OnInit {
     this.profileChangeSuccess = '';
   }
 
-  
-  updatePaginatedColaboradores() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
+  // Atualizar itens por página
+  updateItemsPerPage() {
+    this.currentPage = 1;
+    this.updatePaginatedData();
   }
 
-  handlePageEvent(event: PageEvent) {
-    this.itemsPerPage = event.pageSize;
-    this.currentPage = event.pageIndex + 1; // pageIndex é 0-based
-    this.updatePaginatedColaboradores();
+  // Navegar para página específica
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedData();
+    }
   }
 
-  // Atualizar apenas o método closeColaboradorDialog para limpar estado de edição
-  // closeColaboradorDialog(): void {
-  //   this.showColaboradorDialog = false;
-  //   this.selectedColaborador = null;
-  //   // Limpar estados de edição
-  //   this.resetEditingState();
-  //   // Restaura o scroll da página
-  //   document.body.style.overflow = 'auto';
-  // }
+  // Página anterior
+  goToPrevious() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedData();
+    }
+  }
+
+  // Próxima página
+  goToNext() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedData();
+    }
+  }
+
+  // Calcular total de páginas
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  // Índice inicial dos itens exibidos
+  getStartIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return ((this.currentPage - 1) * this.itemsPerPage) + 1;
+  }
+
+  // Índice final dos itens exibidos
+  getEndIndex(): number {
+    const endIndex = this.currentPage * this.itemsPerPage;
+    return Math.min(endIndex, this.totalItems);
+  }
 }

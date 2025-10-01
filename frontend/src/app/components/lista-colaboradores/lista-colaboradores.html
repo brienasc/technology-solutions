@@ -441,14 +441,73 @@
     </div>
   </div>
 
-  <!-- Paginador Mat -->
-  <mat-paginator
-    [length]="totalItems"
-    [pageSize]="itemsPerPage"
-    [pageIndex]="currentPage - 1"
-    [pageSizeOptions]="[5, 10, 25, 50]"
-    (page)="handlePageEvent($event)"
-    aria-label="Selecione a página de colaboradores"
-  >
-  </mat-paginator>
+  <!-- Paginator customizado -->
+  <div class="pagination-container">
+    <div class="pagination-info">
+      <div class="items-per-page">
+        <label for="itemsPerPage">Itens por página:</label>
+        <select 
+          id="itemsPerPage" 
+          [(ngModel)]="itemsPerPage" 
+          (change)="updateItemsPerPage()"
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pagination-range">
+      <span>{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span>
+    </div>
+
+    <div class="pagination-controls">
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === 1"
+        (click)="goToPage(1)"
+        title="Primeira página"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/>
+        </svg>
+      </button>
+
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === 1"
+        (click)="goToPrevious()"
+        title="Página anterior"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === totalPages"
+        (click)="goToNext()"
+        title="Próxima página"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </button>
+
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === totalPages"
+        (click)="goToPage(totalPages)"
+        title="Última página"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m6 17 5-5-5-5M13 17l5-5-5-5"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
 </div>

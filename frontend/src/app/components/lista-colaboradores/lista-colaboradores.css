@@ -1,83 +1,81 @@
 /* frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.css */
 
 .lista-colaboradores-container {
-    max-width: 3000px;
-    margin: 2rem auto;
-    /* Mudança aqui: era margin-top: 30px */
-    padding: 2rem;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 12px;
-    background-color: var(--theme-card-bg);
-    /* Fundo do contêiner da lista */
+    max-width: none !important; /* Remove limitação */
+    width: 100% !important;
+    margin: 2rem auto !important;
+    padding: 2rem !important;
+    border: none !important; /* REMOVE a borda */
+    border-radius: 0 !important; /* REMOVE o border-radius */
+    background-color: transparent !important; /* REMOVE o fundo */
     color: var(--theme-body-text);
-    /* Cor do texto */
+    box-shadow: none !important; /* REMOVE a sombra */
 }
 
+/* ===================== CONTAINER DA TABELA INTEGRADO ===================== */
+.table-container {
+    background: var(--theme-form-bg);
+    border-radius: 8px;
+    border: 1px solid var(--theme-border-color);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
 
-/* Nova seção de controles */
-
+/* ===================== CONTROLES INTEGRADOS NO TOPO ===================== */
 .controls-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    padding: 0;
+    padding: 20px;
+    border-bottom: 1px solid var(--theme-border-color);
+    background: var(--theme-card-bg);
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
     gap: 2rem;
 }
 
-
 /* Container da barra de pesquisa (lado esquerdo) */
-
 .search-container {
     flex: 1;
     max-width: 450px;
 }
 
-
 /* Barra de pesquisa */
-
 .search-bar {
     display: flex;
     position: relative;
     width: 100%;
 }
 
-
 /* Input de pesquisa */
-
 .search-bar input {
     flex: 1;
-    padding: 0.75rem 2.5rem 0.75rem 1rem;
-    border: 2px solid var(--theme-border, #e2e8f0);
+    padding: 8px 2.5rem 8px 12px;
+    border: 2px solid var(--theme-border-color);
     border-radius: 6px;
     font-size: 1rem;
-    background: var(--theme-input-bg, white);
-    color: var(--theme-text-primary, #333);
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
     transition: border-color 0.3s ease;
     min-width: 0;
-    /* Permite que o input encolha se necessário */
 }
 
-
 /* Placeholder do input de pesquisa */
-
 .search-bar input::placeholder {
     color: var(--theme-text-secondary, #9ca3af);
     font-size: 0.9rem;
 }
 
-
 /* Estado de foco do input de pesquisa */
-
 .search-bar input:focus {
     outline: none;
     border-color: var(--theme-button-primary-bg, #667eea);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-
 /* Botão de pesquisa (ícone lupa) posicionado dentro do input */
-
 .search-button {
     position: absolute;
     right: 0.5rem;
@@ -93,47 +91,38 @@
     justify-content: center;
 }
 
-
 /* Ícone do botão de pesquisa */
-
 .search-button svg {
     width: 1.25rem;
     height: 1.25rem;
 }
 
-
 /* Container dos botões (lado direito) */
-
 .buttons-container {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-
 /* Botão de convite */
-
 .invite-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #7120bd;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 1.5625rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  white-space: nowrap; /* Evita quebra de linha */
-  height: 46px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #7120bd;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 1.5625rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    height: 46px;
 }
 
-
 /* Efeito hover do botão convidar */
-
 .invite-button:hover {
     background: #652b94;
     transform: translateY(-1px);
@@ -149,153 +138,95 @@
 
 
 /* Ícone do botão convidar */
-
 .invite-button svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1rem;
+    height: 1rem;
 }
-
 
 /* Botão de exportar */
-
 .export-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #059669;
-  color: white;
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 1.5625rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  height: 46px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 1.5625rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    height: 46px;
 }
-
 
 /* Efeito hover do botão exportar */
-
 .export-button:hover {
     background: #047857;
-    transform: translateY(-1px);
 }
 
-
 /* Ícone do botão exportar */
-
 .export-button svg {
     width: 1rem;
     height: 1rem;
 }
 
-
-/* Tabela */
-
+/* ===================== TABELA SEM BORDAS ===================== */
 .table-responsive {
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
     overflow-x: auto;
-    margin-bottom: 20px;
 }
 
-
 /* Tabela principal de colaboradores */
-
 .colaboradores-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 0;
 }
 
-
 /* Células da tabela (cabeçalho e dados) */
-
 .colaboradores-table th,
 .colaboradores-table td {
-    border: 1px solid var(--theme-input-border);
-    /* Borda da tabela */
     padding: 12px 15px;
     text-align: left;
     font-size: 0.95em;
     color: var(--theme-body-text);
-    /* Cor do texto da tabela */
+    border: none !important;
+    border-bottom: 1px solid var(--theme-border-color) !important;
 }
-
 
 /* Cabeçalho da tabela */
-
 .colaboradores-table th {
-    background-color: var(--theme-form-bg);
-    /* Fundo do cabeçalho da tabela */
-    font-weight: bold;
+    background: var(--theme-form-bg);
+    color: var(--theme-heading-text);
+    font-weight: 600;
+    font-size: 12px;
     text-transform: uppercase;
-    color: var(--theme-label-text);
-    /* Cor do texto do cabeçalho da tabela */
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--theme-border-color) !important;
 }
 
-
-/* Efeito zebrado - linhas pares com fundo diferente */
-
+/* Remover o efeito zebrado */
 .colaboradores-table tbody tr:nth-child(even) {
-    background-color: var(--theme-card-bg);
-    /* Fundo zebrado (light) */
+    background-color: transparent !important;
 }
 
-
-/* Efeito hover nas linhas da tabela */
-
+/* Melhorar o hover */
 .colaboradores-table tbody tr:hover {
     background-color: var(--theme-background);
-    /* Efeito de hover na tabela */
 }
 
-
 /* Classe utilitária para centralizar texto */
-
 .text-center {
     text-align: center;
 }
 
-
-/* Badges de Status */
-
-.status-badge {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: bold;
-    color: var(--color-white);
-    /* Cor do texto do badge */
-    text-transform: capitalize;
-}
-
-
-/* Badge status finalizado - verde */
-
-.status-finalizado {
-    background-color: var(--color-success);
-}
-
-
-/* Badge status em aberto - amarelo */
-
-.status-emaberto {
-    background-color: var(--color-warning);
-    color: var(--color-text-dark);
-    /* Texto escuro para contraste no amarelo */
-}
-
-
-/* Badge status vencido - vermelho */
-
-.status-vencido {
-    background-color: var(--color-danger);
-}
-
-
 /* Botão de Detalhes */
-
 .details-button {
     background: #7120bd;
     color: white;
@@ -307,1005 +238,319 @@
     transition: background-color 0.3s ease;
 }
 
-
 /* Hover do botão detalhes */
-
 .details-button:hover {
     background: #652b94;
 }
 
+/* ===================== PAGINATOR CUSTOMIZADO ===================== */
 
-/* Controles de Paginação */
-
-.pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 15px;
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--theme-card-bg);
+  border-top: 1px solid var(--theme-border-color);
+  border-radius: 0 0 8px 8px;
+  font-size: 14px;
+  color: var(--theme-text);
 }
 
-
-/* Botões de paginação (Anterior/Próxima) */
-
-.pagination-controls button {
-    background-color: var(--theme-button-secondary-bg);
-    /* Fundo do botão de paginação */
-    border: 1px solid var(--theme-input-border);
-    /* Borda do botão de paginação */
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95em;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    color: var(--theme-button-text);
-}
-
-
-/* Hover dos botões de paginação */
-
-.pagination-controls button:hover:not(:disabled) {
-    background-color: var(--theme-button-disabled-bg);
-    /* Hover do botão de paginação */
-    border-color: var(--theme-focus-border);
-    /* Borda no hover */
-}
-
-
-/* Botões desabilitados */
-
-.pagination-controls button:disabled {
-    background-color: var(--theme-button-disabled-bg);
-    /* Fundo do botão desabilitado */
-    color: var(--color-muted-text);
-    /* Texto muted para desabilitado */
-    cursor: not-allowed;
-}
-
-
-/* Texto informativo da paginação */
-
-.pagination-controls span {
-    font-size: 1em;
-    color: var(--theme-body-text);
-    /* Cor do texto da paginação */
-}
-
-
-/* Estilos do Modal Dialog */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-
-/* Container principal do modal */
-
-.modal-dialog {
-    background: var(--theme-form-bg);
-    color: var(--theme-body-text);
-    border: 2px solid #34363d;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    width: 90%;
-    max-width: 580px;
-    max-height: 85vh;
-    overflow-y: auto;
-    animation: slideIn 0.3s ease-out;
-}
-
-
-/* Header do Modal */
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid var(--theme-input-border);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 10px 10px 0 0;
-}
-
-
-/* Título do modal */
-
-.modal-title {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-
-/* Botão de fechar (X) no canto superior direito */
-
-.close-button {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: all 0.2s;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px;
-    min-height: 38px;
-    padding: 0 !important;
-    line-height: 1;
-    font-weight: bold;
-    position: relative;
-}
-
-
-/* Adiciona o símbolo "×" via CSS */
-
-.close-button::before {
-    content: "×";
-    /* Adicionar o X via CSS */
-    font-size: 1.8rem;
-    color: white;
-    line-height: 1;
-}
-
-
-/* Hover do botão fechar */
-
-.close-button:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: scale(1.08);
-    color: white !important;
-}
-
-
-/* Corpo do Modal */
-
-.modal-body {
-    padding: 1.2rem 1.5rem;
-}
-
-
-/* Seções de Informação */
-
-.info-section {
-    margin-bottom: 1.5rem;
-}
-
-.info-section:last-child {
-    margin-bottom: 0;
-}
-
-
-/* Título de cada seção */
-
-.section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--theme-body-text);
-    margin-bottom: 0.8rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 2px solid var(--theme-input-border);
-}
-
-
-/* Ícones dos títulos das seções */
-
-.section-title i {
-    color: #667eea;
-}
-
-
-/* Grid de Informações */
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 0.8rem;
-}
-
-
-/* Item individual de informação */
-
-.info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-}
-
-
-/* Label do item de informação */
-
-.info-item label {
-    font-weight: 600;
-    color: var(--theme-label-text);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-
-/* Valor do item de informação */
-
-.info-item span {
-    color: var(--theme-body-text);
-    font-size: 0.95rem;
-    padding: 0.3rem 0;
-}
-
-
-/* Badges */
-
-.perfil-badge,
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-align: center;
-    color: white !important;
-}
-
-
-/* Estilos por Perfil */
-
-.perfil-badge.administrador {
-    background-color: #dc3545;
-    color: white !important;
-}
-
-
-/* Badge para perfil Gente e Cultura - laranja */
-
-.perfil-badge.gente.e.cultura {
-    background-color: #fd7e14;
-    color: white !important;
-}
-
-
-/* Badge para perfil Colaborador Comum - cinza */
-
-.perfil-badge.colaborador.comum {
-    background-color: #6c757d;
-    color: white !important;
-}
-
-
-/* Estilos por Status */
-
-.status-badge.finalizado {
-    background-color: #28a745;
-    color: white !important;
-}
-
-
-/* Badge para status Em Aberto - amarelo */
-
-.status-badge.em.aberto {
-    background-color: #ffc107;
-    color: #212529 !important;
-}
-
-
-/* Badge para status Vencido - vermelho */
-
-.status-badge.vencido {
-    background-color: #dc3545;
-    color: white !important;
-}
-
-
-/* Footer do Modal */
-
-.modal-footer {
-    display: none !important;
-}
-
-
-/* Classe base para botões */
-
-.btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-
-
-/* Botão secundário - vermelho */
-
-.btn-secondary {
-    background-color: #e74c3c;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #c0392b;
-    transform: translateY(-1px);
-}
-
-
-/* Header Section com botão de convite */
-
-.header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-}
-
-.header-section h1 {
-    margin: 0;
-    color: var(--theme-text-primary, #333);
-    font-size: 2rem;
-    font-weight: 600;
-}
-
-
-/* Dialog de convite */
-
-.invite-dialog {
-    max-width: 500px;
-    width: 90%;
-}
-
-.invite-dialog .modal-body {
-    padding: 1.5rem;
-}
-
-
-/* Form styles */
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-
-/* Labels dos campos do formulário */
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--theme-label-text);
-}
-
-
-/* Campos de entrada do formulário */
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid var(--theme-input-border);
-    border-radius: 6px;
-    font-size: 1rem;
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-/* Estado de foco dos campos */
-
-.form-control:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-
-/* Campo com erro */
-
-.form-control.error {
-    border-color: #ef4444;
-}
-
-.form-control.error:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-
-/* Error messages */
-
-.error-messages {
-    margin-top: 0.5rem;
-}
-
-
-/* Texto de erro */
-
-.error-text {
-    color: #ef4444;
-    font-size: 0.875rem;
-    display: block;
-    margin-top: 0.25rem;
-}
-
-
-/* Success/Error message container */
-
-.message-container {
-    margin-bottom: 1rem;
-}
-
-
-/* Mensagens de sucesso e erro */
-
-.success-message,
-.error-message {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-
-/* Mensagem de sucesso - verde */
-
-.success-message {
-    background: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-}
-
-
-/* Mensagem de erro - vermelho */
-
-.error-message {
-    background: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-}
-
-
-/* Ícones das mensagens */
-
-.success-message svg,
-.error-message svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-}
-
-
-/* Botões do modal de convite */
-
-.invite-modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--theme-input-border);
-}
-
-
-/* Estilo dos botões do modal de convite */
-
-.invite-modal-buttons .btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 1.5625rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
+/* ESQUERDA - Items por página */
+.pagination-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
-
-/* Botões desabilitados */
-
-.invite-modal-buttons .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-/* Botão Cancelar */
-
-.btn-cancel {
-    background: #dc2626;
-    color: white;
-}
-
-.btn-cancel:hover:not(:disabled) {
-    background: #b91c1c;
-}
-
-
-/* Botão Enviar */
-
-.btn-send {
-    background: #7120bd;
-    color: white;
-}
-
-.btn-send:hover:not(:disabled) {
-    background: #652b94;
-}
-
-
-/* Loading spinner */
-
-.loading-spinner {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* Responsividade para mobile */
-
-
-/* Footer do modal de detalhes - visível */
-
-.modal-footer {
-    display: block !important;
-    padding: 20px 24px;
-    border-top: 1px solid var(--theme-input-border);
-    background: var(--theme-form-bg);
-    border-radius: 0 0 12px 12px;
-}
-
-
-/* Footer em modo normal */
-
-.modal-footer-normal {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    align-items: center;
-}
-
-
-/* Footer em modo edição */
-
-.modal-footer-edit {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-
-/* ============================================================================== */
-
-
-/*                    BOTÕES DO FOOTER (MODAL DE DETALHES)                       */
-
-
-/* ============================================================================== */
-
-
-/* Botão primário (Alterar Perfil) */
-
-.modal-footer .btn-primary {
-    background: #7120bd;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 2px 4px rgba(113, 32, 189, 0.2);
-}
-
-.modal-footer .btn-primary:hover:not(:disabled) {
-    background: #652b94;
-    transform: translateY(-1px);
-}
-
-
-/* Botão de sucesso */
-
-.modal-footer .btn-success {
-    background: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
-}
-
-.modal-footer .btn-success:hover:not(:disabled) {
-    background: #1e7e34;
-    transform: translateY(-1px);
-}
-
-
-/* Botão cancelar do footer */
-
-.modal-footer .btn-cancel {
-    background: #dc3545;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
-}
-
-.modal-footer .btn-cancel:hover:not(:disabled) {
-    background: #c82333;
-    transform: translateY(-1px);
-}
-
-
-/* Botões desabilitados do footer */
-
-.modal-footer .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
-/* ============================================================================== */
-
-
-/*                           CAMPOS DE SENHA                                     */
-
-
-/* ============================================================================== */
-
-
-/* Formulário de senha */
-
-.password-form {
-    margin-top: 12px;
-}
-
-
-/* Informação sobre senha */
-
-.password-info {
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-    border-left: 4px solid #2196f3;
-    border-radius: 6px;
-    font-size: 14px;
-    color: #1565c0;
-}
-
-.password-info i {
-    margin-right: 8px;
-    color: #2196f3;
-}
-
-
-/* Container de erros de senha */
-
-.password-errors {
-    margin-top: 8px;
-}
-
-
-/* Inputs de senha específicos */
-
-.password-form .form-control {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 6px;
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    font-size: 14px;
-    transition: border-color 0.2s ease;
-}
-
-.password-form .form-control:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-}
-
-
-/* Spinner do footer */
-
-.modal-footer .loading-spinner {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-/* Animação de rotação */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ============================================================================== */
-/*                    EDIÇÃO DE PERFIL INLINE (MODO ATUAL)                       */
-/* ============================================================================== */
-
-/* Container inline para edição - substitui o badge */
-.perfil-edit-inline {
+.items-per-page {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 8px;
-  width: 100%;
 }
 
-/* Container do select - primeira metade */
-.perfil-select-container {
-  flex: 1;
-  max-width: calc(50% - 4px);
+.items-per-page label {
+  font-weight: 500;
+  color: var(--theme-text);
+  white-space: nowrap;
 }
 
-/* Select inline com estilo de badge */
-.perfil-edit-inline .perfil-select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--theme-input-border);
-  border-radius: 20px; /* Mesmo border-radius do badge */
+.items-per-page select {
+  padding: 4px 8px;
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
   background: var(--theme-input-bg);
-  color: var(--theme-body-text);
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: border-color 0.2s ease;
-  min-width: 0;
+  color: var(--theme-text);
+  font-size: 14px;
+  min-width: 56px;
+  cursor: pointer;
 }
 
-.perfil-edit-inline .perfil-select:focus {
+.items-per-page select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+  border-color: var(--theme-primary-color, #7c3aed);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
 
-.perfil-edit-inline .perfil-select:disabled {
-  background: var(--theme-button-disabled-bg);
-  cursor: not-allowed;
-  opacity: 0.6;
+/* CENTRO - Range de itens */
+.pagination-range {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  color: var(--theme-text);
 }
 
-/* Container dos botões - segunda metade */
-.perfil-actions {
+/* DIREITA - Controles de navegação */
+.pagination-controls {
   display: flex;
   gap: 4px;
-  flex: 1;
-  max-width: calc(50% - 4px);
+  align-items: center;
 }
 
-/* Botões inline com estilo de badge */
-.btn-perfil {
-  flex: 1;
-  padding: 6px 8px;
-  border: none;
-  border-radius: 20px; /* Mesmo border-radius do badge */
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
+/* Botões de navegação */
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--theme-border-color);
+  background: var(--theme-button-bg, #f3f4f6);
+  color: var(--theme-text);
+  border-radius: 6px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  min-width: 0;
-  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-.btn-perfil:disabled {
-  opacity: 0.6;
+/* Hover dos botões */
+.pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover, #e5e7eb);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões desabilitados */
+.pagination-btn:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
+  background: var(--theme-button-bg, #f9fafb);
+  transform: none;
+  box-shadow: none;
 }
 
-/* Botão cancelar inline - vermelho */
-.btn-cancel-perfil {
-  background: #dc3545;
-  color: white;
-  box-shadow: 0 1px 3px rgba(220, 53, 69, 0.3);
+/* Ícones dos botões */
+.pagination-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
 }
 
-.btn-cancel-perfil:hover:not(:disabled) {
-  background: #c82333;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
-}
-
-/* Botão salvar inline - verde */
-.btn-save-perfil {
-  background: #28a745;
-  color: white;
-  box-shadow: 0 1px 3px rgba(40, 167, 69, 0.3);
-}
-
-.btn-save-perfil:hover:not(:disabled) {
-  background: #1e7e34;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.4);
-}
-
-/* Spinner inline menor */
-.loading-spinner-inline {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border: 1px solid transparent;
-  border-top: 1px solid currentColor;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-/* Footer simplificado (modo atual) */
-.modal-footer-normal {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  align-items: center;
-}
-
-.modal-footer-edit {
-  display: none;
-}
-
-/* Elementos antigos ocultos */
-.perfil-edit-container,
-.edit-actions {
-  display: none;
-}
-
-/* ============================================================================== */
-/*                            TEMA ESCURO - SELECT                               */
-/* ============================================================================== */
-
-/* Suporte ao tema escuro com [data-theme="dark"] */
-[data-theme="dark"] .perfil-select {
-  background: #2d3748;
-  color: #e2e8f0;
-  border-color: #4a5568;
-}
-
-[data-theme="dark"] .password-info {
-  background: linear-gradient(135deg, #1a365d, #2d3748);
-  color: #90cdf4;
-  border-left-color: #3182ce;
-}
-
-[data-theme="dark"] .password-info i {
-  color: #3182ce;
-}
-
-[data-theme="dark"] .password-form .form-control {
-  background: #2d3748;
-  color: #e2e8f0;
-  border-color: #4a5568;
-}
-
-/* Edição inline no tema escuro */
-[data-theme="dark"] .perfil-edit-inline .perfil-select {
-  background: #2d3748;
-  color: #e2e8f0;
-  border-color: #4a5568;
-}
-
-[data-theme="dark"] .perfil-edit-inline .perfil-select:focus {
-  border-color: #667eea;
-}
-
-/* Força estilo para tema escuro com classe .dark-theme */
-.dark-theme select[id="perfil-change-select"] {
-  background: #2d3748 !important;
-  color: #e2e8f0 !important;
-  border-color: #4a5568 !important;
-}
-
-.dark-theme select[id="perfil-change-select"] option {
-  background: #2d3748 !important;
-  color: #e2e8f0 !important;
-}
-
-/* ===================== SELECTS DO MODAL DE CONVITE ===================== */
-
-/* Override para garantir que os selects do modal de convite tenham a seta */
-.invite-dialog .form-select {
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
-    background-repeat: no-repeat !important;
-    background-position: right 1rem center !important;
-    background-size: 18px 18px !important;
-    padding-right: 3.25rem !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-}
-
-/* Seta no estado de erro */
-.invite-dialog .form-select.error {
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
-}
-
-/* Seta no tema escuro */
-[data-theme="dark"] .invite-dialog .form-select {
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
-}
-
-.dark-theme .invite-dialog .form-select {
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>') !important;
-}
-
-/* Mobile */
+/* ===================== RESPONSIVIDADE ===================== */
 @media (max-width: 768px) {
-    .invite-dialog .form-select {
-        background-size: 16px 16px !important;
-        padding-right: 2.75rem !important;
-    }
+  .pagination-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    align-items: center;
+  }
+  
+  .pagination-info {
+    order: 1;
+  }
+  
+  .pagination-range {
+    order: 2;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    order: 3;
+  }
+}
+
+/* ===================== TEMA ESCURO ===================== */
+body.dark-theme .pagination-container,
+[data-theme="dark"] .pagination-container {
+  background: var(--theme-card-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .items-per-page select,
+[data-theme="dark"] .items-per-page select {
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn,
+[data-theme="dark"] .pagination-btn {
+  background: var(--theme-button-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn:not(:disabled):hover,
+[data-theme="dark"] .pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover);
+}
+
+/* ===================== LINHAS DA TABELA ===================== */
+
+.colaboradores-table tbody tr {
+  background: var(--theme-card-bg) !important;
+  border-bottom: 1px solid var(--theme-border-color) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Hover das linhas */
+.colaboradores-table tbody tr:hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
+  transform: none !important;
+}
+
+/* Linhas alternadas (zebra stripe) */
+.colaboradores-table tbody tr:nth-child(even) {
+  background: var(--theme-card-bg) !important; /* Mesma cor que as ímpares */
+}
+
+.colaboradores-table tbody tr:nth-child(odd) {
+  background: var(--theme-card-bg) !important;
+}
+
+/* Hover sobrescreve tudo */
+.colaboradores-table tbody tr:nth-child(even):hover,
+.colaboradores-table tbody tr:nth-child(odd):hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
+}
+
+/* Células da tabela */
+.colaboradores-table tbody td {
+  background: transparent !important;
+  color: var(--theme-text) !important;
+  border-bottom: 1px solid var(--theme-border-color) !important;
+  padding: 12px 15px !important;
+}
+
+/* Cabeçalho da tabela */
+.colaboradores-table thead th {
+  background: var(--theme-form-bg) !important;
+  color: var(--theme-heading-text) !important;
+  border-bottom: 2px solid var(--theme-border-color) !important;
+  font-weight: 600 !important;
+}
+
+/* Tema escuro */
+body.dark-theme .colaboradores-table tbody tr,
+[data-theme="dark"] .colaboradores-table tbody tr {
+  background: var(--theme-card-bg) !important;
+  border-color: var(--theme-border-color) !important;
+}
+
+body.dark-theme .colaboradores-table tbody tr:nth-child(even),
+[data-theme="dark"] .colaboradores-table tbody tr:nth-child(even) {
+  background: var(--theme-card-bg) !important;
+}
+
+body.dark-theme .colaboradores-table tbody tr:hover,
+[data-theme="dark"] .colaboradores-table tbody tr:hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.1)) !important;
+}
+
+body.dark-theme .colaboradores-table thead th,
+[data-theme="dark"] .colaboradores-table thead th {
+  background: var(--theme-form-bg) !important;
+  color: var(--theme-heading-text) !important;
+}
+
+.details-button {
+  background: #7120bd !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 12px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-size: 0.9em !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.details-button:hover {
+  background: #652b94 !important;
+  transform: translateY(-1px) !important;
+}
+
+.colaboradores-table tbody tr:nth-child(even) {
+  background-color: var(--theme-card-bg) !important;
+}
+
+.colaboradores-table tbody tr:hover {
+  background-color: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
+}
+
+
+/* Remover qualquer estilo residual do Material Design */
+.lista-colaboradores-container .mat-table,
+.lista-colaboradores-container .mat-row,
+.lista-colaboradores-container .mat-cell,
+.lista-colaboradores-container .mat-header-row,
+.lista-colaboradores-container .mat-header-cell {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Resetar cores que podem ter sido afetadas */
+.table-container {
+  background: var(--theme-card-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.table-responsive {
+  background: transparent !important;
+}
+
+/* Garantir que botões de ação mantenham estilo correto */
+.action-btn {
+  background: var(--theme-primary-color, #7c3aed) !important;
+  color: white !important;
+  border: none !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.action-btn:hover {
+  background: var(--theme-primary-hover, #6d28d9) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 4px 8px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+}
+
+.status-finalizado {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #16a34a !important;
+  border: 1px solid rgba(34, 197, 94, 0.2) !important;
+}
+
+.status-em-aberto {
+  background: rgba(251, 191, 36, 0.1) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(251, 191, 36, 0.2) !important;
+}
+
+.status-vencido {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
 }

@@ -1,54 +1,123 @@
 <div class="lista-convites-container card">
-    <div class="controls-section">
-        <div class="filter-group">
-            <label for="status-filter">Filtrar por Status:</label>
-            <select id="status-filter" [(ngModel)]="statusFilter" (change)="applyFilter()">
-                <option value="all">Todos</option>
-                <option value="Em Aberto">Em Aberto</option>
-                <option value="Finalizado">Finalizado</option>
-                <option value="Vencido">Vencido</option>
-            </select>
+    <div class="table-container">
+        <div class="controls-section">
+            <div class="filter-group">
+                <label for="status-filter">Filtrar por Status:</label>
+                <select id="status-filter" [(ngModel)]="statusFilter" (change)="applyFilter()">
+                    <option value="all">Todos</option>
+                    <option value="Em Aberto">Em Aberto</option>
+                    <option value="Finalizado">Finalizado</option>
+                    <option value="Vencido">Vencido</option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <label for="email-search">Buscar por E-mail:</label>
+                <input type="text" id="email-search" placeholder="Digite o e-mail do convidado" [(ngModel)]="emailFilter">
+                <button (click)="applyFilter()">Buscar</button>
+            </div>
         </div>
 
-        <div class="search-group">
-            <label for="email-search">Buscar por E-mail:</label>
-            <input type="text" id="email-search" placeholder="Digite o e-mail do convidado" [(ngModel)]="emailFilter">
-            <button (click)="applyFilter()">Buscar</button>
+        <div class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>E-mail do Convidado</th>
+                        <th>Data de Envio</th>
+                        <th>Data de Expiração</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let invitation of invitations">
+                        <td>{{ invitation.email_colab }}</td>
+                        <td>{{ invitation.created_at | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ invitation.expires_at | date: 'dd/MM/yyyy' }}</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="{
+                                    'status-em-aberto': invitation.status_code === 0,
+                                    'status-finalizado': invitation.status_code === 1,
+                                    'status-vencido': invitation.status_code === 2
+                                }">
+                                {{ invitation.status_description }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="invitations.length === 0">
+                        <td colspan="4" class="no-data-message">Nenhum convite encontrado.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <div class="table-section">
-        <table>
-            <thead>
-                <tr>
-                    <th>E-mail do Convidado</th>
-                    <th>Data de Envio</th>
-                    <th>Data de Expiração</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let invitation of invitations">
-                    <td>{{ invitation.email_colab }}</td>
-                    <td>{{ invitation.created_at | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ invitation.expires_at | date: 'dd/MM/yyyy' }}</td>
-                    <td>
-                        <span class="status-badge" [ngClass]="{
-                                'status-em-aberto': invitation.status_code === 0,
-                                'status-finalizado': invitation.status_code === 1,
-                                'status-vencido': invitation.status_code === 2
-                            }">
-                            {{ invitation.status_description }}
-                        </span>
-                    </td>
-                </tr>
-                <tr *ngIf="invitations.length === 0">
-                    <td colspan="4" class="no-data-message">Nenhum convite encontrado.</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <!-- Paginator customizado -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                <div class="items-per-page">
+                    <label for="pageSize">Itens por página:</label>
+                    <select 
+                        id="pageSize" 
+                        [(ngModel)]="pageSize" 
+                        (change)="updatePageSize()"
+                    >
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
 
-    <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="currentPage - 1" [pageSizeOptions]="pageSizes" (page)="handlePageEvent($event)" aria-label="Selecione a página de convites">
-    </mat-paginator>
+            <div class="pagination-range">
+                <span>{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span>
+            </div>
+
+            <div class="pagination-controls">
+                <button 
+                    class="pagination-btn" 
+                    [disabled]="currentPage === 1"
+                    (click)="goToPage(1)"
+                    title="Primeira página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/>
+                    </svg>
+                </button>
+
+                <button 
+                    class="pagination-btn" 
+                    [disabled]="currentPage === 1"
+                    (click)="goToPrevious()"
+                    title="Página anterior"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m15 18-6-6 6-6"/>
+                    </svg>
+                </button>
+
+                <button 
+                    class="pagination-btn" 
+                    [disabled]="currentPage === totalPages"
+                    (click)="goToNext()"
+                    title="Próxima página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </button>
+
+                <button 
+                    class="pagination-btn" 
+                    [disabled]="currentPage === totalPages"
+                    (click)="goToPage(totalPages)"
+                    title="Última página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 17 5-5-5-5M13 17l5-5-5-5"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
 </div>
