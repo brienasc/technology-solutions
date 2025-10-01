@@ -124,5 +124,10 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     this.closeMobileMenu();
     this.router.navigate(['/convites']);
   }
+
+  goToCursos(): void {
+    this.closeMobileMenu();
+    this.router.navigate(['/cursos']);
+  }
 }
 

@@ -6,6 +6,7 @@ import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { ConvitesComponent } from './pages/convites/convites';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
+import { CursosComponent } from './pages/cursos/cursos';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -39,6 +40,10 @@ export const routes: Routes = [
          path: 'cadastro/:token', 
          component: CadastroComponent 
      },
+  { 
+    path: 'cursos', 
+    component: CursosComponent 
+  },
   { 
     path: '**', 
     redirectTo: '' 

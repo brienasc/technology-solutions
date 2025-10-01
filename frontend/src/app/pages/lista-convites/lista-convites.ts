@@ -1,31 +1,26 @@
 // frontend/src/app/components/lista-convites/lista-convites.component.ts
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common'; // Importa CommonModule e DatePipe
-import { FormsModule } from '@angular/forms'; // Importa FormsModule para usar ngModel
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CommonModule, DatePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-// Importa a interface Invitation para tipagem dos dados
 import { Invitation } from '../../interfaces/invitation.interface'; 
 
-
-
 @Component({
-  selector: 'app-lista-convites', // Seletor HTML para usar este componente
-  standalone: true, // Componente autônomo
-  imports: [CommonModule, DatePipe, FormsModule, MatPaginatorModule], // Módulos e pipes necessários
-  templateUrl: './lista-convites.html', // Caminho para o template HTML
-  styleUrls: ['./lista-convites.css'] // Caminho para os estilos CSS
+  selector: 'app-lista-convites',
+  standalone: true,
+  imports: [CommonModule, DatePipe, FormsModule],
+  templateUrl: './lista-convites.html',
+  styleUrls: ['./lista-convites.css']
 })
-
 
 export class ListaConvitesComponent implements OnInit {
   // Dados de entrada que virão do componente pai (ConvitesComponent)
   @Input() invitations: Invitation[] = [];
   
-  // Propriedades para paginação (adaptadas para MatPaginator)
-  @Input() totalItems: number = 0; // totalItems do pai será 'length' no paginator
-  @Input() pageSize: number = 10; // pageSize do pai
-  @Input() currentPage: number = 1; // currentPage do pai (pageIndex no paginator)
+  // Propriedades para paginação customizada
+  @Input() totalItems: number = 0;
+  @Input() pageSize: number = 10;
+  @Input() currentPage: number = 1;
 
   // Propriedades para filtro e busca
   @Input() statusFilter: string = 'all';
@@ -33,33 +28,66 @@ export class ListaConvitesComponent implements OnInit {
 
   // Eventos de saída para comunicar com o componente pai
   @Output() filterApplied = new EventEmitter<{ status: string; email: string }>();
-  @Output() pageChanged = new EventEmitter<number>(); // Emite apenas o novo número da página
-  @Output() pageSizeChanged = new EventEmitter<number>(); // Emite apenas o novo tamanho da página
-  @Output() viewDetails = new EventEmitter<Invitation>(); // Mantido caso precise no futuro
+  @Output() pageChanged = new EventEmitter<number>();
+  @Output() pageSizeChanged = new EventEmitter<number>();
+  @Output() viewDetails = new EventEmitter<Invitation>();
 
-  // Opções de tamanho de página para o MatPaginator
-  pageSizes: number[] = [5, 10, 25, 50]; // Opções de itens por página
+  // Opções de tamanho de página para o paginator customizado
+  pageSizes: number[] = [5, 10, 25, 50];
 
   constructor() { }
 
   ngOnInit(): void {
-    // Lógica de inicialização do componente
   }
 
-  /**
-   * Manipula o evento de mudança de página ou tamanho de página do MatPaginator.
-   * @param event O objeto PageEvent do MatPaginator.
-   */
-  handlePageEvent(event: PageEvent): void {
-    const newPageSize = event.pageSize;
-    const newPageIndex = event.pageIndex + 1; // pageIndex é base 0, currentPage é base 1
+  // ============ MÉTODOS DO PAGINATOR CUSTOMIZADO ============
 
-    if (this.pageSize !== newPageSize) {
-      this.pageSizeChanged.emit(newPageSize);
+  // Atualizar tamanho da página
+  updatePageSize() {
+    this.currentPage = 1; // Reset para primeira página
+    this.pageSizeChanged.emit(this.pageSize);
+    this.pageChanged.emit(this.currentPage);
+  }
+
+  // Navegar para página específica
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.pageChanged.emit(this.currentPage);
     }
-    if (this.currentPage !== newPageIndex) {
-      this.pageChanged.emit(newPageIndex);
+  }
+
+  // Página anterior
+  goToPrevious() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.pageChanged.emit(this.currentPage);
     }
+  }
+
+  // Próxima página
+  goToNext() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.pageChanged.emit(this.currentPage);
+    }
+  }
+
+  // Calcular total de páginas
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  // Índice inicial dos itens exibidos
+  getStartIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return ((this.currentPage - 1) * this.pageSize) + 1;
+  }
+
+  // Índice final dos itens exibidos
+  getEndIndex(): number {
+    const endIndex = this.currentPage * this.pageSize;
+    return Math.min(endIndex, this.totalItems);
   }
 
   /**

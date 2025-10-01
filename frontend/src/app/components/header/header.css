@@ -503,21 +503,6 @@
     }
 }
 
-/* REMOVER CONFLITOS - COMENTAR ESSAS REGRAS */
-/*
-@media (min-width: 75rem) {
-    .header-nav ul li a {
-        font-size: 2.0em; ← CONFLITA COM clamp()
-    }
-}
-
-@media (min-width: 48rem) and (min-resolution: 120dpi) {
-    .header-nav ul li a {
-        font-size: 2rem; ← CONFLITA COM clamp()
-    }
-}
-*/
-
 /* DESKTOP MUITO LARGO - apenas container */
 @media (min-width: 90rem) {
     .header-container {
@@ -702,4 +687,66 @@ body.dark-theme .mobile-theme-switch input:checked + .slider,
 body.dark-theme .mobile-theme-switch .slider:before,
 [data-theme="dark"] .mobile-theme-switch .slider:before {
   background-color: #ffffff !important;
+}
+
+/* Botão Cursos Desktop */
+.cursos-button-desktop {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  color: white !important;
+  border-color: #7c3aed !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cursos-button-desktop:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+  color: white !important;
+  border-color: #6d28d9 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.cursos-button-desktop svg {
+  width: 16px;
+  height: 16px;
+  color: white;
+}
+
+/* Botão Cursos Mobile */
+.cursos-button-mobile {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  color: white !important;
+  border-color: #7c3aed !important;
+}
+
+.cursos-button-mobile:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+  color: white !important;
+  border-color: #6d28d9 !important;
+}
+
+/* Tema escuro */
+body.dark-theme .cursos-button-desktop,
+.dark-theme .cursos-button-desktop,
+body.dark-theme .cursos-button-mobile,
+.dark-theme .cursos-button-mobile {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  color: white !important;
+  border-color: #7c3aed !important;
+}
+
+body.dark-theme .cursos-button-desktop:hover,
+.dark-theme .cursos-button-desktop:hover,
+body.dark-theme .cursos-button-mobile:hover,
+.dark-theme .cursos-button-mobile:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%) !important;
+  color: white !important;
+  border-color: #6d28d9 !important;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+body.dark-theme .cursos-button-desktop svg,
+.dark-theme .cursos-button-desktop svg {
+  color: white !important;
 }

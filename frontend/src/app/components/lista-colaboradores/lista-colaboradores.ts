@@ -12,7 +12,6 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Header } from '../header/header'
 import { ConvitesService } from '../../services/convite.service';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 // Interface para o modelo de dados do Colaborador.
 // Define a estrutura esperada para cada objeto de colaborador.
@@ -40,10 +39,7 @@ interface Colaborador {
     FormsModule, 
 
     Header,
-    LowerCasePipe,
-    MatPaginatorModule,
-
-    LowerCasePipe 
+    LowerCasePipe
  
   ],
   templateUrl: './lista-colaboradores.html', 
@@ -65,7 +61,6 @@ export class ListaColaboradoresComponent implements OnInit {
   currentPage: number = 1; // Página atual exibida.
   itemsPerPage: number = 10; // Número de itens por página.
   totalItems: number = 0; // Total de itens após a filtragem.
-  totalPages: number = 1; // Total de páginas disponíveis.
 
   // Propriedades para o dialog
   showColaboradorDialog: boolean = false;
@@ -95,7 +90,29 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeSuccess: string = '';
   passwordError: string = '';
 
-    // Lista de perfis disponíveis
+// NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE
+  selectedPerfilConvite: number = 3; // Default: Colaborador Comum
+  selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
+
+  // Listas hardcoded APENAS para visual do modal de convite
+  perfisConvite = [
+    { id: 1, nome: 'Administrador' },
+    { id: 2, nome: 'Gente e Cultura' },
+    { id: 3, nome: 'Colaborador Comum' }
+  ];
+
+  cursosConvite = [
+    { id: 1, nome: 'Desenvolvimento Web Full Stack' },
+    { id: 2, nome: 'Análise e Desenvolvimento de Sistemas' },
+    { id: 3, nome: 'Ciência da Computação' },
+    { id: 4, nome: 'Engenharia de Software' },
+    { id: 5, nome: 'Tecnologia da Informação' },
+    { id: 6, nome: 'Marketing Digital' },
+    { id: 7, nome: 'Gestão de Projetos' },
+    { id: 8, nome: 'Design UX/UI' }
+  ];
+
+  // Lista de perfis disponíveis para alteração de perfil
   perfisDisponiveis = [
     { id: 1, nome: 'Administrador' },
     { id: 2, nome: 'Gente e Cultura' },
@@ -195,7 +212,6 @@ export class ListaColaboradoresComponent implements OnInit {
 
     this.filteredColaboradores = tempColaboradores; // Atualiza a lista de colaboradores filtrados.
     this.totalItems = this.filteredColaboradores.length; // Atualiza o total de itens filtrados.
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage); // Recalcula o total de páginas.
 
     // Garante que a página atual seja válida após a filtragem (evita página em branco se o filtro reduzir muito os itens).
     if (this.currentPage > this.totalPages && this.totalPages > 0) {
@@ -203,30 +219,14 @@ export class ListaColaboradoresComponent implements OnInit {
     } else if (this.totalPages === 0) { // Se não houver itens, volta para a página 1.
       this.currentPage = 1;
     }
-    this.paginate(); // Aplica a paginação para a página atual.
+    
+    this.updatePaginatedData();
   }
 
-  // Aplica a lógica de paginação para exibir apenas os itens da página atual.
-  paginate(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage; // Índice de início da fatia.
-    const endIndex = startIndex + this.itemsPerPage; // Índice de fim da fatia.
-    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex); // Pega a fatia de colaboradores para a página atual.
-  }
-
-  // Navega para a próxima página na paginação.
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) { // Verifica se não é a última página.
-      this.currentPage++; // Incrementa a página atual.
-      this.paginate(); // Atualiza os itens paginados.
-    }
-  }
-
-  // Navega para a página anterior na paginação.
-  previousPage(): void {
-    if (this.currentPage > 1) { // Verifica se não é a primeira página.
-      this.currentPage--; // Decrementa a página atual.
-      this.paginate(); // Atualiza os itens paginados.
-    }
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
   }
 
   // Chamada a cada digitação no campo de pesquisa.
@@ -350,6 +350,8 @@ export class ListaColaboradoresComponent implements OnInit {
   openInviteDialog(): void {
     this.showInviteDialog = true;
     this.inviteEmail = '';
+    this.selectedPerfilConvite = 3; // Reset para Colaborador Comum
+    this.selectedCursoConvite = 0; // Reset para nenhum curso
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     document.body.style.overflow = 'hidden';
@@ -359,17 +361,42 @@ export class ListaColaboradoresComponent implements OnInit {
   closeInviteDialog(): void {
     this.showInviteDialog = false;
     this.inviteEmail = '';
+    this.selectedPerfilConvite = 3; // Reset
+    this.selectedCursoConvite = 0; // Reset
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     this.inviteLoading = false;
     document.body.style.overflow = 'auto';
   }
 
-  // Método para enviar convite
-  // Verifica se já existe um convite em aberto para o e-mail antes de enviar.
+  // NOVOS MÉTODOS APENAS PARA OS SELECTS DO MODAL DE CONVITE
+  onPerfilConviteChange(event: any): void {
+    this.selectedPerfilConvite = +event.target.value;
+    console.log('Perfil selecionado no convite:', this.selectedPerfilConvite);
+    this.inviteErrorMessage = ''; // Limpar erro quando mudar
+  }
+
+  onCursoConviteChange(event: any): void {
+    this.selectedCursoConvite = +event.target.value;
+    console.log('Curso selecionado no convite:', this.selectedCursoConvite);
+    this.inviteErrorMessage = ''; // Limpar erro quando mudar
+  }
+
+  // ATUALIZAR APENAS O MÉTODO sendInvite (adicionar validação dos selects)
   async sendInvite(): Promise<void> {
     if (!this.inviteEmail.trim()) {
       this.inviteErrorMessage = 'Por favor, insira um e-mail válido.';
+      return;
+    }
+
+    // NOVAS VALIDAÇÕES PARA OS SELECTS
+    if (this.selectedPerfilConvite === 0) {
+      this.inviteErrorMessage = 'Por favor, selecione um perfil.';
+      return;
+    }
+
+    if (this.selectedCursoConvite === 0) {
+      this.inviteErrorMessage = 'Por favor, selecione um curso.';
       return;
     }
 
@@ -387,6 +414,13 @@ export class ListaColaboradoresComponent implements OnInit {
         return;
       }
 
+      // ADICIONAR LOG DOS DADOS QUE SERIAM ENVIADOS
+      console.log('Dados do convite que seriam enviados:', {
+        email: this.inviteEmail.trim(),
+        perfil_id: this.selectedPerfilConvite,
+        curso_id: this.selectedCursoConvite
+      });
+
       // Se não existe convite em aberto, prosseguir com o envio
       this.conviteService.enviarConvite(this.inviteEmail).subscribe({
         next: (response: any) => {
@@ -395,6 +429,8 @@ export class ListaColaboradoresComponent implements OnInit {
           if (response.status === 'success') {
             this.inviteSuccessMessage = response.message || 'Convite enviado com sucesso!';
             this.inviteEmail = '';
+            this.selectedPerfilConvite = 3; // Reset
+            this.selectedCursoConvite = 0; // Reset
             
             setTimeout(() => {
               this.closeInviteDialog();
@@ -780,26 +816,50 @@ export class ListaColaboradoresComponent implements OnInit {
     this.profileChangeSuccess = '';
   }
 
-  
-  updatePaginatedColaboradores() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
+  // Atualizar itens por página
+  updateItemsPerPage() {
+    this.currentPage = 1;
+    this.updatePaginatedData();
   }
 
-  handlePageEvent(event: PageEvent) {
-    this.itemsPerPage = event.pageSize;
-    this.currentPage = event.pageIndex + 1; // pageIndex é 0-based
-    this.updatePaginatedColaboradores();
+  // Navegar para página específica
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedData();
+    }
   }
 
-  // Atualizar apenas o método closeColaboradorDialog para limpar estado de edição
-  // closeColaboradorDialog(): void {
-  //   this.showColaboradorDialog = false;
-  //   this.selectedColaborador = null;
-  //   // Limpar estados de edição
-  //   this.resetEditingState();
-  //   // Restaura o scroll da página
-  //   document.body.style.overflow = 'auto';
-  // }
+  // Página anterior
+  goToPrevious() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedData();
+    }
+  }
+
+  // Próxima página
+  goToNext() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedData();
+    }
+  }
+
+  // Calcular total de páginas
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  // Índice inicial dos itens exibidos
+  getStartIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return ((this.currentPage - 1) * this.itemsPerPage) + 1;
+  }
+
+  // Índice final dos itens exibidos
+  getEndIndex(): number {
+    const endIndex = this.currentPage * this.itemsPerPage;
+    return Math.min(endIndex, this.totalItems);
+  }
 }

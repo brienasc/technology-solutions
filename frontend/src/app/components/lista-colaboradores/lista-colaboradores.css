@@ -1,83 +1,81 @@
 /* frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.css */
 
 .lista-colaboradores-container {
-    max-width: 3000px;
-    margin: 2rem auto;
-    /* Mudança aqui: era margin-top: 30px */
-    padding: 2rem;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 12px;
-    background-color: var(--theme-card-bg);
-    /* Fundo do contêiner da lista */
+    max-width: none !important; /* Remove limitação */
+    width: 100% !important;
+    margin: 2rem auto !important;
+    padding: 2rem !important;
+    border: none !important; /* REMOVE a borda */
+    border-radius: 0 !important; /* REMOVE o border-radius */
+    background-color: transparent !important; /* REMOVE o fundo */
     color: var(--theme-body-text);
-    /* Cor do texto */
+    box-shadow: none !important; /* REMOVE a sombra */
 }
 
+/* ===================== CONTAINER DA TABELA INTEGRADO ===================== */
+.table-container {
+    background: var(--theme-form-bg);
+    border-radius: 8px;
+    border: 1px solid var(--theme-border-color);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
 
-/* Nova seção de controles */
-
+/* ===================== CONTROLES INTEGRADOS NO TOPO ===================== */
 .controls-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-    padding: 0;
+    padding: 20px;
+    border-bottom: 1px solid var(--theme-border-color);
+    background: var(--theme-card-bg);
+    margin-bottom: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
     gap: 2rem;
 }
 
-
 /* Container da barra de pesquisa (lado esquerdo) */
-
 .search-container {
     flex: 1;
     max-width: 450px;
 }
 
-
 /* Barra de pesquisa */
-
 .search-bar {
     display: flex;
     position: relative;
     width: 100%;
 }
 
-
 /* Input de pesquisa */
-
 .search-bar input {
     flex: 1;
-    padding: 0.75rem 2.5rem 0.75rem 1rem;
-    border: 2px solid var(--theme-border, #e2e8f0);
+    padding: 8px 2.5rem 8px 12px;
+    border: 2px solid var(--theme-border-color);
     border-radius: 6px;
     font-size: 1rem;
-    background: var(--theme-input-bg, white);
-    color: var(--theme-text-primary, #333);
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
     transition: border-color 0.3s ease;
     min-width: 0;
-    /* Permite que o input encolha se necessário */
 }
 
-
 /* Placeholder do input de pesquisa */
-
 .search-bar input::placeholder {
     color: var(--theme-text-secondary, #9ca3af);
     font-size: 0.9rem;
 }
 
-
 /* Estado de foco do input de pesquisa */
-
 .search-bar input:focus {
     outline: none;
     border-color: var(--theme-button-primary-bg, #667eea);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-
 /* Botão de pesquisa (ícone lupa) posicionado dentro do input */
-
 .search-button {
     position: absolute;
     right: 0.5rem;
@@ -93,26 +91,20 @@
     justify-content: center;
 }
 
-
 /* Ícone do botão de pesquisa */
-
 .search-button svg {
     width: 1.25rem;
     height: 1.25rem;
 }
 
-
 /* Container dos botões (lado direito) */
-
 .buttons-container {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-
 /* Botão de convite */
-
 .invite-button {
     display: flex;
     align-items: center;
@@ -120,36 +112,17 @@
     background: #7120bd;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 8px 16px;
     border-radius: 1.5625rem;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    white-space: nowrap;
-    /* Evita quebra de linha */
-    height: 46px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #7120bd;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     white-space: nowrap;
     height: 46px;
 }
 
-
 /* Efeito hover do botão convidar */
-
 .invite-button:hover {
     background: #652b94;
     transform: translateY(-1px);
@@ -165,15 +138,12 @@
 
 
 /* Ícone do botão convidar */
-
 .invite-button svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1rem;
+    height: 1rem;
 }
 
-
 /* Botão de exportar */
-
 .export-button {
     display: flex;
     align-items: center;
@@ -181,7 +151,7 @@
     background: #059669;
     color: white;
     border: none;
-    padding: 0.75rem 1rem;
+    padding: 8px 16px;
     border-radius: 1.5625rem;
     font-size: 0.875rem;
     font-weight: 500;
@@ -189,143 +159,74 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     height: 46px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #059669;
-    color: white;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-    height: 46px;
 }
-
 
 /* Efeito hover do botão exportar */
-
 .export-button:hover {
     background: #047857;
-    transform: translateY(-1px);
 }
 
-
 /* Ícone do botão exportar */
-
 .export-button svg {
     width: 1rem;
     height: 1rem;
 }
 
-
-/* Tabela */
-
+/* ===================== TABELA SEM BORDAS ===================== */
 .table-responsive {
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
     overflow-x: auto;
-    margin-bottom: 20px;
 }
 
-
 /* Tabela principal de colaboradores */
-
 .colaboradores-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 0;
 }
 
-
 /* Células da tabela (cabeçalho e dados) */
-
 .colaboradores-table th,
 .colaboradores-table td {
-    border: 1px solid var(--theme-input-border);
-    /* Borda da tabela */
     padding: 12px 15px;
     text-align: left;
     font-size: 0.95em;
     color: var(--theme-body-text);
-    /* Cor do texto da tabela */
+    border: none !important;
+    border-bottom: 1px solid var(--theme-border-color) !important;
 }
-
 
 /* Cabeçalho da tabela */
-
 .colaboradores-table th {
-    background-color: var(--theme-form-bg);
-    /* Fundo do cabeçalho da tabela */
-    font-weight: bold;
+    background: var(--theme-form-bg);
+    color: var(--theme-heading-text);
+    font-weight: 600;
+    font-size: 12px;
     text-transform: uppercase;
-    color: var(--theme-label-text);
-    /* Cor do texto do cabeçalho da tabela */
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--theme-border-color) !important;
 }
 
-
-/* Efeito zebrado - linhas pares com fundo diferente */
-
+/* Remover o efeito zebrado */
 .colaboradores-table tbody tr:nth-child(even) {
-    background-color: var(--theme-card-bg);
-    /* Fundo zebrado (light) */
+    background-color: transparent !important;
 }
 
-
-/* Efeito hover nas linhas da tabela */
-
+/* Melhorar o hover */
 .colaboradores-table tbody tr:hover {
     background-color: var(--theme-background);
-    /* Efeito de hover na tabela */
 }
 
-
 /* Classe utilitária para centralizar texto */
-
 .text-center {
     text-align: center;
 }
 
-
-/* Badges de Status */
-
-.status-badge {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: bold;
-    color: var(--color-white);
-    /* Cor do texto do badge */
-    text-transform: capitalize;
-}
-
-
-/* Badge status finalizado - verde */
-
-.status-finalizado {
-    background-color: var(--color-success);
-}
-
-
-/* Badge status em aberto - amarelo */
-
-.status-emaberto {
-    background-color: var(--color-warning);
-    color: var(--color-text-dark);
-    /* Texto escuro para contraste no amarelo */
-}
-
-
-/* Badge status vencido - vermelho */
-
-.status-vencido {
-    background-color: var(--color-danger);
-}
-
-
 /* Botão de Detalhes */
-
 .details-button {
     background: #7120bd;
     color: white;
@@ -337,70 +238,322 @@
     transition: background-color 0.3s ease;
 }
 
-
 /* Hover do botão detalhes */
-
 .details-button:hover {
     background: #652b94;
 }
 
+/* ===================== PAGINATOR CUSTOMIZADO ===================== */
 
-/* Controles de Paginação */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--theme-card-bg);
+  border-top: 1px solid var(--theme-border-color);
+  border-radius: 0 0 8px 8px;
+  font-size: 14px;
+  color: var(--theme-text);
+}
 
+/* ESQUERDA - Items por página */
+.pagination-info {
+  display: flex;
+  align-items: center;
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.items-per-page label {
+  font-weight: 500;
+  color: var(--theme-text);
+  white-space: nowrap;
+}
+
+.items-per-page select {
+  padding: 4px 8px;
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
+  font-size: 14px;
+  min-width: 56px;
+  cursor: pointer;
+}
+
+.items-per-page select:focus {
+  outline: none;
+  border-color: var(--theme-primary-color, #7c3aed);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+}
+
+/* CENTRO - Range de itens */
+.pagination-range {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  color: var(--theme-text);
+}
+
+/* DIREITA - Controles de navegação */
 .pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 15px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
 }
 
-
-/* Botões de paginação (Anterior/Próxima) */
-
-.pagination-controls button {
-    background-color: var(--theme-button-secondary-bg);
-    /* Fundo do botão de paginação */
-    border: 1px solid var(--theme-input-border);
-    /* Borda do botão de paginação */
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95em;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    color: var(--theme-button-text);
+/* Botões de navegação */
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--theme-border-color);
+  background: var(--theme-button-bg, #f3f4f6);
+  color: var(--theme-text);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-
-/* Hover dos botões de paginação */
-
-.pagination-controls button:hover:not(:disabled) {
-    background-color: var(--theme-button-disabled-bg);
-    /* Hover do botão de paginação */
-    border-color: var(--theme-focus-border);
-    /* Borda no hover */
+/* Hover dos botões */
+.pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover, #e5e7eb);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
 
 /* Botões desabilitados */
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--theme-button-bg, #f9fafb);
+  transform: none;
+  box-shadow: none;
+}
 
-.pagination-controls button:disabled {
-    background-color: var(--theme-button-disabled-bg);
-    /* Fundo do botão desabilitado */
-    color: var(--color-muted-text);
-    /* Texto muted para desabilitado */
-    cursor: not-allowed;
+/* Ícones dos botões */
+.pagination-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* ===================== RESPONSIVIDADE ===================== */
+@media (max-width: 768px) {
+  .pagination-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    align-items: center;
+  }
+  
+  .pagination-info {
+    order: 1;
+  }
+  
+  .pagination-range {
+    order: 2;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    order: 3;
+  }
+}
+
+/* ===================== TEMA ESCURO ===================== */
+body.dark-theme .pagination-container,
+[data-theme="dark"] .pagination-container {
+  background: var(--theme-card-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .items-per-page select,
+[data-theme="dark"] .items-per-page select {
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn,
+[data-theme="dark"] .pagination-btn {
+  background: var(--theme-button-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn:not(:disabled):hover,
+[data-theme="dark"] .pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover);
+}
+
+/* ===================== LINHAS DA TABELA ===================== */
+
+.colaboradores-table tbody tr {
+  background: var(--theme-card-bg) !important;
+  border-bottom: 1px solid var(--theme-border-color) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+/* Hover das linhas */
+.colaboradores-table tbody tr:hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
+  transform: none !important;
+}
+
+/* Linhas alternadas (zebra stripe) */
+.colaboradores-table tbody tr:nth-child(even) {
+  background: var(--theme-card-bg) !important; /* Mesma cor que as ímpares */
+}
+
+.colaboradores-table tbody tr:nth-child(odd) {
+  background: var(--theme-card-bg) !important;
+}
+
+/* Hover sobrescreve tudo */
+.colaboradores-table tbody tr:nth-child(even):hover,
+.colaboradores-table tbody tr:nth-child(odd):hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
+}
+
+/* Células da tabela */
+.colaboradores-table tbody td {
+  background: transparent !important;
+  color: var(--theme-text) !important;
+  border-bottom: 1px solid var(--theme-border-color) !important;
+  padding: 12px 15px !important;
+}
+
+/* Cabeçalho da tabela */
+.colaboradores-table thead th {
+  background: var(--theme-form-bg) !important;
+  color: var(--theme-heading-text) !important;
+  border-bottom: 2px solid var(--theme-border-color) !important;
+  font-weight: 600 !important;
+}
+
+/* Tema escuro */
+body.dark-theme .colaboradores-table tbody tr,
+[data-theme="dark"] .colaboradores-table tbody tr {
+  background: var(--theme-card-bg) !important;
+  border-color: var(--theme-border-color) !important;
+}
+
+body.dark-theme .colaboradores-table tbody tr:nth-child(even),
+[data-theme="dark"] .colaboradores-table tbody tr:nth-child(even) {
+  background: var(--theme-card-bg) !important;
+}
+
+body.dark-theme .colaboradores-table tbody tr:hover,
+[data-theme="dark"] .colaboradores-table tbody tr:hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.1)) !important;
+}
+
+body.dark-theme .colaboradores-table thead th,
+[data-theme="dark"] .colaboradores-table thead th {
+  background: var(--theme-form-bg) !important;
+  color: var(--theme-heading-text) !important;
+}
+
+.details-button {
+  background: #7120bd !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 12px !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-size: 0.9em !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.details-button:hover {
+  background: #652b94 !important;
+  transform: translateY(-1px) !important;
+}
+
+.colaboradores-table tbody tr:nth-child(even) {
+  background-color: var(--theme-card-bg) !important;
+}
+
+.colaboradores-table tbody tr:hover {
+  background-color: var(--theme-hover-bg, rgba(124, 58, 237, 0.05)) !important;
 }
 
 
-/* Texto informativo da paginação */
-
-.pagination-controls span {
-    font-size: 1em;
-    color: var(--theme-body-text);
-    /* Cor do texto da paginação */
+/* Remover qualquer estilo residual do Material Design */
+.lista-colaboradores-container .mat-table,
+.lista-colaboradores-container .mat-row,
+.lista-colaboradores-container .mat-cell,
+.lista-colaboradores-container .mat-header-row,
+.lista-colaboradores-container .mat-header-cell {
+  background: transparent !important;
+  border: none !important;
 }
 
+/* Resetar cores que podem ter sido afetadas */
+.table-container {
+  background: var(--theme-card-bg) !important;
+  border: 1px solid var(--theme-border-color) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.table-responsive {
+  background: transparent !important;
+}
+
+/* Garantir que botões de ação mantenham estilo correto */
+.action-btn {
+  background: var(--theme-primary-color, #7c3aed) !important;
+  color: white !important;
+  border: none !important;
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.action-btn:hover {
+  background: var(--theme-primary-hover, #6d28d9) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 4px 8px !important;
+  border-radius: 12px !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+}
+
+.status-finalizado {
+  background: rgba(34, 197, 94, 0.1) !important;
+  color: #16a34a !important;
+  border: 1px solid rgba(34, 197, 94, 0.2) !important;
+}
+
+.status-em-aberto {
+  background: rgba(251, 191, 36, 0.1) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(251, 191, 36, 0.2) !important;
+}
+
+.status-vencido {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
 
 /* Estilos do Modal Dialog */
 
@@ -686,201 +839,6 @@
     transform: translateY(-1px);
 }
 
-
-/* Header Section com botão de convite */
-
-.header-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 0 1rem;
-}
-
-.header-section h1 {
-    margin: 0;
-    color: var(--theme-text-primary, #333);
-    font-size: 2rem;
-    font-weight: 600;
-}
-
-
-/* Dialog de convite */
-
-.invite-dialog {
-    max-width: 500px;
-    width: 90%;
-}
-
-.invite-dialog .modal-body {
-    padding: 1.5rem;
-}
-
-
-/* Form styles */
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-
-/* Labels dos campos do formulário */
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--theme-label-text);
-}
-
-
-/* Campos de entrada do formulário */
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid var(--theme-input-border);
-    border-radius: 6px;
-    font-size: 1rem;
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-/* Estado de foco dos campos */
-
-.form-control:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-
-/* Campo com erro */
-
-.form-control.error {
-    border-color: #ef4444;
-}
-
-.form-control.error:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-
-/* Error messages */
-
-.error-messages {
-    margin-top: 0.5rem;
-}
-
-
-/* Texto de erro */
-
-.error-text {
-    color: #ef4444;
-    font-size: 0.875rem;
-    display: block;
-    margin-top: 0.25rem;
-}
-
-
-/* Success/Error message container */
-
-.message-container {
-    margin-bottom: 1rem;
-}
-
-
-/* Mensagens de sucesso e erro */
-
-.success-message,
-.error-message {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-
-/* Mensagem de sucesso - verde */
-
-.success-message {
-    background: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-}
-
-
-/* Mensagem de erro - vermelho */
-
-.error-message {
-    background: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-}
-
-
-/* Ícones das mensagens */
-
-.success-message svg,
-.error-message svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
-}
-
-
-/* Botões do modal de convite */
-
-.invite-modal-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--theme-input-border);
-}
-
-
-/* Estilo dos botões do modal de convite */
-
-.invite-modal-buttons .btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 1.5625rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-
-/* Botões desabilitados */
-
-.invite-modal-buttons .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-
 /* Botão Cancelar */
 
 .btn-cancel {
@@ -891,37 +849,6 @@
 .btn-cancel:hover:not(:disabled) {
     background: #b91c1c;
 }
-
-
-/* Botão Enviar */
-
-.btn-send {
-    background: #7120bd;
-    color: white;
-}
-
-.btn-send:hover:not(:disabled) {
-    background: #652b94;
-}
-
-
-/* Loading spinner */
-
-.loading-spinner {
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 
 /* Responsividade para mobile */
 
@@ -954,7 +881,6 @@
     flex-direction: column;
     gap: 16px;
 }
-
 
 /* ============================================================================== */
 
@@ -1174,8 +1100,8 @@
         .buttons-container {
             flex-direction: column;
             gap: 0.75rem;
-        }
-        .invite-button,
+          }
+          .invite-button,
         .export-button {
             width: 100%;
             max-width: 100%;
@@ -1188,8 +1114,8 @@
             /* Evita zoom no iOS */
             height: 50px;
         }
-    }
-    /* Celulares pequenos */
+      }
+      /* Celulares pequenos */
     @media (max-width: 480px) {
         .controls-section {
             margin-bottom: 1.5rem;

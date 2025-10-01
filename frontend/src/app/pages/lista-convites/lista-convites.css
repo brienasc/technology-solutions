@@ -1,359 +1,472 @@
 /* frontend/src/app/components/lista-convites/lista-convites.component.css */
 
 
-/* --- Estilização da Tabela --- */
-
-.table-section {
-    overflow-x: auto;
-    margin-bottom: 20px;
-    border: 1px solid var(--theme-input-border);
-    /* Borda ao redor da tabela inteira */
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--theme-card-bg);
-    /* Garante que a borda arredondada se aplique */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    /* Mantenha o collapse para bordas limpas */
-    /* background-color: transparent; */
-    background-color: var(--theme-card-bg);
-}
-
-th,
-td {
-    padding: 1rem;
-    /* Adiciona padding para espaçamento interno */
-    text-align: left;
-    color: var(--theme-body-text);
-    border-right: 1px solid var(--theme-input-border);
-    /* Linhas verticais entre as colunas */
-}
-
-th:last-child,
-td:last-child {
-    border-right: none;
-    /* Remove a borda da última coluna */
-}
-
-thead th {
-    background-color: transparent;
-    font-weight: 700;
-    text-transform: none;
-    color: var(--theme-heading-text);
-    border-bottom: 1px solid var(--theme-input-border);
-    /* Linha horizontal no cabeçalho */
-}
-
-tbody tr {
-    border-bottom: 1px solid var(--theme-input-border);
-    /* Linhas horizontais entre as linhas */
-}
-
-tbody tr:last-child {
-    border-bottom: none;
-}
-
+/* ===================== CONTAINER PRINCIPAL ===================== */
 .lista-convites-container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: var(--theme-card-bg);
-    color: var(--theme-body-text);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    /* Sombra mais pronunciada */
-    border: 1px solid var(--theme-input-border);
-    /* Borda sutil para definir o card */
-    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
-    /* Adiciona transição para a borda */
-    font-family: var(--font-nunito-sans);
+  max-width: none !important;
+  width: 100% !important;
+  margin: 2rem auto !important;
+  padding: 2rem !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-family: var(--font-nunito-sans);
 }
 
+/* ===================== CONTAINER DA TABELA INTEGRADO ===================== */
+.table-container {
+  background: var(--theme-form-bg);
+  border-radius: 8px;
+  border: 1px solid var(--theme-border-color);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+/* ===================== CONTROLES INTEGRADOS NO TOPO ===================== */
 .controls-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--theme-border-color);
+  background: var(--theme-card-bg);
+  margin-bottom: 0;
 }
 
-.filter-group,
-.search-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.filter-group, .search-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.filter-group label,
-.search-group label {
-    font-weight: bold;
-    color: var(--theme-label-text);
+.controls-section label {
+  font-weight: 500;
+  color: var(--theme-heading-text);
+  white-space: nowrap;
 }
 
 .controls-section select,
 .controls-section input {
-    padding: 8px 12px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    font-size: 1em;
-    background-color: var(--theme-card-bg);
-    color: var(--theme-input-text);
+  padding: 8px 12px;
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
 }
 
 .search-group button {
-    padding: 8px 15px;
-    background-color: var(--color-light-primary);
-    color: var(--theme-button-text);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 .search-group button:hover {
-    background-color: var(--color-secondary);
+  background: #6d28d9;
 }
 
+/* ===================== TABELA ===================== */
 .table-section {
-    overflow-x: auto;
-    /* Permite rolagem horizontal em telas pequenas para a tabela */
-    margin-bottom: 20px;
-    /* margin-top: 20px; */
-    background-color: white;
+  overflow-x: auto;
+  margin-bottom: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
 }
 
-th,
-td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--theme-input-border);
-    color: var(--theme-body-text);
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  color: var(--theme-body-text);
+  border: none !important;
+  border-bottom: 1px solid var(--theme-border-color) !important;
 }
 
 thead th {
-    background-color: var(--theme-background);
-    font-weight: bold;
-    text-transform: uppercase;
-    color: var(--theme-label-text);
+  background: var(--theme-form-bg);
+  color: var(--theme-heading-text);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--theme-border-color) !important;
 }
 
+/* Remover efeito zebrado */
 tbody tr:nth-child(even) {
-    background-color: var(--theme-card-bg);
+  background-color: transparent !important;
 }
 
 tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    /* Um leve destaque no hover */
+  background-color: var(--theme-background) !important;
 }
 
-
-/* cor de fundo para TODAS as linhas */
-
-tbody tr {
-    background-color: var(--theme-card-bg);
-    /* Cor padrão para todas as linhas */
-    border-bottom: 1px solid var(--theme-input-border);
+tbody tr:last-child td {
+  border-bottom: none !important;
 }
 
-
-/* Use uma cor de fundo um pouco diferente para as linhas pares,
-   criando o efeito de listra */
-
-tbody tr:nth-child(even) {
-    background-color: var(--theme-background);
-    /* Uma cor um pouco mais escura/clara */
-}
-
-tbody tr:last-child {
-    border-bottom: none;
-}
-
+/* ===================== BADGES DE STATUS ===================== */
 .status-badge {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: bold;
-    color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: bold;
+  color: white;
 }
 
 .status-em-aberto {
-    background-color: var(--color-warning);
+  background-color: var(--color-warning);
 }
 
 .status-finalizado {
-    background-color: var(--color-success);
+  background-color: var(--color-success);
 }
 
 .status-vencido {
-    background-color: var(--color-danger);
+  background-color: var(--color-danger);
 }
 
+/* ===================== BOTÕES ===================== */
 .details-button {
-    padding: 6px 10px;
-    background-color: var(--theme-button-primary-bg);
-    color: var(--theme-button-text);
-    border: 1px solid var(--theme-button-primary-bg);
-    border-radius: 5px;
-    font-size: 0.85em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 6px 10px;
+  background-color: var(--theme-button-primary-bg);
+  color: var(--theme-button-text);
+  border: 1px solid var(--theme-button-primary-bg);
+  border-radius: 5px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .details-button:hover {
-    background-color: var(--theme-button-primary-hover);
-    border-color: var(--theme-button-primary-hover);
+  background-color: var(--theme-button-primary-hover);
+  border-color: var(--theme-button-primary-hover);
 }
 
+/* ===================== MAT-PAGINATOR ESTILO CURSOS ===================== */
+
+.lista-convites-container ::ng-deep .mat-paginator {
+    margin-top: 0 !important;
+    border-radius: 0 0 8px 8px !important;
+    border-top: 1px solid var(--theme-border-color) !important;
+    background: var(--theme-card-bg) !important;
+    font-family: inherit !important;
+    box-shadow: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    
+    /* Layout horizontal - ESQUERDA | CENTRO | DIREITA */
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 20px !important;
+    min-height: 56px !important;
+}
+
+/* ESQUERDA - Items por página */
+.lista-convites-container ::ng-deep .mat-paginator-page-size {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    order: 1 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.lista-convites-container ::ng-deep .mat-paginator-page-size-label {
+    font-weight: 500 !important;
+    color: var(--theme-text) !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    font-size: 14px !important;
+}
+
+.lista-convites-container ::ng-deep .mat-paginator-page-size-select {
+    padding: 4px 8px !important;
+    border: 1px solid var(--theme-border-color) !important;
+    border-radius: 4px !important;
+    background: var(--theme-input-bg) !important;
+    color: var(--theme-text) !important;
+    font-size: 14px !important;
+    min-width: 56px !important;
+    margin: 0 !important;
+}
+
+/* CENTRO - Range info */
+.lista-convites-container ::ng-deep .mat-paginator-range-label {
+    order: 2 !important;
+    color: var(--theme-text) !important;
+    font-weight: 500 !important;
+    margin: 0 20px !important;
+    flex: 1 !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    white-space: nowrap !important;
+}
+
+/* DIREITA - Botões de navegação */
+.lista-convites-container ::ng-deep .mat-paginator-range-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    order: 3 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+/* Estilização dos botões - igual à página de cursos */
+.lista-convites-container ::ng-deep .mat-icon-button.mat-paginator-navigation-previous,
+.lista-convites-container ::ng-deep .mat-icon-button.mat-paginator-navigation-next,
+.lista-convites-container ::ng-deep .mat-icon-button.mat-paginator-navigation-first,
+.lista-convites-container ::ng-deep .mat-icon-button.mat-paginator-navigation-last {
+    background: var(--theme-button-bg, #f3f4f6) !important;
+    color: var(--theme-text) !important;
+    border: 1px solid var(--theme-border-color) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    min-width: 32px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover dos botões */
+.lista-convites-container ::ng-deep .mat-icon-button:not([disabled]):hover {
+    background: var(--theme-button-hover, #e5e7eb) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Botões desabilitados */
+.lista-convites-container ::ng-deep .mat-icon-button[disabled] {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    background: var(--theme-button-bg, #f9fafb) !important;
+}
+
+/* Remove efeitos do Material Design */
+.lista-convites-container ::ng-deep .mat-button-ripple,
+.lista-convites-container ::ng-deep .mat-button-focus-overlay {
+    display: none !important;
+}
+
+/* ===================== MENSAGENS ===================== */
 .no-data-message {
-    text-align: center;
-    padding: 20px;
-    font-style: italic;
-    color: var(--theme-muted-text);
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+  color: var(--theme-muted-text);
 }
 
+/* ===================== PAGINATOR CUSTOMIZADO ===================== */
 
-/* Estilos para MatPaginator  */
-
-.mat-paginator {
-    background-color: var(--theme-form-bg);
-    /* Fundo do paginator */
-    color: var(--theme-body-text);
-    /* Cor do texto do paginator */
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.5s ease, color 0.5s ease;
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: var(--theme-card-bg);
+  border-top: 1px solid var(--theme-border-color);
+  border-radius: 0 0 8px 8px;
+  font-size: 14px;
+  color: var(--theme-text);
 }
 
-
-/* Estilos para os botões de navegação do paginator */
-
-:host ::ng-deep .mat-paginator-navigation-previous,
-:host ::ng-deep .mat-paginator-navigation-next {
-    background-color: var(--theme-button-primary-bg);
-    color: var(--theme-button-text);
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+/* ESQUERDA - Items por página */
+.pagination-info {
+  display: flex;
+  align-items: center;
 }
 
-:host ::ng-deep .mat-paginator-navigation-previous:not([disabled]):hover,
-:host ::ng-deep .mat-paginator-navigation-next:not([disabled]):hover {
-    background-color: var(--theme-button-primary-hover);
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-
-/* Estilos para o seletor de itens por página */
-
-:host ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
+.items-per-page label {
+  font-weight: 500;
+  color: var(--theme-text);
+  white-space: nowrap;
 }
 
-:host ::ng-deep .mat-form-field-underline {
-    display: none;
+.items-per-page select {
+  padding: 4px 8px;
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
+  font-size: 14px;
+  min-width: 56px;
+  cursor: pointer;
 }
 
-:host ::ng-deep .mat-select-value-text,
-:host ::ng-deep .mat-select-arrow,
-:host ::ng-deep .mat-paginator-page-size-label,
-:host ::ng-deep .mat-paginator-range-label {
-    color: var(--theme-body-text);
+.items-per-page select:focus {
+  outline: none;
+  border-color: var(--theme-primary-color, #7c3aed);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
 
-.pagination-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
+/* CENTRO - Range de itens */
+.pagination-range {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  color: var(--theme-text);
 }
 
-.pagination-section .nav-button {
-    padding: 8px 15px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    background-color: var(--theme-form-bg);
-    color: var(--theme-body-text);
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+/* DIREITA - Controles de navegação */
+.pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
 }
 
-.pagination-section .nav-button:hover:not(:disabled) {
-    background-color: var(--theme-background);
-    border-color: var(--theme-focus-border);
+/* Botões de navegação */
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--theme-border-color);
+  background: var(--theme-button-bg, #f3f4f6);
+  color: var(--theme-text);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-.pagination-section .nav-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
+/* Hover dos botões */
+.pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover, #e5e7eb);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.pagination-section .page-info {
-    font-weight: bold;
-    color: var(--theme-body-text);
+/* Botões desabilitados */
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--theme-button-bg, #f9fafb);
+  transform: none;
+  box-shadow: none;
 }
 
-.page-size-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+/* Ícones dos botões */
+.pagination-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
 }
 
-.page-size-group label {
-    color: var(--theme-label-text);
-    font-size: 0.9em;
-}
-
-.page-size-group select {
-    padding: 6px 10px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    background-color: var(--theme-card-bg);
-    color: var(--theme-input-text);
-    font-size: 0.9em;
-}
-
-
-/* Responsividade */
-
+/* ===================== RESPONSIVIDADE ===================== */
 @media (max-width: 768px) {
-    .controls-section {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .filter-group,
-    .search-group {
-        width: 100%;
-    }
-    .pagination-section {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .controls-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .filter-group,
+  .search-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  ::ng-deep .mat-paginator {
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 15px !important;
+  }
+  
+  ::ng-deep .mat-paginator-range-label {
+    order: 1 !important;
+    text-align: center !important;
+  }
+  
+  ::ng-deep .mat-paginator-page-size {
+    order: 2 !important;
+  }
+  
+  ::ng-deep .mat-paginator-range-actions {
+    order: 3 !important;
+  }
+  
+  .pagination-container {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    align-items: center;
+  }
+  
+  .pagination-info {
+    order: 1;
+  }
+  
+  .pagination-range {
+    order: 2;
+    text-align: center;
+  }
+  
+  .pagination-controls {
+    order: 3;
+  }
 }
 
-.secondary-button-outline {
-    padding: 12px 24px;
-    /* Botão um pouco maior */
-    color: var(--theme-button-primary-bg);
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 0.95em;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    width: auto;
-    max-width: none;
-    text-align: center;
-    background-color: transparent;
-    border: 2px solid var(--theme-button-primary-bg);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+/* ===================== TEMA ESCURO ===================== */
+body.dark-theme ::ng-deep .mat-paginator,
+[data-theme="dark"] ::ng-deep .mat-paginator {
+  background: var(--theme-card-bg) !important;
+  color: var(--theme-text) !important;
+}
+
+body.dark-theme ::ng-deep .mat-paginator-page-size-select,
+[data-theme="dark"] ::ng-deep .mat-paginator-page-size-select {
+  background: var(--theme-input-bg) !important;
+  color: var(--theme-text) !important;
+  border-color: var(--theme-border-color) !important;
+}
+
+body.dark-theme .pagination-container,
+[data-theme="dark"] .pagination-container {
+  background: var(--theme-card-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .items-per-page select,
+[data-theme="dark"] .items-per-page select {
+  background: var(--theme-input-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn,
+[data-theme="dark"] .pagination-btn {
+  background: var(--theme-button-bg);
+  color: var(--theme-text);
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn:not(:disabled):hover,
+[data-theme="dark"] .pagination-btn:not(:disabled):hover {
+  background: var(--theme-button-hover);
 }
