@@ -1,7 +1,6 @@
-
 <section id="servicos" class="benefits-grid-section">
     <div class="main-content-container">
-        
+
         <div class="benefit-description">
             <h2>Transformando a sua empresa com <b>soluções inteligentes</b> e seguras.</h2>
             <p>Nossa plataforma oferece uma experiência de onboarding simplificada e eficiente, garantindo que novos colaboradores se sintam acolhidos e produtivos desde o primeiro dia.</p>
@@ -20,15 +19,10 @@
                 </div>
             </div>
             <button class="nav-button next" (click)="scrollRight()">&#10095;</button>
-            
+
             <!-- Indicadores do carrossel >> -->
             <div class="carousel-indicators">
-              <span 
-                class="indicator-dot" 
-                *ngFor="let item of images; let i = index"
-                [class.active]="i === currentCardIndex"
-                (click)="goToSlide(i)"
-              ></span>
+                <span class="indicator-dot" *ngFor="let item of images; let i = index" [class.active]="i === currentCardIndex" (click)="goToSlide(i)"></span>
             </div>
         </div>
     </div>
