@@ -1,0 +1,318 @@
+/* mobile */
+.app-footer { /* container do rodape*/
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 30px 20px 15px;
+    text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.footer-title {/* titulo do rodape*/
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    color: var(--color-white);
+    font-weight: 600;
+    transition: color 0.5s ease;
+}
+
+/* formulário de contato */
+.contact-form-container {
+    max-width: 400px;
+    margin: 0 auto 40px;
+    padding: 0 10px;
+}
+
+.contact-form .form-group {
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.contact-form label {
+    display: block;
+    font-size: 1em;
+    margin-bottom: 2px;
+    color: var(--color-lighten-primary);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 6px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: var(--color-white);
+    font-size: 1em;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-white);
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--color-lighten-primary);
+    color: var(--color-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover:enabled {
+    background-color: var(--color-white);
+}
+
+.contact-form button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    color: #999;
+}
+
+.error-message {
+    color: #ff6b6b;
+    font-size: 0.85em;
+    margin-top: 5px;
+    text-align: left;
+}
+
+/* mensagens de feedback */
+.submission-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.submission-message.success {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+.submission-message.error {
+    background-color: #f44336; /* Vermelho */
+    color: white;
+}
+
+/* pro desktop- layout pra manter um do lado do outro */
+.footer-content-wrapper {
+    display: flex;
+    flex-direction: column; /* Padrão para mobile */
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    gap: 30px;
+}
+
+.contact-section {
+    width: 100%;
+}
+
+.footer-columns-wrapper {
+    display: flex;
+    flex-direction: column; /* mobile */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 30px;
+}
+
+.footer-column {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 90%;
+    max-width: 300px;
+    padding: 0 10px;
+    text-align: center; /* mobile */
+}
+
+.footer-column h3 {
+    color: var(--color-lighten-primary);
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    transition: color 0.5s ease;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 8px;
+}
+
+.footer-column ul li a {
+    color: var(--color-footer-link);
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: var(--color-white);
+}
+
+.footer-column p {
+    color: var(--color-footer-link);
+    font-size: 0.9em;
+    transition: color 0.5s ease;
+}
+
+.footer-column.direitos {
+    text-align: center;
+    flex-basis: 100%;
+    margin-top: 30px;
+    font-size: 0.8em;
+}
+
+.footer-column.direitos p {
+    margin-bottom: 3px;
+}
+
+.footer-column.direitos a {
+    margin: 0 3px;
+    text-decoration: underline;
+    color: var(--color-footer-link);
+    transition: color 0.3s ease;
+}
+
+.footer-column.direitos a:hover {
+    color: var(--color-white);
+}
+
+/* telas pequenas */
+@media (max-width: 480px) {
+    .app-footer {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .footer-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .footer-column {
+        flex-basis: 100%;
+        max-width: none;
+        padding: 0;
+    }
+
+    .footer-column h3 {
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+
+    .footer-column ul li a {
+        font-size: 0.85em;
+    }
+
+    .footer-column p {
+        font-size: 0.85em;
+    }
+
+    .footer-column.direitos {
+        margin-top: 20px;
+        font-size: 0.75em;
+    }
+}
+
+/* Mobile landscape / tablet pequeno */
+@media (max-width: 767px) {
+    .app-footer {
+        padding: 2rem 1rem;
+    }
+    .footer-content-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+}
+
+/* tablet 768px (ajustes para o layout do desktop) */
+@media (min-width: 768px) {
+    .app-footer {
+        padding: 45px 30px 20px;
+    }
+    .footer-title {
+        font-size: 2em;
+        margin-bottom: 30px;
+        text-align: left; /* Adicionado para o layout do desktop */
+    }
+    .footer-content-wrapper {
+        flex-direction: row; /* Colunas lado a lado */
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        max-width: 900px;
+        text-align: left;
+    }
+    .contact-section {
+        flex: 1;
+        max-width: 50%;
+        padding-right: 20px;
+    }
+    .footer-columns-wrapper {
+        flex-direction: row; /* Colunas de contato e redes sociais lado a lado */
+        justify-content: space-around;
+        flex: 1;
+        max-width: 50%;
+        gap: 30px;
+    }
+    .footer-column {
+        flex-basis: 45%;
+        max-width: none;
+        padding: 0;
+        text-align: left; /* Adicionado para o layout do desktop */
+    }
+    .footer-column.direitos {
+        margin-top: 40px;
+        font-size: 0.85em;
+    }
+}
+
+/* desktop 1200px */
+@media (min-width: 1200px) {
+    .app-footer {
+        padding: 60px 50px 30px;
+    }
+    .footer-title {
+        font-size: 2.2em;
+        margin-bottom: 40px;
+    }
+    .footer-content-wrapper {
+        justify-content: space-around;
+        gap: 40px;
+        max-width: 1200px;
+    }
+    .footer-column {
+        flex-basis: 280px;
+        text-align: left; 
+    }
+    .footer-column h3 {
+        font-size: 1.4em;
+        margin-bottom: 20px;
+    }
+    .footer-column ul li a {
+        font-size: 1em;
+    }
+    .footer-column p {
+        font-size: 1em;
+    }
+    .footer-column.direitos {
+        margin-top: 50px;
+        font-size: 0.9em;
+    }
+}
