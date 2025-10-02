@@ -40,4 +40,14 @@ class Colab extends Authenticatable
     {
         return $this->belongsTo(Perfis::class, 'perfil_id', 'perfil_id');
     }
+
+    public function cursos()
+    {
+        return $this->belongsToMany(
+            Curso::class,
+            'colab_curso',
+            'colab_id',
+            'curso_id'
+        )->withTimestamps();
+    }
 }
