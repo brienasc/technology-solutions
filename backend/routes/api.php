@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
@@ -18,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/convites', [ConvitesController::class,'store']);
         Route::get('/convites', [ConvitesController::class,'index']);
     });
-    
+
     # Rotas de Colabs
     Route::middleware('abilities:access:menu-gerencial')->group(function () {
         Route::post('/colabs', [ColabsController::class,'store']);
@@ -31,3 +30,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
+

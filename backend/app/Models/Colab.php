@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Colab extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUuids;
+    use HasApiTokens;
+    use HasFactory;
+    use HasUuids;
 
     protected $table = 'colab';
 
@@ -20,6 +21,7 @@ class Colab extends Authenticatable
         'nome',
         'cpf',
         'email',
+        'password',
         'celular',
         'cep',
         'uf',
@@ -34,7 +36,8 @@ class Colab extends Authenticatable
         'id' => 'string',
     ];
 
-    public function perfil(){
+    public function perfil()
+    {
         return $this->belongsTo(Perfis::class, 'perfil_id', 'perfil_id');
     }
 }

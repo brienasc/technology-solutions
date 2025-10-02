@@ -6,78 +6,47 @@ use App\Enums\PerfilType;
 use App\Models\Colab;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
-use Exception;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
 use App\Http\Responses\ApiResponse;
 use App\Http\Requests\ColabsRequest;
 use App\Services\ColabService;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Exception;
 use Str;
 
-class ColabsController extends Controller{
+class ColabsController extends Controller
+{
     protected ApiResponse $apiResponse;
     protected ColabService $colabService;
-    
-    public function __construct(ApiResponse $apiResponse, ColabService $colabService){
+
+    public function __construct(ApiResponse $apiResponse, ColabService $colabService)
+    {
         $this->apiResponse = $apiResponse;
         $this->colabService = $colabService;
     }
 
-    public function store(ColabsRequest $request): JsonResponse{
-        try{
+    public function store(ColabsRequest $request): JsonResponse
+    {
+        try {
+            $validated = $request->validated();
 
-            $validated = $request->validated([
-                'name' => 'required|string|max:255',
-                'cpf' => 'required|cpf|unique:colab,cpf',
-                'email' => 'required|email|unique:colab,email',
-                'celular' => 'required|string',
-                'cep' => 'required|size:8',
-                'convite_id' => 'required|exists:convites,id_convite',
-            ]);
-
-            // Verifica se o convite existe
-            $convite = $this->colabService->getConviteById($validated['convite_id']);
-            if (!$convite) {
-                return $this->apiResponse->badRequest(['error' => 'Convite não encontrado'], 404);
+            $colab = $this->colabService->createColab($validated);
+            if ($colab == null) {
+                return $this->apiResponse->badRequest(null, 'Falha ao cadastrar usuário');
             }
 
-            // Verifica se email do convite bate com email do usuário
-            if ($convite->email !== $validated['email']) {
-                return $this->apiResponse->badRequest(['error' => 'E-mail do convite não confere'], 400);
-            }
-
-            $colab = $this->colabService->create($validated);
-
-            // Criação do colaborador
-            $colab = Colab::create([
-                'name' => $validated['name'],
-                'cpf' => $validated['cpf'],
-                'email' => $validated['email'],
-                'celular' => $validated['celular'],
-                'cep' => $validated['cep'],
-                'estado' => $cepResponse['uf'] ?? '',
-                'cidade' => $cepResponse['localidade'] ?? '',
-                'bairro' => $cepResponse['bairro'] ?? '',
-                'logradouro' => $cepResponse['logradouro'] ?? '',
-                'numero' => $request->input('numero'),
-                'perfil_id' => $request->input('perfil_id'),
-            ]);
-
-            return $this->apiResponse->success(['message' => 'Colaborador cadastrado com sucesso', 'colab' => $colab]);
-
-            return $this->apiResponse->success($colab, 'Colaborador cadastrado com sucesso.');
-        }catch(Exception $e){
-            return $this->apiResponse->error( null, 'Erro ao criar colaborador.');
+            return $this->apiResponse->success(null, 'Usuário cadastrado com sucesso.');
+        } catch (Exception $e) {
+            return $this->apiResponse->error($e->getMessage(), 'Erro ao criar usuário.');
         }
     }
 
-    public function index(Request $request): JsonResponse{
-        try{
+    public function index(Request $request): JsonResponse
+    {
+        try {
             $filters = $request->only(['email', 'nome', 'cpf', 'page', 'per_page']);
 
             $colabsPaginate = $this->colabService->indexFilteredColabs($filters);
@@ -91,50 +60,54 @@ class ColabsController extends Controller{
             ];
 
             return $this->apiResponse->success($responseData, 'Lista de colaboradores retornada com sucesso.');
-        }catch(Exception $e){
-            return $this->apiResponse->badRequest( null, 'Erro ao buscar colaboradores.');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao buscar colaboradores.');
         }
-
     }
 
-    public function show($id){
-        try{
-            if(!Str::isUuid($id)){
+    public function show($id)
+    {
+        try {
+            if (!Str::isUuid($id)) {
                 return $this->apiResponse->badRequest(null, 'O ID do colaborador fornecido é inválido.');
             }
 
             $colab = $this->colabService->getColabById($id);
 
-            if($colab == null){
-                return $this->apiResponse->badRequest( null, 'Colaborador não encontrado'); 
+            if ($colab == null) {
+                return $this->apiResponse->badRequest(null, 'Colaborador não encontrado');
             }
-            
+
             return $this->apiResponse->success($colab, 'Colaborador retornado com sucesso.');
-        }catch(Exception $e){
-            return $this->apiResponse->badRequest( null, 'Erro ao buscar colaborador');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao buscar colaborador');
         }
     }
 
-    public function login(Request $request): JsonResponse{
-        try{
-            $validateData = $request->validate([
-                'cpf' => ['required', 'digits:11', new Cpf()],
-                'password' => ['required', 'min:8'],
-            ],[
-                'required' => 'O :attribute é obrigatório',
-                'digits' => 'O campo :attribute deve conter apenas :digits digitos.',
-                'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
-            ]);
+    public function login(Request $request): JsonResponse
+    {
+        try {
+            $validateData = $request->validate(
+                [
+                    'cpf' => ['required', 'digits:11', new Cpf()],
+                    'password' => ['required', 'min:8'],
+                ],
+                [
+                    'required' => 'O :attribute é obrigatório',
+                    'digits' => 'O campo :attribute deve conter apenas :digits digitos.',
+                    'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
+                ]
+            );
 
             $dataResponse = $this->colabService->loginColab($validateData['cpf'], $validateData['password']);
-            if($dataResponse == null){
-                return $this->apiResponse->badRequest( null, 'Usuario ou senha inválido!');
+            if ($dataResponse == null) {
+                return $this->apiResponse->badRequest(null, 'Usuario ou senha inválido!');
             }
 
             return $this->apiResponse->success($dataResponse, 'Login com sucesso');
-        }catch(ValidationException $e){
+        } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return $this->apiResponse->badRequest(null, 'Bad request');
         }
     }
@@ -143,53 +116,59 @@ class ColabsController extends Controller{
     {
         try {
             set_time_limit(300);
-            
+
             Log::info('🚀 Export iniciado');
             Log::info('📦 Parâmetros recebidos: ' . json_encode($request->all()));
-            
+
             // Iniciar query
             $query = Colab::query();
-            
+
             // APLICAR FILTRO DE PESQUISA se fornecido
             if ($request->has('search') && !empty($request->search)) {
                 $searchTerm = $request->search;
                 Log::info("🔍 Aplicando filtro de pesquisa: '{$searchTerm}'");
-                
-                $query->where(function($q) use ($searchTerm) {
-                    $q->where('name', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('email', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('cpf', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('celular', 'LIKE', "%{$searchTerm}%");
-                });
+
+                $query->where(
+                    function ($q) use ($searchTerm) {
+                        $q->where('name', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('email', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('cpf', 'LIKE', "%{$searchTerm}%")
+                            ->orWhere('celular', 'LIKE', "%{$searchTerm}%");
+                    }
+                );
             } else {
                 Log::info('📋 Nenhum filtro aplicado - exportando todos');
             }
-            
+
             // Buscar colaboradores
             $colaboradores = $query->get();
-            
+
             Log::info("📊 Colaboradores encontrados: {$colaboradores->count()}");
-            
+
             if ($colaboradores->isEmpty()) {
                 Log::warning('⚠️ Nenhum colaborador encontrado com os filtros aplicados');
-                
+
                 // Retornar arquivo vazio com mensagem
                 $csvContent = "Nome,Email,CPF,Celular,Perfil\n";
                 $csvContent .= "Nenhum colaborador encontrado com os filtros aplicados,,,,\n";
-                
-                return response($csvContent, 200, [
+
+                return response(
+                    $csvContent,
+                    200,
+                    [
                     'Content-Type' => 'text/csv; charset=UTF-8',
                     'Content-Disposition' => 'attachment; filename="colaboradores_filtrado.csv"'
-                ]);
+                    ]
+                );
             }
-            
+
             // Preparar CSV
             $csvData = [];
             $csvData[] = ['Nome', 'Email', 'CPF', 'Celular', 'Perfil', 'CEP', 'Estado', 'Cidade', 'Bairro', 'Endereço'];
-            
+
             foreach ($colaboradores as $colab) {
                 $endereco = ($colab->logradouro ?? '') . ($colab->numero ? ", {$colab->numero}" : '');
-                
+
                 $csvData[] = [
                     $colab->name ?? '',
                     $colab->email ?? '',
@@ -203,34 +182,40 @@ class ColabsController extends Controller{
                     $endereco
                 ];
             }
-            
+
             // Gerar CSV
             $csvContent = "\xEF\xBB\xBF"; // BOM para UTF-8
             foreach ($csvData as $row) {
                 $csvContent .= implode(';', $row) . "\n";
             }
-            
+
             Log::info('✅ CSV gerado com sucesso');
-            
+
             // Nome do arquivo indica se teve filtro
             $filename = 'colaboradores_' . date('Y-m-d_H-i-s');
             if ($request->has('search') && !empty($request->search)) {
                 $filename .= '_filtrado';
             }
             $filename .= '.csv';
-            
-            return response($csvContent, 200, [
+
+            return response(
+                $csvContent,
+                200,
+                [
                 'Content-Type' => 'text/csv; charset=UTF-8',
                 'Content-Disposition' => "attachment; filename=\"{$filename}\""
-            ]);
-            
+                ]
+            );
         } catch (\Exception $e) {
             Log::error('❌ Erro: ' . $e->getMessage());
-            return $this->responseError([
+            return $this->responseError(
+                [
                 'success' => false,
                 'message' => 'Erro ao exportar',
                 'error' => $e->getMessage()
-            ], 500);
+                ],
+                500
+            );
         }
     }
 
@@ -241,48 +226,47 @@ class ColabsController extends Controller{
             2 => 'Gente e Cultura',
             3 => 'Colaborador Comum'
         ];
-        
+
         return $perfis[$perfilId] ?? "Perfil {$perfilId}";
     }
 
-    public function update(Request $request, $id): JsonResponse{
-        try{
-            $validateData = $request->validate([
-                'password' => [
-                    'nullable',
-                    Password::min(8)
-                        ->mixedCase()
-                        ->numbers()
-                        ->symbols()
+    public function update(Request $request, $id): JsonResponse
+    {
+        try {
+            $validateData = $request->validate(
+                [
+                    'perfil' => ['required', 'integer', Rule::in(array_column(PerfilType::cases(), 'value'))],
                 ],
-                'perfil' => ['required', 'integer', Rule::in(array_column(PerfilType::cases(), 'value'))],
-            ],
-            [
-                'required' => 'O :attribute é obrigatório',
-                'password.mixed' => 'A senha deve conter letras maiúsculas e minúsculas.',
-                'password.numbers' => 'A senha deve conter pelo menos um número.',
-                'password.symbols' => 'A senha deve conter pelo menos um caractere especial.',
-                'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
-            ]);
+                [
+                    'required' => 'O :attribute é obrigatório',
+                    'password.mixed' => 'A senha deve conter letras maiúsculas e minúsculas.',
+                    'password.numbers' => 'A senha deve conter pelo menos um número.',
+                    'password.symbols' => 'A senha deve conter pelo menos um caractere especial.',
+                    'min' => 'O campo :attribute deve ter no mínimo :min caracteres.',
+                ]
+            );
 
-            
             $new_perfil = PerfilType::from($validateData['perfil']);
-            $password = $validateData['password'] ?? null;
             $actor = $request->user();
 
-            $user = $this->colabService->updateRoleColab($id,  $password, 
-                                                      $actor, $new_perfil);
+            $user = $this->colabService->updateRoleColab(
+                $id,
+                $actor,
+                $new_perfil
+            );
 
-            if($user == null){
-                return $this->apiResponse->badRequest(null, "Falha ao atualizar usuário");
+            if ($user == null) {
+                return $this->apiResponse->badRequest(
+                    null,
+                    "Falha ao atualizar usuário"
+                );
             }
-            
+
             return $this->apiResponse->success($user, 'Usuario atualizado!');
-        }catch(ValidationException $e){
+        } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Bad request');
-        }catch(Exception $e){
-            Log::info(message: ''. $e->getMessage());
-            return $this->apiResponse->badRequest($e->getMessage(), 'Bad request');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Bad request');
         }
     }
 }

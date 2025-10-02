@@ -33,9 +33,13 @@ export class CadastroComponent implements OnInit {
       // campo de e-mail é pré-preenchido e não editável
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       cpf: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/^\d{11}$/)]],
+      password: ['', [
+        Validators.required,
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      ]],
       cep: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^\d{8}$/)]],
       uf: ['', [Validators.required]],
-      localidade: ['', [Validators.required]],
+      cidade: ['', [Validators.required]],
       bairro: ['', [Validators.required]],
       logradouro: ['', [Validators.required]],
       numero: ['', [Validators.required]],
@@ -51,10 +55,10 @@ export class CadastroComponent implements OnInit {
         next: (response: any) => {
           const status = response.data.status_code
 
-          if(status === 0 ){
+          if (status === 0) {
             this.conviteValido = true;
             this.cadastroForm.patchValue({ email: response.data.email_colab });
-          }else{
+          } else {
             this.conviteValido = false;
             this.mensagemErro = 'Convite expirado ou inválido.';
           }
@@ -77,7 +81,7 @@ export class CadastroComponent implements OnInit {
           next: (dados: any) => {
             this.cadastroForm.patchValue({
               uf: dados.uf,
-              localidade: dados.localidade,
+              cidade: dados.localidade,
               bairro: dados.bairro,
               logradouro: dados.logradouro
             });
@@ -94,7 +98,7 @@ export class CadastroComponent implements OnInit {
   onSubmit(): void {
     const formData = this.cadastroForm.getRawValue();
     const token = this.route.snapshot.paramMap.get('token');
-    
+
     const cadastroData = { ...formData, token };
     if (this.cadastroForm.valid) {
       this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
@@ -102,7 +106,7 @@ export class CadastroComponent implements OnInit {
           this.router.navigate(['/']);
         },
         error: (error: any) => {
-          // exibe a mensagem de erro do backend 
+          // exibe a mensagem de erro do backend
           this.mensagemErro = error.error.message || 'Erro ao realizar o cadastro. Tente novamente.';
           console.error('Erro no cadastro:', error);
         }
