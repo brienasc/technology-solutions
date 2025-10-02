@@ -19,12 +19,61 @@ export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('benefitsGrid') benefitsGrid!: ElementRef;
 
   // Array de objetos que representam as imagens e seus respectivos títulos e textos.
-  images = [
-    { src: 'app/assets/imagens/icone-convites.jpg', title: 'Convites Personalizados', text: 'Adapte soluções às suas necessidades exclusivas.' },
-    { src: 'app/assets/imagens/icone-validacao.jpg', title: 'Validação de Dados', text: 'Garanta a integridade e precisão das suas informações.' },
-    { src: 'app/assets/imagens/icone-painel.jpg', title: 'Painel para os colaboradores', text: 'Acesso fácil e intuitivo para gerenciar tarefas e dados.' },
-    { src: 'app/assets/imagens/icone-seguranca.jpg', title: 'Segurança garantida', text: 'Proteja seus dados com as mais avançadas tecnologias de segurança.' },
+
+   images = [
+    { 
+      src: 'app/assets/imagens/M1.jpg', 
+      title: 'Maria Silva', 
+      role: 'Diretora Pedagógica', 
+      company: 'Colégio Excelência', 
+      text: '"O Education Solutions revolucionou nossa forma de criar avaliações. Reduzimos em 70% o tempo gasto na elaboração de provas e melhoramos significativamente a qualidade das questões."' 
+    },
+    { 
+      src: 'app/assets/imagens/H1.jpg', 
+      title: 'Dr. Carlos Mendes', 
+      role: 'Coordenador Acadêmico', 
+      company: 'Instituto Federal de São Paulo', 
+      text: '"A funcionalidade de aplicações dinâmicas é impressionante. Nossos estudantes se sentem mais engajados e obtemos dados muito mais precisos sobre o desempenho individual."' 
+    },
+    { 
+      src: 'app/assets/imagens/M2.jpg', 
+      title: 'Ana Beatriz Costa', 
+      role: 'Professora de Matemática', 
+      company: 'Escola Estadual Santos Dumont', 
+      text: '"O banco de questões é fantástico! Encontro facilmente questões alinhadas com a BNCC e posso personalizar as avaliações de acordo com o nível da turma."' 
+    },
+    
+    { 
+      src: 'app/assets/imagens/H2.jpg', 
+      title: 'Prof. Roberto Lima', 
+      role: 'Vice-Diretor', 
+      company: 'Colégio Nova Geração', 
+      text: ' "Os relatórios analíticos nos ajudam a identificar dificuldades específicas dos alunos rapidamente. Isso permitiu intervenções pedagógicas mais eficazes e melhores resultados."'
+    },
+
+    { 
+      src: 'app/assets/imagens/M3.jpg', 
+      title: 'Juliana Santos', 
+      role: 'Coordenadora de Tecnologia Educacional', 
+      company: 'Centro Educacional Alfa', 
+      text: '"A plataforma é muito intuitiva e o suporte é excepcional. Conseguimos implementar o sistema em toda a escola em apenas duas semanas."'
+    },
+
+    { 
+      src: 'app/assets/imagens/H3.jpg', 
+      title: 'Márcio Oliveira', 
+      role: 'Especialista em Avaliações', 
+      company: 'Escola Técnica Brasil', 
+      text: '"A personalização das avaliações nos permite atender às necessidades específicas de nossos alunos, desde reforço até desafios avançados. Isso tem sido um diferencial enorme para nossa instituição."'
+    },
   ];
+
+  // images = [
+  //   { src: 'app/assets/imagens/icone-convites.jpg', title: 'Convites Personalizados', text: 'Adapte soluções às suas necessidades exclusivas.' },
+  //   { src: 'app/assets/imagens/icone-validacao.jpg', title: 'Validação de Dados', text: 'Garanta a integridade e precisão das suas informações.' },
+  //   { src: 'app/assets/imagens/icone-painel.jpg', title: 'Painel para os colaboradores', text: 'Acesso fácil e intuitivo para gerenciar tarefas e dados.' },
+  //   { src: 'app/assets/imagens/icone-seguranca.jpg', title: 'Segurança garantida', text: 'Proteja seus dados com as mais avançadas tecnologias de segurança.' },
+  // ];
 
   // Propriedade para rastrear o índice do card atualmente visível/ativo.
   currentCardIndex: number = 0;

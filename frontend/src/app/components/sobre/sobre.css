@@ -1,467 +1,719 @@
-/* frontend/src/app/components/quadro-vantagens/quadro-vantagens.component.css */
-
-
-/*
+    /* frontend/src/app/components/quadro-vantagens/quadro-vantagens.component.css */
+    /*
 * -----------------------------------------------------------
-* Estilos para a Seção de Vantagens (Layout Geral)
+* Variáveis e Seção Principal (Adaptação do modelo)
 * -----------------------------------------------------------
 */
-
-
-/* O contêiner principal de toda a seção de vantagens. */
-
-.benefits-grid-section {
-    /* Adiciona espaçamento interno para afastar o conteúdo das bordas. */
-    padding: 40px 20px;
-    /* Centraliza o texto horizontalmente. */
-    text-align: center;
-    /* Define a cor de fundo com uma variável de tema para suportar modo claro/escuro. */
-    background-color: var(--theme-background);
-    /* Garante uma transição suave ao mudar a cor de fundo do tema. */
-    transition: background-color 0.5s ease;
-    /* Define a posição como relativa para que elementos absolutos (como os botões de navegação) possam ser posicionados em relação a ele. */
-    position: relative;
-}
-
-
-/* O contêiner que agrupa a descrição e o carrossel.
-   É um flex container que se adapta à direção do layout. */
-
-.main-content-container {
-    display: flex;
-    /* Em mobile, as seções ficam empilhadas verticalmente. */
-    flex-direction: column;
-    /* Centraliza os itens (descrição e carrossel) no eixo cruzado (horizontalmente). */
-    align-items: center;
-    /* Adiciona um espaçamento de 40px entre a descrição e o carrossel. */
-    gap: 40px;
-}
-
-
-/*
-* -----------------------------------------------------------
-* Estilos para o Texto de Descrição (lado direito)
-* -----------------------------------------------------------
-*/
-
-
-/* Contêiner do texto de descrição, visível em mobile e tablet. */
-
-.benefit-description {
-    /* Limita a largura máxima a 90% da tela para não ficar muito largo em mobile. */
-    max-width: 90%;
-    /* Centraliza o contêiner horizontalmente. */
-    margin: 0 auto;
-    /* Alinha o texto ao centro. */
-    text-align: center;
-    /* Adiciona espaçamento acima. */
-    padding-top: 30px;
-}
-
-
-/* Título principal do texto de descrição. */
-
-.benefit-description h2 {
-    font-size: 1.8em;
-    font-weight: 600;
-    /* Usa uma variável de tema para a cor do título. */
-    color: var(--theme-heading-text);
-    margin-bottom: 15px;
-    line-height: 1.3;
-    /* Transição suave para a cor do texto ao mudar o tema. */
-    transition: color 0.5s ease;
-}
-
-
-/* Estilos para a parte em negrito do título que tem um gradiente. */
-
-.benefit-description h2 b {
-    /* Cria um gradiente linear para o texto. */
-    background: -webkit-linear-gradient(90deg, var(--color-background-detail), var(--color-light-primary));
-    /* Recorta o gradiente para que ele apareça apenas no texto (webkit e padrão). */
-    -webkit-background-clip: text;
-    background-clip: text;
-    /* Compatibilidade padrão */
-    /* Torna a cor do texto transparente para que o gradiente seja visível. */
-    -webkit-text-fill-color: transparent;
-    font-style: normal;
-    display: inline-block;
-}
-
-
-/* Parágrafo do texto de descrição. */
-
-.benefit-description p {
-    font-size: 1em;
-    /* Usa uma variável de tema para a cor do corpo do texto. */
-    color: var(--theme-body-text);
-    line-height: 1.6;
-    /* Transição suave para a cor do texto. */
-    transition: color 0.5s ease;
-}
-
-
-/*
-* -----------------------------------------------------------
-* Estilos para o Carrossel Manual (Cards)
-* -----------------------------------------------------------
-*/
-
-
-/* Contêiner que envolve todo o carrossel. */
-
-.carousel-wrapper {
-    /* Define a posição como relativa para posicionar botões e indicadores. */
-    position: relative;
-    width: 100%;
-}
-
-
-/* O contêiner que contém a fileira de cards. */
-
-.benefits-grid-container {
-    max-width: 100%;
-    margin: 0 auto;
-}
-
-
-/* A fileira de cards em si. */
-
-.benefits-grid {
-    display: flex;
-    /* Habilita a rolagem horizontal. */
-    overflow-x: scroll;
-    /* Garante que a rolagem pare em cada card. */
-    scroll-snap-type: x mandatory;
-    /* Melhora a rolagem em dispositivos iOS. */
-    -webkit-overflow-scrolling: touch;
-    /* Espaçamento entre os cards. */
-    gap: 15px;
-    padding-bottom: 20px;
-    /* Oculta a barra de rolagem no Firefox. */
-    scrollbar-width: none;
-    /* Oculta a barra de rolagem no Internet Explorer. */
-    -ms-overflow-style: none;
-}
-
-
-/* Oculta a barra de rolagem no Chrome, Safari e outros WebKit. */
-
-.benefits-grid::-webkit-scrollbar {
-    display: none;
-}
-
-
-/* Estilos para cada card individualmente. */
-
-.benefit-card {
-    /* Alinha o card no centro da tela ao rolar. */
-    scroll-snap-align: center;
-    /* Define a largura do card: 85% do contêiner, sem crescer ou encolher. */
-    flex: 0 0 85%;
-    /* Usa uma variável de tema para a cor de fundo do card. */
-    background-color: var(--theme-card-bg);
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    /* Transições para cores e efeitos de hover. */
-    transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    /* Altura mínima para manter a consistência entre os cards. */
-    min-height: 300px;
-}
-
-
-/* Efeito de hover no card. */
-
-.benefit-card:hover {
-    /* Faz o card "flutuar". */
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
-
-/* Estilos para a imagem dentro do card. */
-
-.benefit-card img {
-    height: 100px;
-    width: 100px;
-    object-fit: cover;
-    object-position: center;
-    margin-bottom: 15px;
-    /* Usa uma variável de tema para o fundo da imagem. */
-    background-color: var(--theme-image-section-bg);
-    padding: 10px;
-    border-radius: 50%;
-    transition: background-color 0.5s ease;
-}
-
-
-/* Título do card. */
-
-.benefit-card h3 {
-    font-size: 1.3em;
-    color: var(--theme-heading-text);
-    margin-bottom: 8px;
-    font-weight: 600;
-    transition: color 0.5s ease;
-}
-
-
-/* Parágrafo do card. */
-
-.benefit-card p {
-    font-size: 0.9em;
-    color: var(--theme-body-text);
-    line-height: 1.5;
-    transition: color 0.5s ease;
-}
-
-
-/*
-* -----------------------------------------------------------
-* Estilos para os Botões de Navegação e Indicadores
-* -----------------------------------------------------------
-*/
-
-
-/* Botões de seta. */
-
-.nav-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    /* Cores dos botões conforme sua imagem. */
-    background-color: var(--color-background-detail);
-    /* Fundo roxo claro */
-    color: var(--color-primary);
-    /* Cor da seta */
-    border: none;
-    cursor: pointer;
-    padding: 12px;
-    z-index: 10;
-    border-radius: 50%;
-    /* Círculo perfeito */
-    font-size: 1.2rem;
-    line-height: 1;
-    /* Oculto por padrão para mobile/tablet. */
-    display: none;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-
-/* Posição do botão esquerdo. */
-
-.nav-button.prev {
-    left: 20px;
-}
-
-
-/* Posição do botão direito. */
-
-.nav-button.next {
-    right: 20px;
-}
-
-
-/* Efeito de hover nos botões de seta. */
-
-.nav-button:hover {
-    background-color: var(--color-light-primary);
-    /* Efeito de escala no hover */
-    transform: translateY(-50%) scale(1.1);
-}
-
-
-/* Contêiner dos indicadores de slide (pontos). */
-
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 20px;
-}
-
-
-/* Cada ponto indicador. */
-
-.indicator-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--color-light-gray);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-
-/* O ponto ativo. */
-
-.indicator-dot.active {
-    background-color: var(--color-primary);
-    transform: scale(1.2);
-}
-
-
-/*
-* -----------------------------------------------------------
-* Media Queries para Responsividade
-* -----------------------------------------------------------
-*/
-
-
-/* Tablet (a partir de 768px) */
-
-@media (min-width: 768px) {
-    .benefits-grid-section {
-        padding: 60px 30px;
+    /* No seu sobre.css */
+    
+    .platform-link-button {
+        /* NOVO: Usa Flexbox para alinhar ícone e texto */
+        display: flex;
+        align-items: center;
+        /* Centraliza verticalmente */
+        color: var(--color-info-blue);
+        background-color: var(--color-lighten-primary);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-decoration: none;
+        margin-bottom: 20px;
     }
-    .benefits-grid-container {
-        margin-bottom: 60px;
+    /* Novo seletor para estilizar o ícone dentro do link */
+    
+    .platform-link-button .lamp-icon {
+        /* Define o tamanho do ícone */
+        width: 20px;
+        height: 20px;
+        /* Adiciona margem para separar o ícone do texto */
+        margin-right: 8px;
     }
-    .benefits-grid {
-        gap: 20px;
-    }
-    .benefit-card {
-        flex: 0 0 45%;
-        padding: 40px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-        min-height: 350px;
-    }
-    .benefit-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
-    .benefit-card img {
-        height: 120px;
-        width: 120px;
-        margin-bottom: 18px;
-        padding: 12px;
-    }
-    .benefit-card h3 {
-        font-size: 1.3em;
-        margin-bottom: 10px;
-    }
-    .benefit-card p {
-        font-size: 0.95em;
-    }
-    .benefit-description {
-        max-width: 800px;
-        padding-top: 40px;
-    }
-    .benefit-description h2 {
-        font-size: 2em;
-        margin-bottom: 18px;
-    }
-    .benefit-description p {
-        font-size: 1.05em;
-    }
-    .nav-button {
-        display: block;
-        /* Mostra os botões de navegação no tablet. */
-    }
-}
-
-
-/* Desktop (a partir de 1200px) */
-
-@media (min-width: 1200px) {
-    .benefits-grid-section {
+    /* Usa o fundo roxo claro do seu tema para esta seção (var(--color-background-detail)) */
+    
+    .about-section {
         padding: 80px 40px;
+        background-color: var(--color-background-detail);
+        position: relative;
+        /* Adiciona a cor de fundo cinza/roxo claro que o modelo usa */
+        color: var(--color-text-primary);
     }
+    
     .main-content-container {
-        /* Layout horizontal para desktop. */
+        display: flex;
+        /* Padrão desktop: Imagem (Esquerda) e Conteúdo (Direita) */
         flex-direction: row;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        /* Alinha o conteúdo ao topo */
         max-width: 1200px;
         margin: 0 auto;
-        gap: 60px;
+        gap: 80px;
+        /* Espaço entre as duas colunas */
     }
-    /* Posição do carrossel à esquerda e texto à direita. */
-    .carousel-wrapper {
+    /*
+* -----------------------------------------------------------
+* LADO ESQUERDO: Imagem Hero
+* -----------------------------------------------------------
+*/
+    
+    .about-hero-image {
         flex: 1;
-        max-width: 600px;
+        max-width: 50%;
+        position: relative;
         order: 1;
+        /* Desktop: Imagem à esquerda */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
     }
-    .benefit-description {
+    
+    .about-hero-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    /* Badge de Eficiência (+95%) */
+    
+    .efficiency-badge {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--color-white);
+        /* Azul do modelo */
+        color: var(black);
+        padding: 15px 8px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .efficiency-badge .percentage {
+        display: block;
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+    
+    .efficiency-badge .description {
+        font-size: 0.8em;
+        opacity: 0.9;
+    }
+    /*
+* -----------------------------------------------------------
+* LADO DIREITO: Detalhes e Vantagens
+* -----------------------------------------------------------
+*/
+    
+    .about-details-content {
         flex: 1;
-        max-width: 500px;
-        text-align: left;
-        padding-top: 0;
+        max-width: 50%;
         order: 2;
+        /* Desktop: Conteúdo à direita */
     }
-    .benefit-description h2 {
-        font-size: 2.5em;
-        margin-top: 0;
+    
+    .platform-link-button {
+        display: inline-block;
+        color: var(--color-info-blue);
+        background-color: var(--color-lighten-primary);
+        /* Lilás bem claro */
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-decoration: none;
         margin-bottom: 20px;
     }
-    .benefit-description p {
-        font-size: 1.1em;
+    
+    .about-title {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        margin-bottom: 20px;
+        line-height: 1.2;
     }
+    
+    .about-description {
+        font-size: 1em;
+        color: var(--color-paragraph-text);
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+    /* --- Lista de Benefícios (Ícone + Texto) --- */
+    
+    .benefits-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+    
+    .icon-wrapper {
+        /* Fundo do ícone (branco) */
+        background-color: var(--color-white);
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .icon-wrapper svg {
+        /* Cor do ícone (o roxo/azul do modelo) */
+        fill: var(--color-light-primary);
+        width: 25px;
+        height: 25px;
+    }
+    
+    .benefit-title {
+        font-size: 1em;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+    
+    .benefit-text {
+        font-size: 0.9em;
+        color: var(--color-paragraph-text);
+    }
+    /* --- Botões de Ação --- */
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-primary {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--color-secondary);
+    }
+    
+    .btn-secondary {
+        background-color: white;
+        color: var(--color-primary);
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-weight: 600;
+        border: 1px solid var(--color-white);
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+    /*
+* -----------------------------------------------------------
+* SEÇÃO DEPOIMENTOS (Reutilização do Carrossel)
+* -----------------------------------------------------------
+*/
+    /* No seu sobre.css, GARANTA que esta regra está correta: */
+    
     .benefits-grid {
-        gap: 25px;
-        /* Habilita rolagem horizontal com snap. */
+        display: flex;
+        /* CRUCIAL: Faz os itens ficarem lado a lado */
+        overflow-x: scroll;
+        /* Habilita a rolagem lateral */
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 15px;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .benefits-grid::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .benefits-grid-container {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .benefits-grid {
+        display: flex;
         overflow-x: scroll;
         scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .benefits-grid::-webkit-scrollbar {
+        display: none;
+    }
+    /* Garante que o container tenha largura total */
+    
+    .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    /* Garante a largura dos cards para que o carrossel funcione */
+    
+    .benefit-card,
+    .testimonial-card {
+        /* CRUCIAL: Força cada card a ter uma largura (85% no mobile, sem encolher) */
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
+    /* Garante que os cards no desktop mostrem 3 por vez */
+    
+    @media (min-width: 1200px) {
+        .benefit-card,
+        .testimonial-card {
+            flex: 0 0 calc(33.33% - 16.66px);
+            scroll-snap-align: start;
+        }
+    }
+    /* No seu sobre.css, no bloco do testimonial-card: */
+    
+    .testimonial-card {
+        /* CRUCIAL: Força o layout interno a empilhar corretamente */
+        display: flex;
+        flex-direction: column;
+        /* Demais estilos... */
+        background-color: var(--color-white);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 30px;
         justify-content: flex-start;
-        flex-wrap: nowrap;
+        min-height: 380px;
+        /* Altura generosa */
+        position: relative;
+        /* ... */
+        justify-content: space-between;
+        text-align: left;
     }
-    .benefit-card {
-        /* Define a exibição de 2 cards por vez. */
-        flex: 0 0 calc(50% - 12.5px);
-        padding: 65px 40px;
-        scroll-snap-align: start;
+    
+    .author-photo {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        /* CRUCIAL: Torna a foto redonda */
+        object-fit: cover;
+        margin-right: 15px;
+        border: none;
+        /* Remove qualquer borda */
+        padding: 0;
+        /* Remove qualquer padding que impediria o border-radius */
     }
-    .benefit-card img {
-        height: 150px;
-        width: 150px;
-        margin-bottom: 20px;
+    
+    .testimonial-card::before {
+        content: "\201C";
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 8em;
+        color: var(--color-lighten-primary);
+        opacity: 0.3;
+        line-height: 1;
+        font-family: serif;
+        z-index: 0;
     }
-    .benefit-card h3 {
-        font-size: 1.6em;
+    /* Garante que o conteúdo fique visível acima da aspa */
+    
+    .rating {
+        /* ... */
+        position: relative;
+        z-index: 1;
+        /* CRUCIAL: Coloca as estrelas e o texto acima da aspa */
     }
-    .benefit-card p {
-        font-size: 1.1em;
+    
+    .testimonial-quote {
+        /* ... */
+        position: relative;
+        z-index: 1;
     }
+    /* No seu sobre.css, ajuste as regras abaixo: */
+    /* Nome do Autor (Maria Silva) - Roxo Escuro e Negrito */
+    
+    .author-name {
+        font-weight: 700;
+        color: var(--color-primary);
+        margin: 0;
+        line-height: 1.3;
+    }
+    /* Cargo (Diretora Pedagógica) - Roxo Médio/Claro (Secondary) */
+    
+    .author-role {
+        font-size: 0.85em;
+        color: var(--color-secondary);
+        margin: 0;
+    }
+    /* Instituição (Colégio Excelência) - Roxo Médio/Claro (Light-Primary) */
+    
+    .author-company {
+        font-size: 0.8em;
+        color: var(--color-light-primary);
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .testimonials-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 40px;
+        /* Centraliza o bloco e adiciona margem no fundo */
+    }
+    /* Garanta que o título e o parágrafo usem as cores corretas: */
+    
+    .testimonials-header h2 {
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--theme-heading-text);
+        margin-bottom: 10px;
+    }
+    
+    .testimonials-header p {
+        font-size: 1em;
+        color: var(--color-paragraph-text);
+    }
+    /* Ajuste da Imagem e Nomes do Autor */
+    
+    .author-info {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        /* Aumenta a distância entre o depoimento e o autor */
+        padding-top: 20px;
+        /* Adiciona uma linha divisória sutil acima da seção do autor */
+        border-top: 1px solid var(--color-lighten-primary);
+        position: relative;
+        z-index: 1;
+    }
+    
     .nav-button {
-        display: block;
-        /* Mostra os botões no desktop. */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--color-lighten-primary);
+        color: var(--color-primary);
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        z-index: 10;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        line-height: 1;
+        display: none;
+        /* Escondido por padrão */
+        transition: background-color 0.2s ease, transform 0.2s ease;
     }
-    .nav-button.prev {
-        left: -30px;
+    
+    .testimonials-section {
+        /* O carrossel deve ser centralizado dentro desta seção */
+        text-align: center;
+        padding: 60px 20px;
+        background-color: var(--theme-background);
     }
-    .nav-button.next {
-        right: -30px;
-    }
+    /* Contêiner dos indicadores de slide (pontos). */
+    
     .carousel-indicators {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 10px;
         position: absolute;
-        bottom: -40px;
+        /* Essencial para o posicionamento vertical */
+        /* Centralização horizontal */
         left: 50%;
         transform: translateX(-50%);
+        /* Posição na parte inferior do carousel-wrapper */
+        bottom: 0px;
+        margin-top: 20px;
     }
+    /* Cada ponto indicador. */
+    
     .indicator-dot {
         width: 12px;
         height: 12px;
         border-radius: 50%;
         background-color: var(--color-light-gray);
+        /* Cor do dot inativo */
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.3s ease;
     }
+    /* O ponto ativo. */
+    
     .indicator-dot.active {
         background-color: var(--color-primary);
+        /* Cor do dot ativo (roxo) */
         transform: scale(1.2);
     }
+    
+    .nav-button.prev {
+        left: 20px;
+    }
+    
+    .nav-button.next {
+        right: 20px;
+    }
+    
+    .section-divider {
+        /* Cor da linha: Usa o seu lilás claro/roxo claro (cor de detalhe) */
+        border: none;
+        border-top: 1px solid var(--color-lighten-primary);
+        /* Espaçamento: Garante que haja espaço entre o carrossel e a linha, e entre a linha e o texto. */
+        margin: 60px auto 40px;
+        /* 60px Topo | Auto (centraliza) | 40px Baixo */
+        /* Largura: Para que a linha não ocupe 100% (se necessário, ajuste a largura) */
+        width: 80%;
+        /* Ocupa 80% da largura do contêiner */
+        max-width: 900px;
+        /* Limita a largura máxima no desktop */
+    }
+    /* -----------------LINHA------------------------------------------ */
+    /* ----------------------------------------------------------- */
+    /* .testimonial-card {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-height: 320px;
+    justify-content: space-between;
+    text-align: left;
 }
+
+.testimonial-card .rating {
+    color: gold;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.testimonial-quote {
+    font-size: 1.1em;
+    color: var(--color-text-primary);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+}
+
+.author-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid var(--color-light-primary);
+    padding: 2px;
+}
+
+.author-name {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+.author-role {
+    font-size: 0.85em;
+    color: var(--color-muted-text);
+    margin: 0;
+} */
+    /* --- Seção de Marcas Parceiras --- */
+    
+    .partner-logos {
+        padding: 0 0 40px;
+    }
+    
+    .confidence-text {
+        font-size: 0.9em;
+        color: var(--color-paragraph-text);
+        margin-bottom: 20px;
+    }
+    
+    .logo-list {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .partner-btn {
+        background-color: var(--color-lighten-primary);
+        /* Lilás bem claro */
+        color: var(--color-primary);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 0.9em;
+        cursor: default;
+    }
+    /* --- ESTILOS ESPECÍFICOS PARA O MODO ESCURO (DEPOIMENTOS) --- */
+    /* O seletor :host-context(.dark-theme) aplica estilos quando o body tem a classe 'dark-theme' */
+    
+    :host-context(.dark-theme) {
+        /* Força o fundo do card para um cinza/preto escuro diferente,
+       que é mais agradável do que o fundo geral do body preto (#000000) */
+        .testimonial-card {
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+            /* Sombra clara */
+            border: 1px solid #333;
+            /* Borda sutil */
+        }
+        /* Título principal do depoimento (Citação) - Garante o texto branco */
+        .testimonial-quote {
+            color: var(--theme-body-text) !important;
+            /* Força Branco (#FFFFFF) */
+        }
+        /* As aspas grandes no canto - Cor Lilás (Clara) */
+        .testimonial-card::before {
+            color: var(--color-lighten-primary);
+            /* Roxo/Lilás Claro */
+            opacity: 0.5;
+        }
+        /* Estrelas (Rating) - Mantém Amarelo */
+        .rating {
+            color: var(--color-warning);
+            /* Amarelo/Laranja do tema */
+        }
+        /* --- Informações do Autor (Texto) --- */
+        /* Nome do Autor - Roxo Claro do tema */
+        .author-name {
+            color: var(--color-lighten-primary) !important;
+        }
+        /* Cargo/Instituição - Texto mais claro */
+        .author-role,
+        .author-company {
+            color: var(--color-muted-text) !important;
+            /* Cinza Claro */
+        }
+        /* Linha divisória acima do autor */
+        .author-info {
+            border-top: 1px solid #555 !important;
+        }
+        /* Botões de navegação (Setas) */
+        .nav-button {
+            background-color: #333 !important;
+            /* Fundo mais escuro */
+            color: var(--theme-button-text) !important;
+            /* Seta branca */
+        }
+        /* Dots de navegação (Bolinhas) */
+        .indicator-dot.active {
+            background-color: var(--color-lighten-primary) !important;
+            /* Dot ativo lilás */
+        }
+    }
+    /*
+* -----------------------------------------------------------
+* Media Queries (Responsividade)
+* -----------------------------------------------------------
+*/
+    /* Tablet/Mobile - Inverte a ordem e empilha */
+    
+    @media (max-width: 1200px) {
+        .benefits-grid-section {
+            padding: 80px 40px;
+        }
+        .main-content-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .about-hero-image {
+            max-width: 90%;
+            order: 2;
+            /* Mobile: Imagem abaixo do texto */
+        }
+        .about-details-content {
+            max-width: 90%;
+            text-align: center;
+            order: 1;
+            /* Mobile: Texto acima da imagem */
+        }
+        .about-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .about-description {
+            margin-bottom: 20px;
+        }
+        .action-buttons {
+            justify-content: center;
+        }
+        .benefits-list {
+            align-items: center;
+        }
+        .benefit-item {
+            /* Centraliza os itens no mobile */
+            max-width: 350px;
+            flex-direction: column;
+            text-align: center;
+        }
+        .icon-wrapper {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+        /* Botões de Navegação (Setas) */
+        .nav-button {
+            display: block !important;
+            /* CRUCIAL: Mostra as setas no desktop */
+            top: 50%;
+            /* Traz para o centro vertical */
+            transform: translateY(-50%);
+            /* Ajusta o centro perfeito */
+            z-index: 20;
+            /* Garante que fiquem acima dos cards */
+        }
+        .nav-button.prev {
+            left: 0px;
+            /* Posiciona a seta esquerda para fora do carrossel */
+        }
+        .nav-button.next {
+            right: 0px;
+            /* Posiciona a seta direita para fora do carrossel */
+        }
+        /* Indicadores (Dots) */
+        .carousel-indicators {
+            bottom: -30px;
+            /* Move os dots para baixo para não colidirem */
+        }
+        .carousel-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+    }
+    /* Mobile Fino */
+    
+    @media (max-width: 600px) {
+        .about-section {
+            padding: 50px 20px;
+        }
+        .action-buttons {
+            flex-direction: column;
+        }
+        .testimonial-card {
+            min-height: 300px;
+        }
+    }
