@@ -7,6 +7,7 @@ use App\Models\Curso;
 use App\Services\CursoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Exception;
 
 class CursoController extends Controller
@@ -77,6 +78,38 @@ class CursoController extends Controller
             return $this->apiResponse->success($curso, "Curso criado com successo");
         } catch (Exception $e) {
             return $this->apiResponse->badRequest(null, 'Erro ao criar curso.');
+        }
+    }
+
+    public function update(Request $request, string $id): JsonResponse
+    {
+        try {
+            $data = $request->validate([
+            'nome'          => ['sometimes','string','max:255', Rule::unique('cursos', 'nome')->ignore($id, 'id')],
+            'descricao'     => ['sometimes','string','max:255'],
+            'carga_horaria' => ['sometimes','integer','min:1'],
+            'status'        => ['sometimes','boolean'],
+            ]);
+
+            $curso = $this->cursoService->update($id, $data);
+            if ($curso == null) {
+                return $this->apiResponse->badRequest(null, "Falha ao criar curso");
+            }
+
+            return $this->apiResponse->success($curso, "Curso atualizado com sucesso");
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao criar curso.');
+        }
+    }
+
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $this->cursoService->delete($id);
+
+            return $this->apiResponse->success(null, "Curso apagado com sucesso");
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest($e->getMessage(), 'Erro ao apagar curso.');
         }
     }
 }

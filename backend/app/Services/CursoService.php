@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Models\Curso;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CursoService
 {
@@ -33,5 +35,28 @@ class CursoService
     public function createCourse(array $data)
     {
         return Curso::create($data);
+    }
+
+    public function update(string $id, array $data): Curso
+    {
+        $curso = Curso::findOrFail($id);
+
+        $allowed = array_intersect_key($data, array_flip([
+            'nome', 'descricao', 'carga_horaria', 'status',
+        ]));
+
+        $curso->fill($allowed);
+        $curso->save();
+
+        return $curso->refresh();
+    }
+
+    public function delete(string $id): void
+    {
+        DB::transaction(function () use ($id) {
+            $curso = Curso::findOrFail($id);
+
+            $curso->delete();
+        });
     }
 }

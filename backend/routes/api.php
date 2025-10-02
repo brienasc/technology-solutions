@@ -32,7 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cursos/summary', [CursoController::class, 'summary']);
     Route::get('/cursos', [CursoController::class, 'index']);
     Route::post('/cursos', [CursoController::class, 'store']);
-
+    Route::patch('/cursos/{id}', [CursoController::class, 'update']);
+    Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
 
     Route::get('/perfis', [PerfisController::class, 'index']);
