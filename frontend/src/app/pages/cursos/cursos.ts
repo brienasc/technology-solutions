@@ -84,14 +84,20 @@ export class CursosComponent implements OnInit, AfterViewInit {
   loadCursos(): void {
     this.loading = true;
     
-    this.cursoService.getCursos(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
-      next: (response) => {
-        if (response.status === 'success') {
-          this.cursos = response.data.cursos;
-          this.applyFiltersAndPaginate();
-        }
-        this.loading = false;
-      },
+  this.cursoService.getCursos(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
+    next: (response) => {
+      if (response.status === 'success') {
+        this.cursos = response.data.cursos.map((curso: any) => ({
+          ...curso,
+          status: curso.status ? 'Ativo' : 'Inativo'
+        }));
+        
+        this.totalItems = response.data.total || this.cursos.length;
+        
+        this.applyFiltersAndPaginate();
+      }
+      this.loading = false;
+    },
       error: (err) => {
         console.error('Erro ao carregar cursos:', err);
         this.showErrorMessage = true;
