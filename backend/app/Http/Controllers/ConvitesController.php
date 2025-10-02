@@ -9,7 +9,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
 use Exception;
-
 use App\Http\Responses\ApiResponse;
 use App\Services\ConviteService;
 use Illuminate\Support\Facades\Log;
@@ -27,20 +26,26 @@ class ConvitesController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        try{
-            $validateData = $request->validate(
+        try {
+            $validatedData = $request->validate(
                 [
-                    'email' => 'required|email|max:255|unique:colab,email',
+                    'email'     => 'bail|required|string|email:rfc,dns|max:255|unique:colab,email',
+                    'perfil_id' => 'bail|required|integer|exists:perfis,perfil_id',
+                    'curso_id'  => 'bail|required|uuid|exists:cursos,id',
                 ],
                 [
-                    'email.required' => 'O campo e-mail é obrigatório.',
-                    'email.email'    => 'O e-mail deve ter um formato válido.',
-                    'email.unique'   => 'Este e-mail já está sendo utilizado por outro colaborador.',
-                    'email.max'      => 'O e-mail não pode ter mais de :max caracteres.'
+                    'required'        => 'O campo :attribute é obrigatório.',
+                    'max'             => 'O campo :attribute não pode ter mais de :max caracteres.',
+                    'email.email'     => 'O e-mail deve ter um formato válido.',
+                    'email.unique'    => 'Este e-mail já está sendo utilizado por outro colaborador.',
+                    'perfil_id.integer' => 'O perfil informado é inválido.',
+                    'perfil_id.exists'  => 'O perfil selecionado não existe.',
+                    'curso_id.uuid'     => 'O curso informado é inválido.',
+                    'curso_id.exists'   => 'O curso selecionado não existe.',
                 ]
             );
 
-            $convite = $this->conviteService->enviarConvite($validateData['email']);
+            $convite = $this->conviteService->enviarConvite($validatedData);
             if ($convite == null) {
                 return $this->apiResponse->badRequest(null, 'Já existe um convite em aberto para esse email.');
             }
@@ -66,7 +71,8 @@ class ConvitesController extends Controller
 
             $mappedConvites = $invitationsPaginate->map(
                 function ($invitation): mixed {
-                    if ($invitation->status_code !== ConviteStatus::FINALIZADO
+                    if (
+                        $invitation->status_code !== ConviteStatus::FINALIZADO
                         && $invitation->expires_at && Carbon::now()->greaterThan($invitation->expires_at)
                     ) {
                         $invitation->status_code = ConviteStatus::EXPIRADO;
@@ -106,7 +112,8 @@ class ConvitesController extends Controller
                 return $this->apiResponse->badRequest(message: 'Convite não encontrado');
             }
 
-            if ($convite->status_code !== ConviteStatus::FINALIZADO
+            if (
+                $convite->status_code !== ConviteStatus::FINALIZADO
                 && $convite->expires_at && Carbon::now()->greaterThan($convite->expires_at)
             ) {
                 $convite->status_code = ConviteStatus::EXPIRADO;
@@ -116,7 +123,7 @@ class ConvitesController extends Controller
             $conviteArray['status_description'] = $convite->status_code->description();
 
             return $this->apiResponse->success($conviteArray, 'Convite retornado com sucesso');
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return $this->apiResponse->error(null, 'Erro ao buscar convite', 400);
         }
     }

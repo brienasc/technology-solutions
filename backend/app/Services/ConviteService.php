@@ -10,12 +10,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Convites;
+use Illuminate\Support\Facades\Log;
 
 class ConviteService
 {
-    public function enviarConvite(string $email): Convites | null
+    public function enviarConvite($data): Convites | null
     {
-        $convite_ativo = Convites::where("email_colab", $email)
+        $convite_ativo = Convites::where("email_colab", $data['email'])
             ->where("status_code", ConviteStatus::PENDENTE)
             ->where('expires_at', '>', Carbon::now())
             ->first();
@@ -23,21 +24,24 @@ class ConviteService
         if ($convite_ativo) {
             return null;
         }
+        Log::info('teste: ' . $data['perfil_id']);
 
         DB::beginTransaction();
         try {
             $convite = Convites::create(
                 [
-                "email_colab" => $email,
-                'status_code' => ConviteStatus::PENDENTE,
-                'expires_at' => Carbon::now()->addDay(),
+                    'email_colab' => $data['email'],
+                    'perfil_id' => $data['perfil_id'],
+                    'curso_id' => $data['curso_id'],
+                    'status_code' => ConviteStatus::PENDENTE,
+                    'expires_at' => Carbon::now()->addDay(),
                 ]
             );
 
             $frontendUrl = config('app.frontend_url');
             $confirmationLink = "{$frontendUrl}/cadastro/{$convite->id_convite}";
 
-            Mail::to($email)->send(new RegistrationMail('Convidado', confirmationLink: $confirmationLink));
+            Mail::to($data['email'])->send(new RegistrationMail('Convidado', confirmationLink: $confirmationLink));
 
             DB::commit();
             return $convite;
