@@ -1,15 +1,17 @@
 // frontend/src/app/components/lista-convites/lista-convites.component.ts
 
 import { Component, OnInit, Renderer2, ElementRef, AfterViewInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { InvitationService } from '../../services/invitation.service'; 
-import { Invitation } from '../../interfaces/invitation.interface'; 
+import { InvitationService } from '../../services/invitation.service';
+import { Invitation } from '../../interfaces/invitation.interface';
 //  Importa o componente filho >>
-import { ListaConvitesComponent } from '../lista-convites/lista-convites'; 
+import { ListaConvitesComponent } from '../lista-convites/lista-convites';
 import { FormsModule } from '@angular/forms';
 import { Header } from '../../components/header/header';
 import { HttpClient } from '@angular/common/http';
+
+type Opcao = { id: number | string; nome: string };
 
 @Component({
   selector: 'app-convites',
@@ -23,7 +25,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
 
   invitations: Invitation[] = [];
   loading: boolean = false;
-  
+
   totalItems: number = 0;
   pageSize: number = 10;
   currentPage: number = 1;
@@ -31,7 +33,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   statusFilter: string = 'all';
   emailFilter: string = '';
 
-    // Propriedades para o modal de convite 
+  // Propriedades para o modal de convite
   showInviteDialog: boolean = false;
   inviteEmail: string = '';
   inviteLoading: boolean = false;
@@ -40,26 +42,11 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   isValidEmail: boolean = false;
 
   // PROPRIEDADES PARA OS SELECTS DO MODAL DE CONVITE
-  selectedPerfilConvite: number = 3; // Default: Colaborador Comum
-  selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
+  selectedPerfilConvite?: Opcao; // Default: Colaborador Comum
+  selectedCursoConvite?: Opcao;
 
-  // Listas hardcoded para os selects
-  perfisConvite = [
-    { id: 1, nome: 'Administrador' },
-    { id: 2, nome: 'Gente e Cultura' },
-    { id: 3, nome: 'Colaborador Comum' }
-  ];
-
-  cursosConvite = [
-    { id: 1, nome: 'Desenvolvimento Web Full Stack' },
-    { id: 2, nome: 'Análise e Desenvolvimento de Sistemas' },
-    { id: 3, nome: 'Ciência da Computação' },
-    { id: 4, nome: 'Engenharia de Software' },
-    { id: 5, nome: 'Tecnologia da Informação' },
-    { id: 6, nome: 'Marketing Digital' },
-    { id: 7, nome: 'Gestão de Projetos' },
-    { id: 8, nome: 'Design UX/UI' }
-  ];
+  perfisConvite: Opcao[] = [];
+  cursosConvite: Opcao[] = [];
 
   // Novas propriedades para validação de e-mail mais rigorosa
   emailError: string = '';
@@ -75,17 +62,17 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   successMessageText: string = '';
   errorMessageText: string = '';
 
-  constructor( 
-    private renderer: Renderer2, 
-    private el: ElementRef, 
-    private router: Router, 
+  constructor(
+    private renderer: Renderer2,
+    private el: ElementRef,
+    private router: Router,
     private invitationService: InvitationService,
     private http: HttpClient // ADICIONAR esta linha
   ) { }
 
   ngOnInit(): void {
     this.loadInvitations();
-     // Carrega o tema salvo no localStorage ao iniciar o componente
+    // Carrega o tema salvo no localStorage ao iniciar o componente
     // this.isDarkTheme = localStorage.getItem('theme') === 'dark';
     // this.applyThemeClass();
   }
@@ -150,7 +137,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   goBack(): void {
     this.router.navigate(['/']);
   }
-  
+
 
   onCreateNewInvite(): void {
     this.openInviteDialog();
@@ -160,20 +147,20 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
     // Seleciona todos os selects e inputs do modal
     const selects = document.querySelectorAll('.modal-dialog select') as NodeListOf<HTMLSelectElement>;
     const emailInputs = document.querySelectorAll('.modal-dialog input[type="email"]') as NodeListOf<HTMLInputElement>;
-    
+
     if (document.body.classList.contains('dark-theme')) {
       // TEMA ESCURO - Aplicar estilos escuros
       selects.forEach(select => {
         select.style.backgroundColor = '#2d3748';
         select.style.color = '#e2e8f0';
         select.style.borderColor = '#4a5568';
-        
+
         const options = select.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
         options.forEach(option => {
           option.style.backgroundColor = '#2d3748';
           option.style.color = '#e2e8f0';
         });
-        
+
         // Event listeners para manter o estilo
         select.addEventListener('change', () => {
           if (document.body.classList.contains('dark-theme')) {
@@ -181,7 +168,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
             select.style.color = '#e2e8f0';
           }
         });
-        
+
         select.addEventListener('focus', () => {
           if (document.body.classList.contains('dark-theme')) {
             const opts = select.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
@@ -199,14 +186,14 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
         input.style.color = '#e2e8f0';
         input.style.borderColor = '#4a5568';
       });
-      
+
     } else {
       // TEMA CLARO
       selects.forEach(select => {
         select.style.backgroundColor = '';
         select.style.color = '';
         select.style.borderColor = '';
-        
+
         const options = select.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
         options.forEach(option => {
           option.style.backgroundColor = '';
@@ -221,39 +208,39 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
         input.style.borderColor = '';
       });
     }
-}
+  }
 
   private validateEmail(email: string): boolean {
     // Validação super rigorosa igual ao lista-colaboradores
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    
+
     // Verificações adicionais
     if (!emailRegex.test(email)) {
       return false;
     }
-    
+
     // Não pode começar ou terminar com ponto
     if (email.startsWith('.') || email.endsWith('.')) {
       return false;
     }
-    
+
     // Não pode ter pontos consecutivos
     if (email.includes('..')) {
       return false;
     }
-    
+
     // Domínio não pode começar ou terminar com hífen
     const domain = email.split('@')[1];
     if (domain.startsWith('-') || domain.endsWith('-')) {
       return false;
     }
-    
+
     return true;
   }
 
   onEmailChange(): void {
     const email = this.inviteEmail.trim();
-    
+
     if (!email) {
       this.inviteErrorMessage = '';
       this.emailError = '';
@@ -262,7 +249,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
       this.isValidEmail = false;
       return;
     }
-    
+
     if (!this.validateEmail(email)) {
       this.showErrorMessage = false; // Não mostrar erro durante digitação
       this.inviteErrorMessage = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
@@ -279,8 +266,8 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
 
   // Métodos para os selects
   onPerfilConviteChange(event: any): void {
-    this.selectedPerfilConvite = +event.target.value;
-    console.log('Perfil selecionado no convite:', this.selectedPerfilConvite);
+    this.selectedPerfilConvite = event;
+    console.log(this.selectedPerfilConvite);
     this.inviteErrorMessage = ''; // Limpar erro quando mudar
     this.emailError = '';
     this.showErrorMessage = false;
@@ -288,8 +275,8 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   }
 
   onCursoConviteChange(event: any): void {
-    this.selectedCursoConvite = +event.target.value;
-    console.log('Curso selecionado no convite:', this.selectedCursoConvite);
+    this.selectedCursoConvite = event;
+    console.log(this.selectedCursoConvite?.nome);
     this.inviteErrorMessage = ''; // Limpar erro quando mudar
     this.emailError = '';
     this.showErrorMessage = false;
@@ -313,22 +300,22 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   // Método chamado ao submeter o convite (adicional para compatibilidade)
   async onConvidarSubmit(): Promise<void> {
     const email = this.novoColaboradorEmail.trim();
-    
+
     if (!email) {
       this.emailError = 'O e-mail é obrigatório.';
       this.inviteErrorMessage = 'O e-mail é obrigatório.';
       return;
     }
-    
+
     if (!this.validateEmail(email)) {
       this.emailError = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
       this.inviteErrorMessage = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
       return;
     }
-    
+
     this.emailError = '';
     this.inviteEmail = email; // Sincroniza com a propriedade principal
-    
+
     // Chama o método principal de envio
     await this.sendInvite();
   }
@@ -336,17 +323,17 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   private async verificarConviteExistente(email: string): Promise<boolean> {
     try {
       const response = await this.http.get<any>('http://localhost:8080/api/convites').toPromise();
-      
+
       if (response.status === 'success' && response.data) {
         // Verificar se já existe convite "Em Aberto" (status_code: 0) para este email
-        const conviteExistente = response.data.find((convite: any) => 
-          convite.email_colab.toLowerCase() === email.toLowerCase() && 
+        const conviteExistente = response.data.find((convite: any) =>
+          convite.email_colab.toLowerCase() === email.toLowerCase() &&
           convite.status_code === 0
         );
-        
+
         return !!conviteExistente; // Retorna true se encontrou convite em aberto
       }
-      
+
       return false;
     } catch (error) {
       console.error('Erro ao verificar convites existentes:', error);
@@ -361,7 +348,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
       2: 'Gente e Cultura',
       3: 'Colaborador Comum'
     };
-    
+
     return perfis[perfilId] || `Perfil ${perfilId}`;
   }
 
@@ -386,14 +373,14 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
     }
 
     // VALIDAÇÕES DOS SELECTS
-    if (this.selectedPerfilConvite === 0) {
+    if (this.selectedPerfilConvite?.id === '') {
       this.showErrorMessage = true;
       this.errorMessageText = 'Por favor, selecione um perfil.';
       this.inviteErrorMessage = '';
       return;
     }
 
-    if (this.selectedCursoConvite === 0) {
+    if (this.selectedCursoConvite?.id === '') {
       this.showErrorMessage = true;
       this.errorMessageText = 'Por favor, selecione um curso.';
       this.inviteErrorMessage = '';
@@ -410,7 +397,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
     try {
       // Verificar se já existe convite em aberto para este email
       const conviteExiste = await this.verificarConviteExistente(email);
-      
+
       if (conviteExiste) {
         this.inviteLoading = false;
         this.showErrorMessage = true;
@@ -419,27 +406,33 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
         return;
       }
 
-      // LOG DOS DADOS QUE SERIAM ENVIADOS
-      console.log('Dados do convite que seriam enviados:', {
-        email: email,
-        perfil_id: this.selectedPerfilConvite,
-        curso_id: this.selectedCursoConvite
-      });
+      const perfilIdRaw = this.selectedPerfilConvite?.id;
+      const cursoIdRaw = this.selectedCursoConvite?.id;
+
+      const payload = {
+        email,
+        perfil_id: typeof perfilIdRaw === 'number' ? perfilIdRaw : Number(perfilIdRaw),
+        curso_id: typeof cursoIdRaw === 'string' ? cursoIdRaw : String(cursoIdRaw)
+      };
+
+      console.log(this.selectedCursoConvite);
+      console.log(this.selectedPerfilConvite);
+      console.log('Dados do convite que seriam enviados:', payload);
 
       // Se não existe convite em aberto, prosseguir com o envio
-      this.invitationService.createInvitation(email).subscribe({
+      this.invitationService.createInvitation(payload).subscribe({
         next: (response: any) => {
           this.inviteLoading = false;
-          
+
           if (response.status === 'success') {
             this.showSuccessMessage = true;
             this.successMessageText = response.message || 'Convite enviado com sucesso!';
             this.inviteSuccessMessage = '';
             this.inviteEmail = '';
-            this.selectedPerfilConvite = 3; // Reset
-            this.selectedCursoConvite = 0; // Reset
+
+            this.resetOptions(); // Reset
             this.loadInvitations();
-            
+
             setTimeout(() => {
               this.closeInviteDialog();
             }, 2000);
@@ -451,7 +444,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
         },
         error: (error: any) => {
           this.inviteLoading = false;
-          
+
           if (error.status === 400 && error.error?.data) {
             if (error.error.data.email) {
               this.showErrorMessage = true;
@@ -483,32 +476,37 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   }
 
   openInviteDialog(): void {
+    this.loadPerfis();
+    this.loadCourses();
+
     this.showInviteDialog = true;
     this.inviteEmail = '';
-    this.selectedPerfilConvite = 3; // Reset para Colaborador Comum
-    this.selectedCursoConvite = 0; // Reset para nenhum curso
+
+    this.resetOptions();
+
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     this.emailError = '';
-    this.showSuccessMessage = false; 
-    this.showErrorMessage = false; 
-    this.successMessageText = ''; 
-    this.errorMessageText = ''; 
+    this.showSuccessMessage = false;
+    this.showErrorMessage = false;
+    this.successMessageText = '';
+    this.errorMessageText = '';
     this.isValidEmail = false;
     document.body.style.overflow = 'hidden';
-    
+
     // Força estilos do select no tema escuro após um pequeno delay
     setTimeout(() => {
       this.applyDarkThemeToSelects();
     }, 50);
-}
+  }
 
   // SUBSTITUIR o método closeInviteDialog para incluir reset do emailError:
   closeInviteDialog(): void {
     this.showInviteDialog = false;
     this.inviteEmail = '';
-    this.selectedPerfilConvite = 3; // Reset
-    this.selectedCursoConvite = 0; // Reset
+
+    this.resetOptions();
+
     this.inviteSuccessMessage = '';
     this.inviteErrorMessage = '';
     this.emailError = '';
@@ -537,6 +535,27 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
       attributes: true,
       attributeFilter: ['class']
     });
+  }
+
+  private loadPerfis(): void {
+    this.http
+      .get<{ data: { perfil_id: number; perfil_name: string }[] }>('/api/perfis')
+      .subscribe((res) => {
+        this.perfisConvite = (res.data || []).map(p => ({ id: p.perfil_id, nome: p.perfil_name }));
+      });
+  }
+
+  private loadCourses(): void {
+    this.http
+      .get<{ data: { id: number; nome: string }[] }>('/api/cursos/summary')
+      .subscribe((res) => {
+        this.cursosConvite = (res.data || []).map(p => ({ id: p.id, nome: p.nome }));
+      });
+  }
+
+  private resetOptions(): void {
+    this.selectedCursoConvite = undefined;
+    this.selectedPerfilConvite = undefined;
   }
 }
 
