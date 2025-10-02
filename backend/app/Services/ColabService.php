@@ -122,11 +122,12 @@ class ColabService
                 'bairro'     => $data['bairro'],
                 'logradouro' => $data['logradouro'],
                 'numero'     => $data['numero'],
-                'curso_id'   => $convite->curso_id,
                 'perfil_id'  => $convite->perfil_id ?? 1,
             ];
 
             $colab = Colab::create($payload);
+
+            $colab->cursos()->syncWithoutDetaching($convite->curso_id);
 
             if (!$this->conviteService->setAsUsed($convite)) {
                 throw new \RuntimeException('Falha ao marcar o convite como usado.');
