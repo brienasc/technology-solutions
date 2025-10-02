@@ -1,8 +1,9 @@
+// cursos.component.ts
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CursoService } from '../../services/curso.service';
+import { CursoService, CursosIndex } from '../../services/curso.service';
 import { Curso } from '../../interfaces/curso.interface';
 import { Header } from '../../components/header/header';
 
@@ -14,39 +15,35 @@ import { Header } from '../../components/header/header';
   styleUrls: ['./cursos.css']
 })
 export class CursosComponent implements OnInit, AfterViewInit {
-  
-  // Arrays de dados
+
+  // Dados vindos da API
   cursos: Curso[] = [];
-  filteredCursos: Curso[] = [];
-  paginatedCursos: Curso[] = [];
+  filteredCursos: Curso[] = [];   // mantém filtro de status no cliente (opcional)
+  paginatedCursos: Curso[] = [];  // exibição atual (já vem paginado da API)
 
   // Filtros e busca
   statusFilter: string = 'all';
   searchTerm: string = '';
 
-  // Paginação
+  // Paginação (servidor)
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
+  lastPage: number = 1;
 
-  // Loading
-  loading: boolean = false;
-
-  // Propriedades do modal de curso
-  showCursoDialog: boolean = false;
-  isEditMode: boolean = false;
+  // Loading & mensagens
+  loading = false;
+  showCursoDialog = false;
+  isEditMode = false;
   cursoForm: Partial<Curso> = {};
-  cursoLoading: boolean = false;
-  
-  // Propriedades para mensagens estilizadas
-  showSuccessMessage: boolean = false;
-  showErrorMessage: boolean = false;
-  successMessageText: string = '';
-  errorMessageText: string = '';
-
-  // Propriedades para validação
+  cursoLoading = false;
+  showSuccessMessage = false;
+  showErrorMessage = false;
+  successMessageText = '';
+  errorMessageText = '';
   formErrors: any = {};
 
+  // Somente para UI (mantive suas labels)
   statusOptions = [
     { value: 'Ativo', label: 'Ativo' },
     { value: 'Inativo', label: 'Inativo' }
@@ -62,169 +59,110 @@ export class CursosComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Observa mudanças no tema
     const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'class') {
-          setTimeout(() => {
-            this.applyDarkThemeToSelects();
-          }, 10);
+      mutations.forEach((m) => {
+        if (m.attributeName === 'class') {
+          setTimeout(() => this.applyDarkThemeToSelects(), 10);
         }
       });
     });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
   // ============ CARREGAMENTO DE DADOS ============
 
+
   loadCursos(): void {
     this.loading = true;
-    
-    this.cursoService.getCursos(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
-      next: (response) => {
-        if (response.status === 'success') {
-          this.cursos = response.data.cursos;
-          this.applyFiltersAndPaginate();
+    const statusBool = this.statusFilterToBool();
+
+    this.cursoService.getCursos(this.currentPage, this.itemsPerPage, this.searchTerm, statusBool)
+      .subscribe({
+        next: (res: CursosIndex) => {
+          this.cursos = res.cursos;
+          this.paginatedCursos = res.cursos;
+          this.currentPage = res.currentPage;
+          this.itemsPerPage = res.perPage;
+          this.totalItems = res.total;
+          this.lastPage = res.lastPage;
+          this.loading = false;
+        },
+        error: () => {
+          this.showErrorMessage = true;
+          this.errorMessageText = 'Erro ao carregar cursos. Tente novamente.';
+          this.loading = false;
         }
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('Erro ao carregar cursos:', err);
-        this.showErrorMessage = true;
-        this.errorMessageText = 'Erro ao carregar cursos. Tente novamente.';
-        this.loading = false;
-      }
-    });
+      });
   }
 
-  // ============ FILTROS E PAGINAÇÃO ============
 
-  applyFiltersAndPaginate(): void {
-    let tempCursos = this.cursos;
+  private applyStatusFilter(list: Curso[]): Curso[] {
+    if (this.statusFilter === 'all') return list;
 
-    // Filtro por status
-    if (this.statusFilter !== 'all') {
-      tempCursos = tempCursos.filter(curso => curso.status === this.statusFilter);
-    }
-
-    // Filtro por pesquisa
-    if (this.searchTerm.trim()) {
-      const searchLower = this.searchTerm.toLowerCase();
-      tempCursos = tempCursos.filter(curso =>
-        curso.nome.toLowerCase().includes(searchLower) ||
-        curso.descricao?.toLowerCase().includes(searchLower)
-      );
-    }
-
-    this.filteredCursos = tempCursos;
-    this.totalItems = this.filteredCursos.length;
-
-    // Ajusta página atual se necessário
-    if (this.currentPage > this.totalPages && this.totalPages > 0) {
-      this.currentPage = this.totalPages;
-    } else if (this.totalPages === 0) {
-      this.currentPage = 1;
-    }
-
-    this.updatePaginatedData();
+    return list.filter(c =>
+      (this.statusFilter === 'Ativo' && !!c.status) ||
+      (this.statusFilter === 'Inativo' && !c.status)
+    );
   }
 
-  // ============ PAGINAÇÃO ============
-
-  // Navegar para página específica
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedData();
-    }
+  private statusFilterToBool(): boolean | undefined {
+    if (this.statusFilter === 'Ativo') return true;
+    if (this.statusFilter === 'Inativo') return false;
+    return undefined; // 'all' -> sem filtro
   }
 
-  // Página anterior
-  goToPrevious(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePaginatedData();
-    }
-  }
+  // ============ EVENTOS/FILTROS ============
 
-  // Próxima página
-  goToNext(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.updatePaginatedData();
-    }
+  onModalidadeFilterChange(): void {
+    this.onStatusFilterChange();
   }
-
-  // Calcular total de páginas
-  get totalPages(): number {
-    return Math.ceil(this.filteredCursos.length / this.itemsPerPage);
-  }
-
-  // Índice inicial dos itens exibidos
-  getStartIndex(): number {
-    if (this.filteredCursos.length === 0) return 0;
-    return ((this.currentPage - 1) * this.itemsPerPage) + 1;
-  }
-
-  // Índice final dos itens exibidos
-  getEndIndex(): number {
-    const endIndex = this.currentPage * this.itemsPerPage;
-    return Math.min(endIndex, this.filteredCursos.length);
-  }
-
-  // Atualizar dados paginados
-  updatePaginatedData(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedCursos = this.filteredCursos.slice(startIndex, endIndex);
-  }
-
-  // Alterar tamanho da página
-  onPageSizeChange(): void {
-    this.currentPage = 1;
-    this.updatePaginatedData();
-  }
-
-  // ============ EVENTOS DE FILTRO ============
 
   onSearchChange(): void {
     this.currentPage = 1;
-    this.applyFiltersAndPaginate();
+    this.loadCursos();
   }
 
   onStatusFilterChange(): void {
     this.currentPage = 1;
-    this.applyFiltersAndPaginate();
+    this.loadCursos();
   }
 
-  onModalidadeFilterChange(): void {
+  onPageSizeChange(): void {
     this.currentPage = 1;
-    this.applyFiltersAndPaginate();
+    this.loadCursos();
   }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.lastPage) {
+      this.currentPage = page;
+      this.loadCursos();
+    }
+  }
+  goToPrevious(): void { if (this.currentPage > 1) { this.currentPage--; this.loadCursos(); } }
+  goToNext(): void { if (this.currentPage < this.lastPage) { this.currentPage++; this.loadCursos(); } }
 
   // ============ MODAL DE CURSO ============
 
   openCursoDialog(curso?: Curso): void {
     this.isEditMode = !!curso;
-    this.cursoForm = curso ? { ...curso } : {
+
+    const statusLabel = curso
+      ? (curso.status ? 'Ativo' : 'Inativo')
+      : 'Ativo';
+
+    this.cursoForm = curso ? { ...curso, status: statusLabel as any } : {
       nome: '',
       descricao: '',
       carga_horaria: 0,
-      status: 'Ativo'
+      status: 'Ativo' as any
     };
-    
+
     this.showCursoDialog = true;
     this.clearMessages();
     this.formErrors = {};
     document.body.style.overflow = 'hidden';
-    
-    setTimeout(() => {
-      this.applyDarkThemeToSelects();
-    }, 50);
+
+    setTimeout(() => this.applyDarkThemeToSelects(), 50);
   }
 
   closeCursoDialog(): void {
@@ -261,6 +199,12 @@ export class CursosComponent implements OnInit, AfterViewInit {
     return isValid;
   }
 
+  private statusToBool(val: any): boolean {
+    // aceita 'Ativo'/'Inativo' ou boolean
+    if (typeof val === 'boolean') return val;
+    return String(val).toLowerCase() === 'ativo' || val === '1' || val === 1;
+  }
+
   saveCurso(): void {
     if (!this.validateForm()) {
       this.showErrorMessage = true;
@@ -275,46 +219,34 @@ export class CursosComponent implements OnInit, AfterViewInit {
       nome: this.cursoForm.nome!.trim(),
       descricao: this.cursoForm.descricao?.trim() || '',
       carga_horaria: this.cursoForm.carga_horaria || 0,
-      status: this.cursoForm.status as 'Ativo' | 'Inativo'
+      status: this.statusToBool(this.cursoForm.status), // ← envia boolean
     };
 
     if (this.isEditMode && this.cursoForm.id) {
-      // Atualizar curso existente
       this.cursoService.updateCurso(this.cursoForm.id, cursoData).subscribe({
-        next: (response) => {
+        next: () => {
           this.cursoLoading = false;
-          if (response.status === 'success') {
-            this.showSuccessMessage = true;
-            this.successMessageText = response.message || 'Curso atualizado com sucesso!';
-            this.loadCursos();
-            setTimeout(() => this.closeCursoDialog(), 2000);
-          } else {
-            this.showErrorMessage = true;
-            this.errorMessageText = response.message || 'Erro ao atualizar curso.';
-          }
+          this.showSuccessMessage = true;
+          this.successMessageText = 'Curso atualizado com sucesso!';
+          this.loadCursos();
+          setTimeout(() => this.closeCursoDialog(), 1500);
         },
-        error: (error) => {
+        error: () => {
           this.cursoLoading = false;
           this.showErrorMessage = true;
           this.errorMessageText = 'Erro ao atualizar curso. Tente novamente.';
         }
       });
     } else {
-      // Criar novo curso
       this.cursoService.createCurso(cursoData).subscribe({
-        next: (response) => {
+        next: () => {
           this.cursoLoading = false;
-          if (response.status === 'success') {
-            this.showSuccessMessage = true;
-            this.successMessageText = response.message || 'Curso criado com sucesso!';
-            this.loadCursos();
-            setTimeout(() => this.closeCursoDialog(), 2000);
-          } else {
-            this.showErrorMessage = true;
-            this.errorMessageText = response.message || 'Erro ao criar curso.';
-          }
+          this.showSuccessMessage = true;
+          this.successMessageText = 'Curso criado com sucesso!';
+          this.loadCursos();
+          setTimeout(() => this.closeCursoDialog(), 1500);
         },
-        error: (error) => {
+        error: () => {
           this.cursoLoading = false;
           this.showErrorMessage = true;
           this.errorMessageText = 'Erro ao criar curso. Tente novamente.';
@@ -324,25 +256,21 @@ export class CursosComponent implements OnInit, AfterViewInit {
   }
 
   deleteCurso(curso: Curso): void {
-    if (confirm(`Tem certeza que deseja deletar o curso "${curso.nome}"?`)) {
-      this.cursoService.deleteCurso(curso.id).subscribe({
-        next: (response) => {
-          if (response.status === 'success') {
-            this.showSuccessMessage = true;
-            this.successMessageText = response.message || 'Curso deletado com sucesso!';
-            this.loadCursos();
-            setTimeout(() => this.clearMessages(), 3000);
-          } else {
-            this.showErrorMessage = true;
-            this.errorMessageText = response.message || 'Erro ao deletar curso.';
-          }
-        },
-        error: (error) => {
-          this.showErrorMessage = true;
-          this.errorMessageText = 'Erro ao deletar curso. Tente novamente.';
-        }
-      });
-    }
+    if (!confirm(`Tem certeza que deseja deletar o curso "${curso.nome}"?`)) return;
+
+    this.cursoService.deleteCurso(curso.id).subscribe({
+      next: () => {
+        // DELETE 204 não tem corpo; tratamos como sucesso direto
+        this.showSuccessMessage = true;
+        this.successMessageText = 'Curso deletado com sucesso!';
+        this.loadCursos();
+        setTimeout(() => this.clearMessages(), 2000);
+      },
+      error: () => {
+        this.showErrorMessage = true;
+        this.errorMessageText = 'Erro ao deletar curso. Tente novamente.';
+      }
+    });
   }
 
   // ============ UTILITÁRIOS ============
@@ -357,13 +285,12 @@ export class CursosComponent implements OnInit, AfterViewInit {
   private applyDarkThemeToSelects(): void {
     const selects = document.querySelectorAll('.modal-dialog select, .filters-container select') as NodeListOf<HTMLSelectElement>;
     const inputs = document.querySelectorAll('.modal-dialog input, .filters-container input') as NodeListOf<HTMLInputElement>;
-    
+
     if (document.body.classList.contains('dark-theme')) {
       [...selects, ...inputs].forEach(element => {
         element.style.backgroundColor = '#2d3748';
         element.style.color = '#e2e8f0';
         element.style.borderColor = '#4a5568';
-        
         if (element.tagName === 'SELECT') {
           const options = element.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
           options.forEach(option => {
@@ -377,7 +304,6 @@ export class CursosComponent implements OnInit, AfterViewInit {
         element.style.backgroundColor = '';
         element.style.color = '';
         element.style.borderColor = '';
-        
         if (element.tagName === 'SELECT') {
           const options = element.querySelectorAll('option') as NodeListOf<HTMLOptionElement>;
           options.forEach(option => {
@@ -398,4 +324,16 @@ export class CursosComponent implements OnInit, AfterViewInit {
   goBack(): void {
     this.router.navigate(['/']);
   }
+
+  getStartIndex(): number {
+    if (this.totalItems === 0) return 0;
+    return (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  getEndIndex(): number {
+    if (this.totalItems === 0) return 0;
+    const end = this.currentPage * this.itemsPerPage;
+    return Math.min(end, this.totalItems);
+  }
 }
+
