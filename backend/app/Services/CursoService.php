@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CursoService
 {
@@ -19,18 +20,31 @@ class CursoService
         return $cursos;
     }
 
-    public function indexFiltered($filters): LengthAwarePaginator
+
+    public function indexFiltered(array $filters): LengthAwarePaginator
     {
         $query = Curso::query();
 
-        if (isset($filtros['nome'])) {
-            $query->where('nome', 'like', '%' . $filters['nome'] . '%');
+        if (!empty($filters['nome'])) {
+            $nome = trim($filters['nome']);
+            $query->where('nome', 'ILIKE', "%{$nome}%");
         }
 
-        $per_page = $filtros['per_page'] ?? 15;
+        if (array_key_exists('status', $filters)) {
+            $status = filter_var($filters['status'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($status !== null) {
+                $query->where('status', $status);
+            }
+        }
 
-        return $query->paginate($per_page);
+        $perPage = (int)($filters['per_page'] ?? 15);
+        $perPage = max(1, min($perPage, 100));
+
+        $page = isset($filters['page']) ? (int)$filters['page'] : null;
+
+        return $query->paginate($perPage, ['*'], 'page', $page);
     }
+
 
     public function createCourse(array $data)
     {

@@ -35,7 +35,7 @@ class CursoController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $filters = $request->only(['nome', 'page', 'per_page']);
+            $filters = $request->only(['nome', 'page', 'per_page', 'status']);
 
             $cursosPaginate = $this->cursoService->indexFiltered($filters);
 
@@ -49,7 +49,7 @@ class CursoController extends Controller
 
             return $this->apiResponse->success($responseData, 'Lista de cursos retornada com sucesso.');
         } catch (Exception $e) {
-            return $this->apiResponse->badRequest(null, 'Erro ao buscar cursos.');
+            return $this->apiResponse->badRequest($e->getMessage(), 'Erro ao buscar cursos.');
         }
     }
 
@@ -85,10 +85,10 @@ class CursoController extends Controller
     {
         try {
             $data = $request->validate([
-            'nome'          => ['sometimes','string','max:255', Rule::unique('cursos', 'nome')->ignore($id, 'id')],
-            'descricao'     => ['sometimes','string','max:255'],
-            'carga_horaria' => ['sometimes','integer','min:1'],
-            'status'        => ['sometimes','boolean'],
+                'nome'          => ['sometimes','string','max:255', Rule::unique('cursos', 'nome')->ignore($id, 'id')],
+                'descricao'     => ['sometimes','string','max:255'],
+                'carga_horaria' => ['sometimes','integer','min:1'],
+                'status'        => ['sometimes','boolean'],
             ]);
 
             $curso = $this->cursoService->update($id, $data);

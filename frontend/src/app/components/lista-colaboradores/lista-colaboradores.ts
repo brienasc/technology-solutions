@@ -1,13 +1,13 @@
 // frontend/src/app/components/lista-colaboradores/lista-colaboradores.ts
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 // Importa CommonModule para diretivas estruturais (*ngIf, *ngFor) e pipes básicos.
-import { CommonModule, LowerCasePipe } from '@angular/common'; 
+import { CommonModule, LowerCasePipe } from '@angular/common';
 // Importa FormsModule para o two-way data binding [(ngModel)].
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 // Importa HttpClient para fazer requisições HTTP para o backend.
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 // Importa Observable e 'of' do RxJS para lidar com fluxos de dados assíncronos.
-import { Observable, of } from 'rxjs'; 
+import { Observable, of } from 'rxjs';
 // Importa operadores RxJS para manipulação de Observables (filtragem, transformação de dados).
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Header } from '../header/header'
@@ -33,17 +33,17 @@ interface Colaborador {
 
 @Component({
   selector: 'app-lista-colaboradores', // Seletor CSS para usar este componente no HTML.
-  standalone: true, 
+  standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
+    CommonModule,
+    FormsModule,
 
     Header,
     LowerCasePipe
- 
+
   ],
-  templateUrl: './lista-colaboradores.html', 
-  styleUrls: ['./lista-colaboradores.css'] 
+  templateUrl: './lista-colaboradores.html',
+  styleUrls: ['./lista-colaboradores.css']
 })
 // Classe do componente ListaColaboradores.
 export class ListaColaboradoresComponent implements OnInit {
@@ -90,7 +90,7 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeSuccess: string = '';
   passwordError: string = '';
 
-// NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE
+  // NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE
   selectedPerfilConvite: number = 3; // Default: Colaborador Comum
   selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
 
@@ -130,19 +130,19 @@ export class ListaColaboradoresComponent implements OnInit {
   // Método para carregar os colaboradores do backend.
   loadColaboradores(): void {
     this.loading = true;
-    
+
     const apiUrl = 'http://localhost:8080/api/colabs';
 
     this.http.get<any>(apiUrl).pipe(
       map(response => {
         // A API retorna um objeto com propriedade 'data'
         const colaboradores = response.data.colabs || response;
-        
+
         // Verificar se é array válido
         if (!Array.isArray(colaboradores)) {
           return [];
         }
-        
+
         // Mapear os dados da API para o formato do frontend
         return colaboradores.map((colab: any): Colaborador => {
           return {
@@ -160,15 +160,15 @@ export class ListaColaboradoresComponent implements OnInit {
             logradouro: colab.numero ? `${colab.logradouro}, ${colab.numero}` : colab.logradouro
           };
         })
-        .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
-        .sort((a: Colaborador, b: Colaborador) => {
-          if (!a.nome || !b.nome) return 0;
-          return a.nome.localeCompare(b.nome);
-        });
+          .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
+          .sort((a: Colaborador, b: Colaborador) => {
+            if (!a.nome || !b.nome) return 0;
+            return a.nome.localeCompare(b.nome);
+          });
       }),
       catchError(error => {
         console.error('Erro ao carregar colaboradores:', error);
-        
+
         if (error.status === 0) {
           alert('❌ Backend não está rodando!');
         } else if (error.status === 404) {
@@ -178,7 +178,7 @@ export class ListaColaboradoresComponent implements OnInit {
         } else {
           alert(`❌ Erro ${error.status}: ${error.message}`);
         }
-        
+
         return of([]);
       })
     ).subscribe({
@@ -206,7 +206,7 @@ export class ListaColaboradoresComponent implements OnInit {
         // Verifica se o termo de pesquisa está presente no nome, e-mail ou CPF do colaborador.
         colaborador.nome.toLowerCase().includes(lowerSearchTerm) ||
         colaborador.email.toLowerCase().includes(lowerSearchTerm) ||
-        colaborador.cpf.includes(lowerSearchTerm) 
+        colaborador.cpf.includes(lowerSearchTerm)
       );
     }
 
@@ -219,7 +219,7 @@ export class ListaColaboradoresComponent implements OnInit {
     } else if (this.totalPages === 0) { // Se não houver itens, volta para a página 1.
       this.currentPage = 1;
     }
-    
+
     this.updatePaginatedData();
   }
 
@@ -233,11 +233,11 @@ export class ListaColaboradoresComponent implements OnInit {
   onSearchChange(): void {
     of(this.searchTerm).pipe(
       debounceTime(300), // Espera 300ms após a última digitação antes de emitir o valor.
-                         // Isso evita que a pesquisa seja disparada a cada tecla.
+      // Isso evita que a pesquisa seja disparada a cada tecla.
       distinctUntilChanged(), // Só emite o valor se ele for diferente do último valor emitido.
       switchMap(term => {
         // Reinicia a paginação para a primeira página ao pesquisar.
-        this.currentPage = 1; 
+        this.currentPage = 1;
         this.applyFilterAndPaginate(); // Aplica o filtro e a paginação com o novo termo de pesquisa.
         return of(true); // Retorna um Observable para completar o pipe.
       })
@@ -253,43 +253,43 @@ export class ListaColaboradoresComponent implements OnInit {
     }
 
     this.loading = true;
-    
+
     // Preparar parâmetros para enviar ao backend
     const params: any = {};
-    
+
     if (this.searchTerm && this.searchTerm.trim()) {
       params.search = this.searchTerm.trim();
     }
 
     // Chamar o endpoint do backend
-    this.http.get('http://localhost:8080/api/colabs/export', { 
+    this.http.get('http://localhost:8080/api/colabs/export', {
       params: params,
       responseType: 'blob'
     }).subscribe({
       next: (response: Blob) => {
         // Criar URL temporária para o blob
         const url = window.URL.createObjectURL(response);
-        
+
         // Criar elemento <a> temporário para forçar o download
         const link = document.createElement('a');
         link.href = url;
         link.download = this.generateFileName();
         link.style.display = 'none';
-        
+
         // Adicionar ao DOM, clicar e remover
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         // Limpar URL temporária
         window.URL.revokeObjectURL(url);
-        
+
         this.loading = false;
       },
       error: (error) => {
         console.error('Erro ao exportar:', error);
         this.loading = false;
-        
+
         // Se o erro veio como blob (JSON), vamos ler o conteúdo
         if (error.error instanceof Blob && error.error.type === 'application/json') {
           error.error.text().then((errorText: string) => {
@@ -407,7 +407,7 @@ export class ListaColaboradoresComponent implements OnInit {
     try {
       // Verificar se já existe convite em aberto para este email
       const conviteExiste = await this.verificarConviteExistente(this.inviteEmail);
-      
+
       if (conviteExiste) {
         this.inviteLoading = false;
         this.inviteErrorMessage = 'Já existe um convite em aberto para este e-mail. Aguarde a resposta ou cancele o convite anterior.';
@@ -425,13 +425,13 @@ export class ListaColaboradoresComponent implements OnInit {
       this.conviteService.enviarConvite(this.inviteEmail).subscribe({
         next: (response: any) => {
           this.inviteLoading = false;
-          
+
           if (response.status === 'success') {
             this.inviteSuccessMessage = response.message || 'Convite enviado com sucesso!';
             this.inviteEmail = '';
             this.selectedPerfilConvite = 3; // Reset
             this.selectedCursoConvite = 0; // Reset
-            
+
             setTimeout(() => {
               this.closeInviteDialog();
             }, 2000);
@@ -441,7 +441,7 @@ export class ListaColaboradoresComponent implements OnInit {
         },
         error: (error: any) => {
           this.inviteLoading = false;
-          
+
           if (error.status === 400 && error.error?.data) {
             if (error.error.data.email) {
               this.inviteErrorMessage = error.error.data.email[0];
@@ -481,41 +481,41 @@ export class ListaColaboradoresComponent implements OnInit {
   private validateEmail(email: string): boolean {
     // Validação super rigorosa
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    
+
     // Verificações adicionais
     if (!emailRegex.test(email)) {
       return false;
     }
-    
+
     // Não pode começar ou terminar com ponto
     if (email.startsWith('.') || email.endsWith('.')) {
       return false;
     }
-    
+
     // Não pode ter pontos consecutivos
     if (email.includes('..')) {
       return false;
     }
-    
+
     // Domínio não pode começar ou terminar com hífen
     const domain = email.split('@')[1];
     if (domain.startsWith('-') || domain.endsWith('-')) {
       return false;
     }
-    
+
     return true;
   }
 
   // Método para validação em tempo real:
   onEmailChange(): void {
     const email = this.novoColaboradorEmail.trim();
-    
+
     if (!email) {
       this.emailError = '';
       this.isValidEmail = false;
       return;
     }
-    
+
     if (!this.validateEmail(email)) {
       this.emailError = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
       this.isValidEmail = false;
@@ -528,23 +528,23 @@ export class ListaColaboradoresComponent implements OnInit {
   // Método chamado ao submeter o convite
   async onConvidarSubmit(): Promise<void> {
     const email = this.novoColaboradorEmail.trim();
-    
+
     if (!email) {
       this.emailError = 'O e-mail é obrigatório.';
       return;
     }
-    
+
     if (!this.validateEmail(email)) {
       this.emailError = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
       return;
     }
-    
+
     this.emailError = '';
 
     try {
       // Verificar se já existe convite em aberto para este email
       const conviteExiste = await this.verificarConviteExistente(email);
-      
+
       if (conviteExiste) {
         this.emailError = 'Já existe um convite em aberto para este e-mail. Aguarde a resposta ou cancele o convite anterior.';
         return;
@@ -584,24 +584,24 @@ export class ListaColaboradoresComponent implements OnInit {
       2: 'Gente e Cultura',
       3: 'Colaborador Comum'
     };
-    
+
     return perfis[perfilId] || `Perfil ${perfilId}`;
   }
 
   private async verificarConviteExistente(email: string): Promise<boolean> {
     try {
       const response = await this.http.get<any>('http://localhost:8080/api/convites').toPromise();
-      
+
       if (response.status === 'success' && response.data) {
         // Verificar se já existe convite "Em Aberto" (status_code: 0) para este email
-        const conviteExistente = response.data.find((convite: any) => 
-          convite.email_colab.toLowerCase() === email.toLowerCase() && 
+        const conviteExistente = response.data.find((convite: any) =>
+          convite.email_colab.toLowerCase() === email.toLowerCase() &&
           convite.status_code === 0
         );
-        
+
         return !!conviteExistente; // Retorna true se encontrou convite em aberto
       }
-      
+
       return false;
     } catch (error) {
       console.error('Erro ao verificar convites existentes:', error);
@@ -633,10 +633,10 @@ export class ListaColaboradoresComponent implements OnInit {
   // Método chamado quando o select de perfil muda
   onPerfilChange(event: any): void {
     const novoPerfilId = +event.target.value;
-    
+
     // Verificar se precisa mostrar campo de senha
     this.showPasswordField = (novoPerfilId === 1 || novoPerfilId === 2);
-    
+
     if (!this.showPasswordField) {
       this.resetPasswordFields();
     } else {
@@ -649,10 +649,10 @@ export class ListaColaboradoresComponent implements OnInit {
   // Salva a alteração de perfil
   saveProfileChange(): void {
     if (!this.selectedColaborador) return;
-    
+
     const selectElement = document.querySelector('.perfil-select') as HTMLSelectElement;
     if (!selectElement) return;
-    
+
     const novoPerfilId = +selectElement.value;
     const perfilAtualId = this.getPerfilId(this.selectedColaborador.perfil || '');
 
@@ -675,20 +675,20 @@ export class ListaColaboradoresComponent implements OnInit {
 
     const colaboradorComum = this.perfisDisponiveis.find(perfil => perfil.nome === 'Colaborador Comum');
     if (!colaboradorComum) {
-      return; 
+      return;
     }
 
     if (novoPerfilId !== colaboradorComum.id) {
       payload.password = this.newPassword;
     }
-    
+
     const apiUrl = `http://localhost:8080/api/colabs/${this.selectedColaborador.id}`;
     this.http.put(apiUrl, payload).subscribe({
       next: (resposta) => {
         if (this.selectedColaborador) {
           this.selectedColaborador.perfil = this.mapearPerfilPorId(novoPerfilId)
         }
-        
+
         this.profileChangeSuccess = 'Perfil atualizado com sucesso!';
         this.isChangingProfile = false;
         this.resetEditingState();
@@ -733,30 +733,30 @@ export class ListaColaboradoresComponent implements OnInit {
       try {
         // Atualizar o perfil localmente
         const novoPerfilNome = this.mapearPerfilPorId(novoPerfilId);
-        
+
         // Atualizar na lista de colaboradores
         const index = this.colaboradores.findIndex(c => c.id === this.selectedColaborador!.id);
         if (index !== -1) {
           this.colaboradores[index].perfil = novoPerfilNome;
         }
-        
+
         // Atualizar no modal
         if (this.selectedColaborador) {
           this.selectedColaborador.perfil = novoPerfilNome;
         }
-        
+
         this.profileChangeSuccess = 'Perfil atualizado com sucesso! (Simulação)';
         this.isChangingProfile = false;
         this.resetEditingState();
-        
+
         // Reaplica filtros para atualizar a tabela
         this.applyFilterAndPaginate();
-        
+
         // Limpar mensagem após 3 segundos
         setTimeout(() => {
           this.profileChangeSuccess = '';
         }, 3000);
-        
+
       } catch (error) {
         this.isChangingProfile = false;
         this.profileChangeError = 'Erro na simulação. Tente novamente.';
@@ -769,7 +769,7 @@ export class ListaColaboradoresComponent implements OnInit {
     // Simulação - definir perfil do usuário logado hardcoded
     // No futuro: pegar de AuthService quando backend estiver pronto
     const userProfile = 'Administrador'; // ou 'Gente e Cultura' para testar
-    
+
     if (userProfile === 'Administrador') {
       return this.perfisDisponiveis; // Pode alterar todos
     } else if (userProfile === 'Gente e Cultura') {
@@ -782,8 +782,8 @@ export class ListaColaboradoresComponent implements OnInit {
   // Método público para obter ID do perfil pelo nome
   getPerfilId(perfilNome: string): number {
     if (!perfilNome) return 3;
-    
-    const perfil = this.perfisDisponiveis.find(p => 
+
+    const perfil = this.perfisDisponiveis.find(p =>
       p.nome.toLowerCase() === perfilNome.toLowerCase()
     );
     return perfil ? perfil.id : 3;
