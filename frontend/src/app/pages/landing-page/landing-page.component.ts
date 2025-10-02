@@ -6,15 +6,14 @@ import { HeroSection } from '../../components/hero-section/hero-section';
 import { SobreComponent } from '../../components/sobre/sobre';
 import { SecaoSobreNos } from '../../components/secao-sobre-nos/secao-sobre-nos';
 import { Rodape } from '../../components/rodape/rodape';
+import { Funcionalidades } from "../../components/funcionalidades/funcionalidades";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [Header, Vagas, CommonModule, HeroSection,
-    SobreComponent, SecaoSobreNos, Rodape
-
-  ],
+    SobreComponent, SecaoSobreNos, Rodape, Funcionalidades],
   providers: [],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
