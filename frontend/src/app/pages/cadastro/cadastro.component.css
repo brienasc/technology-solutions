@@ -1,15 +1,18 @@
 /* Remove margens e padding padrão e define o box-sizing */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 body {
   background-color: var(--theme-background, #f0f2f5);
   color: var(--theme-body-text, #333);
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 body.dark-theme {
@@ -51,9 +54,9 @@ body.dark-theme {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc; 
-  -webkit-transition: .4s;
-  transition: .4s;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
   border-radius: 34px;
 }
 
@@ -64,14 +67,14 @@ body.dark-theme {
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: white; 
-  -webkit-transition: .4s;
-  transition: .4s;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
   border-radius: 50%;
 }
 
 .theme-switch input:checked + .slider {
-  background-color: #2196F3; 
+  background-color: #2196f3;
 }
 
 .theme-switch input:checked + .slider:before {
@@ -85,7 +88,7 @@ body.dark-theme {
   flex: 1.5;
   display: flex;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: flex-start;
   padding: 20px;
   background-color: var(--theme-form-bg, #fff);
   border-radius: 20px;
@@ -198,11 +201,15 @@ body.dark-theme {
   font-size: 1em;
   color: var(--theme-input-text, #333);
   background-color: var(--theme-form-bg, #fff);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .form-group input.is-invalid {
-  border-color: #e53e3e; 
+  border-color: #e53e3e;
 }
 
 .form-group input:focus {
@@ -227,7 +234,10 @@ button[type="submit"] {
   border-radius: 25px;
   font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
   margin-top: 25px;
 }
 
@@ -274,7 +284,10 @@ button[type="submit"]:disabled {
   border-radius: 25px;
   font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
   margin-top: 15px;
 }
 
@@ -315,3 +328,4 @@ button[type="submit"]:disabled {
     right: 10px;
   }
 }
+

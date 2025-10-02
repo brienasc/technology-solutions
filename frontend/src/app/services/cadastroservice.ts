@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class CadastroService {
   private apiUrl = 'http://localhost:8080/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Busca dados de endereço através de uma API de CEP.
@@ -29,7 +29,7 @@ export class CadastroService {
   cadastrarColaborador(data: any): Observable<any> {
     // 'data' contem todos os campos do formulário, incluindo a senha
     // A API Laravel recebe esses dados, valida e salva no banco
-    return this.http.post(`${this.apiUrl}/colaboradores/cadastrar`, data);
+    return this.http.post(`${this.apiUrl}/colabs`, data);
   }
 
   /**

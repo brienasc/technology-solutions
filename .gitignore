@@ -59,6 +59,8 @@ yarn-error.log
 testem.log
 /typings
 
+**/*.cache
+
 **/.env
 db-data/
 **/*.log

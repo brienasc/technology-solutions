@@ -4,33 +4,35 @@ namespace App\Services;
 
 use Exception;
 use Carbon\Carbon;
-
 use App\Enums\ConviteStatus;
 use App\Mail\RegistrationMail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-
 use App\Models\Convites;
 
-class ConviteService{
-    public function enviarConvite(string $email): Convites | null{
+class ConviteService
+{
+    public function enviarConvite(string $email): Convites | null
+    {
         $convite_ativo = Convites::where("email_colab", $email)
-                                 ->where("status_code", ConviteStatus::PENDENTE)
-                                 ->where('expires_at', '>', Carbon::now())
-                                 ->first();
+            ->where("status_code", ConviteStatus::PENDENTE)
+            ->where('expires_at', '>', Carbon::now())
+            ->first();
 
-        if($convite_ativo){
+        if ($convite_ativo) {
             return null;
         }
 
         DB::beginTransaction();
         try {
-            $convite = Convites::create([
+            $convite = Convites::create(
+                [
                 "email_colab" => $email,
                 'status_code' => ConviteStatus::PENDENTE,
                 'expires_at' => Carbon::now()->addDay(),
-            ]);
+                ]
+            );
 
             $frontendUrl = config('app.frontend_url');
             $confirmationLink = "{$frontendUrl}/cadastro/{$convite->id_convite}";
@@ -45,10 +47,11 @@ class ConviteService{
         }
     }
 
-    public function indexFilteredConvites($filtros): LengthAwarePaginator{
+    public function indexFilteredConvites($filtros): LengthAwarePaginator
+    {
         $query = Convites::query();
 
-        if(isset($filtros['email'])){
+        if (isset($filtros['email'])) {
             $query->where('email_colab', 'like', '%' . $filtros['email'] . '%');
         }
 
@@ -73,9 +76,36 @@ class ConviteService{
         return $query->paginate($per_page);
     }
 
-
-    public function getConviteById(string $id): ?Convites{
+    public function getConviteById(string $id): ?Convites
+    {
         return Convites::find($id);
     }
-}
 
+    public function setAsUsed(Convites $convite): bool
+    {
+        $now = Carbon::now();
+
+        return Convites::whereKey($convite->getKey())
+        ->where(function ($q) use ($now) {
+            $q->whereNull('expires_at')
+              ->orWhere('expires_at', '>', $now);
+        })
+        ->where('status_code', ConviteStatus::PENDENTE)
+        ->update([
+            'status_code' => ConviteStatus::FINALIZADO,
+            'updated_at'  => $now,
+        ]) === 1;
+    }
+
+    public function isValid(Convites $convite)
+    {
+        if (
+            $convite->expires_at < Carbon::now() ||
+            $convite->status_code == ConviteStatus::FINALIZADO
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+}
