@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('nome')->nullable(false);
             $table->string('descricao', 255)->nullable(false);
+            $table->integer('carga_horaria', false, true)->nullable(false);
             $table->boolean('status')->nullable(false);
 
             $table->timestamps();

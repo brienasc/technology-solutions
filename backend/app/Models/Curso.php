@@ -19,11 +19,14 @@ class Curso extends Model
     protected $fillable = [
         'nome',
         'descricao',
+        'carga_horaria',
         'status',
     ];
 
     protected $casts = [
         'id' => 'string',
+        'status' => 'boolean',
+        'carga_horaria' => 'integer',
     ];
 
     public function colabs()

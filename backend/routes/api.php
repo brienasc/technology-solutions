@@ -30,6 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     #Rotas de Cursos
     Route::get('/cursos/summary', [CursoController::class, 'summary']);
+    Route::get('/cursos', [CursoController::class, 'index']);
+    Route::post('/cursos', [CursoController::class, 'store']);
+
 
 
     Route::get('/perfis', [PerfisController::class, 'index']);
