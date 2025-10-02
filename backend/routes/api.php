@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PerfisController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConvitesController;
@@ -27,8 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
     });
 
-    Route::get('/perfis', [PerfisController::class, 'index']);
+    #Rotas de Cursos
+    Route::get('/cursos/summary', [CursoController::class, 'summary']);
 
+
+    Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
 });
 
