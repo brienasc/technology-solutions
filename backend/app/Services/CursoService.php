@@ -23,7 +23,7 @@ class CursoService
 
     public function indexFiltered(array $filters): LengthAwarePaginator
     {
-        $query = Curso::query();
+        $query = Curso::query()->orderBy('nome', 'asc');
 
         if (!empty($filters['nome'])) {
             $nome = trim($filters['nome']);
