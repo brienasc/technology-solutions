@@ -1,19 +1,17 @@
-<!-- frontend/src/app/components/header/header.html -->
 
 <header class="app-header">
   <div class="header-container">
     <!-- Logo -->
     <div class="header-logo" (click)="navigateToHome()">
-      <img ngSrc="app/assets/imagens/logoheader.png" width="40" height="40" alt="Technology Solutions Logo"/>
+      <img ngSrc="app/assets/imagens/logo_education_solutions.png" width="40" height="40" alt="Technology Solutions Logo"/>
     </div>
 
     <!-- Navegação Desktop -->
     <nav class="header-nav desktop-nav">
       <ul>
          <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
+        <li><a href="#funcionalidades" (click)="closeMobileMenu()">Funcionalidades</a></li>
         <li><a href="#sobre" (click)="closeMobileMenu()">Sobre</a></li>
-        <li><a href="#servicos" (click)="closeMobileMenu()">Serviços</a></li>
-        <li><a href="#vagas" (click)="closeMobileMenu()">Vagas</a></li>
         <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
       </ul>
     </nav>

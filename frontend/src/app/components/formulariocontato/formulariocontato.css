@@ -249,7 +249,7 @@
     .footer-title {
         font-size: 2em;
         margin-bottom: 30px;
-        text-align: left; /* Adicionado para o layout do desktop */
+        text-align: center; /* Adicionado para o layout do desktop */
     }
     .footer-content-wrapper {
         flex-direction: row; /* Colunas lado a lado */
