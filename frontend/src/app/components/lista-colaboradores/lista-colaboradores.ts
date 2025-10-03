@@ -93,11 +93,9 @@ export class ListaColaboradoresComponent implements OnInit {
   selectedPerfilConvite: number = 3; // Default: Colaborador Comum
   selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
 
-  // Listas hardcoded APENAS para visual do modal de convite
   perfisConvite = [
     { id: 1, nome: 'Administrador' },
-    { id: 2, nome: 'Gente e Cultura' },
-    { id: 3, nome: 'Colaborador Comum' }
+    { id: 2, nome: 'Elaborador de Itens' },
   ];
 
   cursosConvite = [
@@ -111,11 +109,9 @@ export class ListaColaboradoresComponent implements OnInit {
     { id: 8, nome: 'Design UX/UI' }
   ];
 
-  // Lista de perfis disponíveis para alteração de perfil
   perfisDisponiveis = [
     { id: 1, nome: 'Administrador' },
-    { id: 2, nome: 'Gente e Cultura' },
-    { id: 3, nome: 'Colaborador Comum' }
+    { id: 2, nome: 'Elaborador de Itens' },
   ];
 
   private http = inject(HttpClient);
@@ -580,8 +576,7 @@ export class ListaColaboradoresComponent implements OnInit {
   private mapearPerfil(perfilId: number): string {
     const perfis: { [key: number]: string } = {
       1: 'Administrador',
-      2: 'Gente e Cultura',
-      3: 'Colaborador Comum'
+      2: 'Elaborador de Itens',
     };
 
     return perfis[perfilId] || `Perfil ${perfilId}`;
