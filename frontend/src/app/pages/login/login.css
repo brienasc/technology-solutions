@@ -73,7 +73,6 @@
         -ms-transform: translateX(26px);
         transform: translateX(26px);
     }
-    /* src/app/pages/login/login.component.css */
     /* 1. LAYOUT PRINCIPAL: Divisão em 2 colunas */
     
     .login-page-container {
@@ -182,7 +181,7 @@
         /* Cor do foco usando sua variável de link/foco (geralmente um azul/roxo) */
         box-shadow: 0 0 0 2px var(--theme-link-text);
     }
-    /* Correção: Estilo para quando está inválido (Apenas borda vermelha, fundo lilás mantido) */
+    /* Estilo para quando está inválido (Apenas borda vermelha, fundo lilás mantido) */
     
     .custom-input-style.is-invalid {
         border: 2px solid var(--color-danger);

@@ -35,7 +35,8 @@
                     <label for="password">Senha:</label>
                     <div class="password-input-wrapper">
                         <input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password" class="custom-input-style" placeholder="Digite sua senha" [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
-                        <button type="button" class="toggle-password-visibility" (click)="togglePasswordVisibility()">
+                        <button type="button" class="toggle-password-visibility" (click)="togglePasswordVisibility()" [attr.aria-label]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'" [attr.aria-pressed]="passwordVisible" [attr.title]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'"
+                            vw-access-ignore="true" aria-hidden="true">
               <svg *ngIf="!passwordVisible" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                 <path fill-rule="evenodd" d="M12 5.25c-4.816 0-9.043 3.123-10.655 7.427a.75.75 0 0 0 0 1.106C2.957 18.627 7.184 21.75 12 21.75s9.043-3.123 10.655-7.427a.75.75 0 0 0 0-1.106C21.043 8.373 16.816 5.25 12 5.25Zm0 13.5A6.75 6.75 0 1 0 12 6.75a6.75 6.75 0 0 0 0 13.5Z" clip-rule="evenodd" />
                 <path d="M14.25 12a2.25 2.25 0 1 0-4.5 0 2.25 2.25 0 0 0 4.5 0Z" />

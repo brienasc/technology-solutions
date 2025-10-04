@@ -84,11 +84,12 @@
     </div>
 
 
-    <div class="carousel-wrapper">
-        <button class="nav-button prev" (click)="scrollLeft()">&#10094;</button>
-        <button class="nav-button next" (click)="scrollRight()">&#10095;</button>
+    <div class="carousel-wrapper" role="region" aria-label="Depoimentos de Escolas Parceiras">
+        <button class="nav-button prev" (click)="scrollLeft()" aria-label="Slide anterior">&#10094;</button>
+        <button class="nav-button next" (click)="scrollRight()" aria-label="Próximo slide">&#10095;</button>
         <div class="carousel-indicators">
-            <span class="indicator-dot" *ngFor="let item of images; let i = index" [class.active]="i === currentCardIndex" (click)="goToSlide(i)">
+            <span class="indicator-dot" *ngFor="let item of images; let i = index" [class.active]="i === currentCardIndex" (click)="goToSlide(i)" [attr.aria-label]="'Ir para o depoimento ' + (i + 1)" [attr.aria-current]="i === currentCardIndex ? 'true' : 'false'"
+                role="button">
         </span>
         </div>
         <div class="benefits-grid-container">
@@ -123,10 +124,10 @@
     <div class="partner-logos">
         <p class="confidence-text">Confiado por mais de 500 instituições em todo o Brasil</p>
         <div class="logo-list">
-            <button class="partner-btn">IFSP</button>
+            <button class="partner-btn">TriEduc</button>
             <button class="partner-btn">SENAI</button>
             <button class="partner-btn">SESI</button>
-            <button class="partner-btn">ETEC</button>
+            <button class="partner-btn">CEBRASPE</button>
         </div>
     </div>
 </section>

@@ -210,6 +210,20 @@ img {
 }
 
 
+/* Garante que o widget do VLibras fique sempre visível acima de tudo */
+
+[vw] {
+    z-index: 999999 !important;
+}
+
+
+/* Garante que o ícone de acesso também fique no topo */
+
+[vw-access-button] {
+    z-index: 999999 !important;
+}
+
+
 /* Utilities responsivas */
 
 @media (max-width: 768px) {

@@ -1,16 +1,13 @@
-    /* frontend/src/app/components/quadro-vantagens/quadro-vantagens.component.css */
+    /* frontend/src/app/components/sobre/sobre */
     /*
 * -----------------------------------------------------------
 * Variáveis e Seção Principal (Adaptação do modelo)
 * -----------------------------------------------------------
 */
-    /* No seu sobre.css */
     
     .platform-link-button {
-        /* NOVO: Usa Flexbox para alinhar ícone e texto */
         display: flex;
         align-items: center;
-        /* Centraliza verticalmente */
         color: var(--color-info-blue);
         background-color: var(--color-lighten-primary);
         padding: 8px 15px;
@@ -20,7 +17,6 @@
         text-decoration: none;
         margin-bottom: 20px;
     }
-    /* Novo seletor para estilizar o ícone dentro do link */
     
     .platform-link-button .lamp-icon {
         /* Define o tamanho do ícone */
@@ -29,7 +25,6 @@
         /* Adiciona margem para separar o ícone do texto */
         margin-right: 8px;
     }
-    /* Usa o fundo roxo claro do seu tema para esta seção (var(--color-background-detail)) */
     
     .about-section {
         padding: 80px 40px;
@@ -81,7 +76,6 @@
         bottom: 20px;
         right: 20px;
         background-color: var(--color-white);
-        /* Azul do modelo */
         color: var(black);
         padding: 15px 8px;
         border-radius: 10px;
@@ -224,11 +218,10 @@
 * SEÇÃO DEPOIMENTOS (Reutilização do Carrossel)
 * -----------------------------------------------------------
 */
-    /* No seu sobre.css, GARANTA que esta regra está correta: */
     
     .benefits-grid {
         display: flex;
-        /* CRUCIAL: Faz os itens ficarem lado a lado */
+        /* Faz os itens ficarem lado a lado */
         overflow-x: scroll;
         /* Habilita a rolagem lateral */
         scroll-snap-type: x mandatory;
@@ -273,7 +266,7 @@
     
     .benefit-card,
     .testimonial-card {
-        /* CRUCIAL: Força cada card a ter uma largura (85% no mobile, sem encolher) */
+        /* Força cada card a ter uma largura (85% no mobile, sem encolher) */
         flex: 0 0 85%;
         scroll-snap-align: center;
     }
@@ -286,22 +279,18 @@
             scroll-snap-align: start;
         }
     }
-    /* No seu sobre.css, no bloco do testimonial-card: */
     
     .testimonial-card {
-        /* CRUCIAL: Força o layout interno a empilhar corretamente */
+        /* orça o layout interno a empilhar corretamente */
         display: flex;
         flex-direction: column;
-        /* Demais estilos... */
         background-color: var(--color-white);
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         padding: 30px;
         justify-content: flex-start;
         min-height: 380px;
-        /* Altura generosa */
         position: relative;
-        /* ... */
         justify-content: space-between;
         text-align: left;
     }
@@ -310,7 +299,7 @@
         width: 55px;
         height: 55px;
         border-radius: 50%;
-        /* CRUCIAL: Torna a foto redonda */
+        /* Torna a foto redonda */
         object-fit: cover;
         margin-right: 15px;
         border: none;
@@ -337,7 +326,7 @@
         /* ... */
         position: relative;
         z-index: 1;
-        /* CRUCIAL: Coloca as estrelas e o texto acima da aspa */
+        /* Coloca as estrelas e o texto acima da aspa */
     }
     
     .testimonial-quote {
@@ -345,8 +334,7 @@
         position: relative;
         z-index: 1;
     }
-    /* No seu sobre.css, ajuste as regras abaixo: */
-    /* Nome do Autor (Maria Silva) - Roxo Escuro e Negrito */
+    /* --- Informações do Autor (Foto, Nome, Cargo, Empresa) --- */
     
     .author-name {
         font-weight: 700;
@@ -484,57 +472,6 @@
         max-width: 900px;
         /* Limita a largura máxima no desktop */
     }
-    /* -----------------LINHA------------------------------------------ */
-    /* ----------------------------------------------------------- */
-    /* .testimonial-card {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    min-height: 320px;
-    justify-content: space-between;
-    text-align: left;
-}
-
-.testimonial-card .rating {
-    color: gold;
-    font-size: 1.2em;
-    margin-bottom: 15px;
-}
-
-.testimonial-quote {
-    font-size: 1.1em;
-    color: var(--color-text-primary);
-    font-style: italic;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.author-info {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-top: auto;
-}
-
-.author-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-    border: 2px solid var(--color-light-primary);
-    padding: 2px;
-}
-
-.author-name {
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 0;
-}
-
-.author-role {
-    font-size: 0.85em;
-    color: var(--color-muted-text);
-    margin: 0;
-} */
     /* --- Seção de Marcas Parceiras --- */
     
     .partner-logos {
@@ -568,7 +505,7 @@
     /* --- ESTILOS ESPECÍFICOS PARA O MODO ESCURO (DEPOIMENTOS) --- */
     /* O seletor :host-context(.dark-theme) aplica estilos quando o body tem a classe 'dark-theme' */
     
-    :host-context(.dark-theme) {
+     :host-context(.dark-theme) {
         /* Força o fundo do card para um cinza/preto escuro diferente,
        que é mais agradável do que o fundo geral do body preto (#000000) */
         .testimonial-card {
@@ -678,7 +615,7 @@
         /* Botões de Navegação (Setas) */
         .nav-button {
             display: block !important;
-            /* CRUCIAL: Mostra as setas no desktop */
+            /* Mostra as setas no desktop */
             top: 50%;
             /* Traz para o centro vertical */
             transform: translateY(-50%);
