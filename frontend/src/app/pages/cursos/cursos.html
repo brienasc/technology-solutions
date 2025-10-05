@@ -1,133 +1,108 @@
 <app-header></app-header>
 <div class="cursos-container">
-  <!-- Seção do cabeçalho -->
-  <div class="header-section">
-    <div class="header-text-group">
-      <h1>Cursos</h1>
+    <div class="header-section">
+        <div class="header-text-group">
+            <h1>Cursos</h1>
+        </div>
+
+        <button class="create-course-button" (click)="openCursoDialog()" aria-label="Adicionar Novo Curso"> <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true" > <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Adicionar Curso
+        </button>
     </div>
 
-    <button class="create-course-button" (click)="openCursoDialog()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 4v16m8-8H4"
-        ></path>
-      </svg>
-      Adicionar Curso
-    </button>
-  </div>
+    <div class="message-container" *ngIf="showSuccessMessage || showErrorMessage">
+        <div class="success-message" *ngIf="showSuccessMessage" role="alert" aria-live="assertive">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg> {{ successMessageText }}
+        </div>
 
-  <!-- Mensagens de sucesso/erro globais -->
-  <div class="message-container" *ngIf="showSuccessMessage || showErrorMessage">
-    <div class="success-message" *ngIf="showSuccessMessage">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5 13l4 4L19 7"
-        ></path>
-      </svg>
-      {{ successMessageText }}
+        <div class="error-message" *ngIf="showErrorMessage" role="alert" aria-live="assertive">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg> {{ errorMessageText }}
+        </div>
     </div>
 
-    <div class="error-message" *ngIf="showErrorMessage">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        ></path>
-      </svg>
-      {{ errorMessageText }}
-    </div>
-  </div>
-
-  <!-- Container da tabela com controles integrados -->
-  <div class="table-container">
-    <!-- Controles DENTRO do container da tabela -->
-    <div class="table-controls">
-      <div class="left-controls">
-        <label for="statusFilter">Filtrar por Status:</label>
-        <select
-          id="statusFilter"
-          [(ngModel)]="statusFilter"
-          (change)="onStatusFilterChange()"
-        >
-          <option value="all">Todos</option>
+    <!-- Container da tabela com controles integrados -->
+    <div class="table-container">
+        <!-- Controles DENTRO do container da tabela -->
+        <div class="table-controls">
+            <div class="left-controls">
+                <label for="statusFilter">Filtrar por Status:</label>
+                <select id="statusFilter" [(ngModel)]="statusFilter" (change)="onStatusFilterChange()">
+          <option value="all">Todos </option>
           <option value="Ativo">Ativo</option>
           <option value="Inativo">Inativo</option>
         </select>
-      </div>
+            </div>
 
-      <div class="right-controls">
-        <label for="searchTerm">Buscar por Nome:</label>
-        <input
-          type="text"
-          id="searchTerm"
-          [(ngModel)]="searchTerm"
-          (input)="onSearchChange()"
-          placeholder="Digite o nome do curso"
-        />
-        <button class="export-button" (click)="exportToExcel()">Buscar</button>
-      </div>
-    </div>
+            <div class="right-controls">
+                <label for="searchTerm">Buscar por Nome:</label>
+                <input type="text" id="searchTerm" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Digite o nome do curso" />
+                <button class="export-button" (click)="exportToExcel()">Buscar</button>
+            </div>
+        </div>
 
-    <!-- Tabela de cursos -->
-    <div class="table-responsive">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>NOME</th>
-            <th>DESCRIÇÃO</th>
-            <th>CARGA HORÁRIA</th>
-            <th>STATUS</th>
-            <th class="text-center">AÇÕES</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="loading">
-            <td colspan="5" class="text-center">Carregando cursos...</td>
-          </tr>
-          <tr *ngIf="!loading && paginatedCursos.length === 0">
-            <td colspan="5" class="text-center">Nenhum curso encontrado.</td>
-          </tr>
-          <tr *ngFor="let curso of paginatedCursos">
-            <td>{{ curso.nome }}</td>
-            <td>{{ curso.descricao || "Sem descrição" }}</td>
-            <td>{{ curso.carga_horaria }}h</td>
-            <td>
-              <span
-                class="status-badge"
-                [ngClass]="curso.status ? 'status-ativo' : 'status-inativo'"
-              >
+        <div class="table-responsive">
+            <table class="data-table" aria-label="Lista de Cursos Cadastrados">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let curso of paginatedCursos">
+                        <td class="text-center">
+                            <button class="action-button edit-button" (click)="openCursoDialog(curso)" title="Editar {{ curso.nome }}" aria-label="Editar curso: {{ curso.nome }}"> 
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                    </button>
+                            <button class="action-button delete-button" (click)="deleteCurso(curso)" title="Deletar {{ curso.nome }}" aria-label="Deletar curso: {{ curso.nome }}">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tabela de cursos
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>NOME</th>
+                        <th>DESCRIÇÃO</th>
+                        <th>CARGA HORÁRIA</th>
+                        <th>STATUS</th>
+                        <th class="text-center">AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading">
+                        <td colspan="5" class="text-center">Carregando cursos...</td>
+                    </tr>
+                    <tr *ngIf="!loading && paginatedCursos.length === 0">
+                        <td colspan="5" class="text-center">Nenhum curso encontrado.</td>
+                    </tr>
+                    <tr *ngFor="let curso of paginatedCursos">
+                        <td>{{ curso.nome }}</td>
+                        <td>{{ curso.descricao || "Sem descrição" }}</td>
+                        <td>{{ curso.carga_horaria }}h</td>
+                        <td>
+                            <span class="status-badge" [ngClass]="curso.status ? 'status-ativo' : 'status-inativo'">
                 {{ curso.status ? "Ativo" : "Inativo" }}
               </span>
-            </td>
-            <td class="text-center">
-              <button
-                class="action-button edit-button"
-                (click)="openCursoDialog(curso)"
-                title="Editar"
-              >
+                        </td>
+                        <td class="text-center">
+                            <button class="action-button edit-button" (click)="openCursoDialog(curso)" title="Editar">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -142,11 +117,7 @@
                   ></path>
                 </svg>
               </button>
-              <button
-                class="action-button delete-button"
-                (click)="deleteCurso(curso)"
-                title="Deletar"
-              >
+                            <button class="action-button delete-button" (click)="deleteCurso(curso)" title="Deletar">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -161,33 +132,28 @@
                   ></path>
                 </svg>
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> -->
 
-    <!-- Paginator -->
-    <div class="pagination-container">
-      <div class="pagination-info">
-        <div class="items-per-page">
-          <label for="itemsPerPage">Itens por página:</label>
-          <select
-            id="itemsPerPage"
-            [(ngModel)]="itemsPerPage"
-            (change)="onPageSizeChange()"
-          >
+        <!-- Paginator -->
+        <div class="pagination-container">
+            <div class="pagination-info">
+                <div class="items-per-page">
+                    <label for="itemsPerPage">Itens por página:</label>
+                    <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange()">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>
           </select>
-        </div>
-      </div>
+                </div>
+            </div>
 
-      <div class="pagination-range">
-        <span
-          >{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span
+            <div class="pagination-range">
+                <span>{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span
         >
       </div>
 
@@ -199,6 +165,7 @@
           title="Primeira página"
         >
           <svg
+            aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -218,6 +185,7 @@
           title="Página anterior"
         >
           <svg
+            aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -237,6 +205,7 @@
           title="Próxima página"
         >
           <svg
+            aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -256,6 +225,7 @@
           title="Última página"
         >
           <svg
+          aria-hidden="true" 
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -355,70 +325,43 @@
         <span class="error-text" *ngIf="formErrors.nome">{{
           formErrors.nome
         }}</span>
-      </div>
+            </div>
 
-      <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <textarea
-          id="descricao"
-          [(ngModel)]="cursoForm.descricao"
-          class="form-control"
-          rows="3"
-          placeholder="Digite uma descrição para o curso"
-        ></textarea>
-      </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" [(ngModel)]="cursoForm.descricao" class="form-control" rows="3" placeholder="Digite uma descrição para o curso"></textarea>
+            </div>
 
-      <div class="form-group">
-        <label for="carga_horaria">Carga Horária (horas)</label>
-        <input
-          type="number"
-          id="carga_horaria"
-          [(ngModel)]="cursoForm.carga_horaria"
-          class="form-control"
-          [class.error]="formErrors.carga_horaria"
-          min="0"
-          placeholder="0"
-        />
-        <span class="error-text" *ngIf="formErrors.carga_horaria">{{
+            <div class="form-group">
+                <label for="carga_horaria">Carga Horária (horas)</label>
+                <input type="number" id="carga_horaria" [(ngModel)]="cursoForm.carga_horaria" class="form-control" [class.error]="formErrors.carga_horaria" min="0" placeholder="0" />
+                <span class="error-text" *ngIf="formErrors.carga_horaria">{{
           formErrors.carga_horaria
         }}</span>
-      </div>
+            </div>
 
-      <div class="form-group">
-        <label for="status">Status *</label>
-        <select
-          id="status"
-          [(ngModel)]="cursoForm.status"
-          class="form-select"
-          [class.error]="formErrors.status"
-        >
+            <div class="form-group">
+                <label for="status">Status *</label>
+                <select id="status" [(ngModel)]="cursoForm.status" class="form-select" [class.error]="formErrors.status">
           <option value="">Selecione um status</option>
           <option *ngFor="let status of statusOptions" [value]="status.value">
             {{ status.label }}
           </option>
         </select>
-        <span class="error-text" *ngIf="formErrors.status">{{
+                <span class="error-text" *ngIf="formErrors.status">{{
           formErrors.status
         }}</span>
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <div class="modal-actions">
-      <button
-        class="cancel-button"
-        (click)="closeCursoDialog()"
-        [disabled]="cursoLoading"
-      >
+        <div class="modal-actions">
+            <button class="cancel-button" (click)="closeCursoDialog()" [disabled]="cursoLoading">
         Cancelar
       </button>
-      <button
-        class="save-button"
-        (click)="saveCurso()"
-        [disabled]="cursoLoading"
-      >
+            <button class="save-button" (click)="saveCurso()" [disabled]="cursoLoading">
         <span *ngIf="cursoLoading" class="loading-spinner"></span>
         {{ isEditMode ? "Atualizar" : "Salvar" }}
       </button>
+        </div>
     </div>
-  </div>
 </div>
