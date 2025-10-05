@@ -327,6 +327,10 @@
         position: relative;
         z-index: 1;
         /* Coloca as estrelas e o texto acima da aspa */
+        margin-top: 40px;
+        color: gold;
+        font-size: 1.1em;
+        margin-bottom: 10px;
     }
     
     .testimonial-quote {

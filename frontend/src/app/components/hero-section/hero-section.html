@@ -1,26 +1,28 @@
-<section id="home" class="hero-section">
+<section id="home" class="hero-section" role="main" aria-label="Introdução e chamadas principais da Education Solutions">
     <div class="hero-content">
         <!-- Tagline Pequena (Rosa) -->
         <div class="hero-pre-tagline">Revolucione suas avaliações</div>
-       
+
         <!-- Título -->
         <h1>O que há de melhor em <span class="highlight-text">avaliação educacional</span></h1>
-       
+
         <p>Um hub completo que atua na resolução de todos os problemas dentro do ciclo avaliativo. Desenvolvido para aprimorar a criação de questões e avaliações para sua escola.</p>
 
 
         <!-- Botões -->
         <div class="cta-group">
-            <button class="primary-button">
-                Começar Gratuitamente
-                <!-- Ícone de seta -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </button>
-            <button class="secondary-button">
-                Ver Demonstração
-            </button>
+            <button class="primary-button" aria-label="Começar Gratuitamente Agora">
+    Começar Gratuitamente
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+</button>
+
+            <button class="secondary-button" aria-label="Ver a Demonstração do Produto">
+    Ver Demonstração
+</button>
         </div>
-       
+
+
+
         <!-- Estatísticas -->
         <div class="metrics-group">
             <div class="metric-item">
@@ -39,25 +41,26 @@
     </div>
 
 
-<!-- WRAPPER: É O PAI RELATIVO PARA POSICIONAR OS CARTÕES -->
-<div class="image-cards-wrapper">
-   
-    <div class="hero-image-container">
-        <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" alt="Colaboradores trabalhando"/>
+    <!-- WRAPPER: É O PAI RELATIVO PARA POSICIONAR OS CARTÕES -->
+    <div class="image-cards-wrapper">
+
+        <div class="hero-image-container">
+            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" alt="Equipe de colaboradores interagindo com a plataforma Education Solutions em um ambiente de escritório moderno" [attr.title]="'Equipe de colaboradores interagindo com a plataforma Education Solutions em um ambiente de escritório moderno'"
+            />
+        </div>
+
+        <!-- CARTÕES FLUTUANTES -->
+        <div class="floating-card top-left">
+            <span>Banco de Questões</span>
+            <small>+2.5k questões adicionadas</small>
+        </div>
+
+
+        <div class="floating-card bottom-right">
+            <span>Avaliação Dinâmica</span>
+            <small>Adaptação em tempo real</small>
+        </div>
+
     </div>
 
-    <!-- CARTÕES FLUTUANTES -->
-    <div class="floating-card top-left">
-        <span>Banco de Questões</span>
-        <small>+2.5k questões adicionadas</small>
-    </div>
-
-
-    <div class="floating-card bottom-right">
-        <span>Avaliação Dinâmica</span>
-        <small>Adaptação em tempo real</small>
-    </div>
-
-</div>
-   
 </section>
