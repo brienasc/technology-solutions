@@ -12,8 +12,10 @@ import { CommonModule } from '@angular/common'; // Necessário para *ngIf
 })
 export class AccessibilityBarComponent implements OnInit {
   isMenuOpen: boolean = false;
-  isHighContrast: boolean = false;
+  isHighContrast: boolean = false; // Estado do alto contraste
+  // Estado do tema escuro/claro
   isDarkTheme: boolean = false;
+ 
 
   constructor(private renderer: Renderer2) {}
 
@@ -40,6 +42,9 @@ export class AccessibilityBarComponent implements OnInit {
     // Carrega o estado do Tema Escuro e Contraste do LocalStorage ao iniciar
     this.isHighContrast = localStorage.getItem('contrast') === 'high';
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
+    // Carrega o estado do Contraste do LocalStorage
+  this.isHighContrast = localStorage.getItem('contrast') === 'high';
+  this.applyContrastClass();
     
     // Aplica as classes iniciais para garantir que o tema persista na recarga
     this.applyContrastClass();

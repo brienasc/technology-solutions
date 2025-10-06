@@ -1,6 +1,74 @@
 /* src/app/components/accessibility-bar/accessibility-bar.css */
 
 
+/* --- REGRAS DE ALTO CONTRASTE PARA O MENU DE ACESSIBILIDADE --- */
+
+:host-context(.high-contrast) {
+    /* Regra para o indicador de tamanho de fonte */
+    .font-size-indicator {
+        /* Fundo do indicador deve ser Preto */
+        background-color: black !important;
+        /* Texto deve ser Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Garante que o separador lateral também seja branco */
+        border-color: white !important;
+    }
+    /* Regra para os botões internos do controle de fonte (- e +) */
+    .font-size-control .font-btn {
+        background: black !important;
+        color: var(--color-highlight-neon) !important;
+    }
+    /* 1. BOTÃO DE TOGGLE FIXO (O ícone "Acessibilidade" na lateral) */
+    .access-menu-toggle-fixed {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto/Ícone Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    .access-menu-toggle-fixed svg {
+        fill: var(--color-highlight-neon) !important;
+        color: var(--color-highlight-neon) !important;
+    }
+    /* 2. BARRA COMPLETA (Fundo Preto) */
+    .accessibility-bar-overlay {
+        background-color: black !important;
+        border-bottom: 2px solid white !important;
+    }
+    /* Títulos e Instruções (Texto Amarelo/Branco) */
+    .access-title,
+    .access-title svg,
+    .access-instruction {
+        color: white !important;
+        /* Texto principal em branco */
+        fill: white !important;
+    }
+    /* 3. BOTÕES DE CONTROLE (Auto Contraste, VLibras, Reset, X) */
+    .access-controls-group button,
+    .access-close-btn {
+        /* Cor de destaque para todos os botões de ação na barra */
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        /* Texto/Ícone Amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Estilo para a caixa de tamanho de fonte */
+    .font-size-control {
+        background-color: black !important;
+        border-color: var(--color-highlight-neon) !important;
+    }
+    /* Mover para Branco no Hover para feedback de contraste */
+    .access-controls-group button:hover,
+    .access-close-btn:hover {
+        background-color: white !important;
+        color: black !important;
+        border-color: white !important;
+    }
+}
+
+
 /* --- NOVO: BOTÃO DE TOGGLE QUE FICA NO CANTO --- */
 
 .access-menu-toggle-fixed {

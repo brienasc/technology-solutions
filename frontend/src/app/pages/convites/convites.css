@@ -1,5 +1,97 @@
 /* frontend/src/app/pages/convites/convites.component.css */
 
+
+/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA O MENU CONVITES --- */
+
+:host-context(.high-contrast) {
+    /* Título principal H1 (Menu Convites) */
+    .header-section h1 {
+        /* CRUCIAL: Forçar a cor do título para Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Subtítulo (Gerencie seus convites...) */
+    .header-section p.subtitle {
+        color: white !important;
+        /* Texto secundário em branco */
+    }
+    /* Rótulos de Filtro (Filtrar por Status) */
+    /* Se a cor for fixa, force-a aqui. Geralmente usa-se a cor do h1. */
+    label {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Garante que o fundo da página (se não for preto pelo body) seja preto */
+    .convites-container {
+        background-color: black !important;
+    }
+    /* 1. SEÇÃO DO CABEÇALHO E LINHA DECORATIVA */
+    .header-section {
+        background-color: black !important;
+        border-bottom-color: white !important;
+        /* Borda branca */
+    }
+    /* Linha Decorativa (o gradiente roxo) */
+    .header-section::after {
+        /* Mudar para uma cor sólida amarela neon */
+        background: var(--color-highlight-neon) !important;
+        height: 3px !important;
+        border-radius: 0 !important;
+    }
+    /* 2. BOTÃO PRINCIPAL ("Criar Novo Convite") */
+    .create-invite-button {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Borda Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Garante que o ícone (SVG) dentro do botão seja Amarelo Neon */
+    .create-invite-button svg {
+        fill: var(--color-highlight-neon) !important;
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Hover do botão principal */
+    .create-invite-button:hover {
+        background-color: #333 !important;
+        color: white !important;
+    }
+    /* 3. BOTÃO VOLTAR */
+    .back-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* 4. MODAL DE CONVITE (Header) */
+    .modal-dialog {
+        background-color: black !important;
+        border: 2px solid white !important;
+    }
+    .modal-header {
+        background: black !important;
+        /* Anula o gradiente roxo */
+        color: white !important;
+        border-bottom: 1px solid white !important;
+    }
+    .modal-header h2 {
+        color: white !important;
+    }
+    .modal-header svg {
+        fill: white !important;
+    }
+    /* Botões internos do modal (Cancelar/Enviar) - Reutiliza os estilos de btn-primary/secundário se aplicável, senão use: */
+    .modal-actions .cancel-button {
+        background-color: black !important;
+        color: white !important;
+        border: 2px solid white !important;
+    }
+    .modal-actions .send-button {
+        background-color: var(--color-highlight-neon) !important;
+        color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+}
+
 body,
 .page-wrapper {
     /* Adiciona um padding no topo igual à altura da barra (60px) */

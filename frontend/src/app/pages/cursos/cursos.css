@@ -1,3 +1,66 @@
+/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA O MENU CURSOS --- */
+
+:host-context(.high-contrast) {
+    /* Aplica a regra de Alto Contraste ao botão "Cursos" */
+    .nav-cursos-btn {
+        /* ANULAÇÃO DO FUNDO: Força a cor para PRETO e garante que qualquer gradiente seja ignorado */
+        background: black !important;
+        background-color: black !important;
+        /* Força a cor sólida */
+        /* COR DO TEXTO E ÍCONE: Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* BORDA: Amarelo Neon (para o contraste) */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Remove sombras e outros decorações fixas */
+        box-shadow: none !important;
+    }
+    /* Garante que o ícone do livro também seja amarelo neon */
+    .nav-cursos-btn svg {
+        fill: var(--color-highlight-neon) !important;
+    }
+    /* Fundo da Seção Principal e Containers para Preto */
+    .cursos-container,
+    .header-section {
+        background-color: black !important;
+        border-bottom-color: white !important;
+    }
+    /* Linha Decorativa do Título (Mudar para Amarelo Neon) */
+    .header-section::after {
+        background: var(--color-highlight-neon) !important;
+        height: 3px !important;
+        border-radius: 0 !important;
+    }
+    /* Título H1 (Cursos) */
+    .header-section h1 {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Botão "Adicionar Curso" (Botão Primário) */
+    .create-course-button {
+        background-color: var(--color-highlight-neon) !important;
+        color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Ícone (+) do botão "Adicionar Curso" */
+    .create-course-button svg {
+        stroke: black !important;
+        color: black !important;
+    }
+    .create-course-button:hover {
+        background-color: white !important;
+        color: black !important;
+    }
+    /* Input de Busca */
+    .search-bar input {
+        background: black !important;
+        color: white !important;
+        border-color: white !important;
+    }
+    .search-bar input::placeholder {
+        color: #999 !important;
+    }
+}
+
 body,
 .page-wrapper {
     /* Adiciona um padding no topo igual à altura da barra (60px) */

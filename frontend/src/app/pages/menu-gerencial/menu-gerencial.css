@@ -1,3 +1,163 @@
+/* --- REGRAS DE ALTO CONTRASTE PARA O MENU GERENCIAL --- */
+
+
+/* No seu lista-colaboradores.component.css, dentro do :host-context(.high-contrast) */
+
+
+/* Botão Convidar Colaborador */
+
+
+/* 1. Botões de Ação Principais (Convidar e Exportar) */
+
+:host-context(.high-contrast) .invite-button,
+:host-context(.high-contrast) .export-button {
+    /* Forçando o Fundo para Preto */
+    background-color: black !important;
+    /* Texto Amarelo Neon */
+    color: var(--color-highlight-neon) !important;
+    /* Borda Amarelo Neon */
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+}
+
+
+/* 2. Ícones internos (ícone de pessoa e planilha) */
+
+:host-context(.high-contrast) .invite-button svg,
+:host-context(.high-contrast) .export-button svg {
+    /* Garante que o ícone também seja amarelo neon */
+    fill: var(--color-highlight-neon) !important;
+    color: var(--color-highlight-neon) !important;
+    stroke: var(--color-highlight-neon) !important;
+}
+
+
+/* 3. Botões de Detalhes na Tabela (Se forem controlados aqui) */
+
+:host-context(.high-contrast) .details-button {
+    background-color: black !important;
+    color: var(--color-highlight-neon) !important;
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+}
+
+
+/* 4. Paginação (Se for controlada aqui) */
+
+:host-context(.high-contrast) .pagination-controls .pagination-btn {
+    background-color: black !important;
+    color: var(--color-highlight-neon) !important;
+    border: 2px solid var(--color-highlight-neon) !important;
+}
+
+
+/* 1. Botões de Ação Principais (Convidar e Exportar) */
+
+.invite-button,
+.export-button {
+    /* Fundo Preto */
+    background-color: black !important;
+    /* Texto Amarelo Neon */
+    color: var(--color-highlight-neon) !important;
+    /* Borda Amarelo Neon (Contraste) */
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+
+/* Garante que o ícone (SVG) dentro do botão seja Amarelo Neon */
+
+.invite-button svg,
+.export-button svg {
+    fill: var(--color-highlight-neon) !important;
+    color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) {
+    /* Garante que o container da página tenha o fundo preto */
+    background-color: black !important;
+}
+
+
+/* No seu lista-colaboradores.component.css, dentro do :host-context(.high-contrast) */
+
+.pagination-controls .pagination-btn {
+    /* Fundo Preto */
+    background-color: black !important;
+    /* Ícone (seta) Amarelo Neon */
+    color: var(--color-highlight-neon) !important;
+    /* Borda Amarelo Neon */
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+}
+
+
+/* 3. Botões de Detalhes na Tabela (que estão roxos) */
+
+.details-button {
+    background-color: black !important;
+    color: var(--color-highlight-neon) !important;
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+}
+
+
+/* Estilo para o botão desabilitado */
+
+.pagination-controls .pagination-btn:disabled {
+    background-color: #333 !important;
+    /* Fundo cinza escuro para desabilitado */
+    color: #888 !important;
+    /* Ícone cinza */
+    border-color: #555 !important;
+}
+
+
+/* Fundo do Título (Menu Gerencial) */
+
+:host-context(.high-contrast) .menu-gerencial-title {
+    /* Fundo Preto */
+    background: black !important;
+    background-color: black !important;
+    /* Borda branca/amarela (usa a global se definida, ou forçamos) */
+    border-bottom: 2px solid white !important;
+}
+
+
+/* Título Principal (Menu Gerencial) */
+
+:host-context(.high-contrast) .menu-gerencial-title h1 {
+    color: white !important;
+}
+
+
+/* Subtítulo (Gerencie colaboradores e suas permissões) */
+
+:host-context(.high-contrast) .menu-gerencial-title p {
+    color: white !important;
+}
+
+
+/* Linha Decorativa (o gradiente roxo) */
+
+:host-context(.high-contrast) .menu-gerencial-title::after {
+    /* Mudar para uma cor sólida amarela neon */
+    background: var(--color-highlight-neon) !important;
+    height: 3px !important;
+    /* Deixa a linha mais visível */
+    border-radius: 0 !important;
+    /* Opcional: remove o arredondamento */
+}
+
+
+/* Contêiner principal (Para garantir que a lista de colaboradores tenha fundo preto) */
+
+:host-context(.high-contrast) .menu-gerencial-container {
+    background-color: black !important;
+    color: white !important;
+}
+
 body,
 .page-wrapper {
     /* Adiciona um padding no topo igual à altura da barra (60px) */
