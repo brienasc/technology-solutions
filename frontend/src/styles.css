@@ -290,6 +290,44 @@ body.high-contrast .about-section {
 /* Fim de Contrastes */
 
 
+/* --- CLASSES GLOBAIS PARA AUMENTO DE FONTE (styles.css) --- */
+
+
+/* Nível 1: +2px */
+
+body.font-size-level-1 {
+    font-size: calc(100% + 2px);
+    /* Aumenta 2px no tamanho base (16px + 2px) */
+}
+
+
+/* Nível 2: +4px */
+
+body.font-size-level-2 {
+    font-size: calc(100% + 4px);
+    /* Aumenta 4px no tamanho base */
+}
+
+
+/* Nível 3: +6px (Máximo) */
+
+body.font-size-level-3 {
+    font-size: calc(100% + 6px);
+    /* Aumenta 6px no tamanho base */
+}
+
+
+/* Garante que o Alto Contraste não anule o tamanho da fonte */
+
+body.high-contrast.font-size-level-1 {
+    font-size: calc(100% + 2px) !important;
+}
+
+body.high-contrast.font-size-level-3 {
+    font-size: calc(100% + 6px) !important;
+}
+
+
 /* Utilities responsivas */
 
 @media (max-width: 768px) {
