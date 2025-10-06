@@ -35,10 +35,20 @@
             </button>
 
             <div class="font-size-control">
+                <button mat-icon-button color="basic" class="font-btn minus-btn" (click)="decreaseFontSize()" [disabled]="fontSizeLevel === MIN_FONT_LEVEL" aria-label="Diminuir tamanho da fonte" title="Diminuir Fonte">
+                    —
+                </button>
+                <span class="font-size-indicator">{{ displayFontSize }}</span>
+                <button mat-icon-button color="basic" class="font-btn plus-btn" (click)="increaseFontSize()" [disabled]="fontSizeLevel === MAX_FONT_LEVEL" aria-label="Aumentar tamanho da fonte" title="Aumentar Fonte">
+                    +
+                </button>
+            </div>
+
+            <!-- <div class="font-size-control">
                 <button class="font-btn minus-btn" aria-label="Diminuir tamanho da fonte" title="Diminuir Fonte"> - </button>
                 <span class="font-size-indicator">16px</span>
                 <button class="font-btn plus-btn" aria-label="Aumentar tamanho da fonte" title="Aumentar Fonte"> + </button>
-            </div>
+            </div> -->
 
             <button onclick="document.querySelector('[vw-access-button]').click()" class="control-btn vlibras-btn" aria-label="Ativar Tradutor VLibras" title="VLibras">
                 VLibras

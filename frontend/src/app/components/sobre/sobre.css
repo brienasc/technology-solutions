@@ -1,5 +1,7 @@
     /* frontend/src/app/components/sobre/sobre */
     /*
+
+    
 * -----------------------------------------------------------
 * Variáveis e Seção Principal (Adaptação do modelo)
 * -----------------------------------------------------------
@@ -81,6 +83,8 @@
         /* Remove gradientes e text-fill-color transparentes */
         background: none !important;
         -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        /* Compatibilidade padrão */
         -webkit-text-fill-color: var(--color-highlight-neon) !important;
     }
     /* Cartões Flutuantes no modo Alto Contraste */
@@ -174,11 +178,13 @@
      :host-context(.high-contrast) .platform-link-button svg path {
         fill: var(--color-highlight-neon) !important;
     }
+    /* Corrigir a cor do Cargo */
     
-    .author-company,
     .author-role {
-        color: white !important;
-        /* Mantém o texto secundário branco */
+        font-size: 0.85em;
+        color: var(--color-secondary) !important;
+        /* Roxo Médio */
+        margin: 0;
     }
     /* O texto principal do H1 já será amarelo neon pelas regras globais */
     /* O texto principal do H1 já será amarelo neon pelas regras globais */
@@ -435,7 +441,6 @@
         flex: 0 0 85%;
         scroll-snap-align: center;
     }
-    /* Garante que os cards no desktop mostrem 3 por vez */
     
     @media (min-width: 1200px) {
         .benefit-card,
@@ -510,13 +515,6 @@
         color: var(--color-primary);
         margin: 0;
         line-height: 1.3;
-    }
-    /* Cargo (Diretora Pedagógica) - Roxo Médio/Claro (Secondary) */
-    
-    .author-role {
-        font-size: 0.85em;
-        color: var(--color-secondary);
-        margin: 0;
     }
     /* Instituição (Colégio Excelência) - Roxo Médio/Claro (Light-Primary) */
     
@@ -702,19 +700,6 @@
         }
         /* --- Informações do Autor (Texto) --- */
         /* Nome do Autor - Roxo Claro do tema */
-        .author-name {
-            color: var(--color-lighten-primary) !important;
-        }
-        /* Cargo/Instituição - Texto mais claro */
-        .author-role,
-        .author-company {
-            color: var(--color-muted-text) !important;
-            /* Cinza Claro */
-        }
-        /* Linha divisória acima do autor */
-        .author-info {
-            border-top: 1px solid #555 !important;
-        }
         /* Botões de navegação (Setas) */
         .nav-button {
             background-color: #333 !important;
