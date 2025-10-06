@@ -1,4 +1,12 @@
+body,
+.page-wrapper {
+    /* Adiciona um padding no topo igual à altura da barra (60px) */
+    padding-top: 60px;
+}
+
+
 /* Estilos para o contêiner principal da tela de cursos */
+
 .cursos-container {
     max-width: 2000px;
     margin: 40px auto;
@@ -11,7 +19,9 @@
     font-family: var(--font-nunito-sans);
 }
 
+
 /* Estilos para a seção do cabeçalho */
+
 .header-section {
     background-color: var(--theme-background);
     border-bottom: 1px solid var(--theme-input-border);
@@ -60,7 +70,9 @@
     transition: background 0.5s ease;
 }
 
+
 /* Botão "Adicionar Curso" */
+
 .create-course-button {
     display: flex;
     align-items: center;
@@ -86,7 +98,9 @@
     color: var(--color-white);
 }
 
+
 /* Controles e filtros */
+
 .controls-section {
     display: flex;
     justify-content: space-between;
@@ -197,83 +211,98 @@
     height: 1rem;
 }
 
+
 /* Tabela */
+
 .table-responsive {
     overflow-x: auto;
     margin-bottom: 20px;
 }
 
 .data-table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .data-table th,
 .data-table td {
-  padding: 12px 15px;
-  text-align: left;
-  font-size: 0.95em;
-  color: var(--theme-body-text);
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 0.95em;
+    color: var(--theme-body-text);
 }
 
 .data-table th {
-  background: var(--theme-form-bg);
-  color: var(--theme-heading-text);
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--theme-border-color);
+    background: var(--theme-form-bg);
+    color: var(--theme-heading-text);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--theme-border-color);
 }
 
 .data-table td {
-  color: var(--theme-body-text);
+    color: var(--theme-body-text);
 }
 
+
 /* Linhas divisórias */
+
 .data-table tbody tr {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.144) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.144) !important;
 }
 
 .data-table tbody tr:last-child {
-  border-bottom: none !important;
+    border-bottom: none !important;
 }
 
+
 /* Para tema escuro */
+
 body.dark-theme .data-table tbody tr,
 [data-theme="dark"] .data-table tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 body.dark-theme .data-table tbody tr:last-child,
 [data-theme="dark"] .data-table tbody tr:last-child {
-  border-bottom: none !important;
+    border-bottom: none !important;
 }
+
 
 /* Hover effect */
+
 .data-table tbody tr:hover {
-  background-color: var(--theme-background);
+    background-color: var(--theme-background);
 }
 
+
 /* Para tema escuro */
+
 body.dark-theme .data-table tbody tr,
 [data-theme="dark"] .data-table tbody tr {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
 }
 
 body.dark-theme .data-table tbody tr:last-child,
 [data-theme="dark"] .data-table tbody tr:last-child {
-  border-bottom: none !important;
+    border-bottom: none !important;
 }
+
 
 /* Hover no tema escuro */
+
 body.dark-theme .data-table tbody tr:hover,
 [data-theme="dark"] .data-table tbody tr:hover {
-  background-color: var(--theme-card-bg);
+    background-color: var(--theme-card-bg);
 }
 
+
 /* Badges */
-.status-badge, .modalidade-badge {
+
+.status-badge,
+.modalidade-badge {
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 0.85em;
@@ -303,7 +332,9 @@ body.dark-theme .data-table tbody tr:hover,
     color: var(--color-text-dark);
 }
 
+
 /* Botões de ação */
+
 .action-button {
     background: none;
     border: none;
@@ -335,7 +366,9 @@ body.dark-theme .data-table tbody tr:hover,
     height: 16px;
 }
 
+
 /* Paginação */
+
 .pagination-controls {
     display: flex;
     justify-content: center;
@@ -371,7 +404,9 @@ body.dark-theme .data-table tbody tr:hover,
     color: var(--theme-body-text);
 }
 
+
 /* Botão voltar */
+
 .back-button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -389,7 +424,9 @@ body.dark-theme .data-table tbody tr:hover,
     color: var(--color-white);
 }
 
+
 /* Modal */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -528,7 +565,9 @@ body.dark-theme .data-table tbody tr:hover,
     min-height: 80px;
 }
 
+
 /* Selects do modal */
+
 .form-select {
     width: 100%;
     padding: 0.75rem;
@@ -539,7 +578,6 @@ body.dark-theme .data-table tbody tr:hover,
     color: var(--theme-body-text);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
-    
     background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
     background-repeat: no-repeat;
     background-position: right 1rem center;
@@ -642,7 +680,9 @@ body.dark-theme .data-table tbody tr:hover,
     }
 }
 
+
 /* Mensagens estilizadas */
+
 .message-container {
     margin-bottom: 1rem;
 }
@@ -677,7 +717,9 @@ body.dark-theme .data-table tbody tr:hover,
     flex-shrink: 0;
 }
 
+
 /* Tema escuro */
+
 body.dark-theme .header-section {
     background-color: var(--theme-background) !important;
     border-bottom-color: var(--theme-input-border) !important;
@@ -719,45 +761,39 @@ body.dark-theme .form-select option,
     color: var(--theme-body-text);
 }
 
+
 /* Responsividade */
+
 @media (max-width: 768px) {
     .cursos-container {
         margin: 20px;
         padding: 15px;
     }
-    
     .header-section {
         flex-direction: column;
         align-items: flex-start;
     }
-    
     .controls-section {
         flex-direction: column;
         gap: 1rem;
     }
-    
     .search-container {
         max-width: 100%;
     }
-    
     .filters-and-actions {
         width: 100%;
         justify-content: space-between;
     }
-    
     .filters-container {
         flex: 1;
     }
-    
     .modal-dialog {
         width: 95%;
         margin: 20px;
     }
-    
     .cursos-table {
         font-size: 0.85rem;
     }
-    
     .cursos-table th,
     .cursos-table td {
         padding: 8px;
@@ -768,17 +804,14 @@ body.dark-theme .form-select option,
     .header-section h1 {
         font-size: 1.8em;
     }
-    
     .create-course-button {
         font-size: 0.9em;
         padding: 10px 15px;
     }
-    
     .filters-container {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
     .filters-container select {
         min-width: auto;
         width: 100%;
@@ -786,206 +819,223 @@ body.dark-theme .form-select option,
 }
 
 .table-container {
-  background: var(--theme-form-bg);
-  border-radius: 8px;
-  border: 1px solid var(--theme-border-color);
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--theme-form-bg);
+    border-radius: 8px;
+    border: 1px solid var(--theme-border-color);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid var(--theme-border-color);
-  background: var(--theme-card-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--theme-border-color);
+    background: var(--theme-card-bg);
 }
 
-.left-controls, .right-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.left-controls,
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .table-controls label {
-  font-weight: 500;
-  color: var(--theme-heading-text);
-  white-space: nowrap;
+    font-weight: 500;
+    color: var(--theme-heading-text);
+    white-space: nowrap;
 }
 
 .table-controls select,
 .table-controls input {
-  padding: 8px 12px;
-  border: 1px solid var(--theme-border-color);
-  border-radius: 4px;
-  background: var(--theme-input-bg);
-  color: var(--theme-text);
+    padding: 8px 12px;
+    border: 1px solid var(--theme-border-color);
+    border-radius: 4px;
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
 }
 
 .export-button {
-  background: #7c3aed;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
+    background: #7c3aed;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
 }
 
 .export-button:hover {
-  background: #6d28d9;
+    background: #6d28d9;
 }
+
 
 /* ===================== PAGINATOR CUSTOMIZADO ===================== */
 
 .pagination-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: var(--theme-card-bg);
-  border-top: 1px solid var(--theme-border-color);
-  border-radius: 0 0 8px 8px;
-  font-size: 14px;
-  color: var(--theme-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: var(--theme-card-bg);
+    border-top: 1px solid var(--theme-border-color);
+    border-radius: 0 0 8px 8px;
+    font-size: 14px;
+    color: var(--theme-text);
 }
 
+
 /* ESQUERDA - Items por página */
+
 .pagination-info {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .items-per-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .items-per-page label {
-  font-weight: 500;
-  color: var(--theme-text);
-  white-space: nowrap;
+    font-weight: 500;
+    color: var(--theme-text);
+    white-space: nowrap;
 }
 
 .items-per-page select {
-  padding: 4px 8px;
-  border: 1px solid var(--theme-border-color);
-  border-radius: 4px;
-  background: var(--theme-input-bg);
-  color: var(--theme-text);
-  font-size: 14px;
-  min-width: 56px;
-  cursor: pointer;
+    padding: 4px 8px;
+    border: 1px solid var(--theme-border-color);
+    border-radius: 4px;
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
+    font-size: 14px;
+    min-width: 56px;
+    cursor: pointer;
 }
 
 .items-per-page select:focus {
-  outline: none;
-  border-color: var(--theme-primary-color, #7c3aed);
-  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+    outline: none;
+    border-color: var(--theme-primary-color, #7c3aed);
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
+
 
 /* CENTRO - Range de itens */
+
 .pagination-range {
-  flex: 1;
-  text-align: center;
-  font-weight: 500;
-  color: var(--theme-text);
+    flex: 1;
+    text-align: center;
+    font-weight: 500;
+    color: var(--theme-text);
 }
+
 
 /* DIREITA - Controles de navegação */
+
 .pagination-controls {
-  display: flex;
-  gap: 4px;
-  align-items: center;
+    display: flex;
+    gap: 4px;
+    align-items: center;
 }
+
 
 /* Botões de navegação */
+
 .pagination-btn {
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--theme-border-color);
-  background: var(--theme-button-bg, #f3f4f6);
-  color: var(--theme-text);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--theme-border-color);
+    background: var(--theme-button-bg, #f3f4f6);
+    color: var(--theme-text);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
 }
+
 
 /* Hover dos botões */
+
 .pagination-btn:not(:disabled):hover {
-  background: var(--theme-button-hover, #e5e7eb);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--theme-button-hover, #e5e7eb);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Botões desabilitados */
+
 .pagination-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background: var(--theme-button-bg, #f9fafb);
-  transform: none;
-  box-shadow: none;
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--theme-button-bg, #f9fafb);
+    transform: none;
+    box-shadow: none;
 }
+
 
 /* Ícones dos botões */
+
 .pagination-btn svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
 }
+
 
 /* ===================== RESPONSIVIDADE ===================== */
+
 @media (max-width: 768px) {
-  .pagination-container {
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    align-items: center;
-  }
-  
-  .pagination-info {
-    order: 1;
-  }
-  
-  .pagination-range {
-    order: 2;
-    text-align: center;
-  }
-  
-  .pagination-controls {
-    order: 3;
-  }
+    .pagination-container {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        align-items: center;
+    }
+    .pagination-info {
+        order: 1;
+    }
+    .pagination-range {
+        order: 2;
+        text-align: center;
+    }
+    .pagination-controls {
+        order: 3;
+    }
 }
 
+
 /* ===================== TEMA ESCURO ===================== */
+
 body.dark-theme .pagination-container,
 [data-theme="dark"] .pagination-container {
-  background: var(--theme-card-bg);
-  color: var(--theme-text);
-  border-color: var(--theme-border-color);
+    background: var(--theme-card-bg);
+    color: var(--theme-text);
+    border-color: var(--theme-border-color);
 }
 
 body.dark-theme .items-per-page select,
 [data-theme="dark"] .items-per-page select {
-  background: var(--theme-input-bg);
-  color: var(--theme-text);
-  border-color: var(--theme-border-color);
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
+    border-color: var(--theme-border-color);
 }
 
 body.dark-theme .pagination-btn,
 [data-theme="dark"] .pagination-btn {
-  background: var(--theme-button-bg);
-  color: var(--theme-text);
-  border-color: var(--theme-border-color);
+    background: var(--theme-button-bg);
+    color: var(--theme-text);
+    border-color: var(--theme-border-color);
 }
 
 body.dark-theme .pagination-btn:not(:disabled):hover,
 [data-theme="dark"] .pagination-btn:not(:disabled):hover {
-  background: var(--theme-button-hover);
+    background: var(--theme-button-hover);
 }
