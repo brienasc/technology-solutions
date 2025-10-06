@@ -37,7 +37,6 @@ interface Colaborador {
   imports: [
     CommonModule,
     FormsModule,
-
     Header,
     LowerCasePipe
 

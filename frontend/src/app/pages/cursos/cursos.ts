@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { CursoService, CursosIndex } from '../../services/curso.service';
 import { Curso } from '../../interfaces/curso.interface';
 import { Header } from '../../components/header/header';
+import { AccessibilityBarComponent } from "../../components/accessibility-bar/accessibility-bar";
 
 @Component({
   selector: 'app-cursos',
   standalone: true,
-  imports: [CommonModule, FormsModule, Header],
+  imports: [CommonModule, FormsModule, Header, AccessibilityBarComponent],
   templateUrl: './cursos.html',
   styleUrls: ['./cursos.css']
 })

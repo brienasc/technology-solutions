@@ -10,13 +10,14 @@ import { ListaConvitesComponent } from '../lista-convites/lista-convites';
 import { FormsModule } from '@angular/forms';
 import { Header } from '../../components/header/header';
 import { HttpClient } from '@angular/common/http';
+import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
 
 type Opcao = { id: number | string; nome: string };
 
 @Component({
   selector: 'app-convites',
   standalone: true,
-  imports: [CommonModule, ListaConvitesComponent, FormsModule, Header],
+  imports: [CommonModule, ListaConvitesComponent, FormsModule, Header, AccessibilityBarComponent],
   templateUrl: './convites.html', // Caminho para o template HTML
   styleUrls: ['./convites.css'] // Caminho para os estilos CSS
 })

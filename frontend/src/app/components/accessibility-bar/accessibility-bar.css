@@ -1,0 +1,213 @@
+/* src/app/components/accessibility-bar/accessibility-bar.css */
+
+
+/* --- NOVO: BOTÃO DE TOGGLE QUE FICA NO CANTO --- */
+
+.access-menu-toggle-fixed {
+    position: fixed;
+    top: 0;
+    /* Colado no topo */
+    left: 0;
+    /* Colado na esquerda */
+    z-index: 9999;
+    /* Estilo do seu botão lateral do modelo (Roxo Escuro) */
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    width: 110px;
+    /* Tamanho pequeno */
+    height: 30px;
+    /* Altura da barra */
+    border-bottom-right-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    /* Gira o ícone para caber no pequeno espaço verticalmente */
+    transform: none;
+    /* Estilos do ícone de acessibilidade (ajuste conforme seu SVG) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 5px;
+}
+
+.access-menu-toggle-fixed svg {
+    width: 28px;
+    /* Aumenta o ícone */
+    height: 28px;
+    margin-bottom: 5px;
+}
+
+.access-menu-toggle-fixed .toggle-text {
+    font-size: 0.75em;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+}
+
+
+/* --- FIM DO BOTÃO DE TOGGLE --- */
+
+
+/* --- BARRA COMPLETA --- */
+
+.accessibility-bar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    /* Altura da barra fixa */
+    z-index: 9998;
+    /* Um nível abaixo do botão de toggle */
+    /* ESTADO FECHADO (Invisível) */
+    transform: translateX(-100%);
+    /* Desliza a barra inteira para fora da tela */
+    background-color: var(--color-background-detail);
+    /* Seu roxo/lilás */
+    color: var(--color-primary);
+    transition: transform 0.3s ease;
+}
+
+
+/* ESTADO ABERTO */
+
+.accessibility-bar-overlay.open {
+    transform: translateX(0);
+    /* Desliza a barra para dentro da tela */
+}
+
+
+/* O container principal que desliza/flutua */
+
+.accessibility-bar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* Altura inicial (pode ser ajustada) */
+    height: 60px;
+    z-index: 9999;
+    background-color: var(--color-lighten-primary);
+    /* Seu roxo/lilás de fundo da barra */
+    color: var(--color-primary);
+    /* Texto principal na cor roxa */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Estado inicial: Desliza para fora da tela (Opcional se quiser começar fechada) */
+    /* transform: translateY(-100%); */
+    transition: transform 0.3s ease, height 0.3s ease;
+}
+
+
+/* Container interno (Limita a largura e alinha o conteúdo) */
+
+.access-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1300px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+/* Toggle do Menu: Este é o botão que abre a barra se você decidir escondê-la */
+
+
+/* Se a barra for sempre aberta, você pode remover a animação e o toggle */
+
+
+/* Lado Esquerdo: Título e Instruções */
+
+.access-header-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.access-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 0;
+}
+
+.access-title svg {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    fill: var(--color-primary);
+}
+
+.access-instruction {
+    font-size: 0.75em;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+}
+
+
+/* Lado Direito: Controles */
+
+.access-controls-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* Estilo para Botões de Controle Genéricos */
+
+.control-btn {
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 1px solid var(--color-light-gray);
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+
+/* Estilo para o controle de Fonte (agrupamento) */
+
+.font-size-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    /* Estilo de agrupamento contínuo (como no modelo) */
+    border: 1px solid var(--color-light-gray);
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--color-white);
+}
+
+.font-size-control .font-btn {
+    border: none;
+    padding: 8px 10px;
+    background: none;
+}
+
+.font-size-indicator {
+    padding: 0 8px;
+    font-weight: 600;
+    font-size: 0.9em;
+    border-left: 1px solid var(--color-light-gray);
+    border-right: 1px solid var(--color-light-gray);
+}
+
+
+/* Botão Fechar */
+
+.access-close-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-left: 20px;
+    padding: 0 5px;
+}

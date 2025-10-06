@@ -1,3 +1,10 @@
+body,
+.page-wrapper {
+    /* Adiciona um padding no topo igual à altura da barra (60px) */
+    padding-top: 60px;
+}
+
+
 /* Contêiner principal da página de login.
    Define o layout base da página usando Flexbox para organizar as duas seções (formulário e imagem). */
 
