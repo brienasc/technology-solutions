@@ -17,6 +17,171 @@
         text-decoration: none;
         margin-bottom: 20px;
     }
+    /* contraste*/
+    
+     :host-context(.high-contrast) .btn-secondary {
+        background-color: black !important;
+        /* Fundo Preto */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Borda Amarela */
+    }
+    
+     :host-context(.high-contrast) .btn-secondary:hover {
+        background-color: #111 !important;
+        /* Um leve cinza no hover */
+    }
+    /* No seu sobre.css */
+    /* Contêiner dos Ícones (Fundo Preto, Borda Amarela) */
+    
+     :host-context(.high-contrast) .icon-wrapper {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Contorno do Ícone (SVG) */
+    
+     :host-context(.high-contrast) .icon-wrapper svg {
+        stroke: var(--color-highlight-neon) !important;
+        fill: none !important;
+    }
+    /* NOVO: Regras para a Tagline "Revolucione suas avaliações" */
+    
+     :host-context(.high-contrast) .hero-pre-tagline {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 1px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Botão Primário ("Começar Gratuitamente") */
+    
+     :host-context(.high-contrast) .primary-button {
+        background-color: var(--color-highlight-neon) !important;
+        color: black !important;
+        /* Texto preto para alto contraste no fundo amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    
+     :host-context(.high-contrast) .primary-button:hover {
+        background-color: white !important;
+    }
+    /* Botão Secundário ("Ver Demonstração") */
+    
+     :host-context(.high-contrast) .secondary-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* Corrigir o gradiente roxo no título para Amarelo Neon */
+    
+     :host-context(.high-contrast) h1 .highlight-text {
+        /* Usa a cor direta para sobrescrever o gradiente */
+        color: var(--color-highlight-neon) !important;
+        /* Remove gradientes e text-fill-color transparentes */
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        -webkit-text-fill-color: var(--color-highlight-neon) !important;
+    }
+    /* Cartões Flutuantes no modo Alto Contraste */
+    
+     :host-context(.high-contrast) .floating-card {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        color: var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .floating-card span,
+     :host-context(.high-contrast) .floating-card small {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Botões Parceiros (Senai, TriEduc, etc.) */
+    
+     :host-context(.high-contrast) .partner-btn {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Título e Texto (Precisão, Conteúdo, Analytics) */
+    
+     :host-context(.high-contrast) .benefit-title,
+     :host-context(.high-contrast) .benefit-text {
+        color: var(--color-highlight-neon) !important;
+        /* Força o texto para Amarelo */
+    }
+    /* Card de Depoimento */
+    
+     :host-context(.high-contrast) .testimonial-card {
+        background-color: black !important;
+        border: 2px solid white !important;
+        /* Borda branca */
+        color: white !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge {
+        background-color: black !important;
+        /* Fundo Branco */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge .percentage,
+     :host-context(.high-contrast) .efficiency-badge .description {
+        color: var(--color-highlight-neon) !important;
+        /* Garante que o texto dentro seja Amarelo */
+        background: #111 !important;
+    }
+    /* Aspas e Dots */
+    
+     :host-context(.high-contrast) .testimonial-card::before {
+        color: var(--color-highlight-neon) !important;
+        /* Aspas Amarelas */
+        opacity: 1 !important;
+    }
+    
+     :host-context(.high-contrast) .btn-primary {
+        /* Fundo Amarelo Neon */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto Preto (para contraste máximo no fundo amarelo) */
+        color: black !important;
+        /* Borda Amarela Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Garante que o hover também mantenha o contraste */
+    
+     :host-context(.high-contrast) .btn-primary:hover {
+        background-color: white !important;
+        /* Pode usar branco puro no hover */
+    }
+    /* No seu sobre.css, DENTRO do bloco :host-context(.high-contrast) */
+    
+     :host-context(.high-contrast) .platform-link-button {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Adiciona borda amarela para visibilidade */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Se o ícone SVG da lâmpada for de preenchimento, force a cor amarela */
+    
+     :host-context(.high-contrast) .platform-link-button svg path {
+        fill: var(--color-highlight-neon) !important;
+    }
+    
+    .author-company,
+    .author-role {
+        color: white !important;
+        /* Mantém o texto secundário branco */
+    }
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
     
     .platform-link-button .lamp-icon {
         /* Define o tamanho do ícone */

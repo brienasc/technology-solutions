@@ -1,14 +1,112 @@
+/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA O RODAPÉ --- */
+
+:host-context(.high-contrast) .footer {
+    /* Fundo Preto (Contraste Máximo) */
+    background-color: black !important;
+    color: white !important;
+    /* Texto base branco */
+    border-top: 2px solid white !important;
+    /* Demarca a seção */
+}
+
+
+/* Títulos (Education Solutions, Recursos, Suporte, Contato) */
+
+:host-context(.high-contrast) .footer-col h3,
+:host-context(.high-contrast) .footer-col h4 {
+    color: var(--color-highlight-neon) !important;
+    /* Títulos em Amarelo Neon */
+}
+
+
+/* Linhas de Destaque dos Títulos (O after/before) */
+
+:host-context(.high-contrast) .footer-col h3:after,
+:host-context(.high-contrast) .footer-col h4:after {
+    background-color: var(--color-highlight-neon) !important;
+    /* Linha de destaque em Amarelo Neon */
+    height: 3px !important;
+    /* Aumenta a espessura para maior visibilidade */
+}
+
+
+/* Textos e Parágrafos de Descrição */
+
+:host-context(.high-contrast) .footer-col p {
+    color: white !important;
+    /* Garante que o texto seja branco (não cinza) */
+}
+
+
+/* Links em Geral (Recursos, Suporte, Links Legais) */
+
+:host-context(.high-contrast) .footer-col ul li a,
+:host-context(.high-contrast) .legal-links a {
+    color: white !important;
+    /* Links em branco para visibilidade */
+    text-decoration: underline !important;
+    /* Sublinha para acessibilidade */
+}
+
+
+/* Hover dos Links */
+
+:host-context(.high-contrast) .footer-col ul li a:hover,
+:host-context(.high-contrast) .legal-links a:hover {
+    color: var(--color-highlight-neon) !important;
+    /* Amarelo Neon no hover */
+    padding-left: 5px;
+}
+
+
+/* Informações de Contato (Ícones e Texto) */
+
+:host-context(.high-contrast) .footer-col.contact .contact-info,
+:host-context(.high-contrast) .footer-col.contact .contact-info i {
+    color: white !important;
+    /* Garante que ícones e texto sejam brancos */
+}
+
+
+/* Linha Inferior (Divisor) */
+
+:host-context(.high-contrast) .footer-bottom {
+    border-top: 1px solid white !important;
+    /* Borda branca forte */
+}
+
+
+/* Links Legais e Símbolos Divisores (|) */
+
+:host-context(.high-contrast) .legal-links span {
+    color: white !important;
+    /* Garante que o separador seja branco */
+}
+
+
+/* Links Sociais (Se houvesse, seriam alterados assim)
+.social-links a {
+    background-color: black !important;
+    border: 2px solid white !important;
+    color: white !important;
+}
+.social-links a:hover {
+    background-color: var(--color-highlight-neon) !important;
+    color: black !important;
+}
+*/
+
 :host {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
 
 .footer {
     background-color: #121621;
     color: #a0a6b5;
-    padding: 40px 0; 
+    padding: 40px 0;
     font-family: Arial, sans-serif;
-    line-height: 1.4; 
+    line-height: 1.4;
 }
 
 .container {
@@ -24,13 +122,15 @@
     padding: 0 15px;
 }
 
+
 /* Títulos e Subtítulos */
+
 .footer-col h3,
 .footer-col h4 {
     font-size: 16px;
     color: #ffffff;
     text-transform: capitalize;
-    margin-bottom: 15px; 
+    margin-bottom: 15px;
     position: relative;
     font-weight: 500;
 }
@@ -40,17 +140,19 @@
     content: '';
     position: absolute;
     left: 0;
-    bottom: -5px; 
+    bottom: -5px;
     background-color: #007bff;
     height: 2px;
-    width: 30px; 
+    width: 30px;
 }
 
+
 /*  Texto de descrição */
+
 .footer-col p {
-    font-size: 13px; 
+    font-size: 13px;
     color: #a0a6b5;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .footer-col ul {
@@ -58,9 +160,11 @@
     padding: 0;
 }
 
+
 /*  Links das Colunas */
+
 .footer-col ul li a {
-    font-size: 14px; 
+    font-size: 14px;
     text-transform: capitalize;
     color: #a0a6b5;
     text-decoration: none;
@@ -72,31 +176,33 @@
 
 .footer-col ul li a:hover {
     color: #ffffff;
-    padding-left: 5px; 
+    padding-left: 5px;
 }
 
+
 /* Informações de Contato */
+
 .footer-col.contact .contact-info {
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 .footer-col.contact .contact-info i {
-    margin-right: 8px; 
+    margin-right: 8px;
     color: #fff;
     font-size: 15px;
 }
 
 .social-links a {
     display: inline-block;
-    height: 30px; 
+    height: 30px;
     width: 30px;
     background-color: rgba(255, 255, 255, 0.2);
-    margin: 0 8px 8px 0; 
+    margin: 0 8px 8px 0;
     text-align: center;
-    line-height: 30px; 
+    line-height: 30px;
     border-radius: 50%;
     color: #ffffff;
     transition: all 0.5s ease;
@@ -108,11 +214,13 @@
     background-color: #ffffff;
 }
 
+
 /* Linha Inferior */
+
 .footer-bottom {
     border-top: 1px solid #333;
-    padding-top: 15px; 
-    margin-top: 30px; 
+    padding-top: 15px;
+    margin-top: 30px;
 }
 
 .bottom-content {
@@ -134,18 +242,19 @@
 }
 
 .legal-links span {
-    margin: 0 4px; 
+    margin: 0 4px;
     color: #a0a6b5;
 }
 
-@media(max-width: 767px){
-    .footer-col{
+@media(max-width: 767px) {
+    .footer-col {
         width: 50%;
-        margin-bottom: 20px; 
+        margin-bottom: 20px;
     }
 }
-@media(max-width: 575px){
-    .footer-col{
+
+@media(max-width: 575px) {
+    .footer-col {
         width: 100%;
     }
     .bottom-content {
@@ -153,6 +262,6 @@
         text-align: center;
     }
     .legal-links {
-        margin-top: 8px; 
+        margin-top: 8px;
     }
 }
