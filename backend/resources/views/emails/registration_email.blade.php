@@ -10,10 +10,10 @@
         body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
         table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
         img { -ms-interpolation-mode: bicubic; }
-        
+
         /* Estilos do corpo */
         body { margin: 0; padding: 0; background-color: #f8f9fa; font-family: Arial, sans-serif; }
-        
+
         /* Container principal */
         .container {
             max-width: 600px;
@@ -62,7 +62,7 @@
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);" class="container">
             <tr>
                 <td align="center" style="padding: 40px 20px 20px 20px;">
-                    <img src="http://localhost:8080/logo.ico" alt="Technology Solutions" width="150" style="display: block; border: 0; max-width: 100%;">
+                    <img src="http://localhost:8080/app/assets/imagens/logo_education_solutions.png" alt="Education Solutions" width="150" style="display: block; border: 0; max-width: 100%;">
                 </td>
             </tr>
             <tr>
@@ -94,13 +94,13 @@
             <tr>
                 <td align="left" style="padding: 0 40px 40px 40px; color: #495057; font-size: 16px; line-height: 24px;" class="content-text">
                     <p style="margin: 0;">Aguardamos você,</p>
-                    <p style="margin: 0;">Equipe Technology Solutions</p>
+                    <p style="margin: 0;">Equipe Education Solutions</p>
                 </td>
             </tr>
             <tr>
                 <td align="center" style="padding: 20px; background-color: #f1f3f5; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
                     <p style="margin: 0; font-size: 12px; color: #868e96;" class="footer-text">
-                        Você recebeu este e-mail porque se cadastrou em nossa plataforma. <br>
+                        Você recebeu este e-mail porque foi convidado a se cadastrar em nossa plataforma. <br>
                         Se não foi você, ignore esta mensagem.
                     </p>
                 </td>

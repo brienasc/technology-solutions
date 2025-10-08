@@ -1,60 +1,68 @@
+// curso.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Curso } from '../interfaces/curso.interface';
 
-@Injectable({
-  providedIn: 'root'
-})
+type CursosIndexRaw = {
+  status: 'success' | 'error';
+  message?: string;
+  data: {
+    cursos: Curso[];          // vindo do backend
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+  };
+  timestamp?: string;
+};
+
+export type CursosIndex = {
+  cursos: Curso[];
+  currentPage: number;
+  perPage: number;
+  total: number;
+  lastPage: number;
+};
+
+@Injectable({ providedIn: 'root' })
 export class CursoService {
   private apiUrl = 'http://localhost:8080/api/cursos';
 
   constructor(private http: HttpClient) { }
 
-  // Método para buscar todos os cursos
-  getCursos(page: number = 1, pageSize: number = 10, search: string = ''): Observable<any> {
-    let params = new HttpParams();
-    params = params.set('page', page.toString());
-    params = params.set('per_page', pageSize.toString());
-    
-    if (search.trim()) {
-      params = params.set('nome', search);
-    }
+  getCursos(page = 1, perPage = 10, nome = '', status?: boolean): Observable<CursosIndex> {
+    let params = new HttpParams()
+      .set('page', String(page))
+      .set('per_page', String(perPage));
 
-    return this.http.get<any>(this.apiUrl, { params });
+    if (nome && nome.trim()) params = params.set('nome', nome.trim());
+    if (typeof status === 'boolean') params = params.set('status', String(status)); // 'true' | 'false'
+
+    return this.http.get<CursosIndexRaw>(this.apiUrl, { params }).pipe(
+      map((res) => ({
+        cursos: res.data.cursos,
+        currentPage: res.data.current_page,
+        perPage: res.data.per_page,
+        total: res.data.total,
+        lastPage: res.data.last_page,
+      }))
+    );
   }
 
-  // Método para buscar resumo dos cursos (para dropdowns)
-  getCursosSummary(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/summary`);
-  }
-
-  // Método para criar um novo curso
+  /** POST /api/cursos */
   createCurso(curso: Omit<Curso, 'id' | 'data_criacao' | 'data_atualizacao'>): Observable<any> {
-    const cursoData = {
-      nome: curso.nome,
-      descricao: curso.descricao || '',
-      carga_horaria: curso.carga_horaria,
-      status: curso.status === 'Ativo' ? true : false
-    };
-    
-    return this.http.post<any>(this.apiUrl, cursoData);
+    return this.http.post<any>(this.apiUrl, curso);
   }
 
-  // Método para atualizar um curso
-  updateCurso(id: string, curso: Partial<Curso>): Observable<any> {
-    const cursoData: any = {};
-    
-    if (curso.nome) cursoData.nome = curso.nome;
-    if (curso.descricao !== undefined) cursoData.descricao = curso.descricao;
-    if (curso.carga_horaria) cursoData.carga_horaria = curso.carga_horaria;
-    if (curso.status) cursoData.status = curso.status === 'Ativo' ? true : false
-    
-    return this.http.patch<any>(`${this.apiUrl}/${id}`, cursoData);
+  /** PATCH /api/cursos/{id} (parcial) */
+  updateCurso(id: string, parcial: Partial<Curso>): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${id}`, parcial);
   }
 
-  // Método para deletar um curso
+  /** DELETE /api/cursos/{id} */
   deleteCurso(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
+
 }

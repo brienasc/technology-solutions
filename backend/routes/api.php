@@ -10,8 +10,10 @@ use App\Http\Controllers\ContactController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
-
 Route::post('/login', [ColabsController::class, 'login'])->name('login');
+Route::post('/colabs', [ColabsController::class,'store']);
+Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     # Rotas de Convites
@@ -22,7 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     # Rotas de Colabs
     Route::middleware('abilities:access:menu-gerencial')->group(function () {
-        Route::post('/colabs', [ColabsController::class,'store']);
         Route::get('/colabs', [ColabsController::class,'index']);
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
@@ -39,5 +40,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
 });
-
-Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);

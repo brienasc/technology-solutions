@@ -24,6 +24,7 @@ export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
     { 
       src: 'app/assets/imagens/M1.jpg', 
       title: 'Maria Silva', 
+      
       role: 'Diretora Pedagógica', 
       company: 'Colégio Excelência', 
       text: '"O Education Solutions revolucionou nossa forma de criar avaliações. Reduzimos em 70% o tempo gasto na elaboração de provas e melhoramos significativamente a qualidade das questões."' 
@@ -117,7 +118,7 @@ export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
     // Define um intervalo para rolar para a direita a cada 2000ms (2 segundos).
     this.intervalId = setInterval(() => {
       this.scrollRight();
-    }, 2000);
+    }, 8000);
   }
 
   // Método privado para parar o autoplay do carrossel.

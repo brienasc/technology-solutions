@@ -1,16 +1,15 @@
-    /* frontend/src/app/components/quadro-vantagens/quadro-vantagens.component.css */
+    /* frontend/src/app/components/sobre/sobre */
     /*
+
+    
 * -----------------------------------------------------------
 * Variáveis e Seção Principal (Adaptação do modelo)
 * -----------------------------------------------------------
 */
-    /* No seu sobre.css */
     
     .platform-link-button {
-        /* NOVO: Usa Flexbox para alinhar ícone e texto */
         display: flex;
         align-items: center;
-        /* Centraliza verticalmente */
         color: var(--color-info-blue);
         background-color: var(--color-lighten-primary);
         padding: 8px 15px;
@@ -20,7 +19,175 @@
         text-decoration: none;
         margin-bottom: 20px;
     }
-    /* Novo seletor para estilizar o ícone dentro do link */
+    /* contraste*/
+    
+     :host-context(.high-contrast) .btn-secondary {
+        background-color: black !important;
+        /* Fundo Preto */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Borda Amarela */
+    }
+    
+     :host-context(.high-contrast) .btn-secondary:hover {
+        background-color: #111 !important;
+        /* Um leve cinza no hover */
+    }
+    /* No seu sobre.css */
+    /* Contêiner dos Ícones (Fundo Preto, Borda Amarela) */
+    
+     :host-context(.high-contrast) .icon-wrapper {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Contorno do Ícone (SVG) */
+    
+     :host-context(.high-contrast) .icon-wrapper svg {
+        stroke: var(--color-highlight-neon) !important;
+        fill: none !important;
+    }
+    /* NOVO: Regras para a Tagline "Revolucione suas avaliações" */
+    
+     :host-context(.high-contrast) .hero-pre-tagline {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 1px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Botão Primário ("Começar Gratuitamente") */
+    
+     :host-context(.high-contrast) .primary-button {
+        background-color: var(--color-highlight-neon) !important;
+        color: black !important;
+        /* Texto preto para alto contraste no fundo amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    
+     :host-context(.high-contrast) .primary-button:hover {
+        background-color: white !important;
+    }
+    /* Botão Secundário ("Ver Demonstração") */
+    
+     :host-context(.high-contrast) .secondary-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* Corrigir o gradiente roxo no título para Amarelo Neon */
+    
+     :host-context(.high-contrast) h1 .highlight-text {
+        /* Usa a cor direta para sobrescrever o gradiente */
+        color: var(--color-highlight-neon) !important;
+        /* Remove gradientes e text-fill-color transparentes */
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        /* Compatibilidade padrão */
+        -webkit-text-fill-color: var(--color-highlight-neon) !important;
+    }
+    /* Cartões Flutuantes no modo Alto Contraste */
+    
+     :host-context(.high-contrast) .floating-card {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        color: var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .floating-card span,
+     :host-context(.high-contrast) .floating-card small {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Botões Parceiros (Senai, TriEduc, etc.) */
+    
+     :host-context(.high-contrast) .partner-btn {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Título e Texto (Precisão, Conteúdo, Analytics) */
+    
+     :host-context(.high-contrast) .benefit-title,
+     :host-context(.high-contrast) .benefit-text {
+        color: var(--color-highlight-neon) !important;
+        /* Força o texto para Amarelo */
+    }
+    /* Card de Depoimento */
+    
+     :host-context(.high-contrast) .testimonial-card {
+        background-color: black !important;
+        border: 2px solid white !important;
+        /* Borda branca */
+        color: white !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge {
+        background-color: black !important;
+        /* Fundo Branco */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge .percentage,
+     :host-context(.high-contrast) .efficiency-badge .description {
+        color: var(--color-highlight-neon) !important;
+        /* Garante que o texto dentro seja Amarelo */
+        background: #111 !important;
+    }
+    /* Aspas e Dots */
+    
+     :host-context(.high-contrast) .testimonial-card::before {
+        color: var(--color-highlight-neon) !important;
+        /* Aspas Amarelas */
+        opacity: 1 !important;
+    }
+    
+     :host-context(.high-contrast) .btn-primary {
+        /* Fundo Amarelo Neon */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto Preto (para contraste máximo no fundo amarelo) */
+        color: black !important;
+        /* Borda Amarela Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Garante que o hover também mantenha o contraste */
+    
+     :host-context(.high-contrast) .btn-primary:hover {
+        background-color: white !important;
+        /* Pode usar branco puro no hover */
+    }
+    /* No seu sobre.css, DENTRO do bloco :host-context(.high-contrast) */
+    
+     :host-context(.high-contrast) .platform-link-button {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Adiciona borda amarela para visibilidade */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Se o ícone SVG da lâmpada for de preenchimento, force a cor amarela */
+    
+     :host-context(.high-contrast) .platform-link-button svg path {
+        fill: var(--color-highlight-neon) !important;
+    }
+    /* Corrigir a cor do Cargo */
+    
+    .author-role {
+        font-size: 0.85em;
+        color: var(--color-secondary) !important;
+        /* Roxo Médio */
+        margin: 0;
+    }
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
     
     .platform-link-button .lamp-icon {
         /* Define o tamanho do ícone */
@@ -29,7 +196,6 @@
         /* Adiciona margem para separar o ícone do texto */
         margin-right: 8px;
     }
-    /* Usa o fundo roxo claro do seu tema para esta seção (var(--color-background-detail)) */
     
     .about-section {
         padding: 80px 40px;
@@ -81,7 +247,6 @@
         bottom: 20px;
         right: 20px;
         background-color: var(--color-white);
-        /* Azul do modelo */
         color: var(black);
         padding: 15px 8px;
         border-radius: 10px;
@@ -224,11 +389,10 @@
 * SEÇÃO DEPOIMENTOS (Reutilização do Carrossel)
 * -----------------------------------------------------------
 */
-    /* No seu sobre.css, GARANTA que esta regra está correta: */
     
     .benefits-grid {
         display: flex;
-        /* CRUCIAL: Faz os itens ficarem lado a lado */
+        /* Faz os itens ficarem lado a lado */
         overflow-x: scroll;
         /* Habilita a rolagem lateral */
         scroll-snap-type: x mandatory;
@@ -273,11 +437,10 @@
     
     .benefit-card,
     .testimonial-card {
-        /* CRUCIAL: Força cada card a ter uma largura (85% no mobile, sem encolher) */
+        /* Força cada card a ter uma largura (85% no mobile, sem encolher) */
         flex: 0 0 85%;
         scroll-snap-align: center;
     }
-    /* Garante que os cards no desktop mostrem 3 por vez */
     
     @media (min-width: 1200px) {
         .benefit-card,
@@ -286,22 +449,18 @@
             scroll-snap-align: start;
         }
     }
-    /* No seu sobre.css, no bloco do testimonial-card: */
     
     .testimonial-card {
-        /* CRUCIAL: Força o layout interno a empilhar corretamente */
+        /* orça o layout interno a empilhar corretamente */
         display: flex;
         flex-direction: column;
-        /* Demais estilos... */
         background-color: var(--color-white);
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         padding: 30px;
         justify-content: flex-start;
         min-height: 380px;
-        /* Altura generosa */
         position: relative;
-        /* ... */
         justify-content: space-between;
         text-align: left;
     }
@@ -310,7 +469,7 @@
         width: 55px;
         height: 55px;
         border-radius: 50%;
-        /* CRUCIAL: Torna a foto redonda */
+        /* Torna a foto redonda */
         object-fit: cover;
         margin-right: 15px;
         border: none;
@@ -337,7 +496,11 @@
         /* ... */
         position: relative;
         z-index: 1;
-        /* CRUCIAL: Coloca as estrelas e o texto acima da aspa */
+        /* Coloca as estrelas e o texto acima da aspa */
+        margin-top: 40px;
+        color: gold;
+        font-size: 1.1em;
+        margin-bottom: 10px;
     }
     
     .testimonial-quote {
@@ -345,21 +508,13 @@
         position: relative;
         z-index: 1;
     }
-    /* No seu sobre.css, ajuste as regras abaixo: */
-    /* Nome do Autor (Maria Silva) - Roxo Escuro e Negrito */
+    /* --- Informações do Autor (Foto, Nome, Cargo, Empresa) --- */
     
     .author-name {
         font-weight: 700;
         color: var(--color-primary);
         margin: 0;
         line-height: 1.3;
-    }
-    /* Cargo (Diretora Pedagógica) - Roxo Médio/Claro (Secondary) */
-    
-    .author-role {
-        font-size: 0.85em;
-        color: var(--color-secondary);
-        margin: 0;
     }
     /* Instituição (Colégio Excelência) - Roxo Médio/Claro (Light-Primary) */
     
@@ -484,57 +639,6 @@
         max-width: 900px;
         /* Limita a largura máxima no desktop */
     }
-    /* -----------------LINHA------------------------------------------ */
-    /* ----------------------------------------------------------- */
-    /* .testimonial-card {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    min-height: 320px;
-    justify-content: space-between;
-    text-align: left;
-}
-
-.testimonial-card .rating {
-    color: gold;
-    font-size: 1.2em;
-    margin-bottom: 15px;
-}
-
-.testimonial-quote {
-    font-size: 1.1em;
-    color: var(--color-text-primary);
-    font-style: italic;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.author-info {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-top: auto;
-}
-
-.author-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-    border: 2px solid var(--color-light-primary);
-    padding: 2px;
-}
-
-.author-name {
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 0;
-}
-
-.author-role {
-    font-size: 0.85em;
-    color: var(--color-muted-text);
-    margin: 0;
-} */
     /* --- Seção de Marcas Parceiras --- */
     
     .partner-logos {
@@ -568,7 +672,7 @@
     /* --- ESTILOS ESPECÍFICOS PARA O MODO ESCURO (DEPOIMENTOS) --- */
     /* O seletor :host-context(.dark-theme) aplica estilos quando o body tem a classe 'dark-theme' */
     
-    :host-context(.dark-theme) {
+     :host-context(.dark-theme) {
         /* Força o fundo do card para um cinza/preto escuro diferente,
        que é mais agradável do que o fundo geral do body preto (#000000) */
         .testimonial-card {
@@ -596,19 +700,6 @@
         }
         /* --- Informações do Autor (Texto) --- */
         /* Nome do Autor - Roxo Claro do tema */
-        .author-name {
-            color: var(--color-lighten-primary) !important;
-        }
-        /* Cargo/Instituição - Texto mais claro */
-        .author-role,
-        .author-company {
-            color: var(--color-muted-text) !important;
-            /* Cinza Claro */
-        }
-        /* Linha divisória acima do autor */
-        .author-info {
-            border-top: 1px solid #555 !important;
-        }
         /* Botões de navegação (Setas) */
         .nav-button {
             background-color: #333 !important;
@@ -678,7 +769,7 @@
         /* Botões de Navegação (Setas) */
         .nav-button {
             display: block !important;
-            /* CRUCIAL: Mostra as setas no desktop */
+            /* Mostra as setas no desktop */
             top: 50%;
             /* Traz para o centro vertical */
             transform: translateY(-50%);

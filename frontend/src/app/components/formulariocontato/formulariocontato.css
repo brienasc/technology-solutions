@@ -1,5 +1,91 @@
+/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA O FOOTER/CONTATO --- */
+
+:host-context(.high-contrast) {
+    /* 1. CONTAINER PRINCIPAL (FOOTER) */
+    .app-footer {
+        background-color: black !important;
+        border-top: 2px solid white !important;
+        /* Adiciona uma borda superior para demarcação */
+        padding-bottom: 20px !important;
+    }
+    /* Título */
+    .footer-title {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* 2. FORMULÁRIO (INPUTS E TEXTO) */
+    /* Labels (Texto da label) */
+    .contact-form label {
+        color: white !important;
+        /* Força o rótulo para branco */
+    }
+    /* Campos de Input e Textarea */
+    .contact-form input,
+    .contact-form textarea {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        /* Texto digitado em amarelo */
+        border: 2px solid white !important;
+        /* Borda dos inputs em branco */
+        /* Remove o outline do foco (se houver) e aplica o contraste */
+        box-shadow: none !important;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: var(--color-highlight-neon) !important;
+        /* Borda de foco em amarelo */
+    }
+    /* 3. BOTÃO DE SUBMISSÃO ("Enviar") */
+    .contact-form button[type="submit"] {
+        /* Fundo Amarelo Neon */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto Preto */
+        color: black !important;
+        font-weight: bold !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    .contact-form button:hover:enabled {
+        background-color: white !important;
+        /* Fundo branco no hover */
+    }
+    .contact-form button:disabled {
+        background-color: var(--color-highlight-neon)!important;
+        /* Fundo cinza escuro para desabilitado */
+        color: #999 !important;
+    }
+    /* 4. MENSAGENS DE ERRO E STATUS */
+    /* Texto da mensagem de erro (vermelho) */
+    .error-message {
+        color: var(--color-highlight-neon) !important;
+        /* Erros em amarelo neon */
+    }
+    /* Fundo da mensagem de erro de submissão */
+    .submission-message.error {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* Fundo da mensagem de sucesso de submissão */
+    .submission-message.success {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* 5. TEXTOS SECUNDÁRIOS DO RODAPÉ (Seções de link) */
+    .footer-column h3,
+    .footer-column ul li a,
+    .footer-column p {
+        color: white !important;
+    }
+    .footer-column ul li a:hover {
+        color: var(--color-highlight-neon) !important;
+    }
+}
+
+
 /* mobile */
-.app-footer { /* container do rodape*/
+
+.app-footer {
+    /* container do rodape*/
     background-color: var(--color-primary);
     color: var(--color-white);
     padding: 30px 20px 15px;
@@ -7,7 +93,8 @@
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.footer-title {/* titulo do rodape*/
+.footer-title {
+    /* titulo do rodape*/
     font-size: 1.8em;
     margin-bottom: 25px;
     color: var(--color-white);
@@ -15,7 +102,9 @@
     transition: color 0.5s ease;
 }
 
+
 /* formulário de contato */
+
 .contact-form-container {
     max-width: 400px;
     margin: 0 auto 40px;
@@ -85,7 +174,9 @@
     text-align: left;
 }
 
+
 /* mensagens de feedback */
+
 .submission-message {
     padding: 15px;
     margin-bottom: 20px;
@@ -95,19 +186,24 @@
 }
 
 .submission-message.success {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
+    /* Verde */
     color: white;
 }
 
 .submission-message.error {
-    background-color: #f44336; /* Vermelho */
+    background-color: #f44336;
+    /* Vermelho */
     color: white;
 }
 
+
 /* pro desktop- layout pra manter um do lado do outro */
+
 .footer-content-wrapper {
     display: flex;
-    flex-direction: column; /* Padrão para mobile */
+    flex-direction: column;
+    /* Padrão para mobile */
     justify-content: center;
     align-items: center;
     max-width: 100%;
@@ -121,7 +217,8 @@
 
 .footer-columns-wrapper {
     display: flex;
-    flex-direction: column; /* mobile */
+    flex-direction: column;
+    /* mobile */
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -134,7 +231,8 @@
     flex-basis: 90%;
     max-width: 300px;
     padding: 0 10px;
-    text-align: center; /* mobile */
+    text-align: center;
+    /* mobile */
 }
 
 .footer-column h3 {
@@ -193,43 +291,41 @@
     color: var(--color-white);
 }
 
+
 /* telas pequenas */
+
 @media (max-width: 480px) {
     .app-footer {
         padding: 1.5rem 0.5rem;
     }
-
     .footer-title {
         font-size: 1.5em;
         margin-bottom: 20px;
     }
-
     .footer-column {
         flex-basis: 100%;
         max-width: none;
         padding: 0;
     }
-
     .footer-column h3 {
         font-size: 1.1em;
         margin-bottom: 12px;
     }
-
     .footer-column ul li a {
         font-size: 0.85em;
     }
-
     .footer-column p {
         font-size: 0.85em;
     }
-
     .footer-column.direitos {
         margin-top: 20px;
         font-size: 0.75em;
     }
 }
 
+
 /* Mobile landscape / tablet pequeno */
+
 @media (max-width: 767px) {
     .app-footer {
         padding: 2rem 1rem;
@@ -241,7 +337,9 @@
     }
 }
 
+
 /* tablet 768px (ajustes para o layout do desktop) */
+
 @media (min-width: 768px) {
     .app-footer {
         padding: 45px 30px 20px;
@@ -249,10 +347,12 @@
     .footer-title {
         font-size: 2em;
         margin-bottom: 30px;
-        text-align: left; /* Adicionado para o layout do desktop */
+        text-align: center;
+        /* Adicionado para o layout do desktop */
     }
     .footer-content-wrapper {
-        flex-direction: row; /* Colunas lado a lado */
+        flex-direction: row;
+        /* Colunas lado a lado */
         justify-content: space-between;
         align-items: flex-start;
         gap: 30px;
@@ -265,7 +365,8 @@
         padding-right: 20px;
     }
     .footer-columns-wrapper {
-        flex-direction: row; /* Colunas de contato e redes sociais lado a lado */
+        flex-direction: row;
+        /* Colunas de contato e redes sociais lado a lado */
         justify-content: space-around;
         flex: 1;
         max-width: 50%;
@@ -275,7 +376,8 @@
         flex-basis: 45%;
         max-width: none;
         padding: 0;
-        text-align: left; /* Adicionado para o layout do desktop */
+        text-align: left;
+        /* Adicionado para o layout do desktop */
     }
     .footer-column.direitos {
         margin-top: 40px;
@@ -283,7 +385,9 @@
     }
 }
 
+
 /* desktop 1200px */
+
 @media (min-width: 1200px) {
     .app-footer {
         padding: 60px 50px 30px;
@@ -299,7 +403,7 @@
     }
     .footer-column {
         flex-basis: 280px;
-        text-align: left; 
+        text-align: left;
     }
     .footer-column h3 {
         font-size: 1.4em;

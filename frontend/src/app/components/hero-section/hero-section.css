@@ -3,7 +3,83 @@
 }
 
 
+/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA A SEÇÃO HOME --- */
+
+:host-context(.high-contrast) {
+     :host-context(.high-contrast) .primary-button {
+        /* CRUCIAL: Fundo Amarelo Neon (Forçado) */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto Preto (para contraste no fundo amarelo) */
+        color: black !important;
+        /* Borda Amarela Neon (para o contorno já exibido) */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Zera qualquer sombra roxa/preta */
+        box-shadow: none !important;
+    }
+    /* --- FUNDOS DE SEÇÃO E STATS --- */
+    .hero-section {
+        background-color: black !important;
+    }
+    /* Sobrescreve o gradiente roxo/lilás no H1 para Amarelo Neon */
+    .hero-content .highlight-text {
+        color: var(--color-highlight-neon) !important;
+        background: none !important;
+        -webkit-text-fill-color: var(--color-highlight-neon) !important;
+    }
+    /* Fundo Roxo da Imagem (Hero Image Container) */
+    .hero-image-container {
+        background-color: black !important;
+        border: 2px solid white !important;
+    }
+    /* Tagline (O elemento rosa/roxo "Revolucione suas avaliações") */
+    .hero-pre-tagline {
+        color: var(--color-highlight-neon) !important;
+        border-color: var(--color-highlight-neon) !important;
+    }
+    /* --- BOTÕES (Sobrescrita de Cores Fixas) --- */
+    /* Botão Primário (Comando "Começar Gratuitamente") */
+    .primary-button {
+        /* A cor de fundo será forçada globalmente para Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* Botão Secundário ("Ver Demonstração") */
+    .secondary-button {
+        background-color: black !important;
+        color: white !important;
+        border: 2px solid white !important;
+    }
+    .secondary-button:hover {
+        background-color: #333 !important;
+        /* Cinza escuro no hover */
+    }
+    /* --- CARTÕES FLUTUANTES (Banco de Questões, Avaliação Dinâmica) --- */
+    .floating-card {
+        background-color: black !important;
+        border: 2px solid white !important;
+        box-shadow: none !important;
+    }
+    .floating-card span,
+    .floating-card small {
+        color: white !important;
+        /* Garante que o texto seja branco */
+    }
+    /* --- GRUPO DE MÉTRICAS (Estatísticas) --- */
+    /* Garante que o fundo semitransparente seja substituído por algo de alto contraste */
+    .metrics-group {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        /* Fundo cinza escuro para contraste sutil */
+        border: 1px solid white !important;
+    }
+    .metric-value,
+    .metric-label {
+        color: white !important;
+        /* Garante que o texto das estatísticas seja branco */
+    }
+}
+
+
 /* Mobile  */
+
 .hero-section {
     display: flex;
     flex-direction: column;
@@ -23,6 +99,7 @@
 
 
 /* PAI RELATIVO para a imagem e cartões flutuantes */
+
 .image-cards-wrapper {
     width: clamp(300px, 40vw, 600px);
     height: clamp(180px, 25vw, 400px);
@@ -39,6 +116,7 @@
 
 
 /*  Tagline Rosa acima do H1 */
+
 .hero-pre-tagline {
     color: #F472B6;
     font-size: 0.85em;
@@ -47,7 +125,7 @@
     display: inline-block;
     padding: 4px 10px;
     border: 1px solid #F472B6;
-    border-radius: 9999px; 
+    border-radius: 9999px;
     margin-bottom: 16px;
     transition: color 0.5s ease, border-color 0.5s ease;
 }
@@ -71,7 +149,6 @@
     transition: color 0.5s ease;
 }
 
-
 .hero-content p {
     font-size: 1.1em;
     line-height: 1.5;
@@ -82,6 +159,7 @@
 
 
 /* GRADIENTE */
+
 .hero-content .highlight-text {
     background: linear-gradient(90deg, #9747FF 0%, #E293F4 100%);
     -webkit-background-clip: text;
@@ -92,14 +170,18 @@
     line-height: inherit;
 }
 
+
 /* BOTÕES  */
+
 .cta-group {
     display: flex;
-    flex-direction: row; /* Empilha no mobile */
+    flex-direction: row;
+    /* Empilha no mobile */
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-width: 350px; /* Limite de largura mobile */
+    max-width: 350px;
+    /* Limite de largura mobile */
     margin-bottom: 40px;
 }
 
@@ -131,7 +213,6 @@
     box-shadow: 0 6px 20px rgba(59, 0, 109, 0.4);
 }
 
-
 .secondary-button {
     background-color: transparent;
     color: var(--theme-heading-text);
@@ -145,13 +226,14 @@
 
 .metrics-group {
     display: flex;
-    flex-direction: row; /* Empilha no mobile */
+    flex-direction: row;
+    /* Empilha no mobile */
     justify-content: space-around;
     gap: 10px;
     text-align: center;
     padding: 15px;
     border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.5); 
+    background-color: rgba(255, 255, 255, 0.5);
     transition: background-color 0.5s ease;
 }
 
@@ -168,14 +250,15 @@
     line-height: 1.1;
 }
 
-
 .metric-label {
     font-size: 0.9em;
     color: var(--theme-body-text);
     margin-top: 5px;
 }
 
+
 /* IMAGEM DO HERO-SECTION */
+
 .hero-image-container {
     width: 100%;
     height: 100%;
@@ -197,7 +280,9 @@
     border-radius: 10px;
 }
 
+
 /* cartões flutuantes */
+
 .floating-card {
     position: absolute;
     background-color: #FFFFFF;
@@ -206,7 +291,8 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     z-index: 2;
     display: none;
-    flex-direction: row; /* Horizontal no mobile */
+    flex-direction: row;
+    /* Horizontal no mobile */
     align-items: center;
     gap: 0px;
     text-align: left;
@@ -228,7 +314,9 @@
     font-size: 0.8em;
 }
 
+
 /* CARDS */
+
 .floating-card.top-left {
     top: -5%;
     left: -5%;
@@ -239,8 +327,10 @@
     right: -5%;
 }
 
+
 /* tablet e desktop */
-@media (min-width: 768px){
+
+@media (min-width: 768px) {
     .hero-section {
         flex-direction: row;
         gap: 80px;
@@ -248,9 +338,9 @@
         min-height: 70vh;
         text-align: left;
         overflow: visible;
-        align-items: center; /* Alinha o conteúdo verticalmente no centro */
+        align-items: center;
+        /* Alinha o conteúdo verticalmente no centro */
     }
-
     .hero-content {
         max-width: 550px;
         text-align: left;
@@ -258,15 +348,13 @@
         flex-direction: column;
         align-items: flex-start;
     }
-
-    .hero-content h1, .hero-content p {
+    .hero-content h1,
+    .hero-content p {
         text-align: left;
     }
-   
     .hero-pre-tagline {
         margin-left: 0;
     }
-   
     .cta-group {
         flex-direction: row;
         gap: 15px;
@@ -274,11 +362,9 @@
         max-width: none;
         margin-bottom: 50px;
     }
-   
     .cta-group button {
         width: auto;
     }
-   
     .metrics-group {
         flex-direction: row;
         gap: 40px;
@@ -287,32 +373,23 @@
         padding: 0;
         margin-top: 30px;
     }
-
-
     .metric-item {
-        align-items: flex-start; 
+        align-items: flex-start;
     }
-
     .hero-content .hero-tagline {
         font-size: 13px;
         margin-bottom: 10px;
     }
-
-
     .hero-content h1 {
         font-size: 2.5em;
         margin: 20px 0 25px;
     }
-
-
     .hero-content p {
         font-size: 1em;
         margin-bottom: 35px;
     }
-
-
     .floating-card {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: flex-start;
         gap: 5px;
         display: flex;
@@ -320,28 +397,26 @@
         padding: 15px 20px;
         font-size: 0.9em;
     }
-   
     .floating-card span {
         white-space: normal;
     }
-   
     .floating-card small {
         margin-left: 0;
         white-space: normal;
     }
-   
     .floating-card.top-left {
         top: -0%;
         left: 0%;
     }
-
     .floating-card.bottom-right {
         bottom: -0%;
         right: 0%;
     }
 }
 
+
 /* desktop -acima de 1200px */
+
 @media (min-width: 1200px) {
     .hero-section {
         gap: clamp(80px, 8vw, 150px);
@@ -351,37 +426,30 @@
         overflow: visible;
         align-items: center;
     }
-
     .hero-content {
         max-width: 650px;
         flex-shrink: 0;
     }
-   
     .metrics-group {
         gap: 60px;
     }
-
     .hero-content .hero-tagline {
         font-size: 14px;
     }
-
     .hero-content h1 {
         font-size: 3.5em;
         margin: 20px 0 30px;
     }
-
     .hero-content p {
         font-size: 1.15em;
         margin-bottom: 40px;
     }
-
     .floating-card.top-left {
         top: -0%;
         left: -0%;
         max-width: 220px;
         padding: 20px 25px;
     }
-
     .floating-card.bottom-right {
         bottom: -0%;
         right: -0%;
@@ -397,16 +465,13 @@
         max-width: 1600px;
         overflow: visible;
     }
-   
     .hero-content {
         max-width: 700px;
     }
-
     .floating-card.top-left {
         top: -0%;
         left: -0%;
     }
-   
     .floating-card.bottom-right {
         bottom: -0%;
         right: -0%;

@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { NgxMaskDirective } from 'ngx-mask'; 
 import { RouterLink } from '@angular/router'; // Importa RouterLink para usar a diretiva routerLink no HTML
 import { AuthService } from '../../services/auth.service'; // Importa o serviço de autenticação
+import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar'; // Importa o componente da barra de acessibilidade
 
 // *** VALIDADORES CUSTOMIZADOS ***
 // Validador de CPF
@@ -103,7 +104,8 @@ function passwordStrengthValidator(control: AbstractControl): ValidationErrors |
     CommonModule, // Contém diretivas comuns do Angular como ngIf, ngFor, ngClass.
     ReactiveFormsModule, // Módulo para usar os formulários reativos do Angular (FormGroup, FormControl).
     NgxMaskDirective, // Diretiva da biblioteca ngx-mask para aplicar máscaras em inputs.
-    RouterLink // Importa RouterLink para usar a diretiva routerLink no HTML (links de navegação)
+    RouterLink, // Importa RouterLink para usar a diretiva routerLink no HTML (links de navegação)
+    AccessibilityBarComponent // Importa o componente da barra de acessibilidade
   ],
   templateUrl: './login.html', // Caminho para o arquivo HTML do template deste componente (relativo ao .ts).
   styleUrls: ['./login.css'] // Caminho para o arquivo CSS de estilos deste componente (relativo ao .ts).

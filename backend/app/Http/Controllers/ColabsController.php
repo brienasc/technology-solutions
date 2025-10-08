@@ -51,6 +51,11 @@ class ColabsController extends Controller
 
             $colabsPaginate = $this->colabService->indexFilteredColabs($filters);
 
+            foreach ($colabsPaginate as &$c) {
+                $enum = PerfilType::from($c['perfil_id']);
+                $c['perfil_name'] = $enum->label();
+            }
+
             $responseData = [
                 'colabs' => $colabsPaginate->getCollection(),
                 'current_page' => $colabsPaginate->currentPage(),
@@ -223,8 +228,7 @@ class ColabsController extends Controller
     {
         $perfis = [
             1 => 'Administrador',
-            2 => 'Gente e Cultura',
-            3 => 'Colaborador Comum'
+            2 => 'Elaborador de Itens',
         ];
 
         return $perfis[$perfilId] ?? "Perfil {$perfilId}";

@@ -1,521 +1,565 @@
-    /* Estilos para o botão de alternância de tema (toggle switch) */
-    
-    .theme-switch {
-        position: fixed;
-        /* Posição fixa na tela */
-        top: 20px;
-        /* Distância do topo */
-        right: 20px;
-        /* Distância da direita */
-        z-index: 100;
-        /* Garante que fique acima de outros elementos */
-        display: inline-block;
-        /* Permite que o switch tenha largura e altura definidas */
-        width: 60px;
-        /* Largura do switch */
-        height: 34px;
-        /* Altura do switch */
-        cursor: pointer;
-    }
-    /* Esconde o checkbox padrão do HTML */
-    
-    .theme-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    /* O 'slider' é a parte visual do switch */
-    
-    .slider {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: var(--theme-button-primary-bg);
-        /* Usa variável de tema para o fundo do switch (light) */
-        -webkit-transition: .4s;
-        /* Transição para o WebKit (Chrome, Safari) */
-        transition: .4s;
-        /* Transição suave */
-        border-radius: 34px;
-        /* Arredonda o fundo do switch */
-    }
-    
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        /* Altura do "círculo" do switch */
-        width: 26px;
-        /* Largura do "círculo" do switch */
-        left: 4px;
-        /* Distância da esquerda */
-        bottom: 4px;
-        /* Distância da base */
-        background-color: var(--theme-button-text);
-        /* Usa variável de tema para a cor do "círculo" (branco/claro) */
-        -webkit-transition: .4s;
-        transition: .4s;
-        border-radius: 50%;
-        /* Faz o "círculo" ser um círculo perfeito */
-    }
-    /* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
-    
-    .theme-switch input:checked+.slider {
-        background-color: var(--theme-button-primary-hover);
-        /* Usa variável de tema para o fundo do switch (dark) */
-    }
-    
-    .theme-switch input:checked+.slider:before {
-        -webkit-transform: translateX(26px);
-        /* Move o "círculo" para a direita */
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-    /* src/app/pages/login/login.component.css */
-    /* 1. LAYOUT PRINCIPAL: Divisão em 2 colunas */
-    
-    .login-page-container {
-        display: flex;
-        height: 100vh;
-        width: 100vw;
-        /* Usa o fundo claro/escuro do tema */
-        background-color: var(--theme-background);
-        position: relative;
-    }
-    /* 2. LADO ESQUERDO: Formulário (Fundo Branco/Claro) */
-    
-    .login-form-section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 40px;
-        /* Fundo do formulário */
-        background-color: var(--theme-form-bg);
-        position: relative;
-    }
-    /* 3. LADO DIREITO: Hero Section (Roxo Escuro - Corrigido para ser sempre Escuro) */
-    
-    .login-hero-section {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        /* FORÇA O ROXO ESCURO (var(--color-secondary) do seu styles.css) 
+        :host-context(.high-contrast) {
+           /* Regra para forçar o placeholder a ser branco */
+           .custom-input-style::placeholder {
+               color: white !important;
+               /* Força o texto de dica para branco */
+               opacity: 1 !important;
+               /* Garante que não fique transparente/cinza */
+           }
+           /* 1. RÓTULOS (CPF: e Senha:) */
+           .form-group label {
+               color: white !important;
+               /* Força o texto para branco */
+           }
+           /* 2. LINKS (Esqueci Minha Senha / Cadastre-se) */
+           .forgot-password-link,
+           .signup-link,
+           .signup-link a {
+               color: white !important;
+               /* Força os links para branco */
+           }
+           /* 3. VOLTAR AO INÍCIO */
+           .back-to-home-link {
+               color: white !important;
+           }
+           /* Garante que a seta SVG do "Voltar ao Início" seja branca */
+           .back-to-home-link svg {
+               fill: white !important;
+               stroke: white !important;
+           }
+           /* 4. Opcional: Título "Login" (se estiver roxo) */
+           .login-title {
+               color: white !important;
+           }
+           /* Garante que o input de senha/cpf tenha fundo preto */
+           /* Garante que o ícone do olho no campo de senha seja branco */
+           .toggle-password-visibility {
+               color: white !important;
+           }
+           .toggle-password-visibility svg {
+               fill: white !important;
+           }
+       }
+       /* Estilos para o botão de alternância de tema (toggle switch) */
+       
+       .theme-switch {
+           position: fixed;
+           /* Posição fixa na tela */
+           top: 20px;
+           /* Distância do topo */
+           right: 20px;
+           /* Distância da direita */
+           z-index: 100;
+           /* Garante que fique acima de outros elementos */
+           display: inline-block;
+           /* Permite que o switch tenha largura e altura definidas */
+           width: 60px;
+           /* Largura do switch */
+           height: 34px;
+           /* Altura do switch */
+           cursor: pointer;
+       }
+       /* Esconde o checkbox padrão do HTML */
+       
+       .theme-switch input {
+           opacity: 0;
+           width: 0;
+           height: 0;
+       }
+       /* O 'slider' é a parte visual do switch */
+       
+       .slider {
+           position: absolute;
+           top: 0;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           background-color: var(--theme-button-primary-bg);
+           /* Usa variável de tema para o fundo do switch (light) */
+           -webkit-transition: .4s;
+           /* Transição para o WebKit (Chrome, Safari) */
+           transition: .4s;
+           /* Transição suave */
+           border-radius: 34px;
+           /* Arredonda o fundo do switch */
+       }
+       
+       .slider:before {
+           position: absolute;
+           content: "";
+           height: 26px;
+           /* Altura do "círculo" do switch */
+           width: 26px;
+           /* Largura do "círculo" do switch */
+           left: 4px;
+           /* Distância da esquerda */
+           bottom: 4px;
+           /* Distância da base */
+           background-color: var(--theme-button-text);
+           /* Usa variável de tema para a cor do "círculo" (branco/claro) */
+           -webkit-transition: .4s;
+           transition: .4s;
+           border-radius: 50%;
+           /* Faz o "círculo" ser um círculo perfeito */
+       }
+       /* Quando o checkbox está marcado (modo escuro), move o "círculo" e muda a cor de fundo do switch */
+       
+       .theme-switch input:checked+.slider {
+           background-color: var(--theme-button-primary-hover);
+           /* Usa variável de tema para o fundo do switch (dark) */
+       }
+       
+       .theme-switch input:checked+.slider:before {
+           -webkit-transform: translateX(26px);
+           /* Move o "círculo" para a direita */
+           -ms-transform: translateX(26px);
+           transform: translateX(26px);
+       }
+       /* 1. LAYOUT PRINCIPAL: Divisão em 2 colunas */
+       
+       .login-page-container {
+           display: flex;
+           height: 100vh;
+           width: 100vw;
+           /* Usa o fundo claro/escuro do tema */
+           background-color: var(--theme-background);
+           position: relative;
+       }
+       /* 2. LADO ESQUERDO: Formulário (Fundo Branco/Claro) */
+       
+       .login-form-section {
+           flex: 1;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+           padding: 40px;
+           /* Fundo do formulário */
+           background-color: var(--theme-form-bg);
+           position: relative;
+       }
+       /* 3. LADO DIREITO: Hero Section (Roxo Escuro - Corrigido para ser sempre Escuro) */
+       
+       .login-hero-section {
+           flex: 1;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+           /* FORÇA O ROXO ESCURO (var(--color-secondary) do seu styles.css) 
      para replicar o design original, ignorando o tema se for claro. */
-        background-color: var(--color-secondary);
-        color: var(--color-white);
-        /* Texto sempre branco */
-        padding: 40px;
-        position: relative;
-        overflow: hidden;
-    }
-    /* 4. Estilos para o Conteúdo do Formulário */
-    
-    .login-content-wrapper {
-        padding: 0;
-        width: 100%;
-        max-width: 380px;
-        text-align: left;
-        background-color: transparent;
-    }
-    /* 5. Título Login */
-    
-    .login-title {
-        font-size: 2.5em;
-        font-weight: 700;
-        margin-bottom: 30px;
-        color: var(--theme-heading-text);
-    }
-    /* Estilo geral para o grupo de formulário (rótulo, input) */
-    
-    .form-group {
-        margin-bottom: 20px;
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 400;
-        /* Removido bold para ser como no design */
-        color: var(--theme-label-text);
-    }
-    /* --- ESTILOS DE INPUT CUSTOMIZADOS (Lilás Claro no Design) --- */
-    
-    .custom-input-style {
-        width: 100%;
-        padding: 15px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1em;
-        color: var(--color-text-primary);
-        /* ** Fundo Lilás Claro: var(--color-background-detail) ** */
-        background-color: var(--color-background-detail);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
-        box-sizing: border-box;
-        height: 50px;
-        /* Altura fixa para ser igual ao modelo */
-        /* Estilo para placeholder */
-        &::placeholder {
-            color: rgba(16, 0, 43, 0.6);
-            /* Cor do texto dentro do input fica mais escura para contraste */
-        }
-    }
-    /* Ajustes para o input de senha */
-    
-    .password-input-wrapper {
-        position: relative;
-        width: 100%;
-    }
-    
-    .password-input-wrapper .custom-input-style {
-        padding-right: 45px;
-    }
-    /* Estilo de foco (o box-shadow do foco agora atua como a borda do design) */
-    
-    .custom-input-style:focus {
-        outline: none;
-        /* Cor do foco usando sua variável de link/foco (geralmente um azul/roxo) */
-        box-shadow: 0 0 0 2px var(--theme-link-text);
-    }
-    /* Correção: Estilo para quando está inválido (Apenas borda vermelha, fundo lilás mantido) */
-    
-    .custom-input-style.is-invalid {
-        border: 2px solid var(--color-danger);
-        box-shadow: none;
-        /* Remove box-shadow duplicado */
-        /* Garante que o fundo seja o lilás, e não mude para vermelho (do seu theme-input-bg no erro) */
-        background-color: var(--color-background-detail);
-    }
-    /* Botão de Visibilidade da Senha (Ícone de Olho) */
-    
-    .toggle-password-visibility {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 5px;
-        /* Cor do ícone no Roxo Escuro */
-        color: var(--color-white);
-        opacity: 0.8;
-        z-index: 5;
-        display: flex;
-    }
-    /* Garante que o SVG dentro do botão tenha um tamanho */
-    
-    .toggle-password-visibility svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .toggle-password-visibility:hover {
-        opacity: 1;
-    }
-    /* Mensagens de feedback de erro */
-    
-    .invalid-feedback {
-        color: var(--theme-invalid-feedback-text);
-        font-size: 0.85em;
-        margin-top: 5px;
-        text-align: left;
-    }
-    
-    .invalid-feedback ul {
-        list-style: none;
-        padding: 0;
-        margin: 5px 0 0 0;
-    }
-    
-    .invalid-feedback li {
-        margin-bottom: 2px;
-        color: var(--theme-invalid-feedback-text);
-    }
-    
-    .invalid-feedback li.valid {
-        color: var(--color-success);
-        /* Verde para regras válidas */
-        text-decoration: line-through;
-    }
-    /* Link Esqueci Minha Senha */
-    
-    .forgot-password-link {
-        display: block;
-        text-align: right;
-        color: var(--color-secondary);
-        text-decoration: none;
-        font-size: 0.9em;
-        margin-top: 15px;
-    }
-    
-    .forgot-password-link:hover {
-        text-decoration: underline;
-    }
-    /* --- ESTILOS DO BOTÃO SUBMIT: Logar no Sistema --- */
-    
-    .submit-button-style {
-        width: 100%;
-        padding: 15px 20px;
-        /* Roxo Escuro/Preto do seu tema */
-        background-color: var(--theme-button-primary-bg);
-        color: var(--theme-button-text);
-        border: none;
-        border-radius: 5px;
-        font-size: 1.1em;
-        font-weight: 600;
-        margin-top: 30px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .submit-button-style:hover:not(:disabled) {
-        background-color: var(--theme-button-primary-hover);
-    }
-    /* Link para Cadastro */
-    
-    .signup-link {
-        margin-top: 20px;
-        text-align: center;
-        font-size: 0.95em;
-        color: var(--theme-body-text);
-    }
-    
-    .signup-link a {
-        color: var(---color-secondary);
-        font-weight: bold;
-        text-decoration: none;
-    }
-    
-    .signup-link a:hover {
-        text-decoration: underline;
-    }
-    /* --- LOGO DA EDUCATION SOLUTIONS (Lado Esquerdo) --- */
-    
-    .logo-container {
-        display: flex !important;
-        align-items: center;
-        margin-bottom: 0;
-        /* Removido margem para posicionamento absoluto */
-        position: absolute;
-        top: 40px;
-        left: 40px;
-    }
-    /* .logo-containerr { */
-    /* Centralização Horizontal */
-    /* left: 50% !important; */
-    /* transform: translateX(-50%) !important; */
-    /* Posição no topo, centralizada no eixo Y da seção */
-    /* top: 40px !important; */
-    /* Garante que a logo fique sobre outros elementos */
-    /* z-index: 10 !important; */
-    /* A logo é uma div flex que precisa ser exibida */
-    /* display: flex !important;
+           background-color: var(--color-secondary);
+           color: var(--color-white);
+           /* Texto sempre branco */
+           padding: 40px;
+           position: relative;
+           overflow: hidden;
+       }
+       /* 4. Estilos para o Conteúdo do Formulário */
+       
+       .login-content-wrapper {
+           padding: 0;
+           width: 100%;
+           max-width: 380px;
+           text-align: left;
+           background-color: transparent;
+       }
+       /* 5. Título Login */
+       
+       .login-title {
+           font-size: 2.5em;
+           font-weight: 700;
+           margin-bottom: 30px;
+           color: var(--theme-heading-text);
+       }
+       /* Estilo geral para o grupo de formulário (rótulo, input) */
+       
+       .form-group {
+           margin-bottom: 20px;
+       }
+       
+       .form-group label {
+           display: block;
+           margin-bottom: 8px;
+           font-weight: 400;
+           /* Removido bold para ser como no design */
+           color: var(--theme-label-text);
+       }
+       /* --- ESTILOS DE INPUT CUSTOMIZADOS (Lilás Claro no Design) --- */
+       
+       .custom-input-style {
+           width: 100%;
+           padding: 15px 20px;
+           border: none;
+           border-radius: 5px;
+           font-size: 1em;
+           color: var(--color-text-primary);
+           /*cor fonte*/
+           background-color: var(--color-background-detail);
+           transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+           box-sizing: border-box;
+           height: 50px;
+           /* Altura fixa para ser igual ao modelo */
+           /* Estilo para placeholder */
+           &::placeholder {
+               color: rgba(16, 0, 43, 0.6);
+               /* Cor do texto dentro do input fica mais escura para contraste */
+               /* background-color: black !important; */
+               color: black!important;
+               border-color: white !important;
+           }
+       }
+       /* Ajustes para o input de senha */
+       
+       .password-input-wrapper {
+           position: relative;
+           width: 100%;
+       }
+       
+       .password-input-wrapper .custom-input-style {
+           padding-right: 45px;
+       }
+       /* Estilo de foco (o box-shadow do foco agora atua como a borda do design) */
+       
+       .custom-input-style:focus {
+           outline: none;
+           /* Cor do foco usando sua variável de link/foco (geralmente um azul/roxo) */
+           box-shadow: 0 0 0 2px var(--theme-link-text);
+       }
+       /* Estilo para quando está inválido (Apenas borda vermelha, fundo lilás mantido) */
+       
+       .custom-input-style.is-invalid {
+           border: 2px solid var(--color-danger);
+           box-shadow: none;
+           /* Remove box-shadow duplicado */
+           /* Garante que o fundo seja o lilás, e não mude para vermelho (do seu theme-input-bg no erro) */
+           background-color: var(--color-background-detail);
+       }
+       /* Botão de Visibilidade da Senha (Ícone de Olho) */
+       
+       .toggle-password-visibility {
+           position: absolute;
+           right: 15px;
+           top: 50%;
+           transform: translateY(-50%);
+           background: none;
+           border: none;
+           cursor: pointer;
+           padding: 5px;
+           /* Cor do ícone no Roxo Escuro */
+           color: var(--color-white);
+           opacity: 0.8;
+           z-index: 5;
+           display: flex;
+       }
+       /* Garante que o SVG dentro do botão tenha um tamanho */
+       
+       .toggle-password-visibility svg {
+           width: 20px;
+           height: 20px;
+       }
+       
+       .toggle-password-visibility:hover {
+           opacity: 1;
+       }
+       /* Mensagens de feedback de erro */
+       
+       .invalid-feedback {
+           color: var(--theme-invalid-feedback-text);
+           font-size: 0.85em;
+           margin-top: 5px;
+           text-align: left;
+       }
+       
+       .invalid-feedback ul {
+           list-style: none;
+           padding: 0;
+           margin: 5px 0 0 0;
+       }
+       
+       .invalid-feedback li {
+           margin-bottom: 2px;
+           color: var(--theme-invalid-feedback-text);
+       }
+       
+       .invalid-feedback li.valid {
+           color: var(--color-success);
+           /* Verde para regras válidas */
+           text-decoration: line-through;
+       }
+       /* Link Esqueci Minha Senha */
+       
+       .forgot-password-link {
+           display: block;
+           text-align: right;
+           color: var(--color-secondary);
+           text-decoration: none;
+           font-size: 0.9em;
+           margin-top: 15px;
+       }
+       
+       .forgot-password-link:hover {
+           text-decoration: underline;
+       }
+       /* --- ESTILOS DO BOTÃO SUBMIT: Logar no Sistema --- */
+       
+       .submit-button-style {
+           width: 100%;
+           padding: 15px 20px;
+           /* Roxo Escuro/Preto do seu tema */
+           background-color: var(--theme-button-primary-bg);
+           color: var(--theme-button-text);
+           border: none;
+           border-radius: 5px;
+           font-size: 1.1em;
+           font-weight: 600;
+           margin-top: 30px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+       }
+       
+       .submit-button-style:hover:not(:disabled) {
+           background-color: var(--theme-button-primary-hover);
+       }
+       /* Link para Cadastro */
+       
+       .signup-link {
+           margin-top: 20px;
+           text-align: center;
+           font-size: 0.95em;
+           color: var(--theme-body-text);
+       }
+       
+       .signup-link a {
+           color: var(---color-secondary);
+           font-weight: bold;
+           text-decoration: none;
+       }
+       
+       .signup-link a:hover {
+           text-decoration: underline;
+       }
+       /* --- LOGO DA EDUCATION SOLUTIONS (Lado Esquerdo) --- */
+       
+       .logo-container {
+           display: flex !important;
+           align-items: center;
+           margin-bottom: 0;
+           /* Removido margem para posicionamento absoluto */
+           position: absolute;
+           top: 40px;
+           left: 40px;
+       }
+       /* .logo-containerr { */
+       /* Centralização Horizontal */
+       /* left: 50% !important; */
+       /* transform: translateX(-50%) !important; */
+       /* Posição no topo, centralizada no eixo Y da seção */
+       /* top: 40px !important; */
+       /* Garante que a logo fique sobre outros elementos */
+       /* z-index: 10 !important; */
+       /* A logo é uma div flex que precisa ser exibida */
+       /* display: flex !important;
     align-items: center;
     width: 80px;
     height: 80pxt;
     margin-bottom: 0;
 } */
-    
-    .logo-container img {
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
-    }
-    
-    .logo-text {
-        line-height: 1;
-    }
-    
-    .logo-main-text {
-        font-size: 1.2em;
-        font-weight: 700;
-        color: var(--theme-heading-text);
-    }
-    
-    .logo-sub-text {
-        font-size: 0.8em;
-        font-weight: 400;
-        color: var(--theme-body-text);
-    }
-    /* --- LOGO DA EDUCATION SOLUTIONS (Lado Direito - Roxo) --- */
-    
-    .hero-logo-container {
-        position: static;
-        margin-bottom: 30px;
-        justify-content: center;
-    }
-    /* Aumenta o tamanho da imagem do ícone */
-    
-    .hero-logo-container img {
-        /* Aumentando de 40px para um tamanho maior */
-        width: 250px;
-        height: 250px;
-        /* Mantém a margem */
-        margin-right: 15px;
-    }
-    
-    .login-hero-section .logo-main-text,
-    .login-hero-section .logo-sub-text {
-        color: var(--color-white);
-        /* Aumentando de 1.2em para um tamanho maior */
-        font-size: 1.8em;
-        /* Altere este valor conforme necessário */
-        font-weight: 700;
-    }
-    /* --- CONTEÚDO HERO (Lado Direito) --- */
-    
-    .hero-content {
-        text-align: center;
-        max-width: 400px;
-    }
-    
-    .hero-title {
-        font-size: 3em;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-    
-    .hero-slogan {
-        font-size: 1.1em;
-        line-height: 1.4;
-        opacity: 0.8;
-    }
-    /* --- LINK VOLTAR AO INÍCIO --- */
-    
-    .back-to-home-link {
-        position: absolute;
-        bottom: 40px;
-        left: 40px;
-        color: var(--color-secondary);
-        text-decoration: none;
-        font-size: 0.9em;
-        display: flex;
-        align-items: center;
-        transition: color 0.3s ease;
-    }
-    
-    .back-to-home-link svg {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-    }
-    
-    .back-to-home-link:hover {
-        color: var(--theme-button-primary-hover);
-    }
-    /* --- ESTILOS DE FORMAS ABSTRATAS (Lado Roxo) --- */
-    
-    .login-hero-section::before,
-    .login-hero-section::after {
-        content: '';
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        pointer-events: none;
-    }
-    
-    .login-hero-section::before {
-        width: 150px;
-        height: 150px;
-        top: 10%;
-        left: 10%;
-        opacity: 0.3;
-    }
-    
-    .login-hero-section::after {
-        width: 250px;
-        height: 250px;
-        bottom: -50px;
-        right: -50px;
-        opacity: 0.2;
-    }
-    
-    .login-hero-section .hero-content::before {
-        content: '';
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        top: 25%;
-        right: 25%;
-        border-radius: 5px;
-        opacity: 0.5;
-    }
-    /* --- RESPONSIVIDADE --- */
-    
-    @media (max-width: 992px) {
-        .login-page-container {
-            flex-direction: column;
-        }
-        .login-form-section {
-            padding: 20px;
-            order: 2;
-            min-height: 75vh;
-            justify-content: flex-start;
-            /* Alinha o conteúdo ao topo no mobile */
-        }
-        .login-hero-section {
-            min-height: 30vh;
-            order: 1;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        /* 2. Ajuste dos Textos (Título e Slogan) */
-        .hero-title {
-            /* Diminui o tamanho do título em mobile (era 4em) */
-            font-size: 2.5em;
-            line-height: 1.1;
-            /* Melhora a quebra de linha */
-            margin-bottom: 10px;
-        }
-        .hero-slogan {
-            /* Diminui o tamanho do slogan em mobile (era 1.1em) */
-            font-size: 1em;
-            line-height: 1.3;
-            /* Garante que o texto quebre corretamente */
-            word-wrap: break-word;
-            white-space: normal;
-        }
-        /* 3. Ajuste da Logo Hero (para ser um pouco menor) */
-        .login-hero-section .logo-container img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-        }
-        .login-hero-section .logo-main-text {
-            font-size: 1.6em;
-        }
-        .login-hero-section .logo-sub-text {
-            font-size: 1em;
-        }
-        /* Reposiciona elementos fixos para mobile */
-        .theme-switch {
-            top: 20px;
-            right: 20px;
-        }
-        .back-to-home-link {
-            bottom: 10px;
-            left: 20px;
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-            position: absolute;
-            top: 40px;
-            /* Centraliza no topo da SEÇÃO BRANCA */
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .login-content-wrapper {
-            max-width: 90%;
-            margin-top: 50px;
-        }
-    }
+       
+       .logo-container img {
+           width: 40px;
+           height: 40px;
+           margin-right: 10px;
+       }
+       
+       .logo-text {
+           line-height: 1;
+       }
+       
+       .logo-main-text {
+           font-size: 1.2em;
+           font-weight: 700;
+           color: var(--theme-heading-text);
+       }
+       
+       .logo-sub-text {
+           font-size: 0.8em;
+           font-weight: 400;
+           color: var(--theme-body-text);
+       }
+       /* --- LOGO DA EDUCATION SOLUTIONS (Lado Direito - Roxo) --- */
+       
+       .hero-logo-container {
+           position: static;
+           margin-bottom: 30px;
+           justify-content: center;
+       }
+       /* Aumenta o tamanho da imagem do ícone */
+       
+       .hero-logo-container img {
+           /* Aumentando de 40px para um tamanho maior */
+           width: 250px;
+           height: 250px;
+           /* Mantém a margem */
+           margin-right: 15px;
+       }
+       
+       .login-hero-section .logo-main-text,
+       .login-hero-section .logo-sub-text {
+           color: var(--color-white);
+           /* Aumentando de 1.2em para um tamanho maior */
+           font-size: 1.8em;
+           /* Altere este valor conforme necessário */
+           font-weight: 700;
+       }
+       /* --- CONTEÚDO HERO (Lado Direito) --- */
+       
+       .hero-content {
+           text-align: center;
+           max-width: 400px;
+       }
+       
+       .hero-title {
+           font-size: 3em;
+           font-weight: 700;
+           margin-bottom: 20px;
+       }
+       
+       .hero-slogan {
+           font-size: 1.1em;
+           line-height: 1.4;
+           opacity: 0.8;
+       }
+       /* --- LINK VOLTAR AO INÍCIO --- */
+       
+       .back-to-home-link {
+           position: absolute;
+           bottom: 40px;
+           left: 40px;
+           color: var(--color-secondary);
+           text-decoration: none;
+           font-size: 0.9em;
+           display: flex;
+           align-items: center;
+           transition: color 0.3s ease;
+       }
+       
+       .back-to-home-link svg {
+           width: 20px;
+           height: 20px;
+           margin-right: 5px;
+       }
+       
+       .back-to-home-link:hover {
+           color: var(--theme-button-primary-hover);
+       }
+       /* --- ESTILOS DE FORMAS ABSTRATAS (Lado Roxo) --- */
+       
+       .login-hero-section::before,
+       .login-hero-section::after {
+           content: '';
+           position: absolute;
+           background-color: rgba(255, 255, 255, 0.1);
+           border-radius: 50%;
+           pointer-events: none;
+       }
+       
+       .login-hero-section::before {
+           width: 150px;
+           height: 150px;
+           top: 10%;
+           left: 10%;
+           opacity: 0.3;
+       }
+       
+       .login-hero-section::after {
+           width: 250px;
+           height: 250px;
+           bottom: -50px;
+           right: -50px;
+           opacity: 0.2;
+       }
+       
+       .login-hero-section .hero-content::before {
+           content: '';
+           position: absolute;
+           width: 30px;
+           height: 30px;
+           border: 2px solid rgba(255, 255, 255, 0.4);
+           top: 25%;
+           right: 25%;
+           border-radius: 5px;
+           opacity: 0.5;
+       }
+       /* --- RESPONSIVIDADE --- */
+       
+       @media (max-width: 992px) {
+           .login-page-container {
+               flex-direction: column;
+           }
+           .login-form-section {
+               padding: 20px;
+               order: 2;
+               min-height: 75vh;
+               justify-content: flex-start;
+               /* Alinha o conteúdo ao topo no mobile */
+           }
+           .login-hero-section {
+               min-height: 30vh;
+               order: 1;
+               padding: 30px 20px;
+               text-align: center;
+           }
+           /* 2. Ajuste dos Textos (Título e Slogan) */
+           .hero-title {
+               /* Diminui o tamanho do título em mobile (era 4em) */
+               font-size: 2.5em;
+               line-height: 1.1;
+               /* Melhora a quebra de linha */
+               margin-bottom: 10px;
+           }
+           .hero-slogan {
+               /* Diminui o tamanho do slogan em mobile (era 1.1em) */
+               font-size: 1em;
+               line-height: 1.3;
+               /* Garante que o texto quebre corretamente */
+               word-wrap: break-word;
+               white-space: normal;
+           }
+           /* 3. Ajuste da Logo Hero (para ser um pouco menor) */
+           .login-hero-section .logo-container img {
+               width: 50px;
+               height: 50px;
+               margin-right: 15px;
+           }
+           .login-hero-section .logo-main-text {
+               font-size: 1.6em;
+           }
+           .login-hero-section .logo-sub-text {
+               font-size: 1em;
+           }
+           /* Reposiciona elementos fixos para mobile */
+           .theme-switch {
+               top: 20px;
+               right: 20px;
+           }
+           .back-to-home-link {
+               bottom: 10px;
+               left: 20px;
+           }
+           .logo-container {
+               display: flex;
+               align-items: center;
+               margin-bottom: 0;
+               position: absolute;
+               top: 40px;
+               /* Centraliza no topo da SEÇÃO BRANCA */
+               left: 50%;
+               transform: translateX(-50%);
+           }
+           .login-content-wrapper {
+               max-width: 90%;
+               margin-top: 50px;
+           }
+       }
