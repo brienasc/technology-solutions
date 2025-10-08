@@ -239,84 +239,170 @@ export class ListaColaboradoresComponent implements OnInit {
     ).subscribe(); // Assina o Observable para que o fluxo de dados seja executado.
   }
 
-  // Método para exportar os dados da tabela para um arquivo Excel.
-  exportToExcel(): void {
-    // Verificar se há dados para exportar
-    if (this.filteredColaboradores.length === 0) {
-      alert('Não há dados para exportar.');
+// Método para exportar colaboradores para CSV
+exportToExcel(): void {
+  this.loading = true;
+  
+  try {
+    this.applyFilterAndPaginate();
+    
+    let dadosParaExportar: Colaborador[] = [];
+    let tipoExportacao = '';
+    
+    if (this.searchTerm && this.searchTerm.trim()) {
+      if (this.filteredColaboradores.length > 0) {
+        dadosParaExportar = this.filteredColaboradores;
+        tipoExportacao = 'filtrados da lista completa';
+      } else if (this.paginatedColaboradores.length > 0) {
+        dadosParaExportar = this.paginatedColaboradores;
+        tipoExportacao = 'da página atual (visíveis)';
+      } else {
+        dadosParaExportar = this.filtrarManualmente();
+        tipoExportacao = 'filtrados manualmente';
+      }
+    } else {
+      dadosParaExportar = this.colaboradores;
+      tipoExportacao = 'todos os colaboradores';
+    }
+
+    if (dadosParaExportar.length === 0) {
+      this.loading = false;
+      alert('❌ Nenhum colaborador encontrado para exportar.');
       return;
     }
-
-    this.loading = true;
-
-    // Preparar parâmetros para enviar ao backend
-    const params: any = {};
-
-    if (this.searchTerm && this.searchTerm.trim()) {
-      params.search = this.searchTerm.trim();
-    }
-
-    // Chamar o endpoint do backend
-    this.http.get('http://localhost:8080/api/colabs/export', {
-      params: params,
-      responseType: 'blob'
-    }).subscribe({
-      next: (response: Blob) => {
-        // Criar URL temporária para o blob
-        const url = window.URL.createObjectURL(response);
-
-        // Criar elemento <a> temporário para forçar o download
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = this.generateFileName();
-        link.style.display = 'none';
-
-        // Adicionar ao DOM, clicar e remover
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // Limpar URL temporária
-        window.URL.revokeObjectURL(url);
-
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Erro ao exportar:', error);
-        this.loading = false;
-
-        // Se o erro veio como blob (JSON), vamos ler o conteúdo
-        if (error.error instanceof Blob && error.error.type === 'application/json') {
-          error.error.text().then((errorText: string) => {
-            try {
-              const errorObj = JSON.parse(errorText);
-              alert(`❌ Erro do servidor: ${errorObj.message || errorObj.error}`);
-            } catch (e) {
-              alert('❌ Erro interno do servidor ao gerar arquivo Excel.');
-            }
-          });
-        } else {
-          if (error.status === 0) {
-            alert('Erro de conexão. Verifique se o backend está rodando.');
-          } else if (error.status === 404) {
-            alert('Endpoint de exportação não encontrado.');
-          } else if (error.status === 500) {
-            alert('Erro interno do servidor ao gerar o arquivo Excel.');
-          } else {
-            alert('Erro ao gerar arquivo Excel. Tente novamente.');
-          }
-        }
-      }
-    });
+    
+    // Gerar e baixar CSV diretamente
+    this.gerarEBaixarCSV(dadosParaExportar);
+    
+  } catch (error) {
+    this.loading = false;
+    alert('❌ Erro ao exportar dados.');
   }
+}
 
-  // Método para gerar nome do arquivo baseado na pesquisa e data
-  private generateFileName(): string {
-    const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const searchSuffix = this.searchTerm && this.searchTerm.trim() ? '_filtrado' : '';
-    return `colaboradores_${timestamp}${searchSuffix}.csv`;
+// Método para filtrar manualmente quando outros filtros falham
+private filtrarManualmente(): Colaborador[] {
+  if (!this.searchTerm || !this.searchTerm.trim()) {
+    return this.colaboradores;
   }
+  
+  const termo = this.searchTerm.toLowerCase().trim();
+  
+  return this.colaboradores.filter(colaborador => 
+    (colaborador.nome && colaborador.nome.toLowerCase().includes(termo)) ||
+    (colaborador.email && colaborador.email.toLowerCase().includes(termo)) ||
+    (colaborador.cpf && colaborador.cpf.includes(termo)) ||
+    (colaborador.celular && colaborador.celular.includes(termo))
+  );
+}
 
+// Método único para gerar e baixar CSV
+private gerarEBaixarCSV(colaboradores: Colaborador[]): void {
+  try {
+    
+    // Cabeçalho
+    const cabecalho = [
+      'Nome',
+      'Email', 
+      'CPF',
+      'Celular',
+      'Perfil',
+      'CEP',
+      'Estado',
+      'Cidade',
+      'Bairro',
+      'Endereço'
+    ];
+    
+    // Dados
+    const linhas = colaboradores.map(colab => [
+      colab.nome || '',
+      colab.email || '',
+      colab.cpf || '',
+      colab.celular || '',
+      colab.perfil || '',
+      colab.cep || '',
+      colab.uf || '',
+      colab.localidade || '', // cidade
+      colab.bairro || '',
+      colab.logradouro || ''
+    ]);
+    
+    // Combinar cabeçalho + dados
+    const todasLinhas = [cabecalho, ...linhas];
+    
+    // Gerar CSV com separador ponto e vírgula
+    const csvContent = todasLinhas
+      .map(linha => 
+        linha.map(campo => this.limparCampoCSV(campo)).join(';')
+      )
+      .join('\n');
+    
+    // Adicionar BOM para UTF-8
+    const csvFinal = '\uFEFF' + csvContent;
+    
+    // Fazer download
+    const blob = new Blob([csvFinal], { type: 'text/csv;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    link.href = url;
+    link.download = this.gerarNomeArquivo();
+    link.style.display = 'none';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    this.loading = false;
+    
+    const filtroInfo = this.searchTerm ? ` (filtro: "${this.searchTerm}")` : '';
+    alert(`✅ CSV baixado com sucesso! ${colaboradores.length} registros${filtroInfo}`);
+    
+  } catch (error) {
+    this.loading = false;
+    alert('❌ Erro ao gerar arquivo CSV.');
+  }
+}
+
+// Método para limpar campos CSV (versão simples)
+private limparCampoCSV(campo: any): string {
+  if (campo == null || campo === undefined) {
+    return '';
+  }
+  
+  let valor = String(campo).trim();
+  
+  // Remover quebras de linha e caracteres problemáticos
+  valor = valor.replace(/[\r\n]/g, ' ');
+  
+  // Se contém ponto e vírgula ou vírgula, envolver em aspas
+  if (valor.includes(';') || valor.includes(',') || valor.includes('"')) {
+    valor = valor.replace(/"/g, '""'); // Escapar aspas
+    valor = `"${valor}"`; // Envolver em aspas
+  }
+  
+  return valor;
+}
+
+// Método para gerar nome do arquivo
+private gerarNomeArquivo(): string {
+  const agora = new Date();
+  const data = agora.toISOString().slice(0, 10); // YYYY-MM-DD
+  const hora = agora.toTimeString().slice(0, 8).replace(/:/g, '-'); // HH-mm-ss
+  
+  let nome = `colaboradores_${data}_${hora}`;
+  
+  if (this.searchTerm && this.searchTerm.trim()) {
+    const filtro = this.searchTerm.trim()
+      .replace(/[^a-zA-Z0-9]/g, '_')
+      .substring(0, 15);
+    nome += `_filtro_${filtro}`;
+  }
+  
+  return `${nome}.csv`;
+}
   // Método para abrir o dialog com os detalhes do colaborador
   openColaboradorDialog(colaborador: Colaborador): void {
     this.selectedColaborador = colaborador;
@@ -367,13 +453,11 @@ export class ListaColaboradoresComponent implements OnInit {
   // NOVOS MÉTODOS APENAS PARA OS SELECTS DO MODAL DE CONVITE
   onPerfilConviteChange(event: any): void {
     this.selectedPerfilConvite = +event.target.value;
-    console.log('Perfil selecionado no convite:', this.selectedPerfilConvite);
     this.inviteErrorMessage = ''; // Limpar erro quando mudar
   }
 
   onCursoConviteChange(event: any): void {
     this.selectedCursoConvite = +event.target.value;
-    console.log('Curso selecionado no convite:', this.selectedCursoConvite);
     this.inviteErrorMessage = ''; // Limpar erro quando mudar
   }
 
@@ -408,13 +492,6 @@ export class ListaColaboradoresComponent implements OnInit {
         this.inviteErrorMessage = 'Já existe um convite em aberto para este e-mail. Aguarde a resposta ou cancele o convite anterior.';
         return;
       }
-
-      // ADICIONAR LOG DOS DADOS QUE SERIAM ENVIADOS
-      console.log('Dados do convite que seriam enviados:', {
-        email: this.inviteEmail.trim(),
-        perfil_id: this.selectedPerfilConvite,
-        curso_id: this.selectedCursoConvite
-      });
 
       // Se não existe convite em aberto, prosseguir com o envio
       this.conviteService.enviarConvite(this.inviteEmail).subscribe({
@@ -598,7 +675,6 @@ export class ListaColaboradoresComponent implements OnInit {
 
       return false;
     } catch (error) {
-      console.error('Erro ao verificar convites existentes:', error);
       return false; // Em caso de erro, permite o envio
     }
   }
@@ -688,7 +764,6 @@ export class ListaColaboradoresComponent implements OnInit {
         this.resetEditingState();
       },
       error: (error) => {
-        console.error('Erro ao alterar perfil', error);
       }
     });
 
