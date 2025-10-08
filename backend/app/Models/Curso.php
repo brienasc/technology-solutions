@@ -38,4 +38,9 @@ class Curso extends Model
             'colab_id'
         )->withTimestamps();
     }
+
+    public function matrizes()
+    {
+        return $this->hasMany(Matriz::class);
+    }
 }
