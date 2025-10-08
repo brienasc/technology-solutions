@@ -1,7 +1,7 @@
 // frontend/src/app/app-routing.module.ts
 
 // Importa o tipo 'Routes' do Angular Router para tipar o array de rotas.
-import { Routes } from '@angular/router'; 
+import { Routes } from '@angular/router';
 
 // Importa todos os componentes de página que serão usados nas rotas.
 // Os caminhos são relativos a 'src/app/' e incluem o sufixo '.component'.
@@ -10,7 +10,8 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { LoginComponent } from './pages/login/login';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { ConvitesComponent } from './pages/convites/convites';
-import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial'; 
+import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
+import { MatricesPageComponent } from './pages/matrices/matrices-page.component';
 
 // Definição das rotas da aplicação.
 // Cada objeto no array define uma rota:
@@ -20,8 +21,9 @@ export const routes: Routes = [
   { path: '', component: LandingPageComponent }, // Rota para a Landing Page (página inicial)
   { path: 'login', component: LoginComponent }, // Rota para a tela de Login
   { path: 'cadastro', component: CadastroComponent }, // Rota para a tela de Cadastro
- { path: 'convites', component: ConvitesComponent }, // Rota para Convites de Colaboradores
-  { path: 'menu-gerencial', component: MenuGerencialComponent }, // Rota para o Painel Gerencial
+  { path: 'convites', component: ConvitesComponent }, // Rota para Convites de Colaboradores
+  { path: 'menu-gerencia', component: MenuGerencialComponent }, // Rota para o Painel Gerencial
+  { path: 'matrices', component: MatricesPageComponent },
   { path: '**', redirectTo: '' } // Rota coringa: Redireciona qualquer URL não mapeada para a Landing Page.
 ];
 
