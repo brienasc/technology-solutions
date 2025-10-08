@@ -1,19 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PerfisController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MatrixController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
 Route::post('/login', [ColabsController::class, 'login'])->name('login');
 Route::post('/colabs', [ColabsController::class,'store']);
 Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
-
 
 Route::middleware('auth:sanctum')->group(function () {
     # Rotas de Convites
@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/cursos/{id}', [CursoController::class, 'update']);
     Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
+    Route::get('/matrizes', [MatrixController::class, 'index']);
 
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
