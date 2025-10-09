@@ -192,6 +192,11 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    width: auto;
+    max-width: 300px; /* ou outro valor menor */
+    flex-shrink: 1;
+    word-break: break-word;  /* permite quebra de texto para evitar corte */
+    white-space: normal;     /* texto multi-linha, quebra automática */
 }
 
 .access-title {
