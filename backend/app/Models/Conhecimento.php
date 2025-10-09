@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Conhecimento extends Model
 {
-    public $incrementing = false;
-    protected $keyType = 'string';
-    protected $fillable = ['competencia_id','nome','descricao'];
+    use HasFactory;
+    use HasUuids;
 
-    public function competencia()
+    protected $fillable = ['matriz_id', 'codigo', 'nome', 'descricao'];
+
+    public function matriz()
     {
-        return $this->belongsTo(Competencia::class);
+        return $this->belongsTo(Matriz::class);
+    }
+
+    public function competencias()
+    {
+        return $this->belongsToMany(Competencia::class, 'competencia_conhecimento');
     }
 }

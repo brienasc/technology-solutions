@@ -9,15 +9,23 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('conhecimentos', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
-            $table->foreignUuid('competencia_id')->constrained('competencias')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+
+            $table->foreignUuid('matriz_id')
+                  ->constrained('matrizes')
+                  ->cascadeOnDelete();
+
+            $table->integer('codigo');
+
             $table->string('nome');
             $table->text('descricao')->nullable();
             $table->timestamps();
-            $table->unique(['competencia_id','nome']);
-            $table->index('competencia_id');
+
+            $table->unique(['matriz_id', 'codigo']);
+            $table->index('matriz_id');
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists('conhecimentos');

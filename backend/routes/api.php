@@ -15,6 +15,7 @@ Route::post('/login', [ColabsController::class, 'login'])->name('login');
 Route::post('/colabs', [ColabsController::class,'store']);
 Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 
+
 Route::middleware('auth:sanctum')->group(function () {
     # Rotas de Convites
     Route::middleware('abilities:access:menu-convidar')->group(function () {
@@ -37,7 +38,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/cursos/{id}', [CursoController::class, 'update']);
     Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
+    #Rotas de matrizes
     Route::get('/matrizes', [MatrixController::class, 'index']);
+    Route::post('/matrizes', [MatrixController::class,'store']);
+    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
 
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
