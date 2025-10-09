@@ -1,5 +1,6 @@
 <app-accessibility-bar></app-accessibility-bar>
 
+<main role="main" aria-label="Página de Login"> <!--pro tab funcionar melhor!-->
 <div class="login-page-container">
 
     <div class="login-form-section" [attr.title]="isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro'">
@@ -78,7 +79,7 @@
 
         </div>
 
-        <a routerLink=" " class="back-to-home-link ">
+        <a routerLink=" " class="back-to-home-link " aria-label="Voltar para a página inicial">
             <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 20 20 " fill="currentColor " class="w-5 h-5 ">
         <path fill-rule="evenodd " d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.088l-5.5-5.25a.75.75 0 0 1 0-1.088l5.5-5.25a.75.75 0 1 1 1.04 1.088L5.612 9.25H16.25a.75.75 0 0 1 .75.75Z " clip-rule="evenodd " />
       </svg> Voltar ao Início
@@ -103,3 +104,4 @@
     </div>
 
 </div>
+</main>
