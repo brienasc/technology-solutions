@@ -20,19 +20,19 @@ class ColabService
     {
         $query = Colab::query();
 
-        if (isset($filtros['email'])) {
+        if (isset($filters['email'])) {
             $query->where('email', 'like', '%' . $filters['email'] . '%');
         }
 
-        if (isset($filtros['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        if (isset($filters['nome'])) {
+            $query->where('nome', 'like', '%' . $filters['nome'] . '%');
         }
 
-        if (isset($filtros['cpf'])) {
+        if (isset($filters['cpf'])) {
             $query->where('cpf', 'like', '%' . $filters['cpf'] . '%');
         }
 
-        $per_page = $filtros['per_page'] ?? 15;
+        $per_page = $filters['per_page'] ?? 15;
 
         return $query->paginate($per_page);
     }

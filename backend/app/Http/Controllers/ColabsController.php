@@ -135,7 +135,7 @@ class ColabsController extends Controller
 
                 $query->where(
                     function ($q) use ($searchTerm) {
-                        $q->where('name', 'LIKE', "%{$searchTerm}%")
+                        $q->where('nome', 'LIKE', "%{$searchTerm}%")
                             ->orWhere('email', 'LIKE', "%{$searchTerm}%")
                             ->orWhere('cpf', 'LIKE', "%{$searchTerm}%")
                             ->orWhere('celular', 'LIKE', "%{$searchTerm}%");
@@ -175,13 +175,13 @@ class ColabsController extends Controller
                 $endereco = ($colab->logradouro ?? '') . ($colab->numero ? ", {$colab->numero}" : '');
 
                 $csvData[] = [
-                    $colab->name ?? '',
+                    $colab->nome ?? '',
                     $colab->email ?? '',
                     $colab->cpf ?? '',
                     $colab->celular ?? '',
                     $this->mapearPerfil($colab->perfil_id ?? 0),
                     $colab->cep ?? '',
-                    $colab->estado ?? '',
+                    $colab->uf ?? '',
                     $colab->cidade ?? '',
                     $colab->bairro ?? '',
                     $endereco

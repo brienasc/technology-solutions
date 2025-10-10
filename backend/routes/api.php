@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/colabs', [ColabsController::class,'index']);
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
+        Route::get('/colabs/export', [ColabsController::class, 'export']);
     });
 
     #Rotas de Cursos
