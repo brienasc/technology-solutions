@@ -160,7 +160,9 @@ export class MatricesPageComponent {
     this.matrixViewer.open(row.id);
   }
 
-  onDelete(_row: Matrix) { }
+  onDelete(_row: Matrix) {
+
+  }
 
   onImportMatrix() {
     this.importDialog.openAndWait().then(result => {
@@ -180,7 +182,22 @@ export class MatricesPageComponent {
         formData.append('file', result.file, result.file.name);
       }
 
-      this.matrices.importMatrix(formData);
+      this.matrices.importMatrix(formData).subscribe({
+        next: (response) => {
+          console.log('Matriz importada com sucesso!', response);
+          alert('Matriz importada com sucesso!');
+          this.fetch(true);
+
+        },
+        error: (err) => {
+          console.error('Erro ao importar matriz: ', err);
+          if (err.status === 422) {
+            console.log('Erro de validação');
+          } else {
+            console.log('Ocorreu um erro inesperado no servidor.');
+          }
+        }
+      });
     });
   }
 

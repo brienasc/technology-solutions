@@ -29,18 +29,7 @@ export class MatricesService {
   }
 
   importMatrix(formData: FormData) {
-    this.http.post('/api/matrizes', formData).subscribe({
-      next: (response) => {
-        console.log('Matriz importada com sucesso!', response);
-      },
-      error: (err) => {
-        console.error('Erro ao importar matriz:', err);
-      },
-      complete: () => {
-        console.log('Requisição finalizada.');
-      }
-    });
-
+    return this.http.post('/api/matrizes', formData);
   }
 
   private adaptPaginated(api: any): Paginated<Matrix> {
