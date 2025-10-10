@@ -27,7 +27,7 @@ class MatrixController extends Controller
             $perPage = min(100, max(1, (int) $request->query('per_page', 15)));
             $q       = $request->query('q');
 
-            $matricesPaginate = $this->matrixService->paginate($perPage, $q);
+            $matricesPaginate = $this->matrixService->indexFiltered($perPage, $q);
 
             $responseData = [
                 'matrices' => $matricesPaginate->getCollection(),
