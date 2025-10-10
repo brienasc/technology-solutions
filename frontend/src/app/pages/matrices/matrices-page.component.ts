@@ -104,7 +104,7 @@ export class MatricesPageComponent {
 
   onBuscar() {
     this.currentPage = 1;
-    this.fetch(true);
+    this.fetch();
   }
 
   onPageSizeChange() {
