@@ -3,6 +3,7 @@ import { Component, Renderer2, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button'; // Para estilização Material
 // IMPORTAR MatIconModule SE VOCÊ OPTAR POR ÍCONES SVG DO MATERIAL
+import { OnDestroy } from '@angular/core'; //cancelar a fala quando mudar de pagina
 
 // Defina os limites e o valor inicial para o recurso de Fonte
 // const MAX_FONT_LEVEL = 3; 
@@ -19,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button'; // Para estilizaçã
   styleUrls: ['./accessibility-bar.css'],
 })
 export class AccessibilityBarComponent implements OnInit {
-
+  
     readonly MAX_FONT_LEVEL = 3; 
   readonly MIN_FONT_LEVEL = 0; 
   
@@ -96,7 +97,17 @@ export class AccessibilityBarComponent implements OnInit {
   //   action();
   //   this.isMenuOpen = false;
   // }
-  
+  // ------- jac- pra scrollar na tela
+scrollToSection(sectionId: string): void {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.focus(); // foco para acessibilidade (opcional, importante para leitores de tela)
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    this.isMenuOpen = false; // opcional: fecha barra após clicar no botão
+  }
+}
+//---- fim de scrolar na tela
+
   // 4. MÉTODOS PRIVADOS DE APLICAÇÃO (Manipulação do DOM)
 
   private applyContrastClass(): void {
@@ -151,9 +162,30 @@ export class AccessibilityBarComponent implements OnInit {
       this.applyFontSizeClass();
       localStorage.removeItem('fontSizeLevel');
     }
+    //pra parar quando reseto
+    window.speechSynthesis.cancel();
+
+
+
+
 
   //   this.isMenuOpen = false;
   //   alert("Configurações de acessibilidade resetadas para o padrão.");
   // }
   }
+    readPageAloud(): void {
+      if ('speechSynthesis' in window) {
+        const speech = new SpeechSynthesisUtterance();
+        speech.text = document.body.innerText;
+        speech.lang = 'pt-BR';
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+      } else {
+        alert('Navegador não suporta síntese de voz.');
+    }
+  }
+  ngOnDestroy(): void {
+    window.speechSynthesis.cancel();
+  }
+
 }

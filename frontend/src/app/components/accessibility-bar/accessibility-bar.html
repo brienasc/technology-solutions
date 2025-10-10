@@ -28,7 +28,21 @@
             <p class="access-instruction">Navegação: Use Tab para navegar. Enter para selecionar. Esc para fechar menus</p>
         </div>
 
-        <div class="access-controls-group">
+        <div class="access-controls-group" role="toolbar">
+            <!-- BOTOES P SECAO DE NAVEGACAO -->
+<button class="control-btn" aria-label="Ir para o menu principal" title="Ir para o menu" tabindex="0" (click)="scrollToSection('menu')">
+    Menu
+</button>
+
+<button class="control-btn" aria-label="Ir para o conteúdo principal" title="Ir para o conteúdo" tabindex="0" (click)="scrollToSection('home')">
+    Conteúdo
+</button>
+
+<button class="control-btn" aria-label="Ir para o rodapé" title="Ir para o rodapé" tabindex="0" (click)="scrollToSection('rodape')">
+    Rodapé
+</button>
+            <!-- FIM DOS BOTOES P SECAO DE NAVEGACAO NA TELA -->
+
 
             <button (click)="toggleHighContrast()" [attr.aria-pressed]="isHighContrast" class="control-btn contrast-btn" aria-label="Alternar Auto Contraste" title="Auto Contraste">
                 Auto Contraste
@@ -54,8 +68,8 @@
                 VLibras
             </button>
 
-            <button class="control-btn reader-btn" aria-label="Ativar leitura da tela" title="Leitor de Tela">
-                Leitor
+<button class="control-btn reader-btn" aria-label="Ativar leitura da tela" title="Leitor de Tela" (click)="readPageAloud()">
+            Leitor
             </button>
 
             <button class="control-btn reset-btn" (click)="resetAcessibilitySettings()" aria-label="Redefinir todas as configurações de acessibilidade" title="Reset">

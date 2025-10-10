@@ -1,4 +1,4 @@
-<header class="app-header">
+<header class="app-header" id="menu">
     <div class="header-container">
         <!-- Logo -->
         <div class="header-logo" (click)="navigateToHome()">
@@ -6,7 +6,7 @@
         </div>
 
         <!-- Navegação Desktop -->
-        <nav class="header-nav desktop-nav">
+        <nav class="header-nav desktop-nav" aria-label="Navegação principal"> <!--esse aria label melhorando o html!-->
             <ul>
                 <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
                 <li><a href="#funcionalidades" (click)="closeMobileMenu()">Funcionalidades</a></li>
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Navegação Mobile -->
-        <nav class="mobile-nav">
+        <nav class="mobile-nav" aria-label="Navegação principal">
             <ul>
                 <li>
                     <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
