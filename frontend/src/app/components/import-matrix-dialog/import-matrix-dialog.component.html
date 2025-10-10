@@ -1,0 +1,208 @@
+@if (visible) {
+  <div
+    class="imd-overlay"
+    (click)="overlayClick()"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="imd-title"
+  >
+    <div class="imd-dialog" (click)="stop($event)">
+      <div class="imd-header">
+        <h2 id="imd-title">Importar Matriz</h2>
+        <button
+          type="button"
+          class="imd-close"
+          (click)="cancel()"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="imd-body">
+        @if (errorMsg) {
+          <div class="imd-alert error">{{ errorMsg }}</div>
+        }
+
+        <form
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          novalidate
+          spellcheck="false"
+        >
+          <div class="imd-row">
+            <div class="imd-col">
+              <label for="im-name">Nome <span class="req">*</span></label>
+              <input
+                id="im-name"
+                type="text"
+                formControlName="name"
+                placeholder="Nome da matriz"
+              />
+              @if (form.get("name")?.touched && form.get("name")?.invalid) {
+                <small class="imd-field-error">Informe o nome.</small>
+              }
+            </div>
+
+            <div class="imd-col imd-col-sm">
+              <label for="im-version">Versão <span class="req">*</span></label>
+              <input
+                id="im-version"
+                type="text"
+                formControlName="version"
+                placeholder="Ex: 1.0"
+              />
+              @if (
+                form.get("version")?.touched && form.get("version")?.invalid
+              ) {
+                <small class="imd-field-error">Informe a versão.</small>
+              }
+            </div>
+          </div>
+
+          <div class="imd-row">
+            <div class="imd-col">
+              <label for="im-from"
+                >Vigência (início) <span class="req">*</span></label
+              >
+              <input id="im-from" type="date" formControlName="validFrom" />
+              @if (
+                form.get("validFrom")?.touched && form.get("validFrom")?.invalid
+              ) {
+                <small class="imd-field-error">Data inicial obrigatória.</small>
+              }
+            </div>
+
+            <div class="imd-col">
+              <label for="im-to"
+                >Vigência (fim) <span class="req">*</span></label
+              >
+              <input id="im-to" type="date" formControlName="validTo" />
+              @if (
+                form.errors?.["range"] &&
+                (form.get("validFrom")?.touched || form.get("validTo")?.touched)
+              ) {
+                <small class="imd-field-error"
+                  >A data final deve ser maior ou igual à inicial.</small
+                >
+              }
+            </div>
+          </div>
+
+          <div class="imd-row">
+            <div class="imd-col">
+              <label>Curso <span class="req">*</span></label>
+
+              <div class="combo" [class.open]="courseOpen">
+                <button
+                  type="button"
+                  class="combo-trigger"
+                  (click)="toggleCourse()"
+                  aria-haspopup="listbox"
+                  [attr.aria-expanded]="courseOpen"
+                >
+                  <span class="combo-value">
+                    @if (form.value.courseName) {
+                      {{ form.value.courseName }}
+                    } @else {
+                      Selecione um curso…
+                    }
+                  </span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 10l5 5 5-5" />
+                  </svg>
+                </button>
+
+                @if (courseOpen) {
+                  <div class="combo-panel" role="listbox">
+                    <div class="combo-search">
+                      <input
+                        id="im-course-search"
+                        type="text"
+                        [value]="courseQuery"
+                        (input)="onCourseQuery(courseSearch.value)"
+                        #courseSearch
+                        placeholder="Pesquisar curso..."
+                        aria-label="Pesquisar curso"
+                      />
+                    </div>
+
+                    @if (loadingCourses) {
+                      <div class="combo-empty">Carregando…</div>
+                    } @else {
+                      @if (!courseOptions.length) {
+                        <div class="combo-empty">Nenhum curso encontrado.</div>
+                      } @else {
+                        <ul class="combo-list">
+                          @for (c of courseOptions; track c.id) {
+                            <li role="option">
+                              <button type="button" (click)="selectCourse(c)">
+                                {{ c.nome }}
+                              </button>
+                            </li>
+                          }
+                        </ul>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+
+              @if (
+                form.get("courseId")?.touched && form.get("courseId")?.invalid
+              ) {
+                <small class="imd-field-error">Selecione um curso.</small>
+              }
+            </div>
+          </div>
+
+          <div class="imd-row">
+            <div class="imd-col">
+              <label for="im-file">Arquivo <span class="req">*</span></label>
+
+              <div class="file-line">
+                <input
+                  id="im-file"
+                  type="file"
+                  (change)="onFileChange($event)"
+                  accept=".xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                />
+              </div>
+
+              @if (fileName) {
+                <div class="file-chip">
+                  <span class="name">{{ fileName }}</span>
+                  <button
+                    type="button"
+                    class="remove"
+                    (click)="removeFile()"
+                    aria-label="Remover arquivo"
+                  >
+                    ×
+                  </button>
+                </div>
+              }
+
+              @if (form.get("file")?.touched && form.get("file")?.invalid) {
+                <small class="imd-field-error">Envie um arquivo.</small>
+              }
+            </div>
+          </div>
+
+          <div class="imd-actions">
+            <button type="button" class="btn ghost" (click)="cancel()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn primary" [disabled]="submitting">
+              @if (submitting) {
+                Enviando…
+              } @else {
+                Importar
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

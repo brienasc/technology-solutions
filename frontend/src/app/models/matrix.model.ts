@@ -55,3 +55,12 @@ export interface MatrixDetail {
     conhecimento: { id: string; codigo: number; nome: string };
   }[];
 }
+
+export interface ImportMatrixPayload {
+  name: string;
+  version: string;
+  validFrom: string;
+  validTo: string;
+  courseId: string;
+  file: File,
+}
