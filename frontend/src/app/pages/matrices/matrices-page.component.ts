@@ -9,11 +9,16 @@ import { Header } from '../../components/header/header';
 import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
 import { MatrixViewerDialogService } from '../../components/matrix-viewer-dialog/matrix-viewer-dialog.service';
 import { MatrixViewerDialogComponent } from '../../components/matrix-viewer-dialog/matrix-viewer-dialog.component';
+import { ImportMatrixDialogService } from '../../components/import-matrix-dialog/import-matrix-dialog.service';
+import { ImportMatrixDialogComponent } from '../../components/import-matrix-dialog/import-matrix-dialog.component';
 
 @Component({
   selector: 'app-matrices-page',
   standalone: true,
-  imports: [CommonModule, Header, AccessibilityBarComponent, FormsModule, MatricesTableComponent, MatrixViewerDialogComponent],
+  imports: [
+    CommonModule, Header, AccessibilityBarComponent, FormsModule,
+    MatricesTableComponent, MatrixViewerDialogComponent, ImportMatrixDialogComponent
+  ],
   templateUrl: './matrices-page.component.html',
   styleUrls: ['./matrices-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,7 +53,8 @@ export class MatricesPageComponent {
   constructor(
     private matrices: MatricesService,
     private cdr: ChangeDetectorRef,
-    private matrixViewer: MatrixViewerDialogService
+    private matrixViewer: MatrixViewerDialogService,
+    private importDialog: ImportMatrixDialogService
   ) { }
 
   ngOnInit(): void {
@@ -155,7 +161,28 @@ export class MatricesPageComponent {
   }
 
   onDelete(_row: Matrix) { }
-  onImportMatrix() { }
+
+  onImportMatrix() {
+    this.importDialog.openAndWait().then(result => {
+      if (!result) {
+        return;
+      }
+
+      const formData = new FormData();
+
+      formData.append('nome', result.name);
+      formData.append('versao', result.version);
+      formData.append('vigente_de', result.validFrom);
+      formData.append('vigente_ate', result.validTo);
+      formData.append('curso_id', result.courseId);
+
+      if (result.file) {
+        formData.append('file', result.file, result.file.name);
+      }
+
+      this.matrices.importMatrix(formData);
+    });
+  }
 
   private makeValidityLabel(from?: Date | string | null, to?: Date | string | null): string {
     const ini = this.safeFormatDate(from);
