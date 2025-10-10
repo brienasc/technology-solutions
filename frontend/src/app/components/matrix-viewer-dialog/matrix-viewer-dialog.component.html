@@ -1,0 +1,151 @@
+@if (visible) {
+  <div class="mv-overlay" (click)="close()" role="dialog" aria-modal="true">
+    <div
+      class="mv-dialog"
+      (click)="$event.stopPropagation()"
+      (mousedown)="maybeHidePopover($event)"
+    >
+      <!-- Header (único botão de fechar) -->
+      <div class="mv-header">
+        <h2>Visualizar Matriz</h2>
+        <button class="mv-close" (click)="close()" aria-label="Fechar">
+          ×
+        </button>
+      </div>
+
+      <div class="mv-body">
+        @if (loading) {
+          <div class="mv-loading">Carregando matriz…</div>
+        } @else if (error) {
+          <div class="mv-error">{{ error }}</div>
+        } @else if (data) {
+          <!-- Detalhes (fixo) -->
+          <div class="mv-meta">
+            <div><strong>Nome:</strong> {{ data.name }}</div>
+            <div><strong>Curso:</strong> {{ data.courseName ?? "—" }}</div>
+            <div><strong>Versão:</strong> {{ data.version }}</div>
+            <div><strong>Vigência:</strong> {{ validityLabel(data) }}</div>
+          </div>
+
+          <!-- Grade: apenas o corpo rola; cabeçalhos e 2 colunas ficam fixos -->
+          <div #gridScroller class="mv-grid" (scroll)="onGridScroll()">
+            <table class="mv-table" aria-label="Matriz de conhecimentos">
+              <thead>
+                <!-- Linha 1 (categorias) -->
+                <tr class="row-top-1">
+                  <th class="corner th-left-1 th-top-1">FUNÇÃO</th>
+                  <th class="corner th-left-2 th-top-1">SUBFUNÇÃO</th>
+
+                  @for (cat of categorias; track cat.id) {
+                    <th
+                      class="th-cat th-top-1"
+                      [attr.colspan]="countCompetenciasBy(cat.id)"
+                    >
+                      <button
+                        class="hdr-text cat"
+                        [class.expanded]="isCatExpanded(cat.id)"
+                        (click)="toggleCat(cat.id)"
+                        [attr.title]="cat.nome"
+                        type="button"
+                      >
+                        {{ cat.nome }}
+                      </button>
+                    </th>
+                  }
+                </tr>
+
+                <!-- Linha 2 (competências) -->
+                <tr class="row-top-2">
+                  <th class="th-left-1 th-top-2"></th>
+                  <th class="th-left-2 th-top-2"></th>
+
+                  @for (c of competenciasFlat; track c.id) {
+                    <th class="th-comp th-top-2">
+                      <button
+                        class="hdr-text comp"
+                        [class.expanded]="isCompExpanded(c.id)"
+                        (click)="toggleComp(c.id)"
+                        [attr.title]="c.nome"
+                        type="button"
+                      >
+                        {{ c.nome }}
+                      </button>
+                    </th>
+                  }
+                </tr>
+              </thead>
+
+              <tbody>
+                @for (f of funcoes; track f.id) {
+                  @for (sf of f.subfuncoes; track sf.id; let i = $index) {
+                    <tr>
+                      @if (i === 0) {
+                        <th
+                          class="th-left-1 th-funcao"
+                          [attr.rowspan]="f.subfuncoes.length"
+                        >
+                          <button
+                            class="hdr-text func"
+                            [class.expanded]="isFuncExpanded(f.id)"
+                            (click)="toggleFunc(f.id)"
+                            [attr.title]="f.nome"
+                            type="button"
+                          >
+                            {{ f.nome }}
+                          </button>
+                        </th>
+                      }
+
+                      <th class="th-left-2 th-subfunc">
+                        <button
+                          class="hdr-text subf"
+                          [class.expanded]="isSubfuncExpanded(sf.id)"
+                          (click)="toggleSubfunc(sf.id)"
+                          [attr.title]="sf.nome"
+                          type="button"
+                        >
+                          {{ sf.nome }}
+                        </button>
+                      </th>
+
+                      @for (c of competenciasFlat; track c.id) {
+                        @let items = cellMap.get(sf.id + "__" + c.id) ?? [];
+                        <td class="cell">
+                          @if (items.length === 0) {
+                            <span class="muted">—</span>
+                          } @else {
+                            <div class="codes">
+                              @for (it of items; track it.codigo) {
+                                <a
+                                  class="code"
+                                  href="javascript:void(0)"
+                                  (click)="onCodeClick($event, it)"
+                                >
+                                  {{ it.codigo }}
+                                </a>
+                              }
+                            </div>
+                          }
+                        </td>
+                      }
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          @if (popoverVisible) {
+            <div
+              class="mv-popover"
+              [style.left.px]="popoverX"
+              [style.top.px]="popoverY"
+            >
+              {{ popoverText }}
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}

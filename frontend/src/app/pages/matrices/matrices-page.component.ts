@@ -7,11 +7,13 @@ import { TableColumn } from '../../models/table.model';
 import { MatricesTableComponent } from '../../components/matrices-table/matrices-table.component';
 import { Header } from '../../components/header/header';
 import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
+import { MatrixViewerDialogService } from '../../components/matrix-viewer-dialog/matrix-viewer-dialog.service';
+import { MatrixViewerDialogComponent } from '../../components/matrix-viewer-dialog/matrix-viewer-dialog.component';
 
 @Component({
   selector: 'app-matrices-page',
   standalone: true,
-  imports: [CommonModule, Header, AccessibilityBarComponent, FormsModule, MatricesTableComponent],
+  imports: [CommonModule, Header, AccessibilityBarComponent, FormsModule, MatricesTableComponent, MatrixViewerDialogComponent],
   templateUrl: './matrices-page.component.html',
   styleUrls: ['./matrices-page.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,7 +45,11 @@ export class MatricesPageComponent {
     }
   ];
 
-  constructor(private matrices: MatricesService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private matrices: MatricesService,
+    private cdr: ChangeDetectorRef,
+    private matrixViewer: MatrixViewerDialogService
+  ) { }
 
   ngOnInit(): void {
     this.fetch(true);
@@ -132,13 +138,22 @@ export class MatricesPageComponent {
   }
 
   onRowAction(e: { action: string; row: Matrix }) {
-    if (e.action === 'viewDetails') {
+    if (e.action === 'details') {
       this.onViewDetails(e.row);
     }
-    if (e.action === 'delete') { this.onDelete(e.row); }
+
+    if (e.action === 'delete') {
+      this.onDelete(e.row);
+    }
   }
 
-  onViewDetails(_row: Matrix) { }
+  onViewDetails(row: Matrix) {
+    console.log("abrindo Detalhes, começo");
+    console.log(row)
+    console.log("abrindo Detalhes, fim");
+    this.matrixViewer.open(row.id);
+  }
+
   onDelete(_row: Matrix) { }
   onImportMatrix() { }
 

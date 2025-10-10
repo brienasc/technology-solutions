@@ -37,3 +37,21 @@ export interface Subfunction {
   id: string;
   name: string;
 }
+
+export interface MatrixDetail {
+  id: string;
+  name: string;
+  version: string;
+  courseName: string | null;
+  validFrom: string | null; // ISO
+  validTo: string | null;   // ISO
+  categorias: { id: string; nome: string; competencias: { id: string; nome: string }[] }[];
+  funcoes: { id: string; nome: string; subfuncoes: { id: string; nome: string }[] }[];
+  conhecimentos: { id: string; codigo: number; nome: string; competencias_ids: string[] }[];
+  cruzamentos: {
+    subfuncao_id: string;
+    competencia_id: string;
+    conhecimento_id: string;
+    conhecimento: { id: string; codigo: number; nome: string };
+  }[];
+}

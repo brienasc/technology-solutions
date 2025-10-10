@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Matrix } from '../models/matrix.model';
+import { Matrix, MatrixDetail } from '../models/matrix.model';
 import { Paginated } from '../models/pagination.model';
 
 @Injectable({ providedIn: 'root' })
@@ -17,12 +17,12 @@ export class MatricesService {
     return this.http.get<any>('/api/matrizes', { params: p }).pipe(map(r => this.adaptPaginated(r.data ?? r)));
   }
 
-  getMatrix(id: string, include?: string[]): Observable<Matrix> {
-    console.log(include)
-    let p = new HttpParams();
-    if (include?.length) p = p.set('include', include.join(','));
-    return this.http.get<any>(`/api/matrizes/${id}`, { params: p }).pipe(map(r => this.adaptMatrix(r.data ?? r)));
+  getMatrix(id: string): Observable<MatrixDetail> {
+    return this.http.get<any>(`/api/matrizes/${id}`).pipe(
+      map(res => this.adaptMatrixDetail(res?.data ?? res))
+    );
   }
+
 
   deleteMatrix(id: string): Observable<void> {
     return this.http.delete<void>(`/api/matrizes/${id}`);
@@ -48,6 +48,35 @@ export class MatricesService {
       courseName: m.curso.nome,
       validFrom: m.vigencia.de ?? null,
       validTo: m.vigencia.ate ?? null,
+    };
+  }
+
+  private adaptMatrixDetail(raw: any): MatrixDetail {
+    return {
+      id: raw.id,
+      name: raw.nome ?? '—',
+      version: raw.versao ?? '—',
+      courseName: raw.curso?.nome ?? null,
+      validFrom: raw.vigencia?.de ?? null,
+      validTo: raw.vigencia?.ate ?? null,
+      categorias: (raw.categorias ?? []).map((cat: any) => ({
+        id: cat.id,
+        nome: cat.nome,
+        competencias: (cat.competencias ?? []).map((c: any) => ({
+          id: c.id,
+          nome: c.nome
+        }))
+      })),
+      funcoes: (raw.funcoes ?? []).map((f: any) => ({
+        id: f.id,
+        nome: f.nome,
+        subfuncoes: (f.subfuncoes ?? []).map((s: any) => ({
+          id: s.id,
+          nome: s.nome
+        }))
+      })),
+      conhecimentos: raw.conhecimentos ?? [],
+      cruzamentos: raw.cruzamentos ?? []
     };
   }
 }
