@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/matrizes', [MatrixController::class, 'index']);
     Route::post('/matrizes', [MatrixController::class,'store']);
     Route::get('/matrizes/{id}', [MatrixController::class,'show']);
+    Route::delete('/matrizes/{id}', [MatrixController::class, 'destroy']);
 
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);

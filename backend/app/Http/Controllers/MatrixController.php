@@ -83,4 +83,15 @@ class MatrixController extends Controller
             return $this->apiResponse->badRequest($e->getMessage(), "Falha ao retornar matriz");
         }
     }
+
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $this->matrixService->delete($id);
+
+            return $this->apiResponse->success(null, "Matriz apagado com sucesso");
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest($e->getMessage(), 'Erro ao apagar matriz.');
+        }
+    }
 }
