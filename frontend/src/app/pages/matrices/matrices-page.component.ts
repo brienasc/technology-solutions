@@ -161,7 +161,22 @@ export class MatricesPageComponent {
   }
 
   onDelete(_row: Matrix) {
+    this.matrices.deleteMatrix(_row.id).subscribe({
+      next: (response) => {
+        console.log('Matriz removida com sucesso!', response);
+        alert('Matriz removida com sucesso!');
+        this.fetch(true);
+      },
+      error: (err) => {
+        console.error('Erro ao remover matriz: ', err);
 
+        if (err.status === 422) {
+          console.log('Erro de validação');
+        } else {
+          console.log('Ocorreu um erro inesperado no servidor.');
+        }
+      }
+    });
   }
 
   onImportMatrix() {
@@ -191,6 +206,7 @@ export class MatricesPageComponent {
         },
         error: (err) => {
           console.error('Erro ao importar matriz: ', err);
+
           if (err.status === 422) {
             console.log('Erro de validação');
           } else {
