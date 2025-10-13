@@ -80,10 +80,17 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     document.body.style.overflow = 'auto';
   }
 
-  // Navegação para home (usando o routerLink é melhor, mas se precisar...)
+  // Navegação para home 
   navigateToHome(): void {
     this.closeMobileMenu();
+    // VERIFICAÇÃO: Se o usuário estiver logado, redireciona para /cursos (podemos mudar isso depois p qual)
+  if (this.authService.isLoggedIn()) {
+    // Redirecionar para a rota administrativa (Cursos)
+    this.router.navigate(['/cursos']);
+  } else {
+    // Se deslogado, volta para a Landing Page principal (/)
     this.router.navigate(['/']);
+  }
   }
 
   // Outros métodos de navegação (caso precise usar programaticamente)
@@ -110,10 +117,18 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     }
   }
 
+  
+
   onLogout(): void {
-    this.authService.logout();
-    this.isLoggedIn = false;
-  }
+     // 1. Limpa o token e o estado de login (mantendo sua lógica atual)
+  this.authService.logout();
+  this.isLoggedIn = false;
+  
+  // 2. Redireciona o usuário para a Landing Page principal (/)
+  this.router.navigate(['/']);
+  //   this.authService.logout();
+  //   this.isLoggedIn = false;
+ }
 
   onMenuGerencialClick(): void {
     this.router.navigate(['/menu-gerencial']);

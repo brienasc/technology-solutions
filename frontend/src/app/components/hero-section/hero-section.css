@@ -6,6 +6,45 @@
 /* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA A SEÇÃO HOME --- */
 
 :host-context(.high-contrast) {
+    /* --- ESTILO PARA O BOTÃO DE ÁUDIO DA IMAGEM HERO --- */
+    /* Garante que o contêiner da imagem sirva de referência para o botão */
+    .hero-image-container {
+        /* CRUCIAL: Se não estiver já definido, adicione/ajuste */
+        position: relative;
+        /* ... (mantenha os estilos de largura, altura, e box-shadow) ... */
+    }
+    /* Estilo do Botão de Áudio (Speaker Icon) */
+    .read-alt-button {
+        position: absolute;
+        bottom: 10px;
+        /* Distância da parte inferior da imagem */
+        right: 250px;
+        /* Distância da parte direita da imagem */
+        z-index: 10;
+        /* Garante que fique acima da imagem e de outros elementos */
+        /* Estilo visual */
+        background-color: rgba(255, 255, 255, 0.9);
+        /* Fundo branco semi-transparente */
+        color: var(--color-primary);
+        /* Roxo escuro para o ícone/texto */
+        border: none;
+        border-radius: 5px;
+        padding: 8px 10px;
+        font-size: 1.1em;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s;
+    }
+    .read-alt-button:hover {
+        background-color: var(--color-white);
+    }
+    /* --- GARANTIR O ALTO CONTRASTE --- */
+    :host-context(.high-contrast) .read-alt-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
      :host-context(.high-contrast) .primary-button {
         /* CRUCIAL: Fundo Amarelo Neon (Forçado) */
         background-color: var(--color-highlight-neon) !important;
@@ -412,6 +451,57 @@
         bottom: -0%;
         right: 0%;
     }
+}
+
+
+/* --- ESTILO PARA O BOTÃO DE ÁUDIO DA IMAGEM HERO --- */
+
+
+/* Garante que o contêiner da imagem sirva de referência para o botão */
+
+.hero-image-container {
+    /* CRUCIAL: Se não estiver já definido, adicione/ajuste */
+    position: relative;
+    /* ... (mantenha os estilos de largura, altura, e box-shadow) ... */
+}
+
+
+/* Estilo do Botão de Áudio (Speaker Icon) */
+
+.read-alt-button {
+    position: absolute;
+    bottom: 10px;
+    /* Distância da parte inferior da imagem */
+    right: 250px;
+    /* Distância da parte direita da imagem */
+    z-index: 10;
+    /* Garante que fique acima da imagem e de outros elementos */
+    /* Estilo visual */
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Fundo branco semi-transparente */
+    color: var(--color-primary);
+    /* Roxo escuro para o ícone/texto */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.read-alt-button:hover {
+    background-color: var(--color-white);
+}
+
+
+/* --- GARANTIR O ALTO CONTRASTE --- */
+
+:host-context(.high-contrast) .read-alt-button {
+    background-color: black !important;
+    color: var(--color-highlight-neon) !important;
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
 }
 
 

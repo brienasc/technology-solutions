@@ -4,10 +4,12 @@
 
     <div class="funcionalidades-list">
 
-        <!-- CARD 1: Banco de Questões -->
         <div class="funcionalidade-card">
             <div class="card-image-container">
-                <img ngSrc="app/assets/imagens/img_banco.png" width="400" height="300" alt="Imagem da funcionalidade Banco de Questões" class="card-image" [attr.title]=" 'Imagem da funcionalidade Banco de Questões' " />
+                <img ngSrc="app/assets/imagens/img_banco.png" width="400" height="300" [alt]="fun1ImageAltDescription" [attr.title]="fun1ImageAltDescription" priority="" class="card-image" />
+                <button class="read-alt-button" (click)="readImageDescription(fun1ImageAltDescription)" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">
+                    🔊
+                </button>
             </div>
             <div class="card-content ">
                 <h3>Banco de Questões</h3>
@@ -15,10 +17,12 @@
             </div>
         </div>
 
-        <!-- CARD 2: Banco de Avaliações -->
         <div class="funcionalidade-card ">
             <div class="card-image-container ">
-                <img ngSrc="app/assets/imagens/img_avaliacoes.png " width="400 " height="500 " alt="Imagem da funcionalidade Banco de Avaliações " class="card-image " [attr.title]=" 'Imagem da funcionalidade Banco de Avaliações' " />
+                <img ngSrc="app/assets/imagens/img_avaliacoes.png " width="400 " height="500 " [alt]="fun2ImageAltDescription" [attr.title]="fun2ImageAltDescription" priority="" class=" card-image " />
+                <button class="read-alt-button" (click)="readImageDescription(fun2ImageAltDescription)" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">
+                    🔊
+                </button>
             </div>
             <div class="card-content ">
                 <h3>Banco de Avaliações</h3>
@@ -26,10 +30,12 @@
             </div>
         </div>
 
-        <!-- CARD 3: Aplicações Dinâmicas -->
         <div class="funcionalidade-card ">
             <div class="card-image-container ">
-                <img ngSrc="app/assets/imagens/img_aplicacoes.png " width="400 " height="300 " alt="Imagem da funcionalidade Aplicações Dinâmicas " class="card-image " [attr.title]=" 'Imagem da funcionalidade Aplicações Dinâmicas' " />
+                <img ngSrc="app/assets/imagens/img_aplicacoes.png" width="400 " height="500 " [alt]="fun3ImageAltDescription" [attr.title]="fun3ImageAltDescription" priority="" class=" card-image " />
+                <button class="read-alt-button" (click)="readImageDescription(fun3ImageAltDescription)" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">
+                    🔊
+                </button>
             </div>
             <div class="card-content ">
                 <h3>Aplicações Dinâmicas</h3>
@@ -37,10 +43,12 @@
             </div>
         </div>
 
-        <!-- CARD 4: Feito para Especialistas -->
         <div class="funcionalidade-card ">
             <div class="card-image-container ">
-                <img ngSrc="app/assets/imagens/img_especialistas.png " width="400 " height="300 " alt="Imagem da funcionalidade Feito para Especialistas " class="card-image " [attr.title]=" 'Imagem da funcionalidade Feito para Especialistas' " />
+                <img ngSrc="app/assets/imagens/img_especialistas.png " width="400 " height="500 " [alt]="fun4ImageAltDescription" [attr.title]="fun4ImageAltDescription" priority="" class=" card-image " />
+                <button class="read-alt-button" (click)="readImageDescription(fun4ImageAltDescription)" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">
+                    🔊
+                </button>
             </div>
             <div class="card-content ">
                 <h3>Feito para Especialistas</h3>

@@ -1,4 +1,3 @@
-
 <section id="home" class="hero-section" role="main" aria-label="Introdução e chamadas principais da Education Solutions">
     <div class="hero-content">
         <!-- Tagline Pequena (Rosa) -->
@@ -45,19 +44,26 @@
     <!-- WRAPPER: É O PAI RELATIVO PARA POSICIONAR OS CARTÕES -->
     <div class="image-cards-wrapper">
 
+        <!-- <div class="hero-image-container">
+            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" alt="No lado direito da tela, há um grande card retangular em roxo claro. Ele contém uma foto de três mulheres jovens em uma sala de aula, sentadas em carteiras de madeira. A mulher da frente, no centro, sorri enquanto olha para seu celular. À sua direita, outra mulher também olha para seu celular com um sorriso, e à sua esquerda, uma terceira mulher tem seu celular em mãos. Todas parecem estar interagindo com a tecnologia em um ambiente de aprendizado."
+                [attr.title]="
+                'No lado direito da tela, há um grande card retangular em roxo claro. Ele contém uma foto de três mulheres jovens em uma sala de aula, sentadas em carteiras de madeira. A mulher da frente, no centro, sorri enquanto olha para seu celular. À sua direita, outra mulher também olha para seu celular com um sorriso, e à sua esquerda, uma terceira mulher tem seu celular em mãos. Todas parecem estar interagindo com a tecnologia em um ambiente de aprendizado.' "
+                priority="" />
+        </div> -->
+
         <div class="hero-image-container">
-            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" alt="Equipe de colaboradores interagindo com a plataforma Education Solutions em um ambiente de escritório moderno" [attr.title]="'Equipe de colaboradores interagindo com a plataforma Education Solutions em um ambiente de escritório moderno'"
-            />
+            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" [alt]="heroImageAltDescription" [attr.title]="heroImageAltDescription" priority="" />
+            <button class="read-alt-button" (click)="readHeroImageDescription()" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">🔊</button>
         </div>
 
         <!-- CARTÕES FLUTUANTES -->
-        <div class="floating-card top-left">
+        <div class="floating-card top-left ">
             <span>Banco de Questões</span>
             <small>+2.5k questões adicionadas</small>
         </div>
 
 
-        <div class="floating-card bottom-right">
+        <div class="floating-card bottom-right ">
             <span>Avaliação Dinâmica</span>
             <small>Adaptação em tempo real</small>
         </div>

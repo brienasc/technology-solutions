@@ -14,6 +14,35 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 })
 // Definição da classe do componente, implementando interfaces de ciclo de vida do Angular.
 export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  readonly heroImageDescription: string = "A foto, tirada em ângulo fechado, exibe a tela de um laptop ou tablet com o navegador Chrome ou Edge aberto. A aba ativa mostra o site Udemy.com, uma plataforma de cursos online. A interface exibe a barra de navegação do site, com a logo da Udemy em vermelho no topo. A imagem transmite a sensação de oportunidade de aprendizado digital e a promessa de desenvolvimento profissional.";
+readHeroImageAlt(): void {
+    if ('speechSynthesis' in window && this.heroImageDescription.length > 0) {
+        
+        window.speechSynthesis.cancel();
+        
+        const speech = new SpeechSynthesisUtterance(this.heroImageDescription);
+        speech.lang = 'pt-BR';
+        
+        window.speechSynthesis.speak(speech);
+    } else {
+        console.error("Erro: A API de voz não está disponível ou a descrição está vazia.");
+    }
+}
+// Método para ler a descrição da imagem em voz alta usando a API de síntese de fala do navegador.
+      readImageDescription(textToSpeak: string): void {
+        if ('speechSynthesis' in window && textToSpeak && textToSpeak.length > 0) {
+            
+            window.speechSynthesis.cancel();
+            
+            const speech = new SpeechSynthesisUtterance(textToSpeak);
+            speech.lang = 'pt-BR';
+            
+            window.speechSynthesis.speak(speech);
+        } else {
+            console.error("Erro: A API de voz não está disponível ou o texto está vazio.");
+        }
+    }
   // @ViewChild para obter uma referência ao elemento HTML com a tag 'benefitsGrid'.
   // O '!' garante que a propriedade será inicializada e não será nula.
   @ViewChild('benefitsGrid') benefitsGrid!: ElementRef;
@@ -21,53 +50,59 @@ export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
   // Array de objetos que representam as imagens e seus respectivos títulos e textos.
 
    images = [
-    { 
-      src: 'app/assets/imagens/M1.jpg', 
-      title: 'Maria Silva', 
-      
-      role: 'Diretora Pedagógica', 
-      company: 'Colégio Excelência', 
-      text: '"O Education Solutions revolucionou nossa forma de criar avaliações. Reduzimos em 70% o tempo gasto na elaboração de provas e melhoramos significativamente a qualidade das questões."' 
-    },
-    { 
-      src: 'app/assets/imagens/H1.jpg', 
-      title: 'Dr. Carlos Mendes', 
-      role: 'Coordenador Acadêmico', 
-      company: 'Instituto Federal de São Paulo', 
-      text: '"A funcionalidade de aplicações dinâmicas é impressionante. Nossos estudantes se sentem mais engajados e obtemos dados muito mais precisos sobre o desempenho individual."' 
-    },
-    { 
-      src: 'app/assets/imagens/M2.jpg', 
-      title: 'Ana Beatriz Costa', 
-      role: 'Professora de Matemática', 
-      company: 'Escola Estadual Santos Dumont', 
-      text: '"O banco de questões é fantástico! Encontro facilmente questões alinhadas com a BNCC e posso personalizar as avaliações de acordo com o nível da turma."' 
-    },
-    
-    { 
-      src: 'app/assets/imagens/H2.jpg', 
-      title: 'Prof. Roberto Lima', 
-      role: 'Vice-Diretor', 
-      company: 'Colégio Nova Geração', 
-      text: ' "Os relatórios analíticos nos ajudam a identificar dificuldades específicas dos alunos rapidamente. Isso permitiu intervenções pedagógicas mais eficazes e melhores resultados."'
-    },
+        { 
+      src: 'app/assets/imagens/M1.jpg', 
+      title: 'Maria Silva', 
+      role: 'Diretora Pedagógica', 
+      company: 'Colégio Excelência', 
+      text: '"O Education Solutions revolucionou nossa forma de criar avaliações. Reduzimos em 70% o tempo gasto na elaboração de provas e melhoramos significativamente a qualidade das questões."',
+       // AUDIODESCRIÇÃO DA IMAGEM
+      altDescription: 'Foto de perfil de Maria Silva, mulher de pele clara, cabelos amarrados. Diretora Pedagógica no Colégio Excelência.'
+    },
+    { 
+      src: 'app/assets/imagens/H1.jpg', 
+      title: 'Dr. Carlos Mendes', 
+      role: 'Coordenador Acadêmico', 
+      company: 'Instituto Federal de São Paulo', 
+      text: '"A funcionalidade de aplicações dinâmicas é impressionante. Nossos estudantes se sentem mais engajados e obtemos dados muito mais precisos sobre o desempenho individual."',
+      altDescription: 'Foto de perfil do Dr. Carlos Mendes, homem de pele negra, cabelo curto e baixo e sem barba. Coordenador Acadêmico no Instituto Federal de São Paulo.'
+    },
+    { 
+      src: 'app/assets/imagens/M2.jpg', 
+      title: 'Ana Beatriz Costa', 
+      role: 'Professora de Matemática', 
+      company: 'Escola Estadual Santos Dumont', 
+      text: '"O banco de questões é fantástico! Encontro facilmente questões alinhadas com a BNCC e posso personalizar as avaliações de acordo com o nível da turma."',
+      altDescription: 'Foto de perfil de Ana Beatriz Costa, mulher de pele clara, olhos puxados, com cabelos escuros amarrados. Professora de Matemática na Escola Estadual Santos Dumont.'
+    },
+    
+    { 
+      src: 'app/assets/imagens/H2.jpg', 
+      title: 'Prof. Roberto Lima', 
+      role: 'Vice-Diretor', 
+      company: 'Colégio Nova Geração', 
+      text: ' "Os relatórios analíticos nos ajudam a identificar dificuldades específicas dos alunos rapidamente. Isso permitiu intervenções pedagógicas mais eficazes e melhores resultados."',
+      altDescription: 'Foto de perfil do Prof. Roberto Lima, homem de pele clara, cabeça baixo e sem braba. Vice-Diretor no Colégio Nova Geração.'
+    },
 
-    { 
-      src: 'app/assets/imagens/M3.jpg', 
-      title: 'Juliana Santos', 
-      role: 'Coordenadora de Tecnologia Educacional', 
-      company: 'Centro Educacional Alfa', 
-      text: '"A plataforma é muito intuitiva e o suporte é excepcional. Conseguimos implementar o sistema em toda a escola em apenas duas semanas."'
-    },
+    { 
+      src: 'app/assets/imagens/M3.jpg', 
+      title: 'Juliana Santos', 
+      role: 'Coordenadora de Tecnologia Educacional', 
+      company: 'Centro Educacional Alfa', 
+      text: '"A plataforma é muito intuitiva e o suporte é excepcional. Conseguimos implementar o sistema em toda a escola em apenas duas semanas."',
+      altDescription: 'Foto de perfil de Juliana Santos, mulher de pele negra com cabelo cacheado na altura dos ombros. Coordenadora de Tecnologia Educacional no Centro Educacional Alfa.'
+    },
 
-    { 
-      src: 'app/assets/imagens/H3.jpg', 
-      title: 'Márcio Oliveira', 
-      role: 'Especialista em Avaliações', 
-      company: 'Escola Técnica Brasil', 
-      text: '"A personalização das avaliações nos permite atender às necessidades específicas de nossos alunos, desde reforço até desafios avançados. Isso tem sido um diferencial enorme para nossa instituição."'
-    },
-  ];
+    { 
+      src: 'app/assets/imagens/H3.jpg', 
+      title: 'Márcio Oliveira', 
+      role: 'Especialista em Avaliações', 
+      company: 'Escola Técnica Brasil', 
+      text: '"A personalização das avaliações nos permite atender às necessidades específicas de nossos alunos, desde reforço até desafios avançados. Isso tem sido um diferencial enorme para nossa instituição."',
+      altDescription: 'Foto de perfil de Márcio Oliveira, homem de pele clara, cabeça raspada e sem barba. Especialista em Avaliações na Escola Técnica Brasil.'
+    },
+  ];
 
   // images = [
   //   { src: 'app/assets/imagens/icone-convites.jpg', title: 'Convites Personalizados', text: 'Adapte soluções às suas necessidades exclusivas.' },
@@ -198,7 +233,7 @@ export class SobreComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateIndicators(); // Atualiza os indicadores de navegação.
       this.isAnimating = false; // Define a flag de animação como false.
       this.startAutoplay(); // Reinicia o autoplay.
-    }, 500); // Atraso de 500ms para aguardar a animação.
+    }, 50000); // Atraso de 500ms para aguardar a animação.
   }
 
   // Método para rolar o carrossel para a direita.

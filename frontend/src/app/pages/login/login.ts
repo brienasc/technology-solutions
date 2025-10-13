@@ -178,7 +178,7 @@ this.isDarkTheme = localStorage.getItem('theme') === 'dark';
       this.authService.login(cpf, password).subscribe(
         response => {
           alert(response.message); // Exibe uma mensagem de sucesso (pode ser substituído por um modal).
-          this.router.navigate(['/']); // Redireciona o usuário para a página inicial ('/').
+          this.router.navigate(['/cursos']); // Redireciona o usuário para a página inicial ('/cursos').
         },
         error => {
           console.error('Erro no login: ', error);

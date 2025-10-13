@@ -1,10 +1,11 @@
 <app-accessibility-bar></app-accessibility-bar>
 
-<main role="main" aria-label="Página de Login"> <!--pro tab funcionar melhor!-->
-<div class="login-page-container">
+<main role="main" aria-label="Página de Login">
+    <!--pro tab funcionar melhor!-->
+    <div class="login-page-container">
 
-    <div class="login-form-section" [attr.title]="isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro'">
-        <label class="theme-switch">
+        <div class="login-form-section" [attr.title]="isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro'">
+            <label class="theme-switch">
       <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()"  [attr.aria-label]="isDarkTheme ? 'Desativar modo escuro' : 'Ativar modo escuro'"
         >
       <span class="slider round"></span>
@@ -13,8 +14,8 @@
       </svg>
     </label>
 
-        <div class="login-content-wrapper">
-            <!-- <div class="logo-containerr">
+            <div class="login-content-wrapper">
+                <!-- <div class="logo-containerr">
                 <img src="app/assets/imagens/LogoNova.png" alt="Education Solutions Logo">
                 <div class="logo-text">
                      <p class="logo-main-text">Education</p>
@@ -22,25 +23,25 @@
         </div> 
         </div>-->
 
-            <h1 class="login-title">Login</h1>
+                <h1 class="login-title">Login</h1>
 
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
-                <div class="form-group">
-                    <label for="cpf">CPF:</label>
-                    <input type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" class="custom-input-style" [ngClass]="{'is-invalid': loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched}">
-                    <div *ngIf="loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched" class="invalid-feedback">
-                        <div *ngIf="loginForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</div>
-                        <div *ngIf="loginForm.get('cpf')?.errors?.['cpfInvalido']">CPF inválido.</div>
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00" class="custom-input-style" [ngClass]="{'is-invalid': loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched}">
+                        <div *ngIf="loginForm.get('cpf')?.invalid && loginForm.get('cpf')?.touched" class="invalid-feedback">
+                            <div *ngIf="loginForm.get('cpf')?.errors?.['required']">CPF é obrigatório.</div>
+                            <div *ngIf="loginForm.get('cpf')?.errors?.['cpfInvalido']">CPF inválido.</div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="password">Senha:</label>
-                    <div class="password-input-wrapper">
-                        <input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password" class="custom-input-style" placeholder="Digite sua senha" [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
-                        <button type="button" class="toggle-password-visibility" (click)="togglePasswordVisibility()" [attr.aria-label]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'" [attr.aria-pressed]="passwordVisible" [attr.title]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'"
-                            vm-access-ignore="true" tabindex="0">
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <div class="password-input-wrapper">
+                            <input [type]="passwordVisible ? 'text' : 'password'" id="password" formControlName="password" class="custom-input-style" placeholder="Digite sua senha" [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
+                            <button type="button" class="toggle-password-visibility" (click)="togglePasswordVisibility()" [attr.aria-label]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'" [attr.aria-pressed]="passwordVisible" [attr.title]="passwordVisible ? 'Ocultar senha' : 'Mostrar senha'"
+                                vm-access-ignore="true" tabindex="0">
               <svg *ngIf=" !passwordVisible " aria-hidden="true" xmlns="http://www.w3.org/2000/svg " viewBox="0 0 24 24 " fill="currentColor " class="w-5 h-5 " >
                 <path fill-rule="evenodd " d="M12 5.25c-4.816 0-9.043 3.123-10.655 7.427a.75.75 0 0 0 0 1.106C2.957 18.627 7.184 21.75 12 21.75s9.043-3.123 10.655-7.427a.75.75 0 0 0 0-1.106C21.043 8.373 16.816 5.25 12 5.25Zm0 13.5A6.75 6.75 0 1 0 12
                             6.75a6.75 6.75 0 0 0 0 13.5Z " clip-rule="evenodd " />
@@ -53,55 +54,60 @@
                             0 0 1-1.06 1.06Z " clip-rule="evenodd " />
               </svg>
             </button>
-                    </div>
+                        </div>
 
-                    <div *ngIf="loginForm.get( 'password')?.invalid && loginForm.get( 'password')?.touched " class="invalid-feedback ">
-                        <div *ngIf="loginForm.get( 'password')?.errors?.[ 'required'] ">Senha é obrigatória.</div>
-                        <div *ngIf="loginForm.get( 'password')?.errors?.[ 'minlength'] ">Senha deve ter no mínimo 8 caracteres.</div>
-                        <div *ngIf="loginForm.get( 'password')?.errors?.[ 'passwordStrength'] ">
-                            A senha deve conter:
-                            <ul>
-                                <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasUpperCase} ">1 letra maiúscula</li>
-                                <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasLowerCase} ">1 letra minúscula</li>
-                                <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasNumeric} ">1 número</li>
-                                <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasSpecialChar} ">1 caractere especial</li>
-                            </ul>
+                        <div *ngIf="loginForm.get( 'password')?.invalid && loginForm.get( 'password')?.touched " class="invalid-feedback ">
+                            <div *ngIf="loginForm.get( 'password')?.errors?.[ 'required'] ">Senha é obrigatória.</div>
+                            <div *ngIf="loginForm.get( 'password')?.errors?.[ 'minlength'] ">Senha deve ter no mínimo 8 caracteres.</div>
+                            <div *ngIf="loginForm.get( 'password')?.errors?.[ 'passwordStrength'] ">
+                                A senha deve conter:
+                                <ul>
+                                    <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasUpperCase} ">1 letra maiúscula</li>
+                                    <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasLowerCase} ">1 letra minúscula</li>
+                                    <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasNumeric} ">1 número</li>
+                                    <li [ngClass]="{ 'valid': loginForm.get( 'password')?.errors?.[ 'passwordStrength']?.hasSpecialChar} ">1 caractere especial</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <a routerLink="/esqueci-senha " class="forgot-password-link ">Esqueci minha Senha </a>
+                    <a routerLink="/esqueci-senha " class="forgot-password-link ">Esqueci minha Senha </a>
 
-                <button type="submit " class="submit-button-style ">Logar no Sistema</button>
-            </form>
+                    <button type="submit " class="submit-button-style ">Logar no Sistema</button>
+                </form>
 
-            <p class="signup-link ">Não tem uma conta? <a routerLink="/cadastro ">Cadastre-se</a></p>
+                <p class="signup-link ">Não tem uma conta? <a routerLink="/cadastro ">Cadastre-se</a></p>
 
-        </div>
-
-        <a routerLink=" " class="back-to-home-link " aria-label="Voltar para a página inicial">
-            <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 20 20 " fill="currentColor " class="w-5 h-5 ">
-        <path fill-rule="evenodd " d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.088l-5.5-5.25a.75.75 0 0 1 0-1.088l5.5-5.25a.75.75 0 1 1 1.04 1.088L5.612 9.25H16.25a.75.75 0 0 1 .75.75Z " clip-rule="evenodd " />
-      </svg> Voltar ao Início
-        </a>
-    </div>
-
-    <div class="login-hero-section ">
-        <div class="hero-content ">
-            <div class="logo-container hero-logo-container ">
-                <img src="app/assets/imagens/LogoNova.png " alt="Education Solutions Logo " [attr.title]=" 'Logo da Education Solutions' ">
-                <div class="logo-text ">
-                    <!-- <p class="logo-main-text ">Education</p>
-                    <p class="logo-sub-text ">Solutions</p> -->
-                </div>
             </div>
 
-            <h2 class="hero-title ">Welcome Back!</h2>
-            <p class="hero-slogan ">
-                Uma plataforma de integração para novos colaboradores
-            </p>
+            <a routerLink=" " class="back-to-home-link " aria-label="Voltar para a página inicial">
+                <svg xmlns="http://www.w3.org/2000/svg " viewBox="0 0 20 20 " fill="currentColor " class="w-5 h-5 ">
+        <path fill-rule="evenodd " d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.088l-5.5-5.25a.75.75 0 0 1 0-1.088l5.5-5.25a.75.75 0 1 1 1.04 1.088L5.612 9.25H16.25a.75.75 0 0 1 .75.75Z " clip-rule="evenodd " />
+      </svg> Voltar ao Início
+            </a>
         </div>
-    </div>
 
-</div>
+        <div class="login-hero-section ">
+            <div class="hero-content ">
+                <div class="logo-container hero-logo-container ">
+                    <!-- <img src="app/assets/imagens/LogoNova.png " alt="Education Solutions Logo " [attr.title]=" 'Logo da Education Solutions' "> -->
+                    <img class="logo-normal" src="app/assets/imagens/LogoNova.png" alt="No canto direito, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
+                        title="No canto direito, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo.">
+
+                    <img class="logo-high-contrast" src="app/assets/imagens/logo_AC.png" alt="No canto direito, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em na cor amarelo neon. (Alto Contraste)"
+                        title="No canto direito, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em na cor amarelo neon. (Alto Contraste)">
+
+                    <div class="logo-text ">
+
+                    </div>
+                </div>
+
+                <h2 class="hero-title ">Welcome Back!</h2>
+                <p class="hero-slogan ">
+                    Uma plataforma de integração para novos colaboradores
+                </p>
+            </div>
+        </div>
+
+    </div>
 </main>

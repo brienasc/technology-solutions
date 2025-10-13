@@ -1,286 +1,363 @@
-/* src/app/components/accessibility-bar/accessibility-bar.css */
-
-
-/* --- REGRAS DE ALTO CONTRASTE PARA O MENU DE ACESSIBILIDADE --- */
+/* src/app/components/accessibility-bar/accessibility-bar.component.css */
 
 :host-context(.high-contrast) {
-    /* Regra para o indicador de tamanho de fonte */
-    .font-size-indicator {
-        /* Fundo do indicador deve ser Preto */
-        background-color: black !important;
-        /* Texto deve ser Amarelo Neon */
-        color: var(--color-highlight-neon) !important;
-        /* Garante que o separador lateral também seja branco */
-        border-color: white !important;
-    }
-    /* Regra para os botões internos do controle de fonte (- e +) */
-    .font-size-control .font-btn {
-        background: black !important;
-        color: var(--color-highlight-neon) !important;
-    }
-    /* 1. BOTÃO DE TOGGLE FIXO (O ícone "Acessibilidade" na lateral) */
-    .access-menu-toggle-fixed {
-        /* Fundo Preto */
-        background-color: black !important;
-        /* Texto/Ícone Amarelo Neon */
-        color: var(--color-highlight-neon) !important;
-        box-shadow: none !important;
-        border: 2px solid var(--color-highlight-neon) !important;
-    }
-    .access-menu-toggle-fixed svg {
-        fill: var(--color-highlight-neon) !important;
-        color: var(--color-highlight-neon) !important;
-    }
-    /* 2. BARRA COMPLETA (Fundo Preto) */
-    .accessibility-bar-overlay {
-        background-color: black !important;
-        border-bottom: 2px solid white !important;
-    }
-    /* Títulos e Instruções (Texto Amarelo/Branco) */
-    .access-title,
-    .access-title svg,
-    .access-instruction {
-        color: white !important;
-        /* Texto principal em branco */
-        fill: white !important;
-    }
-    /* 3. BOTÕES DE CONTROLE (Auto Contraste, VLibras, Reset, X) */
-    .access-controls-group button,
-    .access-close-btn {
-        /* Cor de destaque para todos os botões de ação na barra */
-        background-color: black !important;
-        color: var(--color-highlight-neon) !important;
-        /* Texto/Ícone Amarelo */
-        border: 2px solid var(--color-highlight-neon) !important;
-        box-shadow: none !important;
-    }
-    /* Estilo para a caixa de tamanho de fonte */
-    .font-size-control {
-        background-color: black !important;
-        border-color: var(--color-highlight-neon) !important;
-    }
-    /* Mover para Branco no Hover para feedback de contraste */
-    .access-controls-group button:hover,
-    .access-close-btn:hover {
+    .access-control-group button:hover {
+        /* Hover Branco/Preto no Alto Contraste */
         background-color: white !important;
         color: black !important;
         border-color: white !important;
     }
+    .access-control-group button {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Borda Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Títulos dos Grupos (Ajuste de Cor, Leitura e Navegação) */
+    .group-title {
+        color: white !important;
+        /* Texto dos títulos dos grupos fica branco */
+        border-bottom-color: white !important;
+    }
+    /* Botões de Opção (Texto) - Garante que o texto seja branco */
+    .option-btn {
+        background-color: black !important;
+        color: white !important;
+        /* O texto do botão fica branco */
+        border: 2px solid white !important;
+    }
+    /* Ícones dentro dos botões (Sol, Lua, etc.) - Devem ser brancos */
+    .option-btn .option-icon {
+        color: white !important;
+    }
+    .reset-btn {
+        /* Fundo: Amarelo Neon */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto: Preto (para contraste máximo) */
+        color: black !important;
+        /* Borda: Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    .panel-header {
+        background-color: black !important;
+        border-bottom: 2px solid var(--color-highlight-neon) !important;
+    }
+    .panel-title {
+        /* Título da barra em Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+    }
+    .invite-button,
+    .create-button {
+        /* CRUCIAL: Fundo Amarelo Neon (para o botão primário de contraste) */
+        background-color: black !important;
+        /* Texto/Ícone Preto (para contraste máximo) */
+        color: var(--color-highlight-neon) !important;
+        /* Borda Amarela Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Garante que o ícone interno também seja Preto */
+    .invite-button svg,
+    .create-button svg {
+        fill: black !important;
+        color: black !important;
+        stroke: black !important;
+    }
+    /* 3. Títulos dos Grupos e Cabeçalho (para garantir que sejam amarelos) */
+    .group-title,
+    .panel-title {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Aplica o esquema Amarelo/Preto a TODOS os botões de controle internos */
+    .access-controls-group button,
+    .access-controls-group .font-btn {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Borda Amarela Neon */
+        box-shadow: none !important;
+    }
+    /* Garante que os ícones internos também sejam amarelos */
+    .access-controls-group button svg {
+        fill: var(--color-highlight-neon) !important;
+        stroke: var(--color-highlight-neon) !important;
+    }
 }
 
 
-/* --- NOVO: BOTÃO DE TOGGLE QUE FICA NO CANTO --- */
+/* --- REGRAS ESPECÍFICAS PARA VISIBILIDADE NO MODO ESCURO --- */
 
+:host-context(.dark-theme) {
+    /* 1. Títulos dos Grupos (Ajuste de Cor, Leitura e Navegação) */
+    .group-title {
+        color: var(--color-white) !important;
+        /* Força o texto para Branco */
+        border-bottom-color: #333 !important;
+        /* Torna o separador cinza escuro */
+    }
+    /* 2. Botões de Opção e Rótulos (Auto Contraste, VLibras, Leitor) */
+    .option-btn {
+        background-color: #1a1a1a !important;
+        /* Fundo do botão escuro */
+        color: var(--color-white) !important;
+        /* Força o texto para Branco */
+        border: 1px solid #333 !important;
+    }
+    /* Garante que os ícones internos (como a lâmpada/sol/lua) também fiquem brancos */
+    .option-btn .option-icon {
+        color: var(--color-white) !important;
+    }
+    /* 3. Controle de Fonte (Números) */
+    .font-size-indicator {
+        background-color: #1a1a1a !important;
+        color: var(--color-white) !important;
+        border-color: #333 !important;
+    }
+    /* 4. Botão de Fechar e Botão Reset (Apenas para garantir que sejam visíveis) */
+    .panel-header,
+    .panel-header .panel-title,
+    .panel-close-btn {
+        color: var(--color-white) !important;
+        background-color: var(--color-primary) !important;
+        /* Roxo escuro do cabeçalho */
+    }
+    /* O botão Reset (que é vermelho no modo normal) precisa ser claro no escuro */
+    .reset-btn {
+        background-color: #ef4444 !important;
+        /* Mantém a cor de perigo (vermelho) no escuro */
+        color: var(--color-white) !important;
+    }
+    .option-btn,
+    .access-control-group button {
+        /* Fundo dos botões (Cinza Escuro) */
+        background-color: var(--theme-input-bg) !important;
+        /* Cor do Texto (Branco/Claro) */
+        color: var(--color-white) !important;
+        /* Borda Cinza Claro/Branca */
+        border: 1px solid var(--theme-input-border) !important;
+    }
+    /* 3. CONTROLE DE FONTE (+ e -) */
+    .font-size-control,
+    .font-size-control .font-btn {
+        /* Fundo Cinza Escuro e Texto Branco */
+        background-color: var(--theme-input-bg) !important;
+        color: var(--color-white) !important;
+        border-color: var(--theme-input-border) !important;
+    }
+    .font-size-control .font-size-indicator {
+        background-color: var(--theme-input-bg) !important;
+        color: var(--color-white) !important;
+        border-color: var(--theme-input-border) !important;
+    }
+}
+
+
+/* --- AJUSTES BASE: Garantir que o painel antigo seja redefinido --- */
+
+.accessibility-bar-overlay,
 .access-menu-toggle-fixed {
+    all: unset;
+    /* Limpa estilos fixos anteriores */
+}
+
+
+/* --- 1. BOTÃO TOGGLE FLUTUANTE (LATERAL) --- */
+
+.access-floating-toggle {
     position: fixed;
-    top: 0;
-    /* Colado no topo */
+    top: 30vh;
+    /* Posição na altura da tela (ajustável) */
     left: 0;
-    /* Colado na esquerda */
-    z-index: 9999;
-    /* Estilo do seu botão lateral do modelo (Roxo Escuro) */
-    background-color: var(--color-primary);
-    color: var(--color-white);
+    z-index: 900;
+    /* Estilo do bloco: Adapte para a cor da sua marca (roxo escuro) */
+    width: 60px;
+    height: 60px;
     border: none;
-    width: 110px;
-    /* Tamanho pequeno */
-    height: 30px;
-    /* Altura da barra */
-    border-bottom-right-radius: 8px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    background-color: var(--color-primary);
+    /* Roxo Escuro */
+    color: var(--color-white);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
     cursor: pointer;
-    /* Gira o ícone para caber no pequeno espaço verticalmente */
-    transform: none;
-    /* Estilos do ícone de acessibilidade (ajuste conforme seu SVG) */
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px 5px;
+    padding: 0;
 }
 
-.access-menu-toggle-fixed svg {
-    width: 28px;
-    /* Aumenta o ícone */
-    height: 28px;
-    margin-bottom: 5px;
-}
-
-.access-menu-toggle-fixed .toggle-text {
-    font-size: 0.75em;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
+.access-floating-toggle svg {
+    width: 32px;
+    height: 32px;
 }
 
 
-/* --- FIM DO BOTÃO DE TOGGLE --- */
+/* --- 2. PAINEL LATERAL (SLIDE-IN) --- */
 
-
-/* --- BARRA COMPLETA --- */
-
-.accessibility-bar-overlay {
+.accessibility-panel-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 60px;
-    /* Altura da barra fixa */
-    z-index: 9998;
-    /* Um nível abaixo do botão de toggle */
-    /* ESTADO FECHADO (Invisível) */
-    transform: translateX(-100%);
-    /* Desliza a barra inteira para fora da tela */
-    background-color: var(--color-background-detail);
-    /* Seu roxo/lilás */
-    color: var(--color-primary);
-    transition: transform 0.3s ease;
-}
-
-
-/* ESTADO ABERTO */
-
-.accessibility-bar-overlay.open {
-    transform: translateX(0);
-    /* Desliza a barra para dentro da tela */
-}
-
-
-/* O container principal que desliza/flutua */
-
-.accessibility-bar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* Altura inicial (pode ser ajustada) */
-    height: 60px;
-    z-index: 9999;
-    background-color: var(--color-lighten-primary);
-    /* Seu roxo/lilás de fundo da barra */
-    color: var(--color-primary);
-    /* Texto principal na cor roxa */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* Estado inicial: Desliza para fora da tela (Opcional se quiser começar fechada) */
-    /* transform: translateY(-100%); */
-    transition: transform 0.3s ease, height 0.3s ease;
-}
-
-
-/* Container interno (Limita a largura e alinha o conteúdo) */
-
-.access-bar-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1300px;
+    width: 350px;
+    /* Largura do painel */
     height: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
+    z-index: 9999;
+    background-color: var(--theme-form-bg);
+    /* Fundo do tema (branco/preto) */
+    color: var(--theme-body-text);
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    /* Animação de Slide */
+    transform: translateX(-100%);
+    /* Esconde inicialmente */
+    transition: transform 0.3s ease-out;
+    overflow-y: auto;
+}
+
+.accessibility-panel-overlay.open {
+    transform: translateX(0);
+    /* Desliza para dentro */
 }
 
 
-/* Toggle do Menu: Este é o botão que abre a barra se você decidir escondê-la */
+/* --- ESTILOS INTERNOS DO PAINEL --- */
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 15px 20px;
+}
+
+.panel-title {
+    font-size: 1.2em;
+    margin: 0;
+    /* background-color: var(--color-primary); */
+}
+
+.panel-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+}
 
 
-/* Se a barra for sempre aberta, você pode remover a animação e o toggle */
+/* Grid de Opções */
 
-
-/* Lado Esquerdo: Título e Instruções */
-
-.access-header-group {
+.panel-options-grid {
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    text-align: left;
-    width: auto;
-    max-width: 300px; /* ou outro valor menor */
-    flex-shrink: 1;
-    word-break: break-word;  /* permite quebra de texto para evitar corte */
-    white-space: normal;     /* texto multi-linha, quebra automática */
-}
-
-.access-title {
-    display: flex;
-    align-items: center;
-    font-size: 1.1em;
-    font-weight: 700;
-    margin: 0;
-}
-
-.access-title svg {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
-    fill: var(--color-primary);
-}
-
-.access-instruction {
-    font-size: 0.75em;
-    color: var(--color-text-secondary);
-    margin-top: 2px;
-}
-
-
-/* Lado Direito: Controles */
-
-.access-controls-group {
-    display: flex;
-    align-items: center;
     gap: 15px;
 }
 
-
-/* Estilo para Botões de Controle Genéricos */
-
-.control-btn {
-    background-color: var(--color-white);
+.group-title {
+    font-size: 1em;
     color: var(--color-primary);
-    border: 1px solid var(--color-light-gray);
-    padding: 8px 15px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    border-bottom: 1px solid var(--theme-input-border);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 
-/* Estilo para o controle de Fonte (agrupamento) */
+/* Botões de Opção (Auto Contraste, VLibras, etc.) */
 
-.font-size-control {
+.option-btn {
+    background-color: var(--theme-card-bg);
+    color: var(--color-primary);
+    border: 1px solid var(--theme-input-border);
+    padding: 10px 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.option-btn .option-icon {
+    font-size: 1.5em;
+}
+
+
+/* Controle de Fonte (Ajuste de estilo) */
+
+.font-control-group {
     display: flex;
     align-items: center;
     gap: 0;
-    /* Estilo de agrupamento contínuo (como no modelo) */
-    border: 1px solid var(--color-light-gray);
-    border-radius: 4px;
+    width: 100%;
+    border: 1px solid var(--theme-input-border);
+    border-radius: 8px;
     overflow: hidden;
-    background-color: var(--color-white);
 }
 
-.font-size-control .font-btn {
+
+/* Botão Reset */
+
+.reset-btn {
+    background-color: #ef4444;
+    color: white;
     border: none;
-    padding: 8px 10px;
-    background: none;
-}
-
-.font-size-indicator {
-    padding: 0 8px;
-    font-weight: 600;
-    font-size: 0.9em;
-    border-left: 1px solid var(--color-light-gray);
-    border-right: 1px solid var(--color-light-gray);
-}
-
-
-/* Botão Fechar */
-
-.access-close-btn {
-    background: none;
-    border: none;
-    color: var(--color-primary);
-    font-size: 1.5em;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
     cursor: pointer;
-    margin-left: 20px;
-    padding: 0 5px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+
+/* src/app/components/accessibility-bar/accessibility-bar.component.css */
+
+
+/* Container para agrupar os botões de navegação rápida */
+
+.access-control-group [role="toolbar"] {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que quebrem em telas menores */
+    gap: 8px;
+    /* Espaçamento entre os botões */
+    margin-bottom: 15px;
+    /* Espaço abaixo do grupo */
+}
+
+
+/* Estilo específico para os botões de navegação por seção */
+
+.access-control-group button {
+    /* Herda o estilo base de .control-btn, mas ajustamos o padding */
+    padding: 8px 12px;
+    font-size: 0.9em;
+    font-weight: 600;
+    /* Cores no modo Normal/Claro (Fundo Branco, Texto Roxo) */
+    background-color: var(--theme-card-bg);
+    color: var(--color-primary);
+    border: 1px solid var(--theme-input-border);
+    border-radius: 4px;
+    cursor: default;
+    transition: background-color 0.2s, color 0.2s;
+    -webkit-user-select: none;
+    /* Chrome, Safari, Edge */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE */
+    user-select: none;
+}
+
+.access-control-group button:hover {
+    background-color: var(--color-lighten-primary);
+    /* Roxo mais claro no hover */
+    color: var(--color-white);
 }
