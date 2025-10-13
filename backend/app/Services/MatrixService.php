@@ -54,6 +54,99 @@ class MatrixService
         return $paginator;
     }
 
+    public function delete(string $matrizId): bool
+    {
+        if (!DB::table('matrizes')->where('id', $matrizId)->exists()) {
+            $ex = new ModelNotFoundException('Matriz não encontrada.');
+            $ex->setModel(Matriz::class, [$matrizId]);
+            throw $ex;
+        }
+
+        try {
+            DB::connection()->disableQueryLog();
+        } catch (\Throwable $e) {
+        }
+
+        return DB::transaction(function () use ($matrizId) {
+            $deleted = [
+                'matriz_subfuncao_conhecimento' => 0,
+                'competencia_conhecimento'      => 0,
+                'subfuncoes'                    => 0,
+                'funcoes'                       => 0,
+                'competencias'                  => 0,
+                'categorias'                    => 0,
+                'conhecimentos'                 => 0,
+                'matrizes'                      => 0,
+            ];
+
+            $deleted['matriz_subfuncao_conhecimento'] =
+                DB::table('matriz_subfuncao_conhecimento')
+                    ->where('matriz_id', $matrizId)
+                    ->delete();
+
+            $categoriaIds    = DB::table('categorias')->where('matriz_id', $matrizId)->pluck('id');
+            $funcaoIds       = DB::table('funcoes')->where('matriz_id', $matrizId)->pluck('id');
+
+            $competenciaIds  = $categoriaIds->isNotEmpty()
+                ? DB::table('competencias')->whereIn('categoria_id', $categoriaIds)->pluck('id') : collect();
+
+            $subfuncaoIds    = $funcaoIds->isNotEmpty()
+                ? DB::table('subfuncoes')->whereIn('funcao_id', $funcaoIds)->pluck('id') : collect();
+
+            $conhecimentoIds = DB::table('conhecimentos')->where('matriz_id', $matrizId)->pluck('id');
+
+            if ($competenciaIds->isNotEmpty()) {
+                foreach (array_chunk($competenciaIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['competencia_conhecimento'] += DB::table('competencia_conhecimento')
+                        ->whereIn('competencia_id', $chunk)
+                        ->delete();
+                }
+            }
+
+            if ($conhecimentoIds->isNotEmpty()) {
+                foreach (array_chunk($conhecimentoIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['competencia_conhecimento'] += DB::table('competencia_conhecimento')
+                        ->whereIn('conhecimento_id', $chunk)
+                        ->delete();
+                }
+            }
+
+            if ($subfuncaoIds->isNotEmpty()) {
+                foreach (array_chunk($subfuncaoIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['subfuncoes'] += DB::table('subfuncoes')->whereIn('id', $chunk)->delete();
+                }
+            }
+
+            if ($funcaoIds->isNotEmpty()) {
+                foreach (array_chunk($funcaoIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['funcoes'] += DB::table('funcoes')->whereIn('id', $chunk)->delete();
+                }
+            }
+
+            if ($competenciaIds->isNotEmpty()) {
+                foreach (array_chunk($competenciaIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['competencias'] += DB::table('competencias')->whereIn('id', $chunk)->delete();
+                }
+            }
+
+            if ($categoriaIds->isNotEmpty()) {
+                foreach (array_chunk($categoriaIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['categorias'] += DB::table('categorias')->whereIn('id', $chunk)->delete();
+                }
+            }
+
+            if ($conhecimentoIds->isNotEmpty()) {
+                foreach (array_chunk($conhecimentoIds->all(), self::CHUNK_SIZE) as $chunk) {
+                    $deleted['conhecimentos'] += DB::table('conhecimentos')->whereIn('id', $chunk)->delete();
+                }
+            }
+
+            $deleted['matrizes'] = DB::table('matrizes')->where('id', $matrizId)->delete();
+
+            return true;
+        });
+    }
+
     public function importMatrix(array $data): array
     {
         $t0 = microtime(true);
