@@ -173,19 +173,57 @@ scrollToSection(sectionId: string): void {
   //   alert("Configurações de acessibilidade resetadas para o padrão.");
   // }
   }
-    readPageAloud(): void {
-      if ('speechSynthesis' in window) {
-        const speech = new SpeechSynthesisUtterance();
-        speech.text = document.body.innerText;
-        speech.lang = 'pt-BR';
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(speech);
-      } else {
-        alert('Navegador não suporta síntese de voz.');
+  //   readPageAloud(): void {
+  //     if ('speechSynthesis' in window) {
+  //       const speech = new SpeechSynthesisUtterance();
+  //       speech.text = document.body.innerText;
+  //       speech.lang = 'pt-BR';
+  //       window.speechSynthesis.cancel();
+  //       window.speechSynthesis.speak(speech);
+  //     } else {
+  //       alert('Navegador não suporta síntese de voz.');
+  //   }
+  // }
+
+
+readPageAloud(): void {
+  console.log("Tentando iniciar a leitura da página...");
+  
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel(); 
+    
+    // 1. Tenta capturar o texto selecionado (STRING LIMPA)
+    const selection = window.getSelection();
+    let textToRead = '';
+    
+    // Converte a seleção para string e remove espaços em branco (trim)
+    if (selection) {
+        textToRead = selection.toString().trim(); 
     }
+    
+    // 2. Verifica se a seleção é válida (maior que 5 caracteres)
+    if (textToRead && textToRead.length > 20) {
+        console.log("Lendo seleção: ", textToRead.substring(0, 50) + "...");
+        // A leitura é da seleção
+    } else {
+        // Se a seleção for muito curta ou inexistente, faz o fallback para o body
+        const mainContent = document.body;
+        textToRead = mainContent.innerText;
+        console.log("Lendo página inteira (Fallback).");
+    }
+    
+    if (textToRead && textToRead.length > 0) {
+        const speech = new SpeechSynthesisUtterance(textToRead);
+        speech.lang = 'pt-BR'; 
+        
+        window.speechSynthesis.speak(speech);
+    } 
+    
+  } else {
+    alert('Seu navegador não suporta a função de leitura de tela (Text-to-Speech).');
   }
-  ngOnDestroy(): void {
-    window.speechSynthesis.cancel();
-  }
+  
+  this.isMenuOpen = false;
+}
 
 }

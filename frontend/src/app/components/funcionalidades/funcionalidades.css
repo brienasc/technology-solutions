@@ -1,22 +1,28 @@
 /* mobile */
+
 .funcionalidades-section {
     padding: 30px 10px;
-    background-color: var(--theme-background); 
+    background-color: var(--theme-background);
     text-align: center;
-    transition: background-color 0.5s ease; 
+    transition: background-color 0.5s ease;
 }
 
+
 /* Descrição */
+
 .funcionalidades-intro {
     font-size: 1em;
-    color: var(--theme-body-text); 
+    color: var(--theme-body-text);
     margin-bottom: 30px;
     max-width: 90%;
     margin-left: auto;
     margin-right: auto;
-    transition: color 0.5s ease; 
+    transition: color 0.5s ease;
 }
+
+
 /* Container dos cards */
+
 .funcionalidades-list {
     display: flex;
     justify-content: center;
@@ -25,31 +31,35 @@
     margin-bottom: 40px;
 }
 
+
 /* ITEM DE CARD COM IMAGEM */
+
 .funcionalidade-card {
-    background-color: var(--theme-card-bg); 
-    padding: 0; 
+    background-color: var(--theme-card-bg);
+    padding: 0;
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     text-align: left;
-    overflow: hidden; 
+    overflow: hidden;
     flex: 1 1 280px;
     max-width: 90%;
-    border-top: 3px solid var(--color-secondary); 
-    transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+    border-top: 3px solid var(--color-secondary);
+    transition: background-color 0.5s ease, border-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
 /* Efeito de subir no hover */
+
 .funcionalidade-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .card-image-container {
     width: 100%;
     height: 180px;
     overflow: hidden;
-    background-color: var(--theme-background); 
+    background-color: var(--theme-background);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -58,36 +68,91 @@
 .card-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
 
 .funcionalidade-card:hover .card-image {
-    transform: scale(1.05); 
+    transform: scale(1.05);
 }
 
+
 /* Estilo do texto */
+
 .card-content {
-    padding: 25px; 
+    padding: 25px;
 }
 
 .card-content h3 {
     font-size: 1.2em;
-    color: var(--theme-heading-text); 
+    color: var(--theme-heading-text);
     margin-bottom: 8px;
     font-weight: 600;
-    transition: color 0.5s ease; 
+    transition: color 0.5s ease;
 }
 
 .card-content span {
     font-size: 0.9em;
-    color: var(--color-muted-text); 
-    transition: color 0.5s ease; 
-    display: block; 
+    color: var(--color-muted-text);
+    transition: color 0.5s ease;
+    display: block;
     line-height: 1.4;
 }
 
+
+/* --- ESTILO PARA O BOTÃO DE ÁUDIO DA IMAGEM HERO --- */
+
+
+/* Garante que o contêiner da imagem sirva de referência para o botão */
+
+.hero-image-container {
+    /* CRUCIAL: Se não estiver já definido, adicione/ajuste */
+    position: relative;
+    /* ... (mantenha os estilos de largura, altura, e box-shadow) ... */
+}
+
+
+/* Estilo do Botão de Áudio (Speaker Icon) */
+
+.read-alt-button {
+    position: absolute;
+    bottom: 10px;
+    /* Distância da parte inferior da imagem */
+    right: 10px;
+    /* Distância da parte direita da imagem */
+    z-index: 10;
+    /* Garante que fique acima da imagem e de outros elementos */
+    /* Estilo visual */
+    background-color: rgba(255, 255, 255, 0.9);
+    /* Fundo branco semi-transparente */
+    color: var(--color-primary);
+    /* Roxo escuro para o ícone/texto */
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.read-alt-button:hover {
+    background-color: var(--color-white);
+}
+
+
+/* --- GARANTIR O ALTO CONTRASTE --- */
+
+:host-context(.high-contrast) .read-alt-button {
+    background-color: black !important;
+    color: var(--color-highlight-neon) !important;
+    border: 2px solid var(--color-highlight-neon) !important;
+    box-shadow: none !important;
+}
+
+
 /* telas até 480px */
+
 @media (max-width: 480px) {
     .funcionalidades-section {
         padding: 1.5rem 0.5rem;
@@ -118,14 +183,18 @@
     }
 }
 
+
 /* Mobile até 767px */
+
 @media (max-width: 767px) {
     .funcionalidade-card {
         max-width: 100%;
     }
 }
 
+
 /* tablet 768px */
+
 @media (min-width: 768px) {
     .funcionalidades-section {
         padding: 60px 30px;
@@ -145,7 +214,9 @@
     }
 }
 
+
 /* desktop 1200px */
+
 @media (min-width: 1200px) {
     .funcionalidades-section {
         padding: 80px 30px;

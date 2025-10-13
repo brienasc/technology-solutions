@@ -2,157 +2,202 @@
     <div class="header-container">
         <!-- Logo -->
         <div class="header-logo" (click)="navigateToHome()">
-            <img ngSrc="app/assets/imagens/logo_education_solutions.png" width="40" height="40" alt="Technology Solutions Logo" />
+
+            <img class="logo-normal" ngSrc="app/assets/imagens/logo_education_solutions.png" width="40" height="40" alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
+                title=" No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
+            />
+
+            <img class="logo-high-contrast " src="app/assets/imagens/logo_AC.png " width="40 " height="40 " alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em na cor amarelo neon. (Alto Contraste)"
+                title="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em na cor amarelo neon. (Alto Contraste)"
+            />
         </div>
 
         <!-- Navegação Desktop -->
-        <nav class="header-nav desktop-nav" aria-label="Navegação principal"> <!--esse aria label melhorando o html!-->
+        <nav class="header-nav desktop-nav" aria-label="Navegação principal" *ngIf="!isLoggedIn">
             <ul>
-                <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
-                <li><a href="#funcionalidades" (click)="closeMobileMenu()">Funcionalidades</a></li>
-                <li><a href="#sobre" (click)="closeMobileMenu()">Sobre</a></li>
-                <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
+                <li><a href="#home " (click)="closeMobileMenu() ">Home</a></li>
+                <li><a href="#funcionalidades " (click)="closeMobileMenu() ">Funcionalidades</a></li>
+                <li><a href="#sobre " (click)="closeMobileMenu() ">Sobre</a></li>
+                <li><a href="#contato " (click)="closeMobileMenu() ">Contato</a></li>
             </ul>
         </nav>
+        <!-- <nav class="header-nav desktop-nav " aria-label="Navegação principal "> -->
+        <!--esse aria label melhorando o html!-->
+        <!-- <ul>
+                <li><a href="#home " (click)="closeMobileMenu() ">Home</a></li>
+                <li><a href="#funcionalidades " (click)="closeMobileMenu() ">Funcionalidades</a></li>
+                <li><a href="#sobre " (click)="closeMobileMenu() ">Sobre</a></li>
+                <li><a href="#contato " (click)="closeMobileMenu() ">Contato</a></li>
+            </ul>
+        </nav> -->
 
         <!-- DIV SEPARADA PARA O SWITCH -->
-        <div class="header-theme-container" [attr.title]="isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro'">
-            <label class="theme-switch desktop-theme-switch">
-        <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-        <span class="slider round"></span>
+        <div class="header-theme-container " [attr.title]="isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro' ">
+            <label class="theme-switch desktop-theme-switch ">
+        <input type="checkbox " [checked]="isDarkTheme " (change)="toggleTheme() ">
+        <span class="slider round "></span>
       </label>
         </div>
 
         <!-- Botões Desktop -->
         <div class="header-buttons desktop-buttons">
-            <a *ngIf="!isLoggedIn" routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()">
+
+            <ng-container *ngIf="!isLoggedIn">
+                <a routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()" aria-label="Faça seu login no sistema">
+            Faça seu Login
+        </a>
+            </ng-container>
+
+            <ng-container *ngIf="isLoggedIn">
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/convites" class="secondary-button-outline" (click)="onConvitesClick()" aria-label="Acessar Menu Convites">
+            Menu Convites
+        </a>
+
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/menu-gerencial" class="secondary-button-outline" (click)="onMenuGerencialClick()" aria-label="Acessar Menu Gerencial">
+            Menu Gerencial
+        </a>
+
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/cursos" class="secondary-button-outline cursos-button-desktop" (click)="goToCursos()" aria-label="Acessar Cursos">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                </svg> Cursos
+                </a>
+
+                <button class="secondary-button-outline" (click)="onLogout()" aria-label="Sair da conta">
+            Sair
+        </button>
+            </ng-container>
+
+        </div>
+        <!-- <div class="header-buttons desktop-buttons ">
+            <a *ngIf="!isLoggedIn " routerLink="/login " class="secondary-button-outline " (click)="closeMobileMenu() ">
         Faça seu Login
       </a>
 
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/convites" class="secondary-button-outline" (click)="onConvitesClick()">
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/convites " class="secondary-button-outline " (click)="onConvitesClick() ">
         Menu Convites
       </a>
 
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/menu-gerencial" class="secondary-button-outline" (click)="onMenuGerencialClick()">
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/menu-gerencial " class="secondary-button-outline " (click)="onMenuGerencialClick() ">
         Menu Gerencial
       </a>
 
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/cursos" class="secondary-button-outline cursos-button-desktop" (click)="goToCursos()">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/cursos " class="secondary-button-outline cursos-button-desktop " (click)="goToCursos() ">
+                <svg xmlns="http://www.w3.org/2000/svg " fill="none " viewBox="0 0 24 24 " stroke="currentColor ">
+          <path stroke-linecap="round " stroke-linejoin="round " stroke-width="2 " d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477
+                4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253 "></path>
         </svg> Cursos
             </a>
 
-            <button *ngIf="isLoggedIn" class="secondary-button-outline" (click)="onLogout()">
+            <button *ngIf="isLoggedIn " class="secondary-button-outline " (click)="onLogout() ">
         Sair
       </button>
-        </div>
+        </div> -->
 
         <!-- Botão Hamburguer Mobile -->
-        <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" aria-label="Toggle menu">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
+        <button class="mobile-menu-toggle " (click)="toggleMobileMenu() " [class.active]="isMobileMenuOpen " aria-label="Toggle menu ">
+      <span class="hamburger-line "></span>
+      <span class="hamburger-line "></span>
+      <span class="hamburger-line "></span>
     </button>
     </div>
 
     <!-- Overlay Mobile -->
-    <div *ngIf="isMobileMenuOpen" class="mobile-menu-overlay" (click)="closeMobileMenu()"></div>
+    <div *ngIf="isMobileMenuOpen " class="mobile-menu-overlay " (click)="closeMobileMenu() "></div>
 
     <!-- Menu Mobile -->
-    <div *ngIf="isMobileMenuOpen" class="mobile-menu">
+    <div *ngIf="isMobileMenuOpen " class="mobile-menu ">
         <!-- Header do Menu Mobile -->
-        <div class="mobile-menu-header">
-            <h3 class="mobile-menu-title">Menu</h3>
-            <button class="mobile-close-btn" (click)="closeMobileMenu()">
+        <div class="mobile-menu-header ">
+            <h3 class="mobile-menu-title ">Menu</h3>
+            <button class="mobile-close-btn " (click)="closeMobileMenu() ">
         ×
       </button>
         </div>
 
         <!-- Navegação Mobile -->
-        <nav class="mobile-nav" aria-label="Navegação principal">
+        <nav class="mobile-nav " aria-label="Navegação principal ">
             <ul>
                 <li>
-                    <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
-                        <i class="fas fa-home"></i> Home
+                    <a href="#home " (click)="closeMobileMenu() " class="mobile-nav-link ">
+                        <i class="fas fa-home "></i> Home
                     </a>
                 </li>
                 <li>
-                    <a href="#sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
-                        <i class="fas fa-info-circle"></i> Sobre
+                    <a href="#sobre " (click)="closeMobileMenu() " class="mobile-nav-link ">
+                        <i class="fas fa-info-circle "></i> Sobre
                     </a>
                 </li>
                 <li>
-                    <a href="#servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
-                        <i class="fas fa-cogs"></i> Serviços
+                    <a href="#servicos " (click)="closeMobileMenu() " class="mobile-nav-link ">
+                        <i class="fas fa-cogs "></i> Serviços
                     </a>
                 </li>
                 <li>
-                    <a href="#vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
-                        <i class="fas fa-briefcase"></i> Vagas
+                    <a href="#vagas " (click)="closeMobileMenu() " class="mobile-nav-link ">
+                        <i class="fas fa-briefcase "></i> Vagas
                     </a>
                 </li>
                 <li>
-                    <a href="#contato" (click)="closeMobileMenu()" class="mobile-nav-link">
-                        <i class="fas fa-envelope"></i> Contato
+                    <a href="#contato " (click)="closeMobileMenu() " class="mobile-nav-link ">
+                        <i class="fas fa-envelope "></i> Contato
                     </a>
                 </li>
 
-                <!-- Botão "Convites" no menu mobile -->
-                <li *ngIf="authService.isRH() || authService.isAdmin()">
-                    <a routerLink="/convites" class="mobile-nav-link" (click)="onConvitesClick()">
-                        <i class="fas fa-users"></i> Menu Convites
+                <!-- Botão "Convites " no menu mobile -->
+                <li *ngIf="authService.isRH() || authService.isAdmin() ">
+                    <a routerLink="/convites " class="mobile-nav-link " (click)="onConvitesClick() ">
+                        <i class="fas fa-users "></i> Menu Convites
                     </a>
                 </li>
 
-                <!-- Botão "Menu Gerencial" no menu mobile -->
-                <li *ngIf="authService.isRH() || authService.isAdmin()">
-                    <a routerLink="/menu-gerencial" class="mobile-nav-link" (click)="onMenuGerencialClick()">
-                        <i class="fas fa-chart-line"></i> Menu Gerencial
+                <!-- Botão "Menu Gerencial " no menu mobile -->
+                <li *ngIf="authService.isRH() || authService.isAdmin() ">
+                    <a routerLink="/menu-gerencial " class="mobile-nav-link " (click)="onMenuGerencialClick() ">
+                        <i class="fas fa-chart-line "></i> Menu Gerencial
                     </a>
                 </li>
 
-                <li *ngIf="authService.isRH() || authService.isAdmin()">
-                    <a routerLink="/cursos" class="mobile-nav-link" (click)="goToCursos()">
-                        <i class="fas fa-book"></i> Cursos
+                <li *ngIf="authService.isRH() || authService.isAdmin() ">
+                    <a routerLink="/cursos " class="mobile-nav-link " (click)="goToCursos() ">
+                        <i class="fas fa-book "></i> Cursos
                     </a>
                 </li>
             </ul>
         </nav>
 
         <!-- Toggle de Tema Mobile -->
-        <div class="mobile-theme-section">
-            <label class="mobile-theme-switch">
-        <span class="theme-label">Modo Escuro</span>
-        <div class="theme-switch">
-          <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-          <span class="slider round"></span>
+        <div class="mobile-theme-section ">
+            <label class="mobile-theme-switch ">
+        <span class="theme-label ">Modo Escuro</span>
+        <div class="theme-switch ">
+          <input type="checkbox " [checked]="isDarkTheme " (change)="toggleTheme() ">
+          <span class="slider round "></span>
         </div>
       </label>
         </div>
 
         <!-- Botões Mobile -->
-        <div class="mobile-actions">
-            <a *ngIf="!isLoggedIn" routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
-                <i class="fas fa-sign-in-alt"></i> Faça seu Login
+        <div class="mobile-actions ">
+            <a *ngIf="!isLoggedIn " routerLink="/login " class="mobile-btn " (click)="closeMobileMenu() ">
+                <i class="fas fa-sign-in-alt "></i> Faça seu Login
             </a>
 
-            <!-- Botão "Convites" no menu mobile com estilo de botão e visibilidade condicional -->
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/convites" class="mobile-btn" (click)="onConvitesClick()">
-                <i class="fas fa-users"></i> Menu Convites
+            <!-- Botão "Convites " no menu mobile com estilo de botão e visibilidade condicional -->
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/convites " class="mobile-btn " (click)="onConvitesClick() ">
+                <i class="fas fa-users "></i> Menu Convites
             </a>
 
-            <!-- Botão "Menu Gerencial" no menu mobile -->
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/menu-gerencial" class="mobile-btn" (click)="onMenuGerencialClick()">
-                <i class="fas fa-chart-line"></i> Menu Gerencial
+            <!-- Botão "Menu Gerencial " no menu mobile -->
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/menu-gerencial " class="mobile-btn " (click)="onMenuGerencialClick() ">
+                <i class="fas fa-chart-line "></i> Menu Gerencial
             </a>
 
-            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/cursos" class="mobile-btn cursos-button-mobile" (click)="goToCursos()">
-                <i class="fas fa-book"></i> Cursos
+            <a *ngIf="authService.isRH() || authService.isAdmin() " routerLink="/cursos " class="mobile-btn cursos-button-mobile " (click)="goToCursos() ">
+                <i class="fas fa-book "></i> Cursos
             </a>
 
-            <button *ngIf="isLoggedIn" class="mobile-btn" (click)="onLogout()">
-        <i class="fas fa-sign-out-alt"></i>
+            <button *ngIf="isLoggedIn " class="mobile-btn " (click)="onLogout() ">
+        <i class="fas fa-sign-out-alt "></i>
         Sair
       </button>
         </div>

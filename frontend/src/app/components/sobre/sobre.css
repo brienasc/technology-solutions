@@ -6,6 +6,70 @@
 * Variáveis e Seção Principal (Adaptação do modelo)
 * -----------------------------------------------------------
 */
+    /* --- ESTILO PARA O BOTÃO DE ÁUDIO DA IMAGEM HERO --- */
+    
+    .about-hero-image {
+        position: relative;
+        /* Torna o contêiner a referência para o botão flutuante */
+        /* ... (mantenha os estilos de largura, altura e box-shadow) ... */
+    }
+    
+    .read-alt-hero-button {
+        position: absolute;
+        bottom: 20px;
+        /* Ajuste a posição para o canto inferior direito */
+        right: 20px;
+        z-index: 10;
+        /* Estilo visual */
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--color-primary);
+        border: none;
+        border-radius: 5px;
+        padding: 8px 10px;
+        font-size: 1.1em;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s;
+    }
+    /* Garante o Alto Contraste */
+    
+    :host-context(.high-contrast) .read-alt-hero-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* --- CSS PARA O BOTÃO DE ÁUDIO DO DEPOIMENTO --- */
+    
+    .card-image-container-author {
+        position: relative;
+        /* Define este container como ponto de referência */
+        margin-right: 15px;
+        /* Mantém o espaço para o texto */
+        display: inline-block;
+        /* Para o position: relative funcionar corretamente */
+    }
+    
+    .read-alt-author-button {
+        position: absolute;
+        top: -5px;
+        /* Ajusta a posição vertical */
+        right: -5px;
+        /* Ajusta a posição horizontal */
+        z-index: 10;
+        width: 25px;
+        height: 25px;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 10px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     
     .platform-link-button {
         display: flex;
