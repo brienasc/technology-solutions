@@ -57,7 +57,16 @@ class ColabService
             return null;
         }
 
-        $token = $user->createToken('api-token', ['access:menu-convidar', 'access:menu-gerencial']);
+        $perfil = $user->perfil->perfil_id;
+
+        $abilities = [];
+        $abilities = match ($perfil) {
+            PerfilType::Administrador => ['access:all'],
+            PerfilType::Elaborador    => ['access:menu-itens', 'access:menu-criar-item'],
+            default                   => [],
+        };
+
+        $token = $user->createToken('api-token', $abilities);
         $abilitiesString = implode(',', $token->accessToken->abilities);
 
         $data = [
