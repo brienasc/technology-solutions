@@ -44,21 +44,39 @@ class MatrizDemoSeeder extends Seeder
         );
 
         $basica = Categoria::firstOrCreate(
-            ['matriz_id' => $matriz->id, 'nome' => 'Básica'],
-            ['id' => (string) Str::uuid()]
+            ['matriz_id' => $matriz->id, 'nome' => 'Básica', 'codigo' => 1],
+            ['id' => (string) Str::uuid()],
         );
 
         $inter = Categoria::firstOrCreate(
-            ['matriz_id' => $matriz->id, 'nome' => 'Intermediária'],
-            ['id' => (string) Str::uuid()]
+            ['matriz_id' => $matriz->id, 'nome' => 'Intermediária', 'codigo' => 2],
+            ['id' => (string) Str::uuid()],
         );
 
-        $c1 = Competencia::firstOrCreate(['categoria_id' => $basica->id, 'nome' => 'Programação I'], ['id' => (string) Str::uuid()]);
-        $c2 = Competencia::firstOrCreate(['categoria_id' => $basica->id, 'nome' => 'Lógica'], ['id' => (string) Str::uuid()]);
-        $c3 = Competencia::firstOrCreate(['categoria_id' => $basica->id, 'nome' => 'Estruturas de Dados'], ['id' => (string) Str::uuid()]);
-        $c4 = Competencia::firstOrCreate(['categoria_id' => $inter->id, 'nome' => 'Sistemas Embarcados'], ['id' => (string) Str::uuid()]);
-        $c5 = Competencia::firstOrCreate(['categoria_id' => $inter->id, 'nome' => 'Banco de Dados'], ['id' => (string) Str::uuid()]);
-        $c6 = Competencia::firstOrCreate(['categoria_id' => $inter->id, 'nome' => 'Arquitetura de SW'], ['id' => (string) Str::uuid()]);
+        $c1 = Competencia::firstOrCreate(
+            ['categoria_id' => $basica->id, 'nome' => 'Programação I'],
+            ['id' => (string) Str::uuid()]
+        );
+        $c2 = Competencia::firstOrCreate(
+            ['categoria_id' => $basica->id, 'nome' => 'Lógica'],
+            ['id' => (string) Str::uuid()]
+        );
+        $c3 = Competencia::firstOrCreate(
+            ['categoria_id' => $basica->id, 'nome' => 'Estruturas de Dados'],
+            ['id' => (string) Str::uuid()]
+        );
+        $c4 = Competencia::firstOrCreate(
+            ['categoria_id' => $inter->id, 'nome' => 'Sistemas Embarcados'],
+            ['id' => (string) Str::uuid()]
+        );
+        $c5 = Competencia::firstOrCreate(
+            ['categoria_id' => $inter->id, 'nome' => 'Banco de Dados'],
+            ['id' => (string) Str::uuid()]
+        );
+        $c6 = Competencia::firstOrCreate(
+            ['categoria_id' => $inter->id, 'nome' => 'Arquitetura de SW'],
+            ['id' => (string) Str::uuid()]
+        );
 
         $k_php = Conhecimento::firstOrCreate(
             ['matriz_id' => $matriz->id, 'nome' => 'PHP Básico'],
@@ -104,8 +122,14 @@ class MatrizDemoSeeder extends Seeder
         $k_sql->competencias()->syncWithoutDetaching([$c5->id]);
         $k_norm->competencias()->syncWithoutDetaching([$c5->id]);
 
-        $dev = Funcao::firstOrCreate(['matriz_id' => $matriz->id, 'nome' => 'Desenvolvimento'], ['id' => (string) Str::uuid()]);
-        $man = Funcao::firstOrCreate(['matriz_id' => $matriz->id, 'nome' => 'Manutenção'], ['id' => (string) Str::uuid()]);
+        $dev = Funcao::firstOrCreate(
+            ['matriz_id' => $matriz->id, 'nome' => 'Desenvolvimento', 'codigo' => 1],
+            ['id' => (string) Str::uuid()],
+        );
+        $man = Funcao::firstOrCreate(
+            ['matriz_id' => $matriz->id, 'nome' => 'Manutenção', 'codigo' => 2],
+            ['id' => (string) Str::uuid()],
+        );
 
         $backend = SubFuncao::firstOrCreate(['funcao_id' => $dev->id, 'nome' => 'Backend'], ['id' => (string) Str::uuid()]);
         $frontend = SubFuncao::firstOrCreate(['funcao_id' => $dev->id, 'nome' => 'Frontend'], ['id' => (string) Str::uuid()]);

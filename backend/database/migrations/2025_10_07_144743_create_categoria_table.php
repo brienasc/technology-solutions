@@ -9,12 +9,14 @@ return new class extends Migration {
     {
         Schema::create('categorias', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->tinyInteger('codigo');
             $table->foreignUuid('matriz_id')->constrained('matrizes')->cascadeOnDelete();
-            $table->string('nome');
+            $table->string('nome', 512);
             $table->text('descricao')->nullable();
             $table->timestamps();
             $table->unique(['matriz_id','nome']);
-            $table->index('matriz_id');
+            $table->unique(['matriz_id', 'codigo']);
+            $table->index(['matriz_id', 'codigo']);
         });
     }
     public function down(): void

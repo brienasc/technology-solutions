@@ -9,7 +9,7 @@ class Funcao extends Model
     protected $table = 'funcoes';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['matriz_id','nome','descricao'];
+    protected $fillable = ['matriz_id','nome','descricao', 'codigo'];
 
     public function matriz()
     {
