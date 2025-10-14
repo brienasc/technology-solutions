@@ -1,0 +1,48 @@
+@if (open) {
+  <div
+    class="alert-overlay"
+    (mousedown)="onBackdropClick($event)"
+    (keydown)="onKeyDown($event)"
+  >
+    <div
+      #dialog
+      class="alert-dialog"
+      [attr.data-variant]="variant"
+      role="alertdialog"
+      [attr.aria-labelledby]="titleId"
+      [attr.aria-describedby]="ariaDescribedBy"
+      tabindex="-1"
+    >
+      <div class="accent-bar" aria-hidden="true"></div>
+
+      <header class="alert-header">
+        <h2 class="alert-title" [id]="titleId">{{ title }}</h2>
+      </header>
+
+      <section class="alert-body">
+        @if (message) {
+          <p class="alert-message" [id]="mesId">{{ message }}</p>
+        }
+        @if (description) {
+          <p class="alert-description" [id]="descId">{{ description }}</p>
+        }
+        <ng-content></ng-content>
+      </section>
+
+      <footer class="alert-footer">
+        @for (btn of actions; track btn.id) {
+          <button
+            type="button"
+            class="alert-btn"
+            [attr.data-kind]="btn.kind || 'primary'"
+            [attr.data-autofocus]="btn.autofocus ? 'true' : null"
+            data-role="alert-action"
+            (click)="emitAction(btn)"
+          >
+            {{ btn.label }}
+          </button>
+        }
+      </footer>
+    </div>
+  </div>
+}
