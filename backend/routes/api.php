@@ -17,32 +17,30 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    # Rotas de Convites
-    Route::middleware('abilities:access:menu-convidar')->group(function () {
+    Route::middleware('abilities:access:all')->group(function () {
+        # Rotas de Convites
         Route::post('/convites', [ConvitesController::class,'store']);
         Route::get('/convites', [ConvitesController::class,'index']);
-    });
 
-    # Rotas de Colabs
-    Route::middleware('abilities:access:menu-gerencial')->group(function () {
+        # Rota de Colabs
         Route::get('/colabs', [ColabsController::class,'index']);
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
         Route::get('/colabs/export', [ColabsController::class, 'export']);
+
+        #Rotas de Cursos
+        Route::get('/cursos/summary', [CursoController::class, 'summary']);
+        Route::get('/cursos', [CursoController::class, 'index']);
+        Route::post('/cursos', [CursoController::class, 'store']);
+        Route::patch('/cursos/{id}', [CursoController::class, 'update']);
+        Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
+
+        #Rotas de matrizes
+        Route::get('/matrizes', [MatrixController::class, 'index']);
+        Route::post('/matrizes', [MatrixController::class,'store']);
+        Route::get('/matrizes/{id}', [MatrixController::class,'show']);
+        Route::delete('/matrizes/{id}', [MatrixController::class, 'destroy']);
     });
-
-    #Rotas de Cursos
-    Route::get('/cursos/summary', [CursoController::class, 'summary']);
-    Route::get('/cursos', [CursoController::class, 'index']);
-    Route::post('/cursos', [CursoController::class, 'store']);
-    Route::patch('/cursos/{id}', [CursoController::class, 'update']);
-    Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
-
-    #Rotas de matrizes
-    Route::get('/matrizes', [MatrixController::class, 'index']);
-    Route::post('/matrizes', [MatrixController::class,'store']);
-    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
-    Route::delete('/matrizes/{id}', [MatrixController::class, 'destroy']);
 
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
