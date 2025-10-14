@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component,
+  NgZone, CUSTOM_ELEMENTS_SCHEMA
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatricesService } from '../../services/matrices.service';
@@ -11,13 +14,17 @@ import { MatrixViewerDialogService } from '../../components/matrix-viewer-dialog
 import { MatrixViewerDialogComponent } from '../../components/matrix-viewer-dialog/matrix-viewer-dialog.component';
 import { ImportMatrixDialogService } from '../../components/import-matrix-dialog/import-matrix-dialog.service';
 import { ImportMatrixDialogComponent } from '../../components/import-matrix-dialog/import-matrix-dialog.component';
+import { AlertVariant, AlertAction } from '../../models/alert.model';
+import { AlertModalComponent } from '../../components/alert/alert.component';
+import { finalize, timeout } from 'rxjs';
 
 @Component({
   selector: 'app-matrices-page',
   standalone: true,
   imports: [
     CommonModule, Header, AccessibilityBarComponent, FormsModule,
-    MatricesTableComponent, MatrixViewerDialogComponent, ImportMatrixDialogComponent
+    MatricesTableComponent, MatrixViewerDialogComponent, ImportMatrixDialogComponent,
+    AlertModalComponent
   ],
   templateUrl: './matrices-page.component.html',
   styleUrls: ['./matrices-page.component.css'],
@@ -25,18 +32,6 @@ import { ImportMatrixDialogComponent } from '../../components/import-matrix-dial
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class MatricesPageComponent {
-  loading = false;
-  data: Matrix[] = [];
-  currentPage = 1;
-  itemsPerPage = 10;
-  lastPage = 1;
-  totalItems = 0;
-  totalPages = 1;
-  searchTerm = '';
-  showSuccessMessage = false;
-  showErrorMessage = false;
-  successMessageText = '';
-  errorMessageText = '';
   columns: TableColumn[] = [
     { name: 'name', label: 'Nome', property: 'name', type: 'text' },
     { name: 'version', label: 'Versão', property: 'version', type: 'text' },
@@ -49,12 +44,46 @@ export class MatricesPageComponent {
       ]
     }
   ];
+  data: Matrix[] = [];
+
+  alertActions: AlertAction[] = [
+    { id: 'ok', label: 'OK', kind: 'primary', autofocus: true }
+  ];
+  alertDeleteActions: AlertAction[] = [
+    { id: 'ok', label: 'Excluir', kind: 'primary', autofocus: true },
+    { id: 'cancelar', label: 'Cancelar', kind: 'secondary', autofocus: true }
+  ];
+  loading = false;
+  isImporting = false;
+  showErrorMessage = false;
+  showSuccessMessage = false;
+  currentPage = 1;
+  itemsPerPage = 10;
+  lastPage = 1;
+  totalItems = 0;
+  totalPages = 1;
+  searchTerm = '';
+  successMessageText = '';
+  errorMessageText = '';
+
+  showInfoPopUp: boolean = false;
+  alertInfo: AlertVariant = 'neutral'
+  alertInfoTitle = '';
+  alertInfoMessage = '';
+
+  alertDelete: AlertVariant = 'danger';
+  alertDeleteTitle: string = '';
+  alertDeleteMessage: string = '';
+  alertDeleteDescription: string = '';
+  showDeletePopUp: boolean = false;
+  onDeleteRow: Matrix | undefined = undefined;
 
   constructor(
     private matrices: MatricesService,
-    private cdr: ChangeDetectorRef,
     private matrixViewer: MatrixViewerDialogService,
-    private importDialog: ImportMatrixDialogService
+    private importDialog: ImportMatrixDialogService,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +96,7 @@ export class MatricesPageComponent {
     this.showSuccessMessage = false;
     this.successMessageText = '';
     this.errorMessageText = '';
+
 
     const includes = ['curso'];
     const qp: any = { page: this.currentPage, perPage: this.itemsPerPage, include: includes };
@@ -149,32 +179,52 @@ export class MatricesPageComponent {
     }
 
     if (e.action === 'delete') {
-      this.onDelete(e.row);
+      this.onDeletePopup(e.row);
     }
   }
 
   onViewDetails(row: Matrix) {
-    console.log("abrindo Detalhes, começo");
-    console.log(row)
-    console.log("abrindo Detalhes, fim");
     this.matrixViewer.open(row.id);
   }
 
-  onDelete(_row: Matrix) {
-    this.matrices.deleteMatrix(_row.id).subscribe({
+  onDeletePopup(_row: Matrix) {
+    this.showDeletePopUp = true;
+    this.alertDeleteTitle = 'Excluir matriz?';
+    this.alertDeleteMessage = 'Tem certeza de que deseja excluir esta matriz?';
+    this.alertDeleteDescription = 'Esta ação é irreversível.';
+
+    this.onDeleteRow = _row;
+  }
+
+  onDeleteCbk(event: AlertAction) {
+    this.showDeletePopUp = false;
+    if (event === undefined || this.onDeleteRow === undefined || event.id !== "ok") {
+      this.onDeleteRow = undefined;
+      return;
+    }
+
+    const row = this.onDeleteRow;
+    this.onDelete(row);
+  }
+
+  private onDelete(_row: Matrix) {
+    this.matrices.deleteMatrix(_row.id).pipe(
+      timeout(15000),
+    ).subscribe({
       next: (response) => {
-        console.log('Matriz removida com sucesso!', response);
-        alert('Matriz removida com sucesso!');
+        this.alertInfo = "info"
+        this.alertInfoTitle = "Deletar matriz";
+        this.alertInfoMessage = "Matriz apagada com sucesso!";
+        this.showInfoPopUp = true;
         this.fetch(true);
+        this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Erro ao remover matriz: ', err);
-
-        if (err.status === 422) {
-          console.log('Erro de validação');
-        } else {
-          console.log('Ocorreu um erro inesperado no servidor.');
-        }
+        this.alertInfo = "warning"
+        this.alertInfoTitle = "Deletar matriz";
+        this.alertInfoMessage = "Erro ao apagar matriz!";
+        this.showInfoPopUp = true;
+        this.cdr.markForCheck();
       }
     });
   }
@@ -197,21 +247,34 @@ export class MatricesPageComponent {
         formData.append('file', result.file, result.file.name);
       }
 
-      this.matrices.importMatrix(formData).subscribe({
+      this.matrices.importMatrix(formData).pipe(
+        timeout(15000),
+        finalize(() => {
+          this.isImporting = false;
+          this.cdr.markForCheck();
+        })
+      ).subscribe({
         next: (response) => {
-          console.log('Matriz importada com sucesso!', response);
-          alert('Matriz importada com sucesso!');
-          this.fetch(true);
-
+          this.zone.run(() => {
+            this.alertInfoTitle = 'Importação de Matriz';
+            this.alertInfoMessage = 'Matriz importada com sucesso!';
+            this.alertInfo = 'success';
+            this.showInfoPopUp = true;
+            this.fetch(true);
+            this.cdr.markForCheck();
+          });
         },
         error: (err) => {
+          this.zone.run(() => {
+            this.alertInfoTitle = 'Importação de Matriz';
+            this.alertInfoMessage = err?.name === 'TimeoutError'
+              ? 'Tempo de conexão esgotado. Verifique o servidor e tente novamente.'
+              : 'Erro ao importar matriz!';
+            this.alertInfo = 'warning';
+            this.showInfoPopUp = true;
+            this.cdr.markForCheck();
+          });
           console.error('Erro ao importar matriz: ', err);
-
-          if (err.status === 422) {
-            console.log('Erro de validação');
-          } else {
-            console.log('Ocorreu um erro inesperado no servidor.');
-          }
         }
       });
     });
