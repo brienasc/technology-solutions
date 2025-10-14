@@ -15,6 +15,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use PhpOffice\PhpSpreadsheet\Collection\Cells\MemoryGZip;
 
+use function Laravel\Prompts\select;
+
 class MatrixService
 {
     private static ?bool $hasIdCC  = null;
@@ -595,16 +597,17 @@ class MatrixService
             $matrizId = $this->upsertAndGetMatrizId($payload, $now);
 
             $catRows = [];
-            foreach ($cats as $c) {
+            foreach ($cats as $i => $c) {
                 $catRows[] = [
                     'matriz_id'  => $matrizId,
                     'nome'       => $c['nome'],
+                    'codigo'     => $i,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
             }
             if ($catRows) {
-                $this->chunkedUpsert('categorias', $catRows, ['matriz_id','nome'], ['updated_at']);
+                $this->chunkedUpsert('categorias', $catRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
             }
 
             $catIdsByName = $catRows
@@ -666,16 +669,17 @@ class MatrixService
             }
 
             $fnRows = [];
-            foreach ($funcs as $f) {
+            foreach ($funcs as $i => $f) {
                 $fnRows[] = [
                     'matriz_id'  => $matrizId,
                     'nome'       => $f['nome'],
+                    'codigo'     => $i,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
             }
             if ($fnRows) {
-                $this->chunkedUpsert('funcoes', $fnRows, ['matriz_id','nome'], ['updated_at']);
+                $this->chunkedUpsert('funcoes', $fnRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
             }
 
             $fnIdsByName = $fnRows
@@ -832,8 +836,13 @@ class MatrixService
         return [self::$hasIdCC, self::$hasIdMSC];
     }
 
-    private function chunkedUpsert(string $table, array $rows, array $uniqueBy, array $updateCols, int $size = self::CHUNK_SIZE): void
-    {
+    private function chunkedUpsert(
+        string $table,
+        array $rows,
+        array $uniqueBy,
+        array $updateCols,
+        int $size = self::CHUNK_SIZE
+    ): void {
         foreach (array_chunk($rows, $size) as $chunk) {
             DB::table($table)->upsert($chunk, $uniqueBy, $updateCols);
         }
@@ -905,16 +914,26 @@ class MatrixService
 
     public function getMatrix(string $matrizId)
     {
-        $matriz = \App\Models\Matriz::query()
+        $matriz = Matriz::query()
             ->with([
                 'curso:id,nome',
-                'categorias:id,matriz_id,nome',
+                'categorias' => fn($q) => $q
+                    ->select('id', 'matriz_id', 'nome')
+                    ->orderBy('codigo'),
                 'categorias.competencias:id,categoria_id,nome,descricao',
-                'funcoes:id,matriz_id,nome',
+                'funcoes' => fn($q) => $q
+                    ->select('id', 'matriz_id', 'nome')
+                    ->orderBy('codigo'),
+                'funcoes:id,codigo,matriz_id,nome',
                 'funcoes.subfuncoes:id,funcao_id,nome',
                 'funcoes.subfuncoes.conhecimentosPivot' => fn ($q) => $q
                     ->wherePivot('matriz_id', $matrizId)
-                    ->select('conhecimentos.id', 'conhecimentos.codigo', 'conhecimentos.nome', 'conhecimentos.descricao'),
+                    ->select(
+                        'conhecimentos.id',
+                        'conhecimentos.codigo',
+                        'conhecimentos.nome',
+                        'conhecimentos.descricao'
+                    ),
                 'conhecimentos:id,matriz_id,codigo,nome,descricao',
                 'conhecimentos.competencias:id',
             ])
@@ -924,6 +943,7 @@ class MatrixService
             return [
                 'id'           => (string) $cat->id,
                 'nome'         => $cat->nome,
+                'codigo'       => $cat->codigo,
                 'competencias' => $cat->competencias->map(fn ($c) => [
                     'id'        => (string) $c->id,
                     'nome'      => $c->nome,
