@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-// frontend/src/app/app-routing.ts
 import { LoginComponent } from './pages/login/login';
 import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -13,12 +12,10 @@ import { LoginGuard } from './guards/login.guard';
 import { MatricesPageComponent } from './pages/matrices/matrices-page.component';
 
 export const routes: Routes = [
-  // ... outras rotas
   {
     path: '',
     component: LandingPageComponent
-  }, // Rota para a Landing Page (página inicial)
-
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -28,14 +25,14 @@ export const routes: Routes = [
   {
     path: 'menu-gerencial',
     component: MenuGerencialComponent,
-    canActivate: [AuthGuard], // Aplica o guarda de rota
-    data: { roles: ['Administrador', 'RH'] } // Define os perfis necessários
+    canActivate: [AuthGuard],
+    data: { roles: ['Administrador'] }
   },
   {
     path: 'convites',
     component: ConvitesComponent,
-    canActivate: [AuthGuard], // Aplica o guarda de rota
-    data: { roles: ['Administrador', 'RH'] } // Define os perfis necessários
+    canActivate: [AuthGuard],
+    data: { roles: ['Administrador'] }
   },
   {
     path: 'cadastro/:token',
@@ -43,15 +40,18 @@ export const routes: Routes = [
   },
   {
     path: 'cursos',
-    component: CursosComponent
+    component: CursosComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Administrador'] }
   },
   {
     path: 'matrizes',
-    component: MatricesPageComponent
+    component: MatricesPageComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['Administrador'] }
   },
   {
     path: '**',
     redirectTo: ''
-  } // Rota coringa: Redireciona qualquer URL não mapeada para a Landing Page.
-  // ...
+  }
 ];
