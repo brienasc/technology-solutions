@@ -8,6 +8,7 @@ use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MatrixController;
+use App\Http\Controllers\DashboardController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
@@ -17,6 +18,8 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
     Route::middleware('abilities:access:all')->group(function () {
         # Rotas de Convites
         Route::post('/convites', [ConvitesController::class,'store']);

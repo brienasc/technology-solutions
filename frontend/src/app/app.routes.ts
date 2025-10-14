@@ -6,6 +6,7 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { ConvitesComponent } from './pages/convites/convites';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { CursosComponent } from './pages/cursos/cursos';
+import { DashboardComponent } from './pages/dashboard/dashboard';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -14,7 +15,12 @@ import { MatricesPageComponent } from './pages/matrices/matrices-page.component'
 export const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: 'login',
