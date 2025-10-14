@@ -179,3 +179,24 @@
 
 <app-matrix-viewer-dialog></app-matrix-viewer-dialog>
 <app-import-matrix-dialog></app-import-matrix-dialog>
+
+<app-alert-modal
+  [open]="showInfoPopUp"
+  [title]="alertInfoTitle"
+  [message]="alertInfoMessage"
+  [variant]="alertInfo"
+  [actions]="alertActions"
+  (action)="showInfoPopUp = false"
+  (closed)="showInfoPopUp = false"
+></app-alert-modal>
+
+<app-alert-modal
+  [open]="showDeletePopUp"
+  [title]="alertDeleteTitle"
+  [message]="alertDeleteMessage"
+  [description]="alertDeleteDescription"
+  [variant]="alertDelete"
+  [actions]="alertDeleteActions"
+  (action)="onDeleteCbk($event)"
+  (closed)="showDeletePopUp = false"
+></app-alert-modal>
