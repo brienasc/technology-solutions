@@ -31,6 +31,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
         Route::get('/colabs/export', [ColabsController::class, 'export']);
 
+        # Rotas para Cursos de Colaboradores
+        Route::get('/colabs/{id}/cursos', [ColabsController::class, 'getCursos']);
+        Route::post('/colabs/{id}/cursos', [ColabsController::class, 'addCurso']);
+        Route::delete('/colabs/{id}/cursos/{curso_id}', [ColabsController::class, 'removeCurso']);
+        Route::put('/colabs/{id}/cursos', [ColabsController::class, 'syncCursos']);
+
         #Rotas de Cursos
         Route::get('/cursos/summary', [CursoController::class, 'summary']);
         Route::get('/cursos', [CursoController::class, 'index']);

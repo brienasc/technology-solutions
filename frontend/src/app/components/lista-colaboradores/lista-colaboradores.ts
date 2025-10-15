@@ -1,85 +1,79 @@
 // frontend/src/app/components/lista-colaboradores/lista-colaboradores.ts
-import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
-// Importa CommonModule para diretivas estruturais (*ngIf, *ngFor) e pipes básicos.
+import { Component, OnInit, Output, EventEmitter, inject, HostListener } from '@angular/core';
 import { CommonModule, LowerCasePipe } from '@angular/common';
-// Importa FormsModule para o two-way data binding [(ngModel)].
 import { FormsModule } from '@angular/forms';
-// Importa HttpClient para fazer requisições HTTP para o backend.
 import { HttpClient } from '@angular/common/http';
-// Importa Observable e 'of' do RxJS para lidar com fluxos de dados assíncronos.
 import { Observable, of } from 'rxjs';
-// Importa operadores RxJS para manipulação de Observables (filtragem, transformação de dados).
 import { map, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Header } from '../header/header'
-import { ConvitesService } from '../../services/convite.service';
+import { Header } from '../header/header';
 
-// Interface para o modelo de dados do Colaborador.
-// Define a estrutura esperada para cada objeto de colaborador.
+// ⭐ IMPORTAR TIPOS E SERVICES NECESSÁRIOS
+import { Curso } from '../../interfaces/curso.interface'; // ⭐ CAMINHO CORRETO
+import { CursoService } from '../../services/curso.service'; // ⭐ CAMINHO CORRETO
+
+// ⭐ INTERFACES ATUALIZADAS COM CURSOS
+interface CursoColaborador {
+  id: string;
+  nome: string;
+  status: boolean;
+  descricao?: string;
+  carga_horaria?: number;
+}
+
 interface Colaborador {
   id: string;
   nome: string;
   email: string;
   cpf: string;
-  status: 'Finalizado' | 'Em Aberto' | 'Vencido'; // Status do convite.
-  // Campos opcionais para detalhes adicionais do colaborador (se for o caso).
+  status: 'Finalizado' | 'Em Aberto' | 'Vencido';
   celular?: string;
   cep?: string;
   uf?: string;
   localidade?: string;
   bairro?: string;
   logradouro?: string;
-  perfil?: string; // Perfil de acesso do colaborador.
+  perfil?: string;
+  cursos?: CursoColaborador[];
+}
+
+interface Perfil {
+  id: number;
+  nome: string;
 }
 
 @Component({
-  selector: 'app-lista-colaboradores', // Seletor CSS para usar este componente no HTML.
+  selector: 'app-lista-colaboradores',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     Header,
     LowerCasePipe
-
   ],
   templateUrl: './lista-colaboradores.html',
   styleUrls: ['./lista-colaboradores.css']
 })
-// Classe do componente ListaColaboradores.
 export class ListaColaboradoresComponent implements OnInit {
-  // enviar dados (o colaborador selecionado) para o componente pai.
   @Output() viewColaboradorDetails = new EventEmitter<Colaborador>();
 
-  colaboradores: Colaborador[] = []; // Armazena a lista completa de colaboradores.
-  filteredColaboradores: Colaborador[] = []; // Lista de colaboradores após aplicar o filtro de pesquisa.
-  paginatedColaboradores: Colaborador[] = []; // Lista de colaboradores da página atual.
-
-  loading: boolean = false; // indica se os dados estão sendo carregados.
-  searchTerm: string = ''; // Armazena o texto digitado na barra de pesquisa.
-
-  // Propriedades de Paginação.
-  currentPage: number = 1; // Página atual exibida.
-  itemsPerPage: number = 10; // Número de itens por página.
-  totalItems: number = 0; // Total de itens após a filtragem.
-
-  // Propriedades para o dialog
+  // ========== PROPRIEDADES PRINCIPAIS ==========
+  colaboradores: Colaborador[] = [];
+  filteredColaboradores: Colaborador[] = [];
+  paginatedColaboradores: Colaborador[] = [];
+  
+  loading: boolean = false;
+  searchTerm: string = '';
+  
+  // Paginação
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  
+  // Dialog de colaborador
   showColaboradorDialog: boolean = false;
   selectedColaborador: Colaborador | null = null;
-
-  // Propriedades para o dialog de convite
-  showInviteDialog: boolean = false;
-  inviteEmail: string = '';
-  inviteLoading: boolean = false;
-  inviteSuccessMessage: string = '';
-  inviteErrorMessage: string = '';
-
-  // Propriedades para controle do modal de convite
-  isConvidarModalOpen: boolean = false;
-
-  // Novas propriedades para validação de e-mail
-  emailError: string = '';
-  isValidEmail: boolean = false;
-
-  // Novas propriedades para alteração de perfil
+  
+  // Alteração de perfil
   isEditingProfile: boolean = false;
   showPasswordField: boolean = false;
   newPassword: string = '';
@@ -88,57 +82,51 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeError: string = '';
   profileChangeSuccess: string = '';
   passwordError: string = '';
+  
+  // PROPRIEDADES PARA CURSOS
+  isManagingCursos: boolean = false;
+  selectedColaboradorCursos: CursoColaborador[] = [];
+  availableCursos: CursoColaborador[] = [];
+  selectedCursoToAdd: string = '';
+  cursosLoading: boolean = false;
+  cursosError: string = '';
+  cursosSuccess: string = '';
+  
+  // PROPRIEDADES PARA TODOS OS CURSOS
+  todosOsCursos: Curso[] = [];
+  cursoSearchTerm: string = '';
+  showCursoDropdown: boolean = false;
+  filteredCursosDisponiveis: Curso[] = [];
 
-  // NOVAS PROPRIEDADES PARA SELECTS NO MODAL DE CONVITE
-  selectedPerfilConvite: number = 3; // Default: Colaborador Comum
-  selectedCursoConvite: number = 0; // Default: nenhum curso selecionado
-
-  perfisConvite = [
+  // Dados para perfis
+  perfisDisponiveis: Perfil[] = [
     { id: 1, nome: 'Administrador' },
     { id: 2, nome: 'Elaborador de Itens' },
   ];
 
-  cursosConvite = [
-    { id: 1, nome: 'Desenvolvimento Web Full Stack' },
-    { id: 2, nome: 'Análise e Desenvolvimento de Sistemas' },
-    { id: 3, nome: 'Ciência da Computação' },
-    { id: 4, nome: 'Engenharia de Software' },
-    { id: 5, nome: 'Tecnologia da Informação' },
-    { id: 6, nome: 'Marketing Digital' },
-    { id: 7, nome: 'Gestão de Projetos' },
-    { id: 8, nome: 'Design UX/UI' }
-  ];
-
-  perfisDisponiveis = [
-    { id: 1, nome: 'Administrador' },
-    { id: 2, nome: 'Elaborador de Itens' },
-  ];
-
+  // INJETAR DEPENDÊNCIAS
   private http = inject(HttpClient);
-  private conviteService = inject(ConvitesService);
+  private cursoService = inject(CursoService);
 
-  // Método de ciclo de vida: Executado uma vez após a inicialização do componente.
+  // ========== MÉTODOS DO CICLO DE VIDA ==========
   ngOnInit(): void {
     this.loadColaboradores();
+    this.loadAllCursos();
   }
 
-  // Método para carregar os colaboradores do backend.
+  // ========== MÉTODOS DE CARREGAMENTO ==========
   loadColaboradores(): void {
     this.loading = true;
-
     const apiUrl = 'http://localhost:8080/api/colabs';
 
     this.http.get<any>(apiUrl).pipe(
       map(response => {
-        // A API retorna um objeto com propriedade 'data'
         const colaboradores = response.data.colabs || response;
 
-        // Verificar se é array válido
         if (!Array.isArray(colaboradores)) {
           return [];
         }
 
-        // Mapear os dados da API para o formato do frontend
         return colaboradores.map((colab: any): Colaborador => {
           return {
             id: colab.id || "",
@@ -152,28 +140,25 @@ export class ListaColaboradoresComponent implements OnInit {
             uf: colab.uf,
             localidade: colab.cidade,
             bairro: colab.bairro,
-            logradouro: colab.numero ? `${colab.logradouro}, ${colab.numero}` : colab.logradouro
+            logradouro: colab.numero ? `${colab.logradouro}, ${colab.numero}` : colab.logradouro,
+            cursos: colab.cursos ? colab.cursos.map((curso: any) => ({
+              id: curso.id,
+              nome: curso.nome,
+              status: curso.status,
+              descricao: curso.descricao,
+              carga_horaria: curso.carga_horaria
+            })) : []
           };
         })
-          .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
-          .sort((a: Colaborador, b: Colaborador) => {
-            if (!a.nome || !b.nome) return 0;
-            return a.nome.localeCompare(b.nome);
-          });
+        .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
+        .sort((a: Colaborador, b: Colaborador) => {
+          if (!a.nome || !b.nome) return 0;
+          return a.nome.localeCompare(b.nome);
+        });
       }),
       catchError(error => {
         console.error('Erro ao carregar colaboradores:', error);
-
-        if (error.status === 0) {
-          alert('❌ Backend não está rodando!');
-        } else if (error.status === 404) {
-          alert('❌ Rota de colaboradores não encontrada!');
-        } else if (error.status === 500) {
-          alert('❌ Erro interno do servidor!');
-        } else {
-          alert(`❌ Erro ${error.status}: ${error.message}`);
-        }
-
+        this.handleApiError(error);
         return of([]);
       })
     ).subscribe({
@@ -190,28 +175,233 @@ export class ListaColaboradoresComponent implements OnInit {
     });
   }
 
-  // Aplica o filtro de pesquisa (se houver um termo) e recalcula a paginação.
+  // MÉTODO PARA CARREGAR TODOS OS CURSOS
+  private loadAllCursos(): void {
+    console.log('Carregando todos os cursos...');
+    
+    this.cursoService.getAllCursos().subscribe({
+      next: (cursos: Curso[]) => {
+        this.todosOsCursos = cursos;
+        console.log('Todos os cursos carregados:', this.todosOsCursos.length, this.todosOsCursos);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar cursos:', error);
+        this.todosOsCursos = [];
+        
+        // FALLBACK: Tentar com o método original
+        this.cursoService.getCursos(1, 1000).subscribe({
+          next: (response) => {
+            this.todosOsCursos = response.cursos;
+            console.log('Cursos carregados via fallback:', this.todosOsCursos.length);
+          },
+          error: (fallbackError) => {
+            console.error('Erro no fallback:', fallbackError);
+          }
+        });
+      }
+    });
+  }
+
+  // ========== MÉTODOS DE CURSOS ==========
+  
+  getCursosDisponiveis(): Curso[] {
+    if (!this.todosOsCursos || this.todosOsCursos.length === 0) {
+      console.log('Nenhum curso carregado ainda');
+      return [];
+    }
+
+    if (!this.selectedColaboradorCursos) {
+      console.log('Retornando todos os cursos (sem colaborador selecionado)');
+      return this.todosOsCursos;
+    }
+
+    // Filtrar cursos que não estão associados ao colaborador
+    const cursosAssociados = this.selectedColaboradorCursos.map(c => c.id);
+    const cursosDisponiveis = this.todosOsCursos.filter(curso => 
+      !cursosAssociados.includes(curso.id)
+    );
+    
+    console.log('Cursos disponíveis:', cursosDisponiveis.length, 'de', this.todosOsCursos.length);
+    return cursosDisponiveis;
+  }
+
+  onCursoSearch(): void {
+    const cursosDisponiveis = this.getCursosDisponiveis();
+    console.log('Pesquisando cursos. Termo:', this.cursoSearchTerm, 'Disponíveis:', cursosDisponiveis.length);
+    
+    if (!this.cursoSearchTerm.trim()) {
+      this.filteredCursosDisponiveis = cursosDisponiveis;
+    } else {
+      this.filteredCursosDisponiveis = cursosDisponiveis.filter(curso =>
+        curso.nome.toLowerCase().includes(this.cursoSearchTerm.toLowerCase())
+      );
+    }
+    
+    console.log('Cursos filtrados:', this.filteredCursosDisponiveis.length);
+    this.showCursoDropdown = true;
+  }
+
+  onCursoInputFocus(): void {
+    console.log('Input focado, mostrando dropdown');
+    this.onCursoSearch();
+    this.showCursoDropdown = true;
+  }
+
+  selectCurso(curso: Curso): void {
+    console.log('Curso selecionado:', curso);
+    this.selectedCursoToAdd = curso.id;
+    this.cursoSearchTerm = curso.nome;
+    this.showCursoDropdown = false;
+  }
+
+  startManagingCursos(): void {
+    console.log('Iniciando gerenciamento de cursos');
+    this.isManagingCursos = true;
+    this.selectedColaboradorCursos = [...(this.selectedColaborador?.cursos || [])];
+    this.cursosSuccess = '';
+    this.cursosError = '';
+    this.cursoSearchTerm = '';
+    this.selectedCursoToAdd = '';
+    
+    // Garantir que todos os cursos estão carregados
+    if (this.todosOsCursos.length === 0) {
+      console.log('Recarregando cursos...');
+      this.loadAllCursos();
+    }
+    
+    // Aguardar um momento para os cursos carregarem
+    setTimeout(() => {
+      this.filteredCursosDisponiveis = this.getCursosDisponiveis();
+      console.log('Cursos disponíveis para associar:', this.filteredCursosDisponiveis.length);
+    }, 500);
+  }
+
+  cancelManagingCursos(): void {
+    this.isManagingCursos = false;
+    this.selectedColaboradorCursos = [];
+    this.selectedCursoToAdd = '';
+    this.cursosError = '';
+    this.cursosSuccess = '';
+    this.cursoSearchTerm = '';
+    this.showCursoDropdown = false;
+  }
+
+  saveManagingCursos(): void {
+    if (!this.selectedColaborador) return;
+
+    this.cursosLoading = true;
+    
+    const cursoIds = this.selectedColaboradorCursos.map(c => c.id);
+    const requestData = { curso_ids: cursoIds };
+
+    this.http.put(`http://localhost:8080/api/colabs/${this.selectedColaborador.id}/cursos`, requestData)
+      .subscribe({
+        next: (response: any) => {
+          if (this.selectedColaborador) {
+            this.selectedColaborador.cursos = [...this.selectedColaboradorCursos];
+          }
+
+          const index = this.colaboradores.findIndex(c => c.id === this.selectedColaborador!.id);
+          if (index !== -1) {
+            this.colaboradores[index].cursos = [...this.selectedColaboradorCursos];
+          }
+
+          this.cursosSuccess = 'Cursos atualizados com sucesso!';
+          this.cursosLoading = false;
+          this.isManagingCursos = false;
+
+          setTimeout(() => {
+            this.cursosSuccess = '';
+          }, 3000);
+        },
+        error: (error) => {
+          console.error('Erro ao salvar cursos:', error);
+          this.cursosLoading = false;
+          this.cursosError = 'Erro ao salvar alterações. Tente novamente.';
+        }
+      });
+  }
+
+  addCursoToColaborador(): void {
+    if (!this.selectedCursoToAdd) {
+      this.cursosError = 'Selecione um curso para adicionar.';
+      return;
+    }
+
+    // BUSCAR CURSO NA LISTA COMPLETA
+    const curso = this.todosOsCursos.find(c => c.id === this.selectedCursoToAdd);
+    if (!curso) {
+      this.cursosError = 'Curso não encontrado.';
+      return;
+    }
+
+    const jaAssociado = this.selectedColaboradorCursos.find(c => c.id === this.selectedCursoToAdd);
+    if (jaAssociado) {
+      this.cursosError = 'Este colaborador já está associado a este curso.';
+      return;
+    }
+
+    // ADICIONAR DIRETAMENTE À LISTA (SEM API)
+    const novoCurso: CursoColaborador = {
+      id: curso.id,
+      nome: curso.nome,
+      status: curso.status,
+      descricao: curso.descricao,
+      carga_horaria: curso.carga_horaria
+    };
+
+    this.selectedColaboradorCursos.push(novoCurso);
+    this.selectedCursoToAdd = '';
+    this.cursoSearchTerm = '';
+    this.cursosSuccess = 'Curso associado com sucesso! Clique em "Salvar Alterações" para confirmar.';
+    
+    // Atualizar lista filtrada
+    this.filteredCursosDisponiveis = this.getCursosDisponiveis();
+
+    setTimeout(() => {
+      this.cursosSuccess = '';
+    }, 3000);
+  }
+
+  removeCursoFromColaborador(cursoId: string): void {
+    this.selectedColaboradorCursos = this.selectedColaboradorCursos.filter(c => c.id !== cursoId);
+    this.cursosSuccess = 'Curso removido! Clique em "Salvar Alterações" para confirmar.';
+    
+    // Atualizar lista filtrada
+    this.filteredCursosDisponiveis = this.getCursosDisponiveis();
+
+    setTimeout(() => {
+      this.cursosSuccess = '';
+    }, 3000);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.curso-select-container')) {
+      this.showCursoDropdown = false;
+    }
+  }
+
+  // ========== MÉTODOS DE FILTRO E PAGINAÇÃO ==========
   applyFilterAndPaginate(): void {
     let tempColaboradores = this.colaboradores;
 
-    // Se o usuário digitou algo na barra de pesquisa, filtra a lista.
     if (this.searchTerm) {
       const lowerSearchTerm = this.searchTerm.toLowerCase();
       tempColaboradores = tempColaboradores.filter(colaborador =>
-        // Verifica se o termo de pesquisa está presente no nome, e-mail ou CPF do colaborador.
         colaborador.nome.toLowerCase().includes(lowerSearchTerm) ||
         colaborador.email.toLowerCase().includes(lowerSearchTerm) ||
         colaborador.cpf.includes(lowerSearchTerm)
       );
     }
 
-    this.filteredColaboradores = tempColaboradores; // Atualiza a lista de colaboradores filtrados.
-    this.totalItems = this.filteredColaboradores.length; // Atualiza o total de itens filtrados.
+    this.filteredColaboradores = tempColaboradores;
+    this.totalItems = this.filteredColaboradores.length;
 
-    // Garante que a página atual seja válida após a filtragem (evita página em branco se o filtro reduzir muito os itens).
     if (this.currentPage > this.totalPages && this.totalPages > 0) {
       this.currentPage = this.totalPages;
-    } else if (this.totalPages === 0) { // Se não houver itens, volta para a página 1.
+    } else if (this.totalPages === 0) {
       this.currentPage = 1;
     }
 
@@ -224,499 +414,60 @@ export class ListaColaboradoresComponent implements OnInit {
     this.paginatedColaboradores = this.filteredColaboradores.slice(startIndex, endIndex);
   }
 
-  // Chamada a cada digitação no campo de pesquisa.
   onSearchChange(): void {
     of(this.searchTerm).pipe(
-      debounceTime(300), // Espera 300ms após a última digitação antes de emitir o valor.
-      // Isso evita que a pesquisa seja disparada a cada tecla.
-      distinctUntilChanged(), // Só emite o valor se ele for diferente do último valor emitido.
+      debounceTime(300),
+      distinctUntilChanged(),
       switchMap(term => {
-        // Reinicia a paginação para a primeira página ao pesquisar.
         this.currentPage = 1;
-        this.applyFilterAndPaginate(); // Aplica o filtro e a paginação com o novo termo de pesquisa.
-        return of(true); // Retorna um Observable para completar o pipe.
+        this.applyFilterAndPaginate();
+        return of(true);
       })
-    ).subscribe(); // Assina o Observable para que o fluxo de dados seja executado.
+    ).subscribe();
   }
 
-// Método para exportar colaboradores para CSV
-exportToExcel(): void {
-  this.loading = true;
-  
-  try {
-    this.applyFilterAndPaginate();
-    
-    let dadosParaExportar: Colaborador[] = [];
-    let tipoExportacao = '';
-    
-    if (this.searchTerm && this.searchTerm.trim()) {
-      if (this.filteredColaboradores.length > 0) {
-        dadosParaExportar = this.filteredColaboradores;
-        tipoExportacao = 'filtrados da lista completa';
-      } else if (this.paginatedColaboradores.length > 0) {
-        dadosParaExportar = this.paginatedColaboradores;
-        tipoExportacao = 'da página atual (visíveis)';
-      } else {
-        dadosParaExportar = this.filtrarManualmente();
-        tipoExportacao = 'filtrados manualmente';
-      }
-    } else {
-      dadosParaExportar = this.colaboradores;
-      tipoExportacao = 'todos os colaboradores';
-    }
-
-    if (dadosParaExportar.length === 0) {
-      this.loading = false;
-      alert('❌ Nenhum colaborador encontrado para exportar.');
-      return;
-    }
-    
-    // Gerar e baixar CSV diretamente
-    this.gerarEBaixarCSV(dadosParaExportar);
-    
-  } catch (error) {
-    this.loading = false;
-    alert('❌ Erro ao exportar dados.');
-  }
-}
-
-// Método para filtrar manualmente quando outros filtros falham
-private filtrarManualmente(): Colaborador[] {
-  if (!this.searchTerm || !this.searchTerm.trim()) {
-    return this.colaboradores;
-  }
-  
-  const termo = this.searchTerm.toLowerCase().trim();
-  
-  return this.colaboradores.filter(colaborador => 
-    (colaborador.nome && colaborador.nome.toLowerCase().includes(termo)) ||
-    (colaborador.email && colaborador.email.toLowerCase().includes(termo)) ||
-    (colaborador.cpf && colaborador.cpf.includes(termo)) ||
-    (colaborador.celular && colaborador.celular.includes(termo))
-  );
-}
-
-// Método único para gerar e baixar CSV
-private gerarEBaixarCSV(colaboradores: Colaborador[]): void {
-  try {
-    
-    // Cabeçalho
-    const cabecalho = [
-      'Nome',
-      'Email', 
-      'CPF',
-      'Celular',
-      'Perfil',
-      'CEP',
-      'Estado',
-      'Cidade',
-      'Bairro',
-      'Endereço'
-    ];
-    
-    // Dados
-    const linhas = colaboradores.map(colab => [
-      colab.nome || '',
-      colab.email || '',
-      colab.cpf || '',
-      colab.celular || '',
-      colab.perfil || '',
-      colab.cep || '',
-      colab.uf || '',
-      colab.localidade || '', // cidade
-      colab.bairro || '',
-      colab.logradouro || ''
-    ]);
-    
-    // Combinar cabeçalho + dados
-    const todasLinhas = [cabecalho, ...linhas];
-    
-    // Gerar CSV com separador ponto e vírgula
-    const csvContent = todasLinhas
-      .map(linha => 
-        linha.map(campo => this.limparCampoCSV(campo)).join(';')
-      )
-      .join('\n');
-    
-    // Adicionar BOM para UTF-8
-    const csvFinal = '\uFEFF' + csvContent;
-    
-    // Fazer download
-    const blob = new Blob([csvFinal], { type: 'text/csv;charset=utf-8' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    
-    link.href = url;
-    link.download = this.gerarNomeArquivo();
-    link.style.display = 'none';
-    
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-    this.loading = false;
-    
-    const filtroInfo = this.searchTerm ? ` (filtro: "${this.searchTerm}")` : '';
-    alert(`✅ CSV baixado com sucesso! ${colaboradores.length} registros${filtroInfo}`);
-    
-  } catch (error) {
-    this.loading = false;
-    alert('❌ Erro ao gerar arquivo CSV.');
-  }
-}
-
-// Método para limpar campos CSV (versão simples)
-private limparCampoCSV(campo: any): string {
-  if (campo == null || campo === undefined) {
-    return '';
-  }
-  
-  let valor = String(campo).trim();
-  
-  // Remover quebras de linha e caracteres problemáticos
-  valor = valor.replace(/[\r\n]/g, ' ');
-  
-  // Se contém ponto e vírgula ou vírgula, envolver em aspas
-  if (valor.includes(';') || valor.includes(',') || valor.includes('"')) {
-    valor = valor.replace(/"/g, '""'); // Escapar aspas
-    valor = `"${valor}"`; // Envolver em aspas
-  }
-  
-  return valor;
-}
-
-// Método para gerar nome do arquivo
-private gerarNomeArquivo(): string {
-  const agora = new Date();
-  const data = agora.toISOString().slice(0, 10); // YYYY-MM-DD
-  const hora = agora.toTimeString().slice(0, 8).replace(/:/g, '-'); // HH-mm-ss
-  
-  let nome = `colaboradores_${data}_${hora}`;
-  
-  if (this.searchTerm && this.searchTerm.trim()) {
-    const filtro = this.searchTerm.trim()
-      .replace(/[^a-zA-Z0-9]/g, '_')
-      .substring(0, 15);
-    nome += `_filtro_${filtro}`;
-  }
-  
-  return `${nome}.csv`;
-}
-  // Método para abrir o dialog com os detalhes do colaborador
+  // ========== MÉTODOS DE MODAL ==========
   openColaboradorDialog(colaborador: Colaborador): void {
     this.selectedColaborador = colaborador;
     this.showColaboradorDialog = true;
-    // Previne scroll da página quando o modal está aberto
     document.body.style.overflow = 'hidden';
   }
 
-  // Método para fechar o dialog
   closeColaboradorDialog(): void {
     this.showColaboradorDialog = false;
     this.selectedColaborador = null;
-    //  Limpar estados de edição
     this.resetEditingState();
-    // Restaura o scroll da página
     document.body.style.overflow = 'auto';
   }
 
-  // Atualizar o método viewDetails para usar o dialog
   viewDetails(colaborador: Colaborador): void {
     this.openColaboradorDialog(colaborador);
     this.viewColaboradorDetails.emit(colaborador);
   }
 
-  // Abre o dialog de convite
-  openInviteDialog(): void {
-    this.showInviteDialog = true;
-    this.inviteEmail = '';
-    this.selectedPerfilConvite = 3; // Reset para Colaborador Comum
-    this.selectedCursoConvite = 0; // Reset para nenhum curso
-    this.inviteSuccessMessage = '';
-    this.inviteErrorMessage = '';
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Fecha o dialog de convite
-  closeInviteDialog(): void {
-    this.showInviteDialog = false;
-    this.inviteEmail = '';
-    this.selectedPerfilConvite = 3; // Reset
-    this.selectedCursoConvite = 0; // Reset
-    this.inviteSuccessMessage = '';
-    this.inviteErrorMessage = '';
-    this.inviteLoading = false;
-    document.body.style.overflow = 'auto';
-  }
-
-  // NOVOS MÉTODOS APENAS PARA OS SELECTS DO MODAL DE CONVITE
-  onPerfilConviteChange(event: any): void {
-    this.selectedPerfilConvite = +event.target.value;
-    this.inviteErrorMessage = ''; // Limpar erro quando mudar
-  }
-
-  onCursoConviteChange(event: any): void {
-    this.selectedCursoConvite = +event.target.value;
-    this.inviteErrorMessage = ''; // Limpar erro quando mudar
-  }
-
-  // ATUALIZAR APENAS O MÉTODO sendInvite (adicionar validação dos selects)
-  async sendInvite(): Promise<void> {
-    if (!this.inviteEmail.trim()) {
-      this.inviteErrorMessage = 'Por favor, insira um e-mail válido.';
-      return;
-    }
-
-    // NOVAS VALIDAÇÕES PARA OS SELECTS
-    if (this.selectedPerfilConvite === 0) {
-      this.inviteErrorMessage = 'Por favor, selecione um perfil.';
-      return;
-    }
-
-    if (this.selectedCursoConvite === 0) {
-      this.inviteErrorMessage = 'Por favor, selecione um curso.';
-      return;
-    }
-
-    this.inviteLoading = true;
-    this.inviteSuccessMessage = '';
-    this.inviteErrorMessage = '';
-
-    try {
-      // Verificar se já existe convite em aberto para este email
-      const conviteExiste = await this.verificarConviteExistente(this.inviteEmail);
-
-      if (conviteExiste) {
-        this.inviteLoading = false;
-        this.inviteErrorMessage = 'Já existe um convite em aberto para este e-mail. Aguarde a resposta ou cancele o convite anterior.';
-        return;
-      }
-
-      // Se não existe convite em aberto, prosseguir com o envio
-      this.conviteService.enviarConvite(this.inviteEmail).subscribe({
-        next: (response: any) => {
-          this.inviteLoading = false;
-
-          if (response.status === 'success') {
-            this.inviteSuccessMessage = response.message || 'Convite enviado com sucesso!';
-            this.inviteEmail = '';
-            this.selectedPerfilConvite = 3; // Reset
-            this.selectedCursoConvite = 0; // Reset
-
-            setTimeout(() => {
-              this.closeInviteDialog();
-            }, 2000);
-          } else {
-            this.inviteErrorMessage = response.message || 'Erro ao enviar convite.';
-          }
-        },
-        error: (error: any) => {
-          this.inviteLoading = false;
-
-          if (error.status === 400 && error.error?.data) {
-            if (error.error.data.email) {
-              this.inviteErrorMessage = error.error.data.email[0];
-            } else {
-              this.inviteErrorMessage = error.error.message || 'Dados inválidos.';
-            }
-          } else if (error.status === 0) {
-            this.inviteErrorMessage = 'Erro de conexão. Verifique se a API está funcionando.';
-          } else {
-            this.inviteErrorMessage = 'Erro ao enviar convite. Tente novamente.';
-          }
-        }
-      });
-    } catch (error) {
-      this.inviteLoading = false;
-      this.inviteErrorMessage = 'Erro ao verificar convites existentes. Tente novamente.';
-    }
-  }
-
-  // Abre o modal de convite
-  openConvidarModal(): void {
-    this.isConvidarModalOpen = true;
-    this.novoColaboradorEmail = '';
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Fecha o modal de convite
-  closeConvidarModal(): void {
-    this.isConvidarModalOpen = false;
-    this.novoColaboradorEmail = '';
-    document.body.style.overflow = 'auto';
-  }
-
-  novoColaboradorEmail: string = ''; // Novo colaborador a ser convidado (campo de entrada)
-
-  // Método para validar formato do email:
-  private validateEmail(email: string): boolean {
-    // Validação super rigorosa
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-    // Verificações adicionais
-    if (!emailRegex.test(email)) {
-      return false;
-    }
-
-    // Não pode começar ou terminar com ponto
-    if (email.startsWith('.') || email.endsWith('.')) {
-      return false;
-    }
-
-    // Não pode ter pontos consecutivos
-    if (email.includes('..')) {
-      return false;
-    }
-
-    // Domínio não pode começar ou terminar com hífen
-    const domain = email.split('@')[1];
-    if (domain.startsWith('-') || domain.endsWith('-')) {
-      return false;
-    }
-
-    return true;
-  }
-
-  // Método para validação em tempo real:
-  onEmailChange(): void {
-    const email = this.novoColaboradorEmail.trim();
-
-    if (!email) {
-      this.emailError = '';
-      this.isValidEmail = false;
-      return;
-    }
-
-    if (!this.validateEmail(email)) {
-      this.emailError = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
-      this.isValidEmail = false;
-    } else {
-      this.emailError = '';
-      this.isValidEmail = true;
-    }
-  }
-
-  // Método chamado ao submeter o convite
-  async onConvidarSubmit(): Promise<void> {
-    const email = this.novoColaboradorEmail.trim();
-
-    if (!email) {
-      this.emailError = 'O e-mail é obrigatório.';
-      return;
-    }
-
-    if (!this.validateEmail(email)) {
-      this.emailError = 'Por favor, insira um e-mail válido (ex: usuario@exemplo.com)';
-      return;
-    }
-
-    this.emailError = '';
-
-    try {
-      // Verificar se já existe convite em aberto para este email
-      const conviteExiste = await this.verificarConviteExistente(email);
-
-      if (conviteExiste) {
-        this.emailError = 'Já existe um convite em aberto para este e-mail. Aguarde a resposta ou cancele o convite anterior.';
-        return;
-      }
-
-      // Se não existe convite em aberto, prosseguir com o envio
-      this.conviteService.enviarConvite(email).subscribe({
-        next: (response) => {
-          if (response.status === 'success') {
-            alert(response.message || 'Convite enviado com sucesso!');
-            this.novoColaboradorEmail = '';
-            this.emailError = '';
-            this.closeConvidarModal();
-          } else {
-            this.emailError = response.message || 'Erro ao enviar convite.';
-          }
-        },
-        error: (error) => {
-          if (error.status === 400 && error.error?.data?.email) {
-            this.emailError = error.error.data.email[0];
-          } else if (error.status === 400) {
-            this.emailError = error.error?.message || 'E-mail inválido ou já cadastrado.';
-          } else {
-            this.emailError = 'Erro ao enviar convite. Tente novamente.';
-          }
-        }
-      });
-    } catch (error) {
-      this.emailError = 'Erro ao verificar convites existentes. Tente novamente.';
-    }
-  }
-
-  // Método para mapear ID do perfil para nome
-  private mapearPerfil(perfilId: number): string {
-    const perfis: { [key: number]: string } = {
-      1: 'Administrador',
-      2: 'Elaborador de Itens',
-    };
-
-    return perfis[perfilId] || `Perfil ${perfilId}`;
-  }
-
-  private async verificarConviteExistente(email: string): Promise<boolean> {
-    try {
-      const response = await this.http.get<any>('http://localhost:8080/api/convites').toPromise();
-
-      if (response.status === 'success' && response.data) {
-        // Verificar se já existe convite "Em Aberto" (status_code: 0) para este email
-        const conviteExistente = response.data.find((convite: any) =>
-          convite.email_colab.toLowerCase() === email.toLowerCase() &&
-          convite.status_code === 0
-        );
-
-        return !!conviteExistente; // Retorna true se encontrou convite em aberto
-      }
-
-      return false;
-    } catch (error) {
-      return false; // Em caso de erro, permite o envio
-    }
-  }
-
-  // ==================== NOVOS MÉTODOS PARA ALTERAÇÃO DE PERFIL ====================
-
-  // Verifica se o usuário pode alterar perfis
+  // ========== MÉTODOS DE PERFIL ==========
   canChangeProfile(): boolean {
-    // Por enquanto, sempre retorna true para teste visual
-    // No futuro: integrar com AuthService quando backend estiver pronto
     return true;
   }
 
-  // Inicia a edição de perfil
   startEditingProfile(): void {
     this.isEditingProfile = true;
     this.resetPasswordFields();
     this.clearMessages();
   }
 
-  // Cancela a edição de perfil
   cancelEditingProfile(): void {
     this.resetEditingState();
   }
 
-  // Método chamado quando o select de perfil muda
   onPerfilChange(event: any): void {
     const novoPerfilId = +event.target.value;
 
-    // Verificar se precisa mostrar campo de senha
-    this.showPasswordField = (novoPerfilId === 1 || novoPerfilId === 2);
-
-    if (!this.showPasswordField) {
-      this.resetPasswordFields();
-    } else {
-      this.newPassword = '';
-      this.confirmPassword = '';
-      this.passwordError = '';
-    }
+  this.showPasswordField = false;
+  this.resetPasswordFields();
+  this.clearMessages();this.passwordError = '';
   }
 
-  // Salva a alteração de perfil
   saveProfileChange(): void {
     if (!this.selectedColaborador) return;
 
@@ -726,180 +477,269 @@ private gerarNomeArquivo(): string {
     const novoPerfilId = +selectElement.value;
     const perfilAtualId = this.getPerfilId(this.selectedColaborador.perfil || '');
 
-    // Se não mudou o perfil, apenas cancela
     if (novoPerfilId === perfilAtualId) {
       this.cancelEditingProfile();
       return;
     }
 
-    // Validar senha se necessário
-    if (this.showPasswordField) {
-      if (!this.validatePassword()) {
-        return;
-      }
-    }
+    this.isChangingProfile = true;
+    this.clearMessages();
 
-    let payload: { perfil: number; password?: string } = {
-      perfil: novoPerfilId
-    };
+    const updateData = { perfil: novoPerfilId };
+    
+    this.http.put(`http://localhost:8080/api/colabs/${this.selectedColaborador.id}`, updateData)
+      .subscribe({
+        next: (response: any) => {
+          const novoPerfilNome = this.mapearPerfilPorId(novoPerfilId);
 
-    const colaboradorComum = this.perfisDisponiveis.find(perfil => perfil.nome === 'Colaborador Comum');
-    if (!colaboradorComum) {
-      return;
-    }
+          const index = this.colaboradores.findIndex(c => c.id === this.selectedColaborador!.id);
+          if (index !== -1) {
+            this.colaboradores[index].perfil = novoPerfilNome;
+          }
 
-    if (novoPerfilId !== colaboradorComum.id) {
-      payload.password = this.newPassword;
-    }
+          if (this.selectedColaborador) {
+            this.selectedColaborador.perfil = novoPerfilNome;
+          }
 
-    const apiUrl = `http://localhost:8080/api/colabs/${this.selectedColaborador.id}`;
-    this.http.put(apiUrl, payload).subscribe({
-      next: (resposta) => {
-        if (this.selectedColaborador) {
-          this.selectedColaborador.perfil = this.mapearPerfilPorId(novoPerfilId)
+          this.profileChangeSuccess = 'Perfil atualizado com sucesso!';
+          this.isChangingProfile = false;
+          this.resetEditingState();
+          this.applyFilterAndPaginate();
+
+          setTimeout(() => {
+            this.profileChangeSuccess = '';
+          }, 3000);
+        },
+        error: (error) => {
+          console.error('Erro ao alterar perfil:', error);
+          this.isChangingProfile = false;
+          this.profileChangeError = 'Erro ao alterar perfil. Tente novamente.';
         }
-
-        this.profileChangeSuccess = 'Perfil atualizado com sucesso!';
-        this.isChangingProfile = false;
-        this.resetEditingState();
-      },
-      error: (error) => {
-      }
-    });
-
+      });
   }
 
-  // Valida os campos de senha
   private validatePassword(): boolean {
-    if (!this.newPassword) {
-      this.passwordError = 'A senha é obrigatória para este perfil.';
-      return false;
-    }
-
-    if (this.newPassword.length < 6) {
-      this.passwordError = 'A senha deve ter pelo menos 6 caracteres.';
-      return false;
-    }
-
-    if (this.newPassword !== this.confirmPassword) {
-      this.passwordError = 'As senhas não coincidem.';
-      return false;
-    }
-
     this.passwordError = '';
     return true;
   }
 
-  // SIMULAÇÃO - Aplica mudança apenas no frontend (sem backend)
-  private simulateProfileChange(novoPerfilId: number): void {
-    if (!this.selectedColaborador) return;
-
-    this.isChangingProfile = true;
-    this.clearMessages();
-
-    // Simular delay de 1 segundo (como se fosse uma chamada de API)
-    setTimeout(() => {
-      try {
-        // Atualizar o perfil localmente
-        const novoPerfilNome = this.mapearPerfilPorId(novoPerfilId);
-
-        // Atualizar na lista de colaboradores
-        const index = this.colaboradores.findIndex(c => c.id === this.selectedColaborador!.id);
-        if (index !== -1) {
-          this.colaboradores[index].perfil = novoPerfilNome;
-        }
-
-        // Atualizar no modal
-        if (this.selectedColaborador) {
-          this.selectedColaborador.perfil = novoPerfilNome;
-        }
-
-        this.profileChangeSuccess = 'Perfil atualizado com sucesso! (Simulação)';
-        this.isChangingProfile = false;
-        this.resetEditingState();
-
-        // Reaplica filtros para atualizar a tabela
-        this.applyFilterAndPaginate();
-
-        // Limpar mensagem após 3 segundos
-        setTimeout(() => {
-          this.profileChangeSuccess = '';
-        }, 3000);
-
-      } catch (error) {
-        this.isChangingProfile = false;
-        this.profileChangeError = 'Erro na simulação. Tente novamente.';
-      }
-    }, 1000); // Simula 1 segundo de loading
+  getPerfisPermitidos(): Perfil[] {
+    return this.perfisDisponiveis;
   }
 
-  // Método para obter perfis permitidos
-  getPerfisPermitidos(): { id: number, nome: string }[] {
-    // Simulação - definir perfil do usuário logado hardcoded
-    // No futuro: pegar de AuthService quando backend estiver pronto
-    const userProfile = 'Administrador'; // ou 'Gente e Cultura' para testar
-
-    if (userProfile === 'Administrador') {
-      return this.perfisDisponiveis; // Pode alterar todos
-    } else if (userProfile === 'Gente e Cultura') {
-      return this.perfisDisponiveis.filter(p => p.id !== 1); // Não pode criar Administrador
-    } else {
-      return []; // Colaborador comum não pode alterar perfis
-    }
-  }
-
-  // Método público para obter ID do perfil pelo nome
   getPerfilId(perfilNome: string): number {
-    if (!perfilNome) return 3;
-
-    const perfil = this.perfisDisponiveis.find(p =>
-      p.nome.toLowerCase() === perfilNome.toLowerCase()
-    );
-    return perfil ? perfil.id : 3;
+    const perfil = this.perfisDisponiveis.find(p => p.nome === perfilNome);
+    return perfil ? perfil.id : 1;
   }
 
-  // Novo método para mapear ID para nome (diferente do existente)
   private mapearPerfilPorId(perfilId: number): string {
-    const perfil = this.perfisDisponiveis.find(p => p.id === perfilId);
-    return perfil ? perfil.nome : 'Colaborador Comum';
+    return this.mapearPerfil(perfilId);
   }
 
-  // Reseta o estado de edição
   private resetEditingState(): void {
     this.isEditingProfile = false;
+    this.isManagingCursos = false;
     this.showPasswordField = false;
     this.resetPasswordFields();
     this.clearMessages();
   }
 
-  // Reseta os campos de senha
   private resetPasswordFields(): void {
     this.newPassword = '';
     this.confirmPassword = '';
     this.passwordError = '';
   }
 
-  // Limpa as mensagens de feedback
   private clearMessages(): void {
     this.profileChangeError = '';
     this.profileChangeSuccess = '';
+    this.cursosError = '';
+    this.cursosSuccess = '';
   }
 
-  // Atualizar itens por página
+  // ========== MÉTODOS DE EXPORTAÇÃO ==========
+  exportToExcel(): void {
+    this.loading = true;
+    
+    try {
+      this.applyFilterAndPaginate();
+      
+      let dadosParaExportar: Colaborador[] = [];
+      
+      if (this.searchTerm && this.searchTerm.trim()) {
+        if (this.filteredColaboradores.length > 0) {
+          dadosParaExportar = this.filteredColaboradores;
+        } else if (this.paginatedColaboradores.length > 0) {
+          dadosParaExportar = this.paginatedColaboradores;
+        } else {
+          dadosParaExportar = this.filtrarManualmente();
+        }
+      } else {
+        dadosParaExportar = this.colaboradores;
+      }
+
+      if (dadosParaExportar.length === 0) {
+        this.loading = false;
+        alert('❌ Nenhum colaborador encontrado para exportar.');
+        return;
+      }
+      
+      this.gerarEBaixarCSV(dadosParaExportar);
+      
+    } catch (error) {
+      this.loading = false;
+      alert('❌ Erro ao exportar dados.');
+    }
+  }
+
+  private filtrarManualmente(): Colaborador[] {
+    if (!this.searchTerm || !this.searchTerm.trim()) {
+      return this.colaboradores;
+    }
+    
+    const termo = this.searchTerm.toLowerCase().trim();
+    
+    return this.colaboradores.filter(colaborador => 
+      (colaborador.nome && colaborador.nome.toLowerCase().includes(termo)) ||
+      (colaborador.email && colaborador.email.toLowerCase().includes(termo)) ||
+      (colaborador.cpf && colaborador.cpf.includes(termo)) ||
+      (colaborador.celular && colaborador.celular.includes(termo))
+    );
+  }
+
+  private gerarEBaixarCSV(colaboradores: Colaborador[]): void {
+    try {
+      const cabecalho = [
+        'Nome',
+        'Email', 
+        'CPF',
+        'Celular',
+        'Perfil',
+        'CEP',
+        'Estado',
+        'Cidade',
+        'Bairro',
+        'Endereço'
+      ];
+      
+      const linhas = colaboradores.map(colab => [
+        colab.nome || '',
+        colab.email || '',
+        colab.cpf || '',
+        colab.celular || '',
+        colab.perfil || '',
+        colab.cep || '',
+        colab.uf || '',
+        colab.localidade || '',
+        colab.bairro || '',
+        colab.logradouro || ''
+      ]);
+      
+      const todasLinhas = [cabecalho, ...linhas];
+      
+      const csvContent = todasLinhas
+        .map(linha => 
+          linha.map(campo => this.limparCampoCSV(campo)).join(';')
+        )
+        .join('\n');
+      
+      const csvFinal = '\uFEFF' + csvContent;
+      
+      const blob = new Blob([csvFinal], { type: 'text/csv;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      
+      link.href = url;
+      link.download = this.gerarNomeArquivo();
+      link.style.display = 'none';
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      this.loading = false;
+      
+      const filtroInfo = this.searchTerm ? ` (filtro: "${this.searchTerm}")` : '';
+      alert(`✅ CSV baixado com sucesso! ${colaboradores.length} registros${filtroInfo}`);
+      
+    } catch (error) {
+      this.loading = false;
+      alert('❌ Erro ao gerar arquivo CSV.');
+    }
+  }
+
+  private limparCampoCSV(campo: any): string {
+    if (campo == null || campo === undefined) {
+      return '';
+    }
+    
+    let valor = String(campo).trim();
+    valor = valor.replace(/[\r\n]/g, ' ');
+    
+    if (valor.includes(';') || valor.includes(',') || valor.includes('"')) {
+      valor = valor.replace(/"/g, '""');
+      valor = `"${valor}"`;
+    }
+    
+    return valor;
+  }
+
+  private gerarNomeArquivo(): string {
+    const agora = new Date();
+    const data = agora.toISOString().slice(0, 10);
+    const hora = agora.toTimeString().slice(0, 8).replace(/:/g, '-');
+    
+    let nome = `colaboradores_${data}_${hora}`;
+    
+    if (this.searchTerm && this.searchTerm.trim()) {
+      const filtro = this.searchTerm.trim()
+        .replace(/[^a-zA-Z0-9]/g, '_')
+        .substring(0, 15);
+      nome += `_filtro_${filtro}`;
+    }
+    
+    return `${nome}.csv`;
+  }
+
+  // ========== MÉTODOS AUXILIARES ==========
+  trackByColaborador(index: number, colaborador: Colaborador): string {
+    return colaborador.id;
+  }
+
+  private mapearPerfil(perfilId: number): string {
+    const perfis: { [key: number]: string } = {
+      1: 'Administrador',
+      2: 'Elaborador de Itens',
+    };
+    return perfis[perfilId] || `Perfil ${perfilId}`;
+  }
+
+  private handleApiError(error: any): void {
+    if (error.status === 0) {
+      alert('❌ Backend não está rodando!');
+    } else if (error.status === 404) {
+      alert('❌ Rota não encontrada!');
+    } else if (error.status === 500) {
+      alert('❌ Erro interno do servidor!');
+    } else {
+      alert(`❌ Erro ${error.status}: ${error.message}`);
+    }
+  }
+
+  // ========== MÉTODOS DE PAGINAÇÃO ==========
   updateItemsPerPage() {
     this.currentPage = 1;
     this.updatePaginatedData();
   }
 
-  // Navegar para página específica
-  goToPage(page: number) {
+  goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePaginatedData();
     }
   }
 
-  // Página anterior
   goToPrevious() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -907,7 +747,6 @@ private gerarNomeArquivo(): string {
     }
   }
 
-  // Próxima página
   goToNext() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -915,18 +754,15 @@ private gerarNomeArquivo(): string {
     }
   }
 
-  // Calcular total de páginas
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
-  // Índice inicial dos itens exibidos
   getStartIndex(): number {
     if (this.totalItems === 0) return 0;
     return ((this.currentPage - 1) * this.itemsPerPage) + 1;
   }
 
-  // Índice final dos itens exibidos
   getEndIndex(): number {
     const endIndex = this.currentPage * this.itemsPerPage;
     return Math.min(endIndex, this.totalItems);
