@@ -1,5 +1,5 @@
 <!-- frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.html -->
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div
   class="lista-colaboradores-container"
   role="main"
@@ -34,30 +34,8 @@
       </div>
     </div>
 
-    <!-- Botões à direita: Convidar + Exportar -->
+    <!-- Botões à direita: Exportar -->
     <div class="buttons-container">
-      <!-- Botão de convite -->
-      <button
-        class="invite-button"
-        (click)="openInviteDialog()"
-        title="Convidar novo colaborador"
-        aria-label="Convidar novo colaborador"
-      >
-        <svg
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="w-5 h-5"
-        >
-          <path
-            d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.875 7.875 0 0 1 15.75 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z"
-          />
-        </svg>
-        Convidar Colaborador
-      </button>
-
-      <!-- Botão de exportar -->
       <button
         class="export-button"
         (click)="exportToExcel()"
@@ -108,7 +86,7 @@
           </td>
         </tr>
         <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
-        <tr *ngFor="let colaborador of paginatedColaboradores">
+        <tr *ngFor="let colaborador of paginatedColaboradores; trackBy: trackByColaborador">
           <td>{{ colaborador.nome }}</td>
           <td>{{ colaborador.email }}</td>
           <td>{{ colaborador.cpf }}</td>
@@ -127,473 +105,8 @@
     </table>
   </div>
 
-  <!-- Dialog Modal para Detalhes do Colaborador -->
-  <div
-    class="modal-overlay"
-    *ngIf="showColaboradorDialog"
-    (click)="closeColaboradorDialog()"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="colaboradorModalTitle"
-  >
-    <div class="modal-dialog" (click)="$event.stopPropagation()">
-      <!-- Header do Modal -->
-      <div class="modal-header">
-        <h2 class="modal-title" id="colaboradorModalTitle">
-          <i class="fas fa-user-circle" aria-hidden="true"></i>
-          Detalhes do Colaborador
-        </h2>
-        <button
-          type="button"
-          class="close-button"
-          (click)="closeColaboradorDialog()"
-          aria-label="Fechar janela de detalhes do colaborador"
-        >
-          <i class="fas fa-times" aria-hidden="true"></i>
-        </button>
-      </div>
-
-      <!-- Conteúdo do Modal -->
-      <div class="modal-body" *ngIf="selectedColaborador">
-        <!-- Informações Pessoais -->
-        <div class="info-section">
-          <h3 class="section-title">
-            <i class="fas fa-user" aria-hidden="true"></i> Informações Pessoais
-          </h3>
-          <div class="info-grid">
-            <div class="info-item">
-              <label>Nome Completo:</label>
-              <span>{{ selectedColaborador.nome }}</span>
-            </div>
-            <div class="info-item">
-              <label>E-mail:</label>
-              <span>{{ selectedColaborador.email }}</span>
-            </div>
-            <div class="info-item">
-              <label>CPF:</label>
-              <span>{{ selectedColaborador.cpf }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.celular">
-              <label>Celular:</label>
-              <span>{{ selectedColaborador.celular }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Informações Profissionais -->
-        <div class="info-section">
-          <h3 class="section-title">
-            <i class="fas fa-briefcase" aria-hidden="true"></i> Informações
-            Profissionais
-          </h3>
-          <div class="info-grid">
-            <div class="info-item" *ngIf="selectedColaborador.perfil">
-              <label>Perfil de Acesso:</label>
-
-              <!-- MODO NORMAL: Mostra badges lado a lado -->
-              <div *ngIf="!isEditingProfile" class="perfil-badges-container">
-                <span
-                  class="perfil-badge"
-                  [ngClass]="selectedColaborador.perfil | lowercase"
-                >
-                  {{ selectedColaborador.perfil }}
-                </span>
-                <!-- Badge invisível para manter o layout -->
-                <span class="perfil-badge invisible">Placeholder</span>
-              </div>
-
-              <!-- MODO EDIÇÃO: Substitui badges por select e botões -->
-              <div *ngIf="isEditingProfile" class="perfil-edit-inline">
-                <div class="perfil-select-container">
-                  <select
-                    id="perfil-change-select"
-                    name="perfil-change-select"
-                    class="perfil-select"
-                    [value]="getPerfilId(selectedColaborador?.perfil || '')"
-                    (change)="onPerfilChange($event)"
-                    [disabled]="isChangingProfile"
-                    autocomplete="off"
-                    aria-label="Selecionar novo perfil de acesso"
-                  >
-                    <option
-                      *ngFor="let perfil of getPerfisPermitidos()"
-                      [value]="perfil.id"
-                    >
-                      {{ perfil.nome }}
-                    </option>
-                  </select>
-                </div>
-
-                <div class="perfil-actions">
-                  <button
-                    type="button"
-                    class="btn-perfil btn-cancel-perfil"
-                    (click)="cancelEditingProfile()"
-                    [disabled]="isChangingProfile"
-                    aria-label="Cancelar alteração de perfil"
-                  >
-                    <i class="fas fa-times" aria-hidden="true"></i>
-                    Cancelar
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-perfil btn-save-perfil"
-                    (click)="saveProfileChange()"
-                    [disabled]="
-                      isChangingProfile ||
-                      (showPasswordField && (!newPassword || !confirmPassword))
-                    "
-                    aria-label="Salvar alterações no perfil"
-                  >
-                    <span
-                      *ngIf="isChangingProfile"
-                      class="loading-spinner-inline"
-                      role="status"
-                      aria-label="Salvando alterações"
-                    ></span>
-                    <i
-                      *ngIf="!isChangingProfile"
-                      class="fas fa-check"
-                      aria-hidden="true"
-                    ></i>
-                    {{ isChangingProfile ? "Salvando..." : "Salvar" }}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Campo de Senha (aparece apenas quando necessário) -->
-        <div class="info-section" *ngIf="showPasswordField">
-          <h3 class="section-title">
-            <i class="fas fa-key" aria-hidden="true"></i> Configuração de Acesso
-          </h3>
-          <div class="password-form">
-            <p class="password-info">
-              <i class="fas fa-info-circle" aria-hidden="true"></i>
-              Este perfil requer acesso ao sistema. Defina uma senha para o
-              colaborador:
-            </p>
-            <div class="info-grid">
-              <div class="info-item">
-                <label for="perfil-new-password">Nova Senha:</label>
-                <input
-                  id="perfil-new-password"
-                  name="perfil-new-password"
-                  type="password"
-                  class="form-control"
-                  [(ngModel)]="newPassword"
-                  placeholder="Mínimo 6 caracteres"
-                  [disabled]="isChangingProfile"
-                  autocomplete="new-password"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  spellcheck="false"
-                />
-              </div>
-              <div class="info-item">
-                <label for="perfil-confirm-password">Confirmar Senha:</label>
-                <input
-                  id="perfil-confirm-password"
-                  name="perfil-confirm-password"
-                  type="password"
-                  class="form-control"
-                  [(ngModel)]="confirmPassword"
-                  placeholder="Confirme a senha"
-                  [disabled]="isChangingProfile"
-                  autocomplete="new-password"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  spellcheck="false"
-                />
-              </div>
-            </div>
-
-            <!-- Mensagens de erro da senha -->
-            <div class="password-errors" *ngIf="passwordError">
-              <small class="error-text">{{ passwordError }}</small>
-            </div>
-          </div>
-        </div>
-
-        <!-- Endereço -->
-        <div
-          class="info-section"
-          *ngIf="selectedColaborador.cep || selectedColaborador.logradouro"
-        >
-          <h3 class="section-title">
-            <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Endereço
-          </h3>
-          <div class="info-grid">
-            <div class="info-item" *ngIf="selectedColaborador.logradouro">
-              <label>Logradouro:</label>
-              <span>{{ selectedColaborador.logradouro }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.bairro">
-              <label>Bairro:</label>
-              <span>{{ selectedColaborador.bairro }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.localidade">
-              <label>Cidade:</label>
-              <span>{{ selectedColaborador.localidade }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.uf">
-              <label>UF:</label>
-              <span>{{ selectedColaborador.uf }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.cep">
-              <label>CEP:</label>
-              <span>{{ selectedColaborador.cep }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mensagens de feedback -->
-        <div
-          class="message-container"
-          *ngIf="profileChangeSuccess || profileChangeError"
-        >
-          <div *ngIf="profileChangeSuccess" class="success-message">
-            <i class="fas fa-check-circle" aria-hidden="true"></i>
-            {{ profileChangeSuccess }}
-          </div>
-
-          <div *ngIf="profileChangeError" class="error-message">
-            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-            {{ profileChangeError }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer do Modal -->
-      <div class="modal-footer">
-        <!-- Botão "Alterar Perfil" -->
-        <div *ngIf="!isEditingProfile" class="modal-footer-normal">
-          <button
-            *ngIf="canChangeProfile()"
-            type="button"
-            class="btn btn-primary"
-            (click)="startEditingProfile()"
-          >
-            <i class="fas fa-user-cog" aria-hidden="true"></i>
-            Alterar Perfil
-          </button>
-        </div>
-
-        <!-- Modo edição: vazio (select e botões estão no lugar do badge) -->
-        <div *ngIf="isEditingProfile" class="modal-footer-edit">
-          <!-- Vazio - controles estão inline no lugar do badge -->
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Dialog Modal para Convite de Colaborador -->
-  <div
-    class="modal-overlay"
-    *ngIf="showInviteDialog"
-    (click)="closeInviteDialog()"
-  >
-    <div class="modal-dialog invite-dialog" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2 class="modal-title" id="inviteDialogTitle">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-              fill="currentColor"
-            />
-            <path
-              d="M12 14C7.58172 14 4 17.5817 4 22H20C20 17.5817 16.4183 14 12 14Z"
-              fill="currentColor"
-            />
-          </svg>
-          Convidar Colaborador
-        </h2>
-        <button
-          type="button"
-          class="close-button"
-          (click)="closeInviteDialog()"
-          aria-label="Fechar"
-        ></button>
-      </div>
-
-      <div class="modal-body" aria-labelledby="inviteDialogTitle">
-        <form (ngSubmit)="sendInvite()" #inviteForm="ngForm">
-          <!-- Campo de E-mail -->
-          <div class="form-group">
-            <label for="inviteEmail"
-              >E-mail do colaborador: <span class="required">*</span></label
-            >
-            <input
-              type="email"
-              id="inviteEmail"
-              name="inviteEmail"
-              [(ngModel)]="inviteEmail"
-              #emailInput="ngModel"
-              required
-              email
-              class="form-control"
-              [class.error]="emailInput.invalid && emailInput.touched"
-              placeholder="Digite o e-mail do colaborador"
-              autocomplete="email"
-              (ngModelChange)="onEmailChange()"
-            />
-            <div
-              class="error-messages"
-              *ngIf="emailInput.invalid && emailInput.touched"
-            >
-              <small *ngIf="emailInput.errors?.['required']" class="error-text"
-                >O e-mail é obrigatório.</small
-              >
-              <small *ngIf="emailInput.errors?.['email']" class="error-text"
-                >Por favor, digite um e-mail válido.</small
-              >
-            </div>
-          </div>
-
-          <!-- Campo de Perfil -->
-          <div class="form-group">
-            <label for="invitePerfilSelect"
-              >Perfil de acesso: <span class="required">*</span></label
-            >
-            <select
-              id="invitePerfilSelect"
-              name="invitePerfilSelect"
-              [(ngModel)]="selectedPerfilConvite"
-              #perfilSelect="ngModel"
-              required
-              class="form-control form-select"
-              [class.error]="perfilSelect.invalid && perfilSelect.touched"
-              (change)="onPerfilConviteChange($event)"
-            >
-              <option value="0" disabled>Selecione um perfil</option>
-              <option *ngFor="let perfil of perfisConvite" [value]="perfil.id">
-                {{ perfil.nome }}
-              </option>
-            </select>
-            <div
-              class="error-messages"
-              *ngIf="perfilSelect.invalid && perfilSelect.touched"
-            >
-              <small
-                *ngIf="perfilSelect.errors?.['required']"
-                class="error-text"
-                >O perfil é obrigatório.</small
-              >
-            </div>
-          </div>
-
-          <!-- Campo de Curso -->
-          <div class="form-group">
-            <label for="inviteCursoSelect"
-              >Curso: <span class="required">*</span></label
-            >
-            <select
-              id="inviteCursoSelect"
-              name="inviteCursoSelect"
-              [(ngModel)]="selectedCursoConvite"
-              #cursoSelect="ngModel"
-              required
-              class="form-control form-select"
-              [class.error]="cursoSelect.invalid && cursoSelect.touched"
-              (change)="onCursoConviteChange($event)"
-            >
-              <option value="0" disabled>Selecione um curso</option>
-              <option *ngFor="let curso of cursosConvite" [value]="curso.id">
-                {{ curso.nome }}
-              </option>
-            </select>
-            <div
-              class="error-messages"
-              *ngIf="cursoSelect.invalid && cursoSelect.touched"
-            >
-              <small *ngIf="cursoSelect.errors?.['required']" class="error-text"
-                >O curso é obrigatório.</small
-              >
-            </div>
-          </div>
-
-          <!-- Mensagens de Sucesso/Erro -->
-          <div class="message-container">
-            <div *ngIf="inviteSuccessMessage" class="success-message">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              {{ inviteSuccessMessage }}
-            </div>
-            <div *ngIf="inviteErrorMessage" class="error-message">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              {{ inviteErrorMessage }}
-            </div>
-          </div>
-
-          <!-- Botões -->
-          <div class="invite-modal-buttons">
-            <button
-              type="button"
-              class="btn btn-cancel"
-              (click)="closeInviteDialog()"
-              [disabled]="inviteLoading"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              class="btn btn-send"
-              [disabled]="inviteForm.invalid || inviteLoading"
-            >
-              <span
-                *ngIf="inviteLoading"
-                class="loading-spinner"
-                role="status"
-                aria-label="Enviando convite"
-              ></span>
-              {{ inviteLoading ? "Enviando..." : "Enviar Convite" }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Paginator customizado -->
-  <div class="pagination-container">
+  <!-- PAGINAÇÃO -->
+  <div class="pagination-container" *ngIf="!loading && totalItems > 0">
     <div class="pagination-info">
       <div class="items-per-page">
         <label for="itemsPerPage">Itens por página:</label>
@@ -696,6 +209,367 @@
           <path d="m6 17 5-5-5-5M13 17l5-5-5-5" />
         </svg>
       </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal-overlay"
+  *ngIf="showColaboradorDialog"
+  (click)="closeColaboradorDialog()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="colaboradorModalTitle"
+>
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <!-- Header do Modal -->
+    <div class="modal-header">
+      <h2 class="modal-title" id="colaboradorModalTitle">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+        Detalhes do Colaborador
+      </h2>
+      <button
+        type="button"
+        class="close-button"
+        (click)="closeColaboradorDialog()"
+        aria-label="Fechar janela de detalhes do colaborador"
+      >
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Conteúdo do Modal -->
+    <div class="modal-body" *ngIf="selectedColaborador">
+      <div class="info-sections-container">
+        <!-- Informações Pessoais (Esquerda) - Layout 2x2 -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-user" aria-hidden="true"></i> Informações Pessoais
+          </h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Nome Completo:</label>
+              <span>{{ selectedColaborador.nome }}</span>
+            </div>
+            <div class="info-item">
+              <label>CPF:</label>
+              <span>{{ selectedColaborador.cpf }}</span>
+            </div>
+            
+            <div class="info-item">
+              <label>E-mail:</label>
+              <span>{{ selectedColaborador.email }}</span>
+            </div>
+            <div class="info-item" *ngIf="selectedColaborador.celular; else emptyCell">
+              <label>Celular:</label>
+              <span>{{ selectedColaborador.celular }}</span>
+            </div>
+            <ng-template #emptyCell>
+              <div class="info-item">
+                <label>Celular:</label>
+                <span>Não informado</span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- LINHA DIVISÓRIA VERTICAL -->
+        <div class="vertical-divider"></div>
+
+        <!-- Informações Profissionais (Direita) -->
+        <div class="info-section">
+          <h3 class="section-title">
+            <i class="fas fa-briefcase" aria-hidden="true"></i> Informações Profissionais
+          </h3>
+          <div class="info-grid single-column">
+            <div class="info-item" *ngIf="selectedColaborador.perfil">
+              <label>Perfil de Acesso:</label>
+
+              <div *ngIf="!isEditingProfile" class="perfil-badges-container">
+                <span
+                  class="perfil-badge"
+                  [ngClass]="selectedColaborador.perfil | lowercase"
+                >
+                  {{ selectedColaborador.perfil }}
+                </span>
+              </div>
+
+              <!-- MODO EDIÇÃO: Substitui badges por select e botões -->
+              <div *ngIf="isEditingProfile" class="perfil-edit-inline">
+                <div class="perfil-select-container">
+                  <select
+                    id="perfil-change-select"
+                    name="perfil-change-select"
+                    class="perfil-select"
+                    [value]="getPerfilId(selectedColaborador?.perfil || '')"
+                    (change)="onPerfilChange($event)"
+                    [disabled]="isChangingProfile"
+                    autocomplete="off"
+                    aria-label="Selecionar novo perfil de acesso"
+                  >
+                    <option
+                      *ngFor="let perfil of getPerfisPermitidos()"
+                      [value]="perfil.id"
+                    >
+                      {{ perfil.nome }}
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO DE CURSOS ASSOCIADOS -->
+      <div
+        class="info-section full-width"
+        *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'"
+      >
+        <h3 class="section-title">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i> Cursos Associados
+        </h3>
+
+        <!-- MODO VISUALIZAÇÃO -->
+        <div *ngIf="!isManagingCursos" class="cursos-view-mode">
+          <!-- Lista de cursos atuais -->
+          <div
+            class="cursos-list"
+            *ngIf="
+              selectedColaborador.cursos &&
+              selectedColaborador.cursos.length > 0
+            "
+          >
+            <div
+              class="curso-item-readonly"
+              *ngFor="let curso of selectedColaborador.cursos"
+            >
+              <div class="curso-info">
+                <span class="curso-nome">{{ curso.nome }}</span>
+                <span
+                  class="curso-status"
+                  [class]="curso.status ? 'ativo' : 'inativo'"
+                >
+                  <i class="fas fa-circle"></i> {{ curso.status ? 'Ativo' : 'Inativo' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagem quando não há cursos -->
+          <div
+            class="no-cursos"
+            *ngIf="
+              !selectedColaborador.cursos ||
+              selectedColaborador.cursos.length === 0
+            "
+          >
+            <i class="fas fa-info-circle"></i>
+            <span>Nenhum curso associado a este elaborador.</span>
+          </div>
+        </div>
+
+        <!-- MODO GERENCIAMENTO -->
+        <div *ngIf="isManagingCursos" class="cursos-manage-mode">
+          <div class="add-curso-section">
+            <h4><i class="fas fa-plus-circle"></i> Associar Novo Curso</h4>
+            <div class="add-curso-form">
+              <div class="curso-select-container">
+                <input
+                  type="text"
+                  class="curso-search-input"
+                  placeholder="Digite para pesquisar ou selecione um curso..."
+                  [(ngModel)]="cursoSearchTerm"
+                  (input)="onCursoSearch()"
+                  (focus)="onCursoInputFocus()"
+                  [disabled]="cursosLoading"
+                />
+                <div class="curso-dropdown" *ngIf="showCursoDropdown && (filteredCursosDisponiveis.length > 0 || (cursoSearchTerm && filteredCursosDisponiveis.length === 0))">
+                  <div
+                    *ngIf="filteredCursosDisponiveis.length === 0 && cursoSearchTerm"
+                    class="curso-dropdown-item no-results"
+                  >
+                    Nenhum curso encontrado
+                  </div>
+                  <div
+                    *ngFor="let curso of filteredCursosDisponiveis"
+                    class="curso-dropdown-item"
+                    (click)="selectCurso(curso)"
+                  >
+                    {{ curso.nome }}
+                  </div>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="btn-action btn-add"
+                (click)="addCursoToColaborador()"
+                [disabled]="!selectedCursoToAdd || cursosLoading"
+              >
+                <span *ngIf="cursosLoading" class="loading-spinner-inline"></span>
+                <i *ngIf="!cursosLoading" class="fas fa-plus"></i>
+                Associar
+              </button>
+            </div>
+          </div>
+
+          <!-- Lista de cursos para gerenciar -->
+          <div class="manage-cursos-section">
+            <h4><i class="fas fa-list"></i> Cursos Atuais</h4>
+            <div
+              class="cursos-list-manage"
+              *ngIf="selectedColaboradorCursos.length > 0"
+            >
+              <div
+                class="curso-item-manage"
+                *ngFor="let curso of selectedColaboradorCursos"
+              >
+                <div class="curso-info">
+                  <span class="curso-nome">{{ curso.nome }}</span>
+                  <span
+                    class="curso-status"
+                    [class]="curso.status ? 'ativo' : 'inativo'"
+                  >
+                    <i class="fas fa-circle"></i> {{ curso.status ? 'Ativo' : 'Inativo' }}
+                  </span>
+                </div>
+                <button
+                  class="curso-remove-btn"
+                  (click)="removeCursoFromColaborador(curso.id)"
+                  [disabled]="cursosLoading"
+                  title="Remover curso"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="no-cursos-manage"
+              *ngIf="selectedColaboradorCursos.length === 0"
+            >
+              <i class="fas fa-info-circle"></i>
+              <span>Nenhum curso associado.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Mensagens de cursos -->
+        <div class="message-container" *ngIf="cursosSuccess || cursosError">
+          <div *ngIf="cursosSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i> {{ cursosSuccess }}
+          </div>
+          <div *ngIf="cursosError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> {{ cursosError }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagens de feedback -->
+      <div
+        class="message-container"
+        *ngIf="profileChangeSuccess || profileChangeError"
+      >
+        <div *ngIf="profileChangeSuccess" class="success-message">
+          <i class="fas fa-check-circle" aria-hidden="true"></i>
+          {{ profileChangeSuccess }}
+        </div>
+
+        <div *ngIf="profileChangeError" class="error-message">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ profileChangeError }}
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER DO MODAL - BOTÕES DINÂMICOS -->
+    <div class="modal-footer">
+      <div class="modal-actions">
+        
+        <!-- MODO NORMAL: Botões principais -->
+        <ng-container *ngIf="!isEditingProfile && !isManagingCursos">
+          <!-- Botão Alterar Perfil -->
+          <button
+            *ngIf="canChangeProfile()"
+            type="button"
+            class="btn btn-primary"
+            (click)="startEditingProfile()"
+          >
+            <i class="fas fa-user-cog" aria-hidden="true"></i>
+            Alterar Perfil
+          </button>
+
+          <!-- Botão Gerenciar Cursos -->
+          <button
+            *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'"
+            type="button"
+            class="btn btn-secondary"
+            (click)="startManagingCursos()"
+          >
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+            Gerenciar Cursos
+          </button>
+        </ng-container>
+
+        <!-- MODO EDIÇÃO DE PERFIL: Botões de perfil -->
+        <ng-container *ngIf="isEditingProfile">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="cancelEditingProfile()"
+            [disabled]="isChangingProfile"
+            aria-label="Cancelar alteração de perfil"
+          >
+            <i class="fas fa-times" aria-hidden="true"></i>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="saveProfileChange()"
+            [disabled]="isChangingProfile"
+            aria-label="Salvar alterações no perfil"
+          >
+            <span
+              *ngIf="isChangingProfile"
+              class="loading-spinner-inline"
+              role="status"
+              aria-label="Salvando alterações"
+            ></span>
+            <i
+              *ngIf="!isChangingProfile"
+              class="fas fa-check"
+              aria-hidden="true"
+            ></i>
+            {{ isChangingProfile ? "Salvando..." : "Salvar" }}
+          </button>
+        </ng-container>
+
+        <!-- MODO GERENCIAMENTO DE CURSOS: Botões de cursos -->
+        <ng-container *ngIf="isManagingCursos">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="cancelManagingCursos()"
+            [disabled]="cursosLoading"
+          >
+            <i class="fas fa-times"></i> Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="saveManagingCursos()"
+            [disabled]="cursosLoading"
+          >
+            <span *ngIf="cursosLoading" class="loading-spinner-inline"></span>
+            <i *ngIf="!cursosLoading" class="fas fa-check" aria-hidden="true"></i>
+            {{ cursosLoading ? 'Salvando...' : 'Salvar Alterações' }}
+          </button>
+        </ng-container>
+
+      </div>
     </div>
   </div>
 </div>

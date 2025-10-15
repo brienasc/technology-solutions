@@ -1,0 +1,447 @@
+:root {
+  --base-font-size: 16px;
+  --primary-color: #667eea;
+  --secondary-color: #764ba2;
+  --purple-color: #8b5cf6;
+  --blue-color: #3b82f6;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease;
+}
+
+/* ⭐ DEGRADÊ MANTIDO EM AMBOS OS TEMAS */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: calc(var(--base-font-size) * 1.5);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white !important;
+}
+
+.close-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0 !important;
+  line-height: 1;
+  font-weight: bold;
+  position: relative;
+}
+
+.close-button::before {
+  content: "×";
+  /* Adicionar o X via CSS */
+  font-size: 1.8rem;
+  color: white;
+  line-height: 1;
+}
+
+/* Hover do botão fechar */
+
+.close-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+  color: white !important;
+}
+
+.modal-body {
+  padding: 25px;
+  background: white;
+}
+
+.curso-status-section {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: calc(var(--base-font-size) * 0.9);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-ativo {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-inativo {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.curso-info {
+  text-align: center;
+}
+
+.curso-nome {
+  font-size: calc(var(--base-font-size) * 1.8);
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 20px 0 15px 0;
+  line-height: 1.3;
+}
+
+.curso-descricao {
+  color: #666;
+  font-size: calc(var(--base-font-size) * 1.1);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.curso-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.detail-item i {
+  color: var(--primary-color);
+  width: 20px;
+  text-align: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 120px;
+  font-size: var(--base-font-size);
+}
+
+.detail-value {
+  color: #333;
+  font-weight: 500;
+  font-size: var(--base-font-size);
+}
+
+.modal-footer {
+  padding: 20px 25px;
+  border-top: 1px solid #eee;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: var(--base-font-size);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-purple {
+  background: #7c3aed;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-purple:hover {
+  background: #7c3aed !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-blue {
+  background: #2563eb !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-blue:hover {
+  background: #2563eb !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ⭐ TEMA ESCURO */
+body.dark-theme .modal-content {
+  background: #2d2d2d !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .modal-body {
+  background: #2d2d2d !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .modal-footer {
+  background: #1a1a1a !important;
+  border-top-color: #444 !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .curso-nome {
+  color: #ffffff !important;
+}
+
+body.dark-theme .curso-descricao {
+  color: #cccccc !important;
+}
+
+body.dark-theme .detail-item {
+  background: #3d3d3d !important;
+  border-left-color: var(--primary-color) !important;
+}
+
+body.dark-theme .detail-label {
+  color: #cccccc !important;
+}
+
+body.dark-theme .detail-value {
+  color: #ffffff !important;
+}
+
+body.dark-theme .status-ativo {
+  background: #1e4620 !important;
+  color: #90ee90 !important;
+}
+
+body.dark-theme .status-inativo {
+  background: #4a1e1e !important;
+  color: #ffb3b3 !important;
+}
+
+/* ⭐ ALTO CONTRASTE */
+body.high-contrast .modal-content {
+  border: 3px solid #000000 !important;
+}
+
+body.high-contrast .modal-body {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+body.high-contrast .modal-footer {
+  background: #f0f0f0 !important;
+  color: #000000 !important;
+}
+
+body.high-contrast .curso-nome {
+  color: #000000 !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast .curso-descricao {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+body.high-contrast .detail-item {
+  background: #f0f0f0 !important;
+  border: 2px solid #000000 !important;
+}
+
+body.high-contrast .detail-label {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+body.high-contrast .detail-value {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+body.high-contrast .btn-purple {
+  background: #4b0082 !important;
+  border: 2px solid #000000 !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast .btn-blue {
+  background: #000080 !important;
+  border: 2px solid #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Alto contraste + tema escuro */
+body.high-contrast.dark-theme .modal-content {
+  border-color: #ffffff !important;
+}
+
+body.high-contrast.dark-theme .modal-body {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast.dark-theme .modal-footer {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast.dark-theme .curso-nome {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast.dark-theme .curso-descricao {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+body.high-contrast.dark-theme .detail-item {
+  background: #333333 !important;
+  border-color: #ffffff !important;
+}
+
+body.high-contrast.dark-theme .detail-label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+body.high-contrast.dark-theme .detail-value {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+body.high-contrast.dark-theme .btn-purple,
+body.high-contrast.dark-theme .btn-blue {
+  border-color: #ffffff !important;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    margin: 10px;
+  }
+  
+  .modal-footer {
+    padding: 15px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .curso-details {
+    gap: 10px;
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .detail-label {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header h2 {
+    font-size: calc(var(--base-font-size) * 1.3);
+  }
+  
+  .curso-nome {
+    font-size: calc(var(--base-font-size) * 1.5);
+  }
+  
+  .btn-close-header {
+    width: 35px;
+    height: 35px;
+  }
+}

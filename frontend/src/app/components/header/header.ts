@@ -83,10 +83,9 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   // Navegação para home 
   navigateToHome(): void {
     this.closeMobileMenu();
-    // VERIFICAÇÃO: Se o usuário estiver logado, redireciona para /cursos (podemos mudar isso depois p qual)
+    // VERIFICAÇÃO: Se o usuário estiver logado, redireciona para /dashboard
   if (this.authService.isLoggedIn()) {
-    // Redirecionar para a rota administrativa (Cursos)
-    this.router.navigate(['/cursos']);
+    this.router.navigate(['/dashboard']);
   } else {
     // Se deslogado, volta para a Landing Page principal (/)
     this.router.navigate(['/']);

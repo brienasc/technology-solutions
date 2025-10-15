@@ -8,6 +8,7 @@ use App\Http\Controllers\ConvitesController;
 use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MatrixController;
+use App\Http\Controllers\DashboardController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
@@ -17,6 +18,8 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
     Route::middleware('abilities:access:all')->group(function () {
         # Rotas de Convites
         Route::post('/convites', [ConvitesController::class,'store']);
@@ -27,6 +30,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/colabs/{id_colab}', [ColabsController::class,'show']);
         Route::put('/colabs/{id}', [ColabsController::class,'update']);
         Route::get('/colabs/export', [ColabsController::class, 'export']);
+
+        # Rotas para Cursos de Colaboradores
+        Route::get('/colabs/{id}/cursos', [ColabsController::class, 'getCursos']);
+        Route::post('/colabs/{id}/cursos', [ColabsController::class, 'addCurso']);
+        Route::delete('/colabs/{id}/cursos/{curso_id}', [ColabsController::class, 'removeCurso']);
+        Route::put('/colabs/{id}/cursos', [ColabsController::class, 'syncCursos']);
 
         #Rotas de Cursos
         Route::get('/cursos/summary', [CursoController::class, 'summary']);

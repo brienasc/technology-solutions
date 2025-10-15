@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\PerfilType;
 use App\Models\Colab;
+use App\Models\Curso;
 use App\Rules\Cpf;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -49,15 +50,38 @@ class ColabsController extends Controller
         try {
             $filters = $request->only(['email', 'nome', 'cpf', 'page', 'per_page']);
 
-            $colabsPaginate = $this->colabService->indexFilteredColabs($filters);
+            $colabsPaginate = $this->colabService->indexFilteredColabsWithCursos($filters);
 
-            foreach ($colabsPaginate as &$c) {
-                $enum = PerfilType::from($c['perfil_id']);
-                $c['perfil_name'] = $enum->label();
-            }
+            // Mapear os dados para incluir cursos
+            $colabsCollection = $colabsPaginate->getCollection()->map(function ($colab) {
+                $enum = PerfilType::from($colab['perfil_id']);
+                
+                return [
+                    'id' => $colab->id,
+                    'nome' => $colab->nome,
+                    'email' => $colab->email,
+                    'cpf' => $colab->cpf,
+                    'celular' => $colab->celular,
+                    'cep' => $colab->cep,
+                    'uf' => $colab->uf,
+                    'cidade' => $colab->cidade,
+                    'bairro' => $colab->bairro,
+                    'logradouro' => $colab->logradouro,
+                    'numero' => $colab->numero,
+                    'perfil_id' => $colab->perfil_id,
+                    'perfil_name' => $enum->label(),
+                    'cursos' => $colab->cursos->map(function ($curso) {
+                        return [
+                            'id' => $curso->id,
+                            'nome' => $curso->nome,
+                            'status' => $curso->status
+                        ];
+                    })
+                ];
+            });
 
             $responseData = [
-                'colabs' => $colabsPaginate->getCollection(),
+                'colabs' => $colabsCollection,
                 'current_page' => $colabsPaginate->currentPage(),
                 'per_page' => $colabsPaginate->perPage(),
                 'total' => $colabsPaginate->total(),
@@ -67,6 +91,109 @@ class ColabsController extends Controller
             return $this->apiResponse->success($responseData, 'Lista de colaboradores retornada com sucesso.');
         } catch (Exception $e) {
             return $this->apiResponse->badRequest(null, 'Erro ao buscar colaboradores.');
+        }
+    }
+
+    // Buscar cursos de um colaborador específico
+    public function getCursos(string $id): JsonResponse
+    {
+        try {
+            if (!Str::isUuid($id)) {
+                return $this->apiResponse->badRequest(null, 'O ID do colaborador fornecido é inválido.');
+            }
+
+            $colab = $this->colabService->getColabWithCursos($id);
+
+            if ($colab == null) {
+                return $this->apiResponse->badRequest(null, 'Colaborador não encontrado');
+            }
+
+            $cursosData = $colab->cursos->map(function ($curso) {
+                return [
+                    'id' => $curso->id,
+                    'nome' => $curso->nome,
+                    'status' => $curso->status,
+                    'descricao' => $curso->descricao,
+                    'carga_horaria' => $curso->carga_horaria
+                ];
+            });
+
+            return $this->apiResponse->success($cursosData, 'Cursos do colaborador retornados com sucesso.');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao buscar cursos do colaborador');
+        }
+    }
+
+    // Associar curso a um colaborador
+    public function addCurso(Request $request, string $id): JsonResponse
+    {
+        try {
+            $validateData = $request->validate([
+                'curso_id' => ['required', 'string', 'exists:cursos,id'],
+            ]);
+
+            if (!Str::isUuid($id)) {
+                return $this->apiResponse->badRequest(null, 'O ID do colaborador fornecido é inválido.');
+            }
+
+            $success = $this->colabService->addCursoToColab($id, $validateData['curso_id']);
+
+            if (!$success) {
+                return $this->apiResponse->badRequest(null, 'Erro ao associar curso. Possivelmente já está associado.');
+            }
+
+            return $this->apiResponse->success(null, 'Curso associado com sucesso.');
+        } catch (ValidationException $e) {
+            return $this->apiResponse->badRequest($e->errors(), 'Dados inválidos');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao associar curso ao colaborador');
+        }
+    }
+
+    // Remover curso de um colaborador
+    public function removeCurso(string $id, string $cursoId): JsonResponse
+    {
+        try {
+            if (!Str::isUuid($id) || !Str::isUuid($cursoId)) {
+                return $this->apiResponse->badRequest(null, 'IDs fornecidos são inválidos.');
+            }
+
+            $success = $this->colabService->removeCursoFromColab($id, $cursoId);
+
+            if (!$success) {
+                return $this->apiResponse->badRequest(null, 'Erro ao remover curso.');
+            }
+
+            return $this->apiResponse->success(null, 'Curso removido com sucesso.');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao remover curso do colaborador');
+        }
+    }
+
+    // Sincronizar todos os cursos de um colaborador
+    public function syncCursos(Request $request, string $id): JsonResponse
+    {
+        try {
+            $validateData = $request->validate([
+                'curso_ids' => ['required', 'array'],
+                'curso_ids.*' => ['string', 'exists:cursos,id'],
+            ]);
+
+            if (!Str::isUuid($id)) {
+                return $this->apiResponse->badRequest(null, 'O ID do colaborador fornecido é inválido.');
+            }
+
+            $success = $this->colabService->syncCursosToColab($id, $validateData['curso_ids']);
+
+            if (!$success) {
+                return $this->apiResponse->badRequest(null, 'Erro ao sincronizar cursos.');
+            }
+
+            return $this->apiResponse->success(null, 'Cursos sincronizados com sucesso.');
+        } catch (ValidationException $e) {
+            return $this->apiResponse->badRequest($e->errors(), 'Dados inválidos');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest(null, 'Erro ao sincronizar cursos do colaborador');
         }
     }
 

@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
         this.alertVariant = 'success';
         this.alertTitle = 'Login';
         this.alertMessage = 'Autenticação realizada com sucesso.';
-        this.pendingNav = '/cursos';
+        this.pendingNav = '/dashboard';
         this.showAlert = true;
       },
       error: (error) => {

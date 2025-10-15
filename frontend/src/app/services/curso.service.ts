@@ -8,7 +8,7 @@ type CursosIndexRaw = {
   status: 'success' | 'error';
   message?: string;
   data: {
-    cursos: Curso[];          // vindo do backend
+    cursos: Curso[];
     current_page: number;
     per_page: number;
     total: number;
@@ -37,7 +37,7 @@ export class CursoService {
       .set('per_page', String(perPage));
 
     if (nome && nome.trim()) params = params.set('nome', nome.trim());
-    if (typeof status === 'boolean') params = params.set('status', String(status)); // 'true' | 'false'
+    if (typeof status === 'boolean') params = params.set('status', String(status));
 
     return this.http.get<CursosIndexRaw>(this.apiUrl, { params }).pipe(
       map((res) => ({
@@ -47,6 +47,17 @@ export class CursoService {
         total: res.data.total,
         lastPage: res.data.last_page,
       }))
+    );
+  }
+
+  // MÉTODO PARA BUSCAR TODOS OS CURSOS
+  getAllCursos(): Observable<Curso[]> {
+    let params = new HttpParams()
+      .set('page', '1')
+      .set('per_page', '1000');
+
+    return this.http.get<CursosIndexRaw>(this.apiUrl, { params }).pipe(
+      map((res) => res.data.cursos)
     );
   }
 
@@ -64,5 +75,4 @@ export class CursoService {
   deleteCurso(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
-
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use Hash;
 use App\Enums\PerfilType;
 use App\Models\Colab;
+use App\Models\Curso;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -144,5 +145,87 @@ class ColabService
 
             return $colab;
         });
+    }
+
+    // Busca colaborador com seus cursos associados
+    public function getColabWithCursos(string $id): ?Colab
+    {
+        return Colab::with('cursos')->find($id);
+    }
+
+    // Associa um curso a um colaborador
+    public function addCursoToColab(string $colabId, string $cursoId): bool
+    {
+        try {
+            $colab = Colab::findOrFail($colabId);
+            $curso = Curso::findOrFail($cursoId);
+
+            // Verifica se já não está associado
+            if ($colab->cursos()->where('curso_id', $cursoId)->exists()) {
+                return false; // Já associado
+            }
+
+            // Associa o curso
+            $colab->cursos()->attach($cursoId);
+            
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Erro ao associar curso ao colaborador: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Remove um curso de um colaborador
+    public function removeCursoFromColab(string $colabId, string $cursoId): bool
+    {
+        try {
+            $colab = Colab::findOrFail($colabId);
+            
+            // Remove a associação
+            $colab->cursos()->detach($cursoId);
+            
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Erro ao remover curso do colaborador: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Atualiza todos os cursos de um colaborador
+    public function syncCursosToColab(string $colabId, array $cursoIds): bool
+    {
+        try {
+            $colab = Colab::findOrFail($colabId);
+            
+            // Sincroniza os cursos (remove os antigos e adiciona os novos)
+            $colab->cursos()->sync($cursoIds);
+            
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Erro ao sincronizar cursos do colaborador: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Lista colaboradores com seus cursos (para o index)
+    public function indexFilteredColabsWithCursos($filters): LengthAwarePaginator
+    {
+        $query = Colab::with('cursos');
+
+        if (isset($filters['email'])) {
+            $query->where('email', 'like', '%' . $filters['email'] . '%');
+        }
+
+        if (isset($filters['nome'])) {
+            $query->where('nome', 'like', '%' . $filters['nome'] . '%');
+        }
+
+        if (isset($filters['cpf'])) {
+            $query->where('cpf', 'like', '%' . $filters['cpf'] . '%');
+        }
+
+        $per_page = $filters['per_page'] ?? 15;
+
+        return $query->paginate($per_page);
     }
 }
