@@ -15,12 +15,12 @@ import { MatricesPageComponent } from './pages/matrices/matrices-page.component'
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/dashboard',
-    pathMatch: 'full'
+    component: LandingPageComponent
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
