@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, OnInit, Renderer2, ElementRef} from '@angular/core'; 
+import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
@@ -10,10 +10,10 @@ import { AuthService } from '../../services/auth.service';
   imports: [
     NgOptimizedImage,
     RouterLink,
-    CommonModule 
+    CommonModule
   ],
-  templateUrl: './header.html', 
-  styleUrls: ['./header.css'] 
+  templateUrl: './header.html',
+  styleUrls: ['./header.css']
 })
 export class Header implements OnInit { // << usarei o OnInit que importei
 
@@ -22,7 +22,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   isLoggedIn: boolean = false;
 
   // agora uso private renderer para adicionar ou remover classes diretamente do body da pagina
-  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, public authService: AuthService) { } 
+  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, public authService: AuthService) { }
 
   ngOnInit(): void { // aqui vou assumir o tema claro por padrão, mas carregar o dark quando for preciso
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
@@ -50,7 +50,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   private applyMobileMenuTheme() {
     const mobileMenu = document.querySelector('.mobile-menu') as HTMLElement;
     const isDark = document.body.classList.contains('dark-theme');
-    
+
     if (mobileMenu) {
       if (isDark) {
         mobileMenu.style.setProperty('background', '#1a1a1a', 'important');
@@ -65,7 +65,7 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   // Toggle do menu mobile
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    
+
     // Previne scroll quando menu está aberto
     if (this.isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -80,16 +80,16 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     document.body.style.overflow = 'auto';
   }
 
-  // Navegação para home 
+  // Navegação para home
   navigateToHome(): void {
     this.closeMobileMenu();
     // VERIFICAÇÃO: Se o usuário estiver logado, redireciona para /dashboard
-  if (this.authService.isLoggedIn()) {
-    this.router.navigate(['/dashboard']);
-  } else {
-    // Se deslogado, volta para a Landing Page principal (/)
-    this.router.navigate(['/']);
-  }
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      // Se deslogado, volta para a Landing Page principal (/)
+      this.router.navigate(['/']);
+    }
   }
 
   // Outros métodos de navegação (caso precise usar programaticamente)
@@ -116,18 +116,18 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     }
   }
 
-  
+
 
   onLogout(): void {
-     // 1. Limpa o token e o estado de login (mantendo sua lógica atual)
-  this.authService.logout();
-  this.isLoggedIn = false;
-  
-  // 2. Redireciona o usuário para a Landing Page principal (/)
-  this.router.navigate(['/']);
-  //   this.authService.logout();
-  //   this.isLoggedIn = false;
- }
+    // 1. Limpa o token e o estado de login (mantendo sua lógica atual)
+    this.authService.logout();
+    this.isLoggedIn = false;
+
+    // 2. Redireciona o usuário para a Landing Page principal (/)
+    this.router.navigate(['/']);
+    //   this.authService.logout();
+    //   this.isLoggedIn = false;
+  }
 
   onMenuGerencialClick(): void {
     this.router.navigate(['/menu-gerencial']);
@@ -142,6 +142,11 @@ export class Header implements OnInit { // << usarei o OnInit que importei
   goToCursos(): void {
     this.closeMobileMenu();
     this.router.navigate(['/cursos']);
+  }
+
+  goToMatrizes(): void {
+    this.closeMobileMenu();
+    this.router.navigate(['/matrizes']);
   }
 }
 
