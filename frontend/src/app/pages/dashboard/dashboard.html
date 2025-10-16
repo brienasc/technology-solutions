@@ -37,6 +37,10 @@
 
   <!-- Conteúdo principal -->
   <div *ngIf="!loading && !error && dashboardData" class="dashboard-content">
+
+  <div class="controls-section" *ngIf="!loading && shouldShowFilters()">
+  <!-- ... controles existentes ... -->
+  </div>
     
     <!-- Barra de controles -->
     <div class="dashboard-controls">

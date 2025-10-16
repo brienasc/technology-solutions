@@ -30,7 +30,7 @@ class DashboardController extends Controller
             } 
             // Se é elaborador, vê apenas cursos associados
             else {
-                $cursos = Curso::all(); // Por enquanto todos
+                $cursos = $user->cursos;
             }
             
             $cursosFormatados = $cursos->map(function($curso) {
