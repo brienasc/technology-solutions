@@ -27,6 +27,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   error: string | null = null;
   searchTerm: string = '';
   filteredCursos: CursoCard[] = [];
+  hasAssociatedCursos: boolean = false;
+  showEmptyStateForElaborador: boolean = false;
   
   // Modal
   selectedCurso: CursoCard | null = null;
@@ -79,6 +81,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       next: (data) => {
         console.log('Dashboard data received:', data);
         this.dashboardData = data;
+
+        if (this.isElaborador()) {
+          this.hasAssociatedCursos = data.cursos.length > 0;
+          this.showEmptyStateForElaborador = !this.hasAssociatedCursos;
+        }
+
         this.applyFilters();
         this.loading = false;
       },
@@ -93,6 +101,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  shouldShowFilters(): boolean {
+    return this.isAdmin() || (this.isElaborador() && this.hasAssociatedCursos);
+  }
+
+  getWelcomeMessage(): string {
+    if (this.isAdmin()) {
+      return 'Painel Administrativo - Gerencie todos os cursos';
+    } else if (this.isElaborador()) {
+      return this.hasAssociatedCursos 
+        ? 'Seus Cursos Associados - Elabore itens para os cursos atribuídos'
+        : 'Aguardando Atribuição - Nenhum curso foi associado ao seu perfil ainda';
+    }
+    return 'Dashboard';
   }
 
   onSearchChange(): void {
