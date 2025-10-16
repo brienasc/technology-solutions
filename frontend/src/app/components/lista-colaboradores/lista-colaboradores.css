@@ -1,4 +1,48 @@
 /* ===================== RESET E BASE ===================== */
+:root {
+  /* VARIÁVEIS DE TEMA CLARO */
+  --theme-background: #f8f9fa;
+  --theme-card-bg: #ffffff;
+  --theme-text: #1f2937;
+  --theme-heading-text: #111827;
+  --theme-body-text: #374151;
+  --theme-text-secondary: #6b7280;
+  --theme-text-muted: #9ca3af;
+  --theme-border-color: #e5e7eb;
+  --theme-input-bg: #ffffff;
+  --theme-input-border: #d1d5db;
+  --theme-button-bg: #f3f4f6;
+  --theme-button-hover: #e5e7eb;
+  --theme-button-text: #374151;
+  --theme-focus-border: #667eea;
+  --theme-primary-color: #667eea;
+  --theme-secondary-color: #764ba2;
+  --theme-form-bg: #ffffff;
+  --theme-hover-bg: rgba(124, 58, 237, 0.05);
+}
+
+/* VARIÁVEIS DE TEMA ESCURO */
+body.dark-theme {
+  --theme-background: #111827;
+  --theme-card-bg: #1f2937;
+  --theme-text: #f9fafb;
+  --theme-heading-text: #ffffff;
+  --theme-body-text: #e5e7eb;
+  --theme-text-secondary: #9ca3af;
+  --theme-text-muted: #6b7280;
+  --theme-border-color: #374151;
+  --theme-input-bg: #374151;
+  --theme-input-border: #4b5563;
+  --theme-button-bg: #374151;
+  --theme-button-hover: #4b5563;
+  --theme-button-text: #f9fafb;
+  --theme-focus-border: #818cf8;
+  --theme-primary-color: #667eea;
+  --theme-secondary-color: #764ba2;
+  --theme-form-bg: #1f2937;
+  --theme-hover-bg: rgba(102, 126, 234, 0.1);
+}
+
 .lista-colaboradores-container {
   max-width: none !important;
   width: 100% !important;
@@ -266,25 +310,36 @@
   gap: 4px;
 }
 
+/* PAGINAÇÃO */
 .pagination-btn {
   width: 32px;
   height: 32px;
   border: 1px solid var(--theme-border-color);
-  background: var(--theme-button-bg, #f3f4f6);
+  background: var(--theme-button-bg);
   color: var(--theme-text);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination-btn:not(:disabled):hover {
-  background: var(--theme-button-hover, #e5e7eb);
+  background: var(--theme-button-hover);
+  color: var(--theme-text);
   transform: translateY(-1px);
 }
 
 .pagination-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+  color: var(--theme-text-muted);
+}
+
+/* ÍCONES DOS BOTÕES DE PAGINAÇÃO */
+.pagination-btn svg {
+  color: currentColor;
 }
 
 /* ===================== MODAL ===================== */
@@ -562,8 +617,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #f8f9fa;
-  border: 2px solid transparent;
+  background: var(--theme-card-bg);
+  border: 2px solid var(--theme-border-color);
   border-radius: 12px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -571,9 +626,20 @@
 }
 
 .curso-item-readonly:hover {
-  border-color: #3b82f6;
+  border-color: var(--theme-primary-color);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
   transform: translateY(-1px);
+}
+
+/* TEMA ESCURO ESPECÍFICO PARA CARDS DE CURSO */
+body.dark-theme .curso-item-readonly {
+  background: #1a1a1a !important;
+  border-color: var(--theme-border-color);
+}
+
+body.dark-theme .curso-item-readonly:hover {
+  border-color: var(--theme-primary-color);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
 .curso-info {
@@ -675,20 +741,20 @@
   flex: 1;
 }
 
+/* INPUT DE PESQUISA DE CURSO */
 .curso-search-input {
   width: 100%;
   padding: 10px 12px;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border: 2px solid var(--theme-border-color);
   font-size: 14px;
-  background-color: #ffffff;
+  background-color: var(--theme-input-bg);
   color: var(--theme-text);
   cursor: text;
 }
 
 .curso-search-input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--theme-focus-border);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -697,11 +763,11 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  z-index: 9999; /* ⭐ Z-INDEX MUITO ALTO */
+  z-index: 9999;
   max-height: 200px;
   overflow-y: auto;
   margin-top: 4px;
@@ -710,14 +776,14 @@
 .curso-dropdown-item {
   padding: 12px 16px;
   cursor: pointer;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--theme-border-color);
   font-size: 14px;
-  color: #374151;
+  color: var(--theme-text);
   transition: background-color 0.15s ease;
 }
 
 .curso-dropdown-item:hover {
-  background-color: rgba(59, 130, 246, 0.1);
+  background-color: var(--theme-hover-bg);
 }
 
 .curso-dropdown-item:last-child {
@@ -745,7 +811,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  white-space: nowrap;
 }
 
 .btn-add {
