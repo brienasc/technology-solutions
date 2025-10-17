@@ -1,4 +1,47 @@
-/* --- REGRAS DE ALTO CONTRASTE ESPECÍFICAS PARA O MENU CURSOS --- */
+:root {
+  /* VARIÁVEIS DE TEMA CLARO */
+  --theme-background: #f8f9fa;
+  --theme-card-bg: #ffffff;
+  --theme-text: #1f2937;
+  --theme-heading-text: #111827;
+  --theme-body-text: #374151;
+  --theme-text-secondary: #6b7280;
+  --theme-text-muted: #9ca3af;
+  --theme-border-color: #e5e7eb;
+  --theme-input-bg: #ffffff;
+  --theme-input-border: #d1d5db;
+  --theme-button-bg: #f3f4f6;
+  --theme-button-hover: #e5e7eb;
+  --theme-button-text: #374151;
+  --theme-focus-border: #667eea;
+  --theme-primary-color: #667eea;
+  --theme-secondary-color: #764ba2;
+  --theme-form-bg: #ffffff;
+  --theme-hover-bg: rgba(124, 58, 237, 0.05);
+}
+
+/* VARIÁVEIS DE TEMA ESCURO */
+body.dark-theme {
+  --theme-background: #111827;
+  --theme-card-bg: #1f2937;
+  --theme-text: #f9fafb;
+  --theme-heading-text: #ffffff;
+  --theme-body-text: #e5e7eb;
+  --theme-text-secondary: #9ca3af;
+  --theme-text-muted: #6b7280;
+  --theme-border-color: #374151;
+  --theme-input-bg: #374151;
+  --theme-input-border: #4b5563;
+  --theme-button-bg: #374151;
+  --theme-button-hover: #4b5563;
+  --theme-button-text: #f9fafb;
+  --theme-focus-border: #818cf8;
+  --theme-primary-color: #667eea;
+  --theme-secondary-color: #764ba2;
+  --theme-form-bg: #1f2937;
+  --theme-hover-bg: rgba(102, 126, 234, 0.1);
+}
+
 
 :host-context(.high-contrast) {
     /* Aplica a regra de Alto Contraste ao botão "Cursos" */
@@ -429,63 +472,6 @@ body.dark-theme .data-table tbody tr:hover,
     height: 16px;
 }
 
-
-/* Paginação */
-
-.pagination-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 15px;
-}
-
-.pagination-controls button {
-    background-color: var(--theme-button-secondary-bg);
-    border: 1px solid var(--theme-input-border);
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.95em;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    color: var(--theme-button-text);
-}
-
-.pagination-controls button:hover:not(:disabled) {
-    background-color: var(--theme-button-disabled-bg);
-    border-color: var(--theme-focus-border);
-}
-
-.pagination-controls button:disabled {
-    background-color: var(--theme-button-disabled-bg);
-    color: var(--color-muted-text);
-    cursor: not-allowed;
-}
-
-.pagination-controls span {
-    font-size: 1em;
-    color: var(--theme-body-text);
-}
-
-
-/* Botão voltar */
-
-.back-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: var(--color-light-primary);
-    color: var(--theme-button-text);
-    border: 1px solid var(--color-light-primary);
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.back-button:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-}
 
 
 /* Modal */
@@ -937,6 +923,8 @@ body.dark-theme .form-select option,
 
 /* ===================== PAGINATOR CUSTOMIZADO ===================== */
 
+
+/* CONTAINER DA PAGINAÇÃO */
 .pagination-container {
     display: flex;
     justify-content: space-between;
@@ -949,9 +937,7 @@ body.dark-theme .form-select option,
     color: var(--theme-text);
 }
 
-
 /* ESQUERDA - Items por página */
-
 .pagination-info {
     display: flex;
     align-items: center;
@@ -978,6 +964,14 @@ body.dark-theme .form-select option,
     font-size: 14px;
     min-width: 56px;
     cursor: pointer;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 12px 12px;
+    padding-right: 2rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .items-per-page select:focus {
@@ -986,9 +980,13 @@ body.dark-theme .form-select option,
     box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
 
+.items-per-page select option {
+    background: var(--theme-input-bg) !important;
+    color: var(--theme-text) !important;
+    padding: 0.5rem;
+}
 
 /* CENTRO - Range de itens */
-
 .pagination-range {
     flex: 1;
     text-align: center;
@@ -996,18 +994,14 @@ body.dark-theme .form-select option,
     color: var(--theme-text);
 }
 
-
 /* DIREITA - Controles de navegação */
-
 .pagination-controls {
     display: flex;
     gap: 4px;
     align-items: center;
 }
 
-
-/* Botões de navegação */
-
+/* BOTÕES DE NAVEGAÇÃO */
 .pagination-btn {
     width: 32px;
     height: 32px;
@@ -1023,18 +1017,14 @@ body.dark-theme .form-select option,
     padding: 0;
 }
 
-
-/* Hover dos botões */
-
+/* HOVER DOS BOTÕES */
 .pagination-btn:not(:disabled):hover {
     background: var(--theme-button-hover, #e5e7eb);
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-/* Botões desabilitados */
-
+/* BOTÕES DESABILITADOS */
 .pagination-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
@@ -1043,18 +1033,38 @@ body.dark-theme .form-select option,
     box-shadow: none;
 }
 
-
-/* Ícones dos botões */
-
+/* ÍCONES DOS BOTÕES */
 .pagination-btn svg {
     width: 16px;
     height: 16px;
     stroke: currentColor;
 }
 
+/* TEMA ESCURO PARA SELECT */
+body.dark-theme .items-per-page select {
+    background: var(--theme-input-bg);
+    color: var(--theme-text);
+    border-color: var(--theme-border-color);
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+}
 
-/* ===================== RESPONSIVIDADE ===================== */
+body.dark-theme .items-per-page select option {
+    background: var(--theme-input-bg) !important;
+    color: var(--theme-text) !important;
+}
 
+/* TEMA ESCURO PARA BOTÕES */
+body.dark-theme .pagination-btn {
+    background: var(--theme-button-bg);
+    color: var(--theme-text);
+    border-color: var(--theme-border-color);
+}
+
+body.dark-theme .pagination-btn:not(:disabled):hover {
+    background: var(--theme-button-hover);
+}
+
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
     .pagination-container {
         flex-direction: column;
@@ -1062,43 +1072,23 @@ body.dark-theme .form-select option,
         padding: 16px;
         align-items: center;
     }
+    
     .pagination-info {
         order: 1;
     }
+    
     .pagination-range {
         order: 2;
         text-align: center;
     }
+    
     .pagination-controls {
         order: 3;
     }
 }
 
-
-/* ===================== TEMA ESCURO ===================== */
-
-body.dark-theme .pagination-container,
-[data-theme="dark"] .pagination-container {
-    background: var(--theme-card-bg);
-    color: var(--theme-text);
-    border-color: var(--theme-border-color);
-}
-
-body.dark-theme .items-per-page select,
-[data-theme="dark"] .items-per-page select {
-    background: var(--theme-input-bg);
-    color: var(--theme-text);
-    border-color: var(--theme-border-color);
-}
-
-body.dark-theme .pagination-btn,
-[data-theme="dark"] .pagination-btn {
-    background: var(--theme-button-bg);
-    color: var(--theme-text);
-    border-color: var(--theme-border-color);
-}
-
-body.dark-theme .pagination-btn:not(:disabled):hover,
-[data-theme="dark"] .pagination-btn:not(:disabled):hover {
-    background: var(--theme-button-hover);
+/* REMOVE ESTILOS ANTIGOS DE PAGINAÇÃO */
+.pagination-controls button {
+    /* Remove estilos antigos */
+    all: unset;
 }
