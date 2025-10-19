@@ -1,0 +1,251 @@
+<app-header></app-header>
+<app-accessibility-bar></app-accessibility-bar>
+
+<div class="itens-title">
+  <div class="itens-title-content">
+    <h1>
+      Itens de Avaliação
+      <span class="course-name">— {{ courseName }}</span>
+    </h1>
+    <p>Gerencie os itens vinculados ao curso</p>
+  </div>
+</div>
+
+<div class="itens-container" role="main" aria-label="Lista de Itens do Curso">
+  <div class="table-container">
+    <div class="controls-section">
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Pesquisar por código, status, dificuldade ou matriz..."
+            [(ngModel)]="searchTerm"
+            aria-label="Campo de pesquisa de itens"
+            (keyup.enter)="onBuscar()"
+          />
+          <button
+            class="search-button"
+            aria-label="Iniciar Pesquisa"
+            (click)="onBuscar()"
+          >
+            <svg
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="buttons-container">
+        <button
+          class="add-button"
+          (click)="onAddItem()"
+          aria-label="Adicionar Item"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="M12 5v14M5 12h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Adicionar Item
+        </button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="itens-table" aria-label="Lista de Itens">
+        <thead>
+          <tr>
+            @for (c of columns; track c.label) {
+              <th
+                [class.text-center]="c.type === 'action'"
+                [class.col-actions]="c.type === 'action'"
+              >
+                {{ c.label }}
+              </th>
+            }
+          </tr>
+        </thead>
+
+        <tbody>
+          @if (loading) {
+            <tr>
+              <td [attr.colspan]="columns.length" class="text-center">
+                Carregando...
+              </td>
+            </tr>
+          } @else if (!data || data.length === 0) {
+            <tr>
+              <td [attr.colspan]="columns.length" class="text-center">
+                Nenhum item encontrado.
+              </td>
+            </tr>
+          } @else {
+            @for (row of data; track row.id ?? $index) {
+              <tr class="row-hover">
+                @for (c of columns; track c.label) {
+                  <td
+                    [class.text-center]="c.type === 'action'"
+                    [class.col-actions]="c.type === 'action'"
+                  >
+                    @switch (c.type) {
+                      @case ("action") {
+                        <div class="actions" role="group" aria-label="Ações">
+                          <button
+                            class="icon-btn view-btn"
+                            title="Detalhes"
+                            aria-label="Detalhes"
+                            (click)="onRowAction('details', row)"
+                          >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M1.5 12s4.5-7.5 10.5-7.5S22.5 12 22.5 12 18 19.5 12 19.5 1.5 12 1.5 12Z"
+                              />
+                              <circle cx="12" cy="12" r="3.75" />
+                            </svg>
+                          </button>
+
+                          <button
+                            class="icon-btn delete-btn"
+                            title="Excluir"
+                            aria-label="Excluir"
+                            (click)="onRowAction('delete', row)"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              aria-hidden="true"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-9 0h10"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      }
+                      @default {
+                        {{ cell(row, c) }}
+                      }
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-container" aria-label="Paginação">
+      <div class="pagination-info">
+        <div class="items-per-page">
+          <label for="itemsPerPage">Itens por página:</label>
+          <select
+            id="itemsPerPage"
+            [(ngModel)]="itemsPerPage"
+            (change)="onPageSizeChange()"
+            aria-controls="itens-data-table"
+          >
+            <option [value]="5">5</option>
+            <option [value]="10">10</option>
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pagination-range" aria-live="polite">
+        {{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}
+      </div>
+
+      <div
+        class="pagination-controls"
+        role="group"
+        aria-label="Controles de página"
+      >
+        <button
+          class="pagination-btn"
+          [disabled]="currentPage <= 1"
+          (click)="goToPage(1)"
+          title="Primeira página"
+          aria-label="Ir para a primeira página"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="m11 17-5-5 5-5M18 17l-5-5 5-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+
+        <button
+          class="pagination-btn"
+          [disabled]="currentPage <= 1"
+          (click)="goToPrevious()"
+          title="Página anterior"
+          aria-label="Ir para a página anterior"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="m15 18-6-6 6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+
+        <button
+          class="pagination-btn"
+          [disabled]="currentPage >= totalPages"
+          (click)="goToNext()"
+          title="Próxima página"
+          aria-label="Ir para a próxima página"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="m9 18 6-6-6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+
+        <button
+          class="pagination-btn"
+          [disabled]="currentPage >= totalPages"
+          (click)="goToPage(totalPages)"
+          title="Última página"
+          aria-label="Ir para a última página"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="m6 17 5-5-5-5M13 17l5-5-5-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
