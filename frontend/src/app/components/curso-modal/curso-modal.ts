@@ -16,11 +16,10 @@ export class CursoModalComponent implements OnInit {
   @Input() userPerfil: string = '';
   @Output() closeModal = new EventEmitter<void>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
-    
-    // Fechar modal com ESC
+
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && this.isVisible) {
         this.onClose();
@@ -40,7 +39,7 @@ export class CursoModalComponent implements OnInit {
 
   onElaborarItens(): void {
     if (this.curso) {
-      this.router.navigate(['/elaboracao-itens', this.curso.id]);
+      this.router.navigate(['/cursos/itens', this.curso.id]);
       this.onClose();
     }
   }
