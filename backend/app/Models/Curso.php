@@ -12,9 +12,9 @@ class Curso extends Model
     use HasUuids;
 
     protected $table = 'cursos';
-
     protected $primaryKey = 'id';
     public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'nome',
@@ -41,6 +41,11 @@ class Curso extends Model
 
     public function matrizes()
     {
-        return $this->hasMany(Matriz::class);
+        return $this->hasMany(Matriz::class, 'curso_id', 'id');
+    }
+
+    public function itens()
+    {
+        return $this->hasMany(Item::class, 'curso_id', 'id');
     }
 }

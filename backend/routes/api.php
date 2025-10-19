@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CursoItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CursoController;
 use App\Http\Controllers\PerfisController;
@@ -19,6 +20,7 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/cursos/itens/{id}', [CursoItemController::class, 'index']);
 
     Route::middleware('abilities:access:all')->group(function () {
         # Rotas de Convites
@@ -39,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         #Rotas de Cursos
         Route::get('/cursos/summary', [CursoController::class, 'summary']);
+        Route::get('/cursos/{id}/summary', [CursoController::class, 'idSummary']);
         Route::get('/cursos', [CursoController::class, 'index']);
         Route::post('/cursos', [CursoController::class, 'store']);
         Route::patch('/cursos/{id}', [CursoController::class, 'update']);
