@@ -1,4 +1,3 @@
-// curso.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
@@ -23,6 +22,13 @@ export type CursosIndex = {
   perPage: number;
   total: number;
   lastPage: number;
+};
+
+type ApiResponse<T> = {
+  status: 'success' | 'error';
+  message?: string;
+  data: T;
+  timestamp?: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -50,29 +56,28 @@ export class CursoService {
     );
   }
 
-  // MÉTODO PARA BUSCAR TODOS OS CURSOS
   getAllCursos(): Observable<Curso[]> {
-    let params = new HttpParams()
-      .set('page', '1')
-      .set('per_page', '1000');
-
+    const params = new HttpParams().set('page', '1').set('per_page', '1000');
     return this.http.get<CursosIndexRaw>(this.apiUrl, { params }).pipe(
       map((res) => res.data.cursos)
     );
   }
 
-  /** POST /api/cursos */
   createCurso(curso: Omit<Curso, 'id' | 'data_criacao' | 'data_atualizacao'>): Observable<any> {
     return this.http.post<any>(this.apiUrl, curso);
   }
 
-  /** PATCH /api/cursos/{id} (parcial) */
   updateCurso(id: string, parcial: Partial<Curso>): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/${id}`, parcial);
   }
 
-  /** DELETE /api/cursos/{id} */
   deleteCurso(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  getById(id: string): Observable<Pick<Curso, 'id' | 'nome'>> {
+    return this.http
+      .get<ApiResponse<Pick<Curso, 'id' | 'nome'>>>(`${this.apiUrl}/${id}/summary`)
+      .pipe(map((res) => res.data));
   }
 }

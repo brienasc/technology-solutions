@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { ItemAvaliacao } from '../models/item-avaliacao.model';
+
+interface ApiResponse<T> {
+  status: string;
+  message: string;
+  data: T;
+  timestamp?: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class CourseItemsService {
+  private baseUrl = 'http://localhost:8080/api';
+  constructor(private http: HttpClient) { }
+
+  getByCurso(cursoId: string): Observable<ItemAvaliacao[]> {
+    return this.http
+      .get<ApiResponse<ItemAvaliacao[]>>(`${this.baseUrl}/cursos/itens/${cursoId}`)
+      .pipe(map(res => res?.data ?? []));
+  }
+
+  deleteItem(itemId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/itens/${itemId}`);
+  }
+}

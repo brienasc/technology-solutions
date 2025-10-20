@@ -21,6 +21,12 @@ class CursoService
     }
 
 
+    public function getIdSummary(string $id): Curso
+    {
+        return Curso::findOrFail($id, ['id', 'nome']);
+    }
+
+
     public function indexFiltered(array $filters): LengthAwarePaginator
     {
         $query = Curso::query()->orderBy('nome', 'asc');

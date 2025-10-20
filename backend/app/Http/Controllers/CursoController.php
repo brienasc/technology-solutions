@@ -32,6 +32,17 @@ class CursoController extends Controller
         }
     }
 
+    public function idSummary(string $id)
+    {
+        try {
+            $curso = $this->cursoService->getIdSummary($id);
+
+            return $this->apiResponse->success($curso, 'Curso retornado com sucesso hash!');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest($e->getMessage(), 'Falha ao buscar curso!');
+        }
+    }
+
     public function index(Request $request): JsonResponse
     {
         try {
