@@ -1,248 +1,153 @@
 <header class="app-header" id="menu">
-  <div class="header-container">
-    <!-- Logo -->
-    <div
-      class="header-logo"
-      (click)="navigateToHome()"
-      tabindex="0"
-      aria-label="Voltar para a página inicial"
-    >
-      <img
-        class="logo-normal"
-        ngSrc="app/assets/imagens/logo_education_solutions.png"
-        width="40"
-        height="40"
-        alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
-        title="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
-      />
+    <div class="header-container">
+        <!-- Logo -->
+        <div class="header-logo" (click)="navigateToHome()" tabindex="0" aria-label="Voltar para a página inicial">
+            <img class="logo-normal" ngSrc="app/assets/imagens/logo_education_solutions.png" width="40" height="40" alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
+                title="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, sendo um azul, um roxo, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions em azul e roxo."
+            />
 
-      <img
-        class="logo-high-contrast"
-        src="app/assets/imagens/logo_AC.png"
-        width="40"
-        height="40"
-        alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions na cor amarelo neon. (Alto Contraste)"
-        title="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions na cor amarelo neon. (Alto Contraste)"
-      />
-    </div>
+            <img class="logo-high-contrast" src="app/assets/imagens/logo_AC.png" width="40" height="40" alt="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions na cor amarelo neon. (Alto Contraste)"
+                title="No canto superior esquerdo, está o logotipo da Education Solutions: um ícone estilizado que lembra um cérebro ou uma cabeça, com 3 livros, na cor amarelo neon, e outro livro aberto saindo dentro dele gráficos, linhas e abaixo, o texto Education Solutions na cor amarelo neon. (Alto Contraste)"
+            />
+        </div>
 
-    <!-- Navegação Desktop -->
-    <nav
-      class="header-nav desktop-nav"
-      aria-label="Navegação principal"
-      *ngIf="!isLoggedIn"
-    >
-      <ul>
-        <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
-        <li>
-          <a href="#funcionalidades" (click)="closeMobileMenu()"
-            >Funcionalidades</a
+        <!-- Navegação Desktop -->
+        <nav class="header-nav desktop-nav" aria-label="Navegação principal" *ngIf="!isLoggedIn">
+            <ul>
+                <li><a href="#home" (click)="closeMobileMenu()">Home</a></li>
+                <li>
+                    <a href="#funcionalidades" (click)="closeMobileMenu()">Funcionalidades</a
           >
         </li>
         <li><a href="#sobre" (click)="closeMobileMenu()">Sobre</a></li>
-        <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
-      </ul>
-    </nav>
+                <li><a href="#contato" (click)="closeMobileMenu()">Contato</a></li>
+            </ul>
+        </nav>
 
-    <!-- Switch de Tema -->
-    <div
-      class="header-theme-container"
-      [attr.title]="
+        <!-- Switch de Tema -->
+        <div class="header-theme-container" [attr.title]="
         isDarkTheme ? 'Desativar Modo Escuro' : 'Ativar Modo Escuro'
-      "
-    >
-      <label class="theme-switch desktop-theme-switch">
+      ">
+            <label class="theme-switch desktop-theme-switch">
         <input
           type="checkbox"
           [checked]="isDarkTheme"
           (change)="toggleTheme()"
         />
-        <span class="slider round"></span>
+        <span class="slider round "></span>
       </label>
-    </div>
+        </div>
 
-    <!-- Botões Desktop -->
-    <div class="header-buttons desktop-buttons">
-      <ng-container *ngIf="!isLoggedIn">
-        <a
-          routerLink="/login"
-          class="secondary-button-outline"
-          (click)="closeMobileMenu()"
-          aria-label="Faça seu login no sistema"
-        >
+        <!-- Botões Desktop -->
+        <div class="header-buttons desktop-buttons">
+            <ng-container *ngIf="!isLoggedIn">
+                <a routerLink="/login" class="secondary-button-outline" (click)="closeMobileMenu()" aria-label="Faça seu login no sistema">
           Faça seu Login
         </a>
-      </ng-container>
+            </ng-container>
 
-      <ng-container *ngIf="isLoggedIn">
-        <a
-          *ngIf="authService.isRH() || authService.isAdmin()"
-          routerLink="/convites"
-          class="secondary-button-outline"
-          (click)="onConvitesClick()"
-          aria-label="Acessar Menu Convites"
-        >
+            <ng-container *ngIf="isLoggedIn">
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/convites" class="secondary-button-outline" (click)="onConvitesClick()" aria-label="Acessar Menu Convites">
           Menu Convites
         </a>
 
-        <a
-          *ngIf="authService.isRH() || authService.isAdmin()"
-          routerLink="/menu-gerencial"
-          class="secondary-button-outline"
-          (click)="onMenuGerencialClick()"
-          aria-label="Acessar Menu Gerencial"
-        >
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/menu-gerencial" class="secondary-button-outline" (click)="onMenuGerencialClick()" aria-label="Acessar Menu Gerencial">
           Menu Gerencial
         </a>
 
-        <a
-          *ngIf="authService.isRH() || authService.isAdmin()"
-          routerLink="/matrizes"
-          class="secondary-button-outline"
-          (click)="goToMatrizes()"
-          aria-label="Acessar Matrizes"
-        >
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/matrizes" class="secondary-button-outline" (click)="goToMatrizes()" aria-label="Acessar Matrizes">
           Matrizes
         </a>
 
-        <a
-          *ngIf="authService.isRH() || authService.isAdmin()"
-          routerLink="/cursos"
-          class="secondary-button-outline cursos-button-desktop"
-          (click)="goToCursos()"
-          aria-label="Acessar Cursos"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          ></svg>
-          Cursos
-        </a>
+                <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/cursos" class="secondary-button-outline cursos-button-desktop" (click)="goToCursos()" aria-label="Acessar Cursos">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"></svg> Cursos
+                </a>
 
-        <button
-          class="secondary-button-outline"
-          (click)="onLogout()"
-          aria-label="Sair da conta"
-        >
+                <button class="secondary-button-outline" (click)="onLogout()" aria-label="Sair da conta">
           Sair
         </button>
-      </ng-container>
-    </div>
+            </ng-container>
+        </div>
 
-    <!-- Botão Hamburguer Mobile -->
-    <button
-      class="mobile-menu-toggle"
-      (click)="toggleMobileMenu()"
-      [class.active]="isMobileMenuOpen"
-      aria-label="Abrir ou fechar menu mobile"
-    >
+        <!-- Botão Hamburguer Mobile -->
+        <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileMenuOpen" aria-label="Abrir ou fechar menu mobile">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </button>
-  </div>
-
-  <!-- Overlay Mobile -->
-  <div
-    *ngIf="isMobileMenuOpen"
-    class="mobile-menu-overlay"
-    (click)="closeMobileMenu()"
-  ></div>
-
-  <!-- Menu Mobile -->
-  <div *ngIf="isMobileMenuOpen" class="mobile-menu">
-    <!-- Header do Menu Mobile -->
-    <div class="mobile-menu-header">
-      <h3 class="mobile-menu-title">Menu</h3>
-      <button class="mobile-close-btn" (click)="closeMobileMenu()">×</button>
     </div>
 
-    <!-- Navegação Mobile -->
-    <nav class="mobile-nav" aria-label="Navegação principal">
-      <ul>
-        <li>
-          <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-home"></i> Home
-          </a>
-        </li>
-        <li>
-          <a href="#sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-info-circle"></i> Sobre
-          </a>
-        </li>
-        <li>
-          <a
-            href="#servicos"
-            (click)="closeMobileMenu()"
-            class="mobile-nav-link"
-          >
-            <i class="fas fa-cogs"></i> Serviços
-          </a>
-        </li>
-        <li>
-          <a href="#vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
-            <i class="fas fa-briefcase"></i> Vagas
-          </a>
-        </li>
-        <li>
-          <a
-            href="#contato"
-            (click)="closeMobileMenu()"
-            class="mobile-nav-link"
-          >
-            <i class="fas fa-envelope"></i> Contato
-          </a>
-        </li>
+    <!-- Overlay Mobile -->
+    <div *ngIf="isMobileMenuOpen" class="mobile-menu-overlay" (click)="closeMobileMenu()"></div>
 
-        <!-- Botão "Convites" -->
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a
-            routerLink="/convites"
-            class="mobile-nav-link"
-            (click)="onConvitesClick()"
-          >
-            <i class="fas fa-users"></i> Menu Convites
-          </a>
-        </li>
+    <!-- Menu Mobile -->
+    <div *ngIf="isMobileMenuOpen" class="mobile-menu">
+        <!-- Header do Menu Mobile -->
+        <div class="mobile-menu-header">
+            <h3 class="mobile-menu-title">Menu</h3>
+            <button class="mobile-close-btn" (click)="closeMobileMenu()">×</button>
+        </div>
 
-        <!-- Botão "Menu Gerencial" -->
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a
-            routerLink="/menu-gerencial"
-            class="mobile-nav-link"
-            (click)="onMenuGerencialClick()"
-          >
-            <i class="fas fa-chart-line"></i> Menu Gerencial
-          </a>
-        </li>
+        <!-- Navegação Mobile -->
+        <nav class="mobile-nav" aria-label="Navegação principal">
+            <ul>
+                <li>
+                    <a href="#home" (click)="closeMobileMenu()" class="mobile-nav-link">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#sobre" (click)="closeMobileMenu()" class="mobile-nav-link">
+                        <i class="fas fa-info-circle"></i> Sobre
+                    </a>
+                </li>
+                <li>
+                    <a href="#servicos" (click)="closeMobileMenu()" class="mobile-nav-link">
+                        <i class="fas fa-cogs"></i> Serviços
+                    </a>
+                </li>
+                <li>
+                    <a href="#vagas" (click)="closeMobileMenu()" class="mobile-nav-link">
+                        <i class="fas fa-briefcase"></i> Vagas
+                    </a>
+                </li>
+                <li>
+                    <a href="#contato" (click)="closeMobileMenu()" class="mobile-nav-link">
+                        <i class="fas fa-envelope"></i> Contato
+                    </a>
+                </li>
 
-        <li *ngIf="authService.isAdmin()">
-          <a
-            routerLink="/matrizes"
-            class="mobile-nav-link"
-            (click)="goToMatrizes()"
-          >
-            <i class="fas fa-layer-group"></i> Matrizes
-          </a>
-        </li>
+                <!-- Botão "Convites" -->
+                <li *ngIf="authService.isRH() || authService.isAdmin()">
+                    <a routerLink="/convites" class="mobile-nav-link" (click)="onConvitesClick()">
+                        <i class="fas fa-users"></i> Menu Convites
+                    </a>
+                </li>
 
-        <li *ngIf="authService.isRH() || authService.isAdmin()">
-          <a
-            routerLink="/cursos"
-            class="mobile-nav-link"
-            (click)="goToCursos()"
-          >
-            <i class="fas fa-book"></i> Cursos
-          </a>
-        </li>
-      </ul>
-    </nav>
+                <!-- Botão "Menu Gerencial" -->
+                <li *ngIf="authService.isRH() || authService.isAdmin()">
+                    <a routerLink="/menu-gerencial" class="mobile-nav-link" (click)="onMenuGerencialClick()">
+                        <i class="fas fa-chart-line"></i> Menu Gerencial
+                    </a>
+                </li>
 
-    <!-- Toggle de Tema Mobile -->
-    <div class="mobile-theme-section">
-      <label class="mobile-theme-switch">
+                <li *ngIf="authService.isAdmin()">
+                    <a routerLink="/matrizes" class="mobile-nav-link" (click)="goToMatrizes()">
+                        <i class="fas fa-layer-group"></i> Matrizes
+                    </a>
+                </li>
+
+                <li *ngIf="authService.isRH() || authService.isAdmin()">
+                    <a routerLink="/cursos" class="mobile-nav-link" (click)="goToCursos()">
+                        <i class="fas fa-book"></i> Cursos
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Toggle de Tema Mobile -->
+        <div class="mobile-theme-section">
+            <label class="mobile-theme-switch">
         <span class="theme-label">Modo Escuro</span>
         <div class="theme-switch">
           <input
@@ -250,61 +155,38 @@
             [checked]="isDarkTheme"
             (change)="toggleTheme()"
           />
-          <span class="slider round"></span>
+          <span class="slider round "></span>
         </div>
       </label>
-    </div>
+        </div>
 
-    <!-- Botões Mobile -->
-    <div class="mobile-actions">
-      <a
-        *ngIf="!isLoggedIn"
-        routerLink="/login"
-        class="mobile-btn"
-        (click)="closeMobileMenu()"
-      >
-        <i class="fas fa-sign-in-alt"></i> Faça seu Login
-      </a>
+        <!-- Botões Mobile -->
+        <div class="mobile-actions">
+            <a *ngIf="!isLoggedIn" routerLink="/login" class="mobile-btn" (click)="closeMobileMenu()">
+                <i class="fas fa-sign-in-alt"></i> Faça seu Login
+            </a>
 
-      <a
-        *ngIf="authService.isRH() || authService.isAdmin()"
-        routerLink="/convites"
-        class="mobile-btn"
-        (click)="onConvitesClick()"
-      >
-        <i class="fas fa-users"></i> Menu Convites
-      </a>
+            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/convites" class="mobile-btn" (click)="onConvitesClick()">
+                <i class="fas fa-users"></i> Menu Convites
+            </a>
 
-      <a
-        *ngIf="authService.isRH() || authService.isAdmin()"
-        routerLink="/menu-gerencial"
-        class="mobile-btn"
-        (click)="onMenuGerencialClick()"
-      >
-        <i class="fas fa-chart-line"></i> Menu Gerencial
-      </a>
+            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/menu-gerencial" class="mobile-btn" (click)="onMenuGerencialClick()">
+                <i class="fas fa-chart-line"></i> Menu Gerencial
+            </a>
 
-      <a
-        *ngIf="authService.isAdmin()"
-        routerLink="/matrizes"
-        class="mobile-btn"
-        (click)="goToMatrizes()"
-      >
-        <i class="fas fa-layer-group"></i> Matrizes
-      </a>
+            <a *ngIf="authService.isAdmin()" routerLink="/matrizes" class="mobile-btn" (click)="goToMatrizes()">
+                <i class="fas fa-layer-group"></i> Matrizes
+            </a>
 
-      <a
-        *ngIf="authService.isRH() || authService.isAdmin()"
-        routerLink="/cursos"
-        class="mobile-btn cursos-button-mobile"
-        (click)="goToCursos()"
-      >
-        <i class="fas fa-book"></i> Cursos
-      </a>
+            <a *ngIf="authService.isRH() || authService.isAdmin()" routerLink="/cursos" class="mobile-btn cursos-button-mobile" (click)="goToCursos()">
+                <i class="fas fa-book"></i> Cursos
+            </a>
 
-      <button *ngIf="isLoggedIn" class="mobile-btn" (click)="onLogout()">
+            <button *ngIf="isLoggedIn" class="mobile-btn" (click)="onLogout()">
         <i class="fas fa-sign-out-alt"></i> Sair
       </button>
+        </div>
     </div>
-  </div>
 </header>
+
+<!-- ajuste aqui -->

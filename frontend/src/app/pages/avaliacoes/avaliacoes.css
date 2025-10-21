@@ -1,0 +1,246 @@
+.page-container {
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    font-family: var(--font-nunito-sans);
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.info-text h2 {
+    color: #5d3f8f;
+    /* Cor roxa */
+    font-size: 2rem;
+    margin: 0;
+}
+
+.info-text p {
+    color: #666;
+    margin: 5px 0 0 0;
+}
+
+.btn-new-avaliacao {
+    background-color: #5d3f8f;
+    /* Roxo */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-new-avaliacao:hover {
+    background-color: #7b4ebf;
+}
+
+
+/* Cards de Resumo */
+
+.summary-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 2em;
+    color: #5d3f8f;
+    margin: 5px 0;
+}
+
+.card p {
+    color: #888;
+    margin: 0;
+}
+
+
+/* Filtros */
+
+.filters-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    flex-grow: 1;
+    max-width: 400px;
+    background-color: white;
+}
+
+.search-icon {
+    margin-right: 8px;
+    color: #999;
+}
+
+.search-input-group input {
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+.filter-select,
+.btn-filter {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #5d3f8f;
+    font-weight: 600;
+}
+
+
+/* Lista de Avaliações */
+
+.avaliacoes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.avaliacao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.avaliacao-details {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 15px;
+}
+
+.doc-icon {
+    font-size: 24px;
+    color: #5d3f8f;
+}
+
+.avaliacao-details h4 {
+    margin: 0;
+    color: #10002B;
+}
+
+.avaliacao-details p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.meta-info span {
+    font-size: 0.85em;
+    color: #888;
+    margin-right: 15px;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: bold;
+    color: white;
+    margin-left: 10px;
+}
+
+
+/* Cores dos Status */
+
+.status-agendadas {
+    background-color: #007bff;
+}
+
+.status-em-andamento {
+    background-color: orange;
+}
+
+.status-finalizadas {
+    background-color: green;
+}
+
+.type-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.avaliacao-actions button {
+    background: none;
+    border: none;
+    color: #5d3f8f;
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 0.85em;
+    transition: color 0.2s;
+}
+
+.avaliacao-actions .btn-excluir {
+    color: #dc3545;
+}
+
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .btn-new-avaliacao {
+        margin-top: 15px;
+        width: 100%;
+    }
+    .summary-cards {
+        flex-direction: column;
+    }
+    .filters-section {
+        flex-wrap: wrap;
+    }
+    .filter-select,
+    .btn-filter {
+        flex: 1 1 45%;
+    }
+    .avaliacao-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .avaliacao-actions {
+        margin-top: 10px;
+    }
+}

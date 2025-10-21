@@ -1,70 +1,70 @@
 <div class="modal-overlay" *ngIf="isVisible" (click)="onBackdropClick($event)">
-  <div class="modal-content" *ngIf="curso">
-    <!-- Header do Modal -->
-    <div class="modal-header">
-      <h2>
-        <i class="fas fa-graduation-cap"></i>
-        Detalhes do Curso
-      </h2>
-      <!-- Botão X na header -->
-      <button 
-        type="button"
-      class="close-button" (click)="onClose()" title="Fechar">
+    <div class="modal-content" *ngIf="curso">
+        <!-- Header do Modal -->
+        <div class="modal-header">
+            <h2>
+                <i class="fas fa-graduation-cap"></i> Detalhes do Curso
+            </h2>
+            <!-- Botão X na header -->
+            <button type="button" class="close-button" (click)="onClose()" title="Fechar">
       </button>
-    </div>
+        </div>
 
-    <!-- Body do Modal -->
-    <div class="modal-body">
-      <!-- Status do Curso -->
-      <div class="curso-status-section">
-        <span 
-          class="status-badge" 
-          [class.status-ativo]="curso.status"
-          [class.status-inativo]="!curso.status">
+        <!-- Body do Modal -->
+        <div class="modal-body">
+            <!-- Status do Curso -->
+            <div class="curso-status-section">
+                <span class="status-badge" [class.status-ativo]="curso.status" [class.status-inativo]="!curso.status">
           <i class="fas" [class.fa-check-circle]="curso.status" [class.fa-times-circle]="!curso.status"></i>
           {{ curso.status ? 'Ativo' : 'Inativo' }}
         </span>
-      </div>
+            </div>
 
-      <!-- Informações do Curso -->
-      <div class="curso-info">
-        <h3 class="curso-nome">{{ curso.nome }}</h3>
-        <p class="curso-descricao">{{ curso.descricao }}</p>
+            <!-- Informações do Curso -->
+            <div class="curso-info">
+                <h3 class="curso-nome">{{ curso.nome }}</h3>
+                <p class="curso-descricao">{{ curso.descricao }}</p>
 
-        <div class="curso-details">
-          <div class="detail-item">
-            <i class="fas fa-clock"></i>
-            <span class="detail-label">Carga Horária:</span>
-            <span class="detail-value">{{ curso.carga_horaria }} horas</span>
-          </div>
+                <div class="curso-details">
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span class="detail-label">Carga Horária:</span>
+                        <span class="detail-value">{{ curso.carga_horaria }} horas</span>
+                    </div>
 
-          <div class="detail-item">
-            <i class="fas fa-list"></i>
-            <span class="detail-label">Itens Criados:</span>
-            <span class="detail-value">
+                    <div class="detail-item">
+                        <i class="fas fa-list"></i>
+                        <span class="detail-label">Itens Criados:</span>
+                        <span class="detail-value">
               {{ curso.quantidade_itens }} 
               {{ curso.quantidade_itens === 1 ? 'item' : 'itens' }}
             </span>
-          </div>
+                    </div>
 
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Footer do Modal -->
-    <div class="modal-footer">
-      <div class="action-buttons">
-        <!-- Botões para todos os usuários -->
-        <button class="btn btn-purple" (click)="onElaborarItens()">
+        <!-- Footer do Modal -->
+        <div class="modal-footer">
+            <div class="action-buttons">
+                <!-- Botões para todos os usuários -->
+                <button class="btn btn-purple" (click)="onElaborarItens()">
           <i class="fas fa-edit"></i>
           Elaborar Itens
         </button>
 
-        <button class="btn btn-blue" (click)="onAvaliacoes()">
+                <!-- <button class="btn btn-blue" (click)="onAvaliacoes()">
           <i class="fas fa-clipboard-check"></i>
           Avaliações
-        </button>
-      </div>
+        </button> -->
+
+                <!-- Botão corrigido com a verificação de segurança: -->
+                <button class="btn btn-blue" (click)="onAvaliacoes()" [disabled]="!curso || !curso.id" title="Acesse as avaliações do curso">
+  <i class="fas fa-clipboard-check"></i>
+  Avaliações
+</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
