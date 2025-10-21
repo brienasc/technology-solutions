@@ -45,9 +45,17 @@ export class CursoModalComponent implements OnInit {
   }
 
   onAvaliacoes(): void {
-    if (this.curso) {
-      this.router.navigate(['/avaliacoes', this.curso.id]);
+       if (this.curso && this.curso.id) {
+      // ** CORREÇÃO APLICADA AQUI **
+      // A rota deve ser: ['/cursos', ID_DO_CURSO, 'avaliacoes']
+      const rota = ['/cursos', this.curso.id, 'avaliacoes'];
+      
+      console.log('[LOG: Navegando] Rota completa:', rota.join('/'));
+      
+      this.router.navigate(rota);
       this.onClose();
+    } else {
+      console.error('[LOG: Erro de Navegação] ID do curso ausente. A navegação para Avaliações foi bloqueada.');
     }
   }
 
