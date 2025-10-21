@@ -14,6 +14,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomMatPaginatorIntl } from './utils/custom-mat-paginator-intl'; // Importa o MatPaginatorIntl personalizado
 import { AuthInterceptor } from './interceptors/auth-interceptor';
 import { AccessibilityBarComponent } from './components/accessibility-bar/accessibility-bar';
+import { ToastNotificationsComponent } from './components/toast-notifications/toast-notifications.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,6 +45,7 @@ export const appConfig: ApplicationConfig = {
     RouterOutlet, 
     ReactiveFormsModule, 
     AccessibilityBarComponent,
+    ToastNotificationsComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

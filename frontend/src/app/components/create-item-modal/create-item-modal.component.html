@@ -1,0 +1,319 @@
+<div class="modal-overlay" [class.show]="isOpen" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ stepTitle }}</h2>
+      <button class="close-btn" (click)="onClose()" aria-label="Fechar">
+        <svg viewBox="0 0 24 24">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="steps-indicator">
+      <div class="step" [class.active]="currentStep === 0" [class.completed]="currentStep > 0">1</div>
+      <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">2</div>
+      <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">3</div>
+      <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">4</div>
+    </div>
+
+    <div class="modal-body">
+      <!-- Step 0: Escolher tipo -->
+      @if (currentStep === 0) {
+        <div class="step-content">
+          <h3>Como deseja criar o item?</h3>
+          <div class="tipo-buttons">
+            <button 
+              class="tipo-btn" 
+              [class.selected]="tipoSelecionado === 'manual'"
+              (click)="onTipoSelect('manual')">
+              <div class="tipo-icon">📝</div>
+              <div class="tipo-text">
+                <strong>Manual</strong>
+                <p>Criar questão manualmente</p>
+              </div>
+            </button>
+            <button 
+              class="tipo-btn" 
+              [class.selected]="tipoSelecionado === 'ia'"
+              (click)="onTipoSelect('ia')">
+              <div class="tipo-icon">🤖</div>
+              <div class="tipo-text">
+                <strong>Inteligência Artificial</strong>
+                <p>Gerar questão via IA</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Step 1: Selecionar matriz, dificuldade e cruzamento -->
+      @if (currentStep === 1) {
+        <div class="step-content">
+          <div class="form-group">
+            <label for="matriz">Matriz:</label>
+            <select id="matriz" [(ngModel)]="formData.matriz_id" (change)="onMatrizChange()">
+              <option value="">Selecione uma matriz</option>
+              @for (matriz of matrizes; track matriz.id) {
+                <option [value]="matriz.id">{{ matriz.name }} - {{ matriz.version }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dificuldade">Dificuldade:</label>
+            <select id="dificuldade" [(ngModel)]="formData.dificuldade">
+              @for (dif of dificuldades; track dif.value) {
+                <option [value]="dif.value">{{ dif.label }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="cruzamento-section">
+            <h4>Selecionar Cruzamento:</h4>
+            
+            <div class="cascata-selects">
+              <div class="form-group">
+                <label for="categoria">Categoria:</label>
+                <select 
+                  id="categoria" 
+                  [(ngModel)]="selectedCategoria" 
+                  (change)="onCategoriaChange()"
+                  [disabled]="!isCategoriaEnabled()">
+                  <option [ngValue]="null">Selecione uma categoria</option>
+                  @for (cat of categoriasDisponiveis; track cat.id) {
+                    <option [ngValue]="cat">{{ cat.nome }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="competencia">Competência:</label>
+                <select 
+                  id="competencia" 
+                  [(ngModel)]="selectedCompetencia" 
+                  (change)="onCompetenciaChange()"
+                  [disabled]="!isCompetenciaEnabled()">
+                  <option [ngValue]="null">Selecione uma competência</option>
+                  @for (comp of competenciasDisponiveis; track comp.id) {
+                    <option [ngValue]="comp">{{ comp.nome }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="funcao">Função:</label>
+                <select 
+                  id="funcao" 
+                  [(ngModel)]="selectedFuncao" 
+                  (change)="onFuncaoChange()"
+                  [disabled]="!isFuncaoEnabled()">
+                  <option [ngValue]="null">Selecione uma função</option>
+                  @for (func of funcoesDisponiveis; track func.id) {
+                    <option [ngValue]="func">{{ func.nome }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="subfuncao">Subfunção:</label>
+                <select 
+                  id="subfuncao" 
+                  [(ngModel)]="selectedSubfuncao" 
+                  (change)="onSubfuncaoChange()"
+                  [disabled]="!isSubfuncaoEnabled()">
+                  <option [ngValue]="null">Selecione uma subfunção</option>
+                  @for (sub of subfuncoesDisponiveis; track sub.id) {
+                    <option [ngValue]="sub">{{ sub.nome }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="conhecimento">Conhecimento:</label>
+                <select 
+                  id="conhecimento" 
+                  [(ngModel)]="selectedConhecimento" 
+                  (change)="onConhecimentoChange()"
+                  [disabled]="!isConhecimentoEnabled()">
+                  <option [ngValue]="null">Selecione um conhecimento</option>
+                  @for (conhec of conhecimentosDisponiveis; track conhec.id) {
+                    <option [ngValue]="conhec">{{ conhec.codigo }} - {{ conhec.nome }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            @if (selectedCategoria && selectedCompetencia && selectedFuncao && selectedSubfuncao && selectedConhecimento) {
+              <div class="cruzamento-details">
+                <h4>Cruzamento Selecionado:</h4>
+                <div class="cruzamento-info">
+                  <div class="info-item">
+                    <strong>Categoria:</strong> {{ selectedCategoria.nome }}
+                  </div>
+                  <div class="info-item">
+                    <strong>Competência:</strong> {{ selectedCompetencia.nome }}
+                  </div>
+                  <div class="info-item">
+                    <strong>Função:</strong> {{ selectedFuncao.nome }}
+                  </div>
+                  <div class="info-item">
+                    <strong>Subfunção:</strong> {{ selectedSubfuncao.nome }}
+                  </div>
+                  <div class="info-item">
+                    <strong>Conhecimento:</strong> {{ selectedConhecimento.codigo }} - {{ selectedConhecimento.nome }}
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 2: Criar questão (Manual) -->
+      @if (currentStep === 2 && tipoSelecionado === 'manual') {
+        <div class="step-content">
+          <div class="form-group">
+            <label for="comando">Comando da Questão:</label>
+            <input type="text" id="comando" [(ngModel)]="formData.comando" placeholder="Ex: Assinale a alternativa correta...">
+          </div>
+
+          <div class="form-group">
+            <label for="contexto">Enunciado:</label>
+            <textarea id="contexto" [(ngModel)]="formData.contexto" rows="4" placeholder="Digite o enunciado da questão..."></textarea>
+          </div>
+
+          <div class="alternativas-section">
+            <h4>Alternativas:</h4>
+            @for (alternativa of formData.alternativas; track $index; let i = $index) {
+              <div class="alternativa-group">
+                <div class="alternativa-header">
+                  <label>
+                    <input 
+                      type="radio" 
+                      [name]="'alternativa-correta'"
+                      [checked]="alternativa.correta"
+                      (change)="alternativa.correta = true; onAlternativaCorretaChange(i)">
+                    Alternativa {{ getAlternativaLetra(i) }}
+                  </label>
+                </div>
+                <input 
+                  type="text" 
+                  [(ngModel)]="alternativa.texto" 
+                  [placeholder]="'Digite a alternativa ' + getAlternativaLetra(i)">
+                <textarea 
+                  [(ngModel)]="alternativa.explicacao" 
+                  [placeholder]="'Explicação para a alternativa ' + getAlternativaLetra(i)"
+                  rows="2"></textarea>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Step 2: Prompt IA -->
+      @if (currentStep === 2 && tipoSelecionado === 'ia') {
+        <div class="step-content">
+          <div class="ia-notice">
+            <p><strong>Funcionalidade em desenvolvimento</strong></p>
+            <p>Esta funcionalidade será implementada em breve para gerar questões automaticamente.</p>
+          </div>
+          
+          <div class="form-group">
+            <label for="prompt-ia">Prompt para a IA:</label>
+            <textarea 
+              id="prompt-ia" 
+              [(ngModel)]="formData.prompt_ia" 
+              rows="6" 
+              placeholder="Descreva o que você deseja que a IA gere...">
+            </textarea>
+          </div>
+        </div>
+      }
+
+      <!-- Step 3: Revisão -->
+      @if (currentStep === 3) {
+        <div class="step-content">
+          <div class="review-section">
+            
+            <div class="review-item">
+              <strong>Tipo de Criação:</strong> {{ tipoSelecionado === 'manual' ? 'Manual' : 'Inteligência Artificial' }}
+            </div>
+            
+            <div class="review-item">
+              <strong>Matriz:</strong> {{ getMatrizNome() }}
+            </div>
+
+            <div class="review-item">
+              <strong>Dificuldade:</strong> {{ getDificuldadeLabel() }}
+            </div>
+
+            <div class="review-item">
+              <strong>Cruzamento:</strong> {{ getCruzamentoNome() }}
+            </div>
+
+            @if (tipoSelecionado === 'manual') {
+              <div class="review-item">
+                <strong>Comando:</strong> {{ formData.comando }}
+              </div>
+              
+              <div class="review-item">
+                <strong>Enunciado:</strong>
+                <p>{{ formData.contexto }}</p>
+              </div>
+              
+              <div class="review-item">
+                <strong>Alternativas:</strong>
+                @for (alternativa of formData.alternativas; track $index; let i = $index) {
+                  <div class="alternativa-review" [class.correta]="alternativa.correta">
+                    <strong>{{ getAlternativaLetra(i) }}) {{ alternativa.texto }}</strong>
+                    @if (alternativa.correta) {
+                      <span class="correct-badge">✓ Correta</span>
+                    }
+                    @if (alternativa.explicacao) {
+                      <p><em>{{ alternativa.explicacao }}</em></p>
+                    }
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="review-item">
+                <strong>Prompt IA:</strong>
+                <p>{{ formData.prompt_ia }}</p>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="modal-footer">
+      @if (currentStep > 0) {
+        <button class="btn btn-secondary" (click)="prevStep()">Voltar</button>
+      }
+      
+      <div class="footer-right">
+        @if (currentStep < 3) {
+          <button 
+            class="btn btn-primary" 
+            [disabled]="!canProceedToNextStep()"
+            (click)="nextStep()">
+            Próximo
+          </button>
+        } @else {
+          <button 
+            class="btn btn-outline" 
+            [disabled]="loading"
+            (click)="saveDraft()">
+            {{ loading ? 'Salvando...' : 'Salvar Rascunho' }}
+          </button>
+          <button 
+            class="btn btn-success" 
+            [disabled]="loading"
+            (click)="finalizeItem()">
+            {{ loading ? 'Finalizando...' : 'Finalizar Item' }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

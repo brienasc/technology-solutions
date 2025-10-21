@@ -14,7 +14,12 @@ import { MatrixViewerDialogService } from './matrix-viewer-dialog.service';
 import { MatricesService } from '../../services/matrices.service';
 import { MatrixDetail } from '../../models/matrix.model';
 
-type ConhecimentoMin = MatrixDetail['cruzamentos'][number]['conhecimento'];
+type ConhecimentoMin = {
+  id: string;
+  codigo: number;
+  nome: string;
+};
+
 type FlatCompetencia = { id: string; nome: string; catId: string; catNome: string };
 
 @Component({
@@ -123,7 +128,17 @@ export class MatrixViewerDialogComponent implements OnInit, OnDestroy {
         for (const x of d.cruzamentos ?? []) {
           const k = this.key(x.subfuncao_id, x.competencia_id);
           const prev = this.cellMap.get(k) ?? [];
-          if (x.conhecimento) prev.push(x.conhecimento);
+          
+          if (x.conhecimento_id) {
+            const conhecimento = d.conhecimentos?.find(c => c.id === x.conhecimento_id);
+            if (conhecimento) {
+              prev.push({
+                id: conhecimento.id,
+                codigo: conhecimento.codigo,
+                nome: conhecimento.nome
+              });
+            }
+          }
           this.cellMap.set(k, prev);
         }
 
