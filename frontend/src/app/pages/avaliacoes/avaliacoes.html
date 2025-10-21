@@ -1,0 +1,90 @@
+<div class="page-container">
+
+    <!-- Cabeçalho (similar à imagem 111111.jpg) -->
+    <header class="header-section">
+        <div class="info-text">
+            <h2>Avaliações</h2>
+            <p>Gerencie as avaliações do curso {{ cursoNome }}</p>
+        </div>
+        <button class="btn-new-avaliacao" (click)="abrirModalNovaAvaliacao()">
+      + Nova Avaliação
+    </button>
+    </header>
+
+    <!-- Cards de Resumo (Mock) -->
+    <section class="summary-cards">
+        <div class="card">
+            <div class="card-icon">📄</div>
+            <h3>4</h3>
+            <p>Total de Avaliações</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📅</div>
+            <h3>1</h3>
+            <p>Agendadas</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">🕒</div>
+            <h3>1</h3>
+            <p>Em Andamento</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">📈</div>
+            <h3>1</h3>
+            <p>Finalizadas</p>
+        </div>
+    </section>
+
+    <!-- Filtros e Pesquisa (Mock) -->
+    <section class="filters-section">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar avaliações...">
+        </div>
+        <select class="filter-select">
+      <option>Todos os Tipos</option>
+    </select>
+        <select class="filter-select">
+      <option>Todos os Status</option>
+    </select>
+        <button class="btn-filter">
+      <span class="filter-icon">⚙️</span> Filtros
+    </button>
+    </section>
+
+    <!-- Lista de Avaliações -->
+    <section class="avaliacoes-list">
+        <!-- Linhas 56-78 no seu screenshot -->
+        <div *ngFor="let avaliacao of avaliacoes" class="avaliacao-item">
+            <div class="avaliacao-details">
+                <span class="doc-icon">📄</span>
+                <div>
+                    <h4>{{ avaliacao.nome }}</h4>
+                    <p>{{ avaliacao.status === 'Finalizadas' ? 'Exercícios práticos' : 'Prova sobre ' + avaliacao.nome }}</p>
+                    <div class="meta-info">
+                        <span>📅 {{ avaliacao.data }}</span>
+                        <span>🕒 {{ avaliacao.tempo }}</span>
+                        <span>{{ avaliacao.questoes }} questões</span>
+                        <span>👥 {{ avaliacao.alunos }} alunos</span>
+                    </div>
+                </div>
+                <!-- CORREÇÃO 1: Chama a função do TypeScript (getStatusCssClass) em vez de usar o pipe | replace -->
+                <span class="status-badge status-{{ getStatusCssClass(avaliacao.status) }}">
+          {{ avaliacao.status }}
+        </span>
+                <span *ngIf="avaliacao.tipo" class="type-badge">{{ avaliacao.tipo }}</span>
+            </div>
+
+            <div class="avaliacao-actions">
+                <button (click)="visualizar(avaliacao)">👁️ Visualizar</button>
+                <button (click)="editar(avaliacao)">✍️ Editar</button>
+                <!-- CORREÇÃO 2: Usa a função para checar o status "finalizadas" na condição ngIf -->
+                <button *ngIf="getStatusCssClass(avaliacao.status) === 'finalizadas'" (click)="relatorio(avaliacao)">📊 Relatório</button>
+                <button (click)="excluir(avaliacao)" class="btn-excluir">🗑️ Excluir</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Nova Avaliação (é o componente de duas etapas) -->
+    <app-modal-nova-avaliacao *ngIf="showModal" (closeModal)="fecharModal()" [cursoId]="cursoId"></app-modal-nova-avaliacao>
+</div>

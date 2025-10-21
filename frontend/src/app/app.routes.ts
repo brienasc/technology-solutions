@@ -7,6 +7,7 @@ import { ConvitesComponent } from './pages/convites/convites';
 import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { CursosComponent } from './pages/cursos/cursos';
 import { DashboardComponent } from './pages/dashboard/dashboard';
+import { AvaliacoesComponent } from './pages/avaliacoes/avaliacoes';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginGuard } from './guards/login.guard';
@@ -63,6 +64,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: ['Administrador'] }
   },
+  { path: 'cursos/:id/avaliacoes', 
+    component: AvaliacoesComponent,
+    canActivate: [AuthGuard] 
+   },
   {
     path: '**',
     redirectTo: ''
