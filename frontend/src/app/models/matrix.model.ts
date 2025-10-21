@@ -49,10 +49,11 @@ export interface MatrixDetail {
   funcoes: { id: string; nome: string; subfuncoes: { id: string; nome: string }[] }[];
   conhecimentos: { id: string; codigo: number; nome: string; competencias_ids: string[] }[];
   cruzamentos: {
+    id: string;
+    matriz_id: string;
     subfuncao_id: string;
     competencia_id: string;
     conhecimento_id: string;
-    conhecimento: { id: string; codigo: number; nome: string };
   }[];
 }
 

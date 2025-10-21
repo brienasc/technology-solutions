@@ -18,11 +18,12 @@ export class MatricesService {
   }
 
   getMatrix(id: string): Observable<MatrixDetail> {
-    return this.http.get<any>(`/api/matrizes/${id}`).pipe(
+    let params = new HttpParams().set('include', 'categorias.competencias,funcoes.subfuncoes,conhecimentos,cruzamentos');
+    
+    return this.http.get<any>(`/api/matrizes/${id}`, { params }).pipe(
       map(res => this.adaptMatrixDetail(res?.data ?? res))
     );
   }
-
 
   deleteMatrix(id: string): Observable<void> {
     return this.http.delete<void>(`/api/matrizes/${id}`);
@@ -33,7 +34,6 @@ export class MatricesService {
   }
 
   private adaptPaginated(api: any): Paginated<Matrix> {
-    console.log(api)
     return {
       data: (api.matrices ?? []).map((m: any) => this.adaptMatrix(m)),
       current_page: api.current_page,
@@ -44,14 +44,13 @@ export class MatricesService {
   }
 
   private adaptMatrix(m: any): Matrix {
-    console.log(m)
     return {
       id: m.id,
       name: m.nome,
       version: m.versao,
-      courseName: m.curso.nome,
-      validFrom: m.vigencia.de ?? null,
-      validTo: m.vigencia.ate ?? null,
+      courseName: m.curso?.nome || '',
+      validFrom: m.vigencia?.de ?? null,
+      validTo: m.vigencia?.ate ?? null,
     };
   }
 
@@ -79,8 +78,18 @@ export class MatricesService {
           nome: s.nome
         }))
       })),
-      conhecimentos: raw.conhecimentos ?? [],
-      cruzamentos: raw.cruzamentos ?? []
+      conhecimentos: (raw.conhecimentos ?? []).map((k: any) => ({
+        id: k.id,
+        nome: k.nome,
+        codigo: k.codigo
+      })),
+      cruzamentos: (raw.cruzamentos ?? []).map((c: any) => ({
+        id: c.id,
+        matriz_id: c.matriz_id,
+        subfuncao_id: c.subfuncao_id,
+        competencia_id: c.competencia_id,
+        conhecimento_id: c.conhecimento_id
+      }))
     };
   }
 }

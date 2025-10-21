@@ -21,6 +21,26 @@ export class CourseItemsService {
       .pipe(map(res => res?.data ?? []));
   }
 
+  create(itemData: any): Observable<any> {
+    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/itens`, itemData)
+      .pipe(map(res => res?.data));
+  }
+
+  saveDraft(itemData: any): Observable<any> {
+    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/itens/draft`, itemData)
+      .pipe(map(res => res?.data));
+  }
+
+  getItem(itemId: string): Observable<any> {
+    return this.http.get<ApiResponse<any>>(`${this.baseUrl}/itens/${itemId}`)
+      .pipe(map(res => res?.data));
+  }
+
+  updateItem(itemId: string, itemData: any): Observable<any> {
+    return this.http.put<ApiResponse<any>>(`${this.baseUrl}/itens/${itemId}`, itemData)
+      .pipe(map(res => res?.data));
+  }
+
   deleteItem(itemId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/itens/${itemId}`);
   }

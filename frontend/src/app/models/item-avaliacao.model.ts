@@ -7,7 +7,9 @@ export interface ItemAvaliacao {
   matriz_nome?: string;
   cruzamento_id?: string;
   status?: number | string;
+  status_nome?: string;
   dificuldade?: number;
+  dificuldade_nome?: string;
   contexto?: string;
   created_at?: string;
   updated_at?: string;

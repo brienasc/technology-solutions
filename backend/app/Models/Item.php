@@ -2,55 +2,64 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Support\Str;
 
 class Item extends Model
 {
-    use HasFactory;
     use HasUuids;
 
     protected $table = 'itens';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
 
     protected $fillable = [
+        'code',
         'curso_id',
         'matriz_id',
         'cruzamento_id',
         'comando',
         'contexto',
         'status',
-        'dificuldade',
-        'code',
+        'dificuldade'
     ];
 
     protected $casts = [
-        'id' => 'string',
-        'curso_id' => 'string',
         'status' => 'integer',
-        'dificuldade' => 'integer',
+        'dificuldade' => 'integer'
     ];
 
-    public function curso()
+    // Auto-gerar código único
+    protected static function boot()
     {
-        return $this->belongsTo(Curso::class, 'curso_id', 'id');
+        parent::boot();
+        
+        static::creating(function ($item) {
+            if (empty($item->code)) {
+                $item->code = 'ITEM_' . strtoupper(Str::random(8));
+            }
+        });
     }
 
-    public function matriz()
+    // Relacionamentos
+    public function curso(): BelongsTo
     {
-        return $this->belongsTo(Matriz::class, 'matriz_id', 'id');
+        return $this->belongsTo(Curso::class);
     }
 
-    public function alternativas()
+    public function matriz(): BelongsTo
     {
-        return $this->belongsToMany(
-            Alternativa::class,
-            'item_alternativas',
-            'item_id',
-            'alternativa_id'
-        )->withTimestamps();
+        return $this->belongsTo(Matriz::class);
+    }
+
+    public function cruzamento(): BelongsTo
+    {
+        return $this->belongsTo(MatrizSubfuncaoConhecimento::class, 'cruzamento_id');
+    }
+
+    public function alternativas(): HasMany
+    {
+        return $this->hasMany(Alternativa::class)->orderBy('ordem');
     }
 }

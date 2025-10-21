@@ -47,6 +47,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/cursos/{id}', [CursoController::class, 'update']);
         Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
+        # Rotas de Itens
+    Route::prefix('itens')->group(function () {
+        Route::post('/', [CursoItemController::class, 'store']);
+        Route::post('/draft', [CursoItemController::class, 'saveDraft']);
+        Route::get('/{id}', [CursoItemController::class, 'show']);
+        Route::put('/{id}', [CursoItemController::class, 'update']);
+        Route::delete('/{id}', [CursoItemController::class, 'destroy']);
+    });
+
+    Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
+
         #Rotas de matrizes
         Route::get('/matrizes', [MatrixController::class, 'index']);
         Route::post('/matrizes', [MatrixController::class,'store']);

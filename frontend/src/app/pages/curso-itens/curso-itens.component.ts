@@ -4,9 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Header } from '../../components/header/header';
 import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
+import { CreateItemModalComponent } from '../../components/create-item-modal/create-item-modal.component';
 import { ItemAvaliacao } from '../../models/item-avaliacao.model';
 import { CourseItemsService } from '../../services/cursos-itens.service';
 import { CursoService } from '../../services/curso.service';
+import { ItemViewEditModalComponent } from '../../components/item-view-edit-modal/item-view-edit-modal.component';
+import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
+import { NotificationService } from '../../services/notification.service';
 
 type DataColumn = { label: string; property: keyof ItemAvaliacao; type?: undefined };
 type ActionColumn = { label: string; type: 'action' };
@@ -15,7 +19,16 @@ type ColumnDef = DataColumn | ActionColumn;
 @Component({
   selector: 'app-curso-itens',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, Header, AccessibilityBarComponent],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    RouterModule, 
+    Header, 
+    AccessibilityBarComponent, 
+    CreateItemModalComponent,
+    ItemViewEditModalComponent,
+    ConfirmationModalComponent
+  ],
   templateUrl: './curso-itens.component.html',
   styleUrls: ['./curso-itens.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -28,12 +41,20 @@ export class CursoItensComponent implements OnInit {
   searchTerm = '';
   itemsPerPage = 10;
   currentPage = 1;
+  showCreateModal = false;
+  showViewModal = false;
+  selectedItemId = '';
+  
+  // Modal de confirmação
+  showDeleteModal = false;
+  itemToDelete: ItemAvaliacao | null = null;
+  deleteLoading = false;
 
   columns: ColumnDef[] = [
     { label: 'Código', property: 'code' },
     { label: 'Matriz', property: 'matriz_nome' },
-    { label: 'Status', property: 'status' },
-    { label: 'Dificuldade', property: 'dificuldade' },
+    { label: 'Status', property: 'status_nome' },
+    { label: 'Dificuldade', property: 'dificuldade_nome' },
     { label: 'Ações', type: 'action' }
   ];
 
@@ -41,7 +62,8 @@ export class CursoItensComponent implements OnInit {
     private route: ActivatedRoute,
     private service: CourseItemsService,
     private cursosService: CursoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -85,8 +107,9 @@ export class CursoItensComponent implements OnInit {
     if (!term) return this.items;
     return this.items.filter(i =>
       (i.code || '').toLowerCase().includes(term) ||
-      (String(i.status ?? '')).toLowerCase().includes(term) ||
-      (String(i.dificuldade ?? '')).toLowerCase().includes(term)
+      (i.status_nome || '').toLowerCase().includes(term) ||
+      (i.dificuldade_nome || '').toLowerCase().includes(term) ||
+      (i.matriz_nome || '').toLowerCase().includes(term)
     );
   }
 
@@ -133,25 +156,85 @@ export class CursoItensComponent implements OnInit {
     this.currentPage = 1;
   }
 
-  onAddItem(): void { }
+  onAddItem(): void { 
+    this.showCreateModal = true;
+  }
+
+  onModalClose(): void {
+    this.showCreateModal = false;
+  }
+
+  onItemCreated(): void {
+    this.fetch();
+  }
 
   onRowAction(action: 'details' | 'delete', row: ItemAvaliacao): void {
     if (action === 'details') this.openItemDetails(row.id);
-    else if (action === 'delete') this.onDelete(row);
+    else if (action === 'delete') this.confirmDelete(row);
   }
 
-  openItemDetails(id: string): void { }
+  openItemDetails(id: string): void {
+    this.selectedItemId = id;
+    this.showViewModal = true;
+  }
 
-  onDelete(item: ItemAvaliacao): void {
-    const ok = window.confirm('Deseja remover este item?');
-    if (!ok) return;
-    this.service.deleteItem(item.id).subscribe({
+  onViewModalClose(): void {
+    this.showViewModal = false;
+    this.selectedItemId = '';
+  }
+
+  onItemUpdated(): void {
+    this.fetch();
+  }
+
+  // Métodos do modal de confirmação
+  confirmDelete(item: ItemAvaliacao): void {
+    this.itemToDelete = item;
+    this.showDeleteModal = true;
+    this.cdr.markForCheck();
+  }
+
+  onConfirmDelete(): void {
+    if (!this.itemToDelete) return;
+    
+    this.deleteLoading = true;
+    this.cdr.markForCheck();
+
+    this.service.deleteItem(this.itemToDelete.id).subscribe({
       next: () => {
-        this.items = this.items.filter(i => i.id !== item.id);
-        if (this.getStartIndex() > this.getEndIndex()) this.goToPage(Math.max(1, this.currentPage - 1));
+        this.items = this.items.filter(i => i.id !== this.itemToDelete!.id);
+        
+        // Verificar se precisa voltar uma página
+        if (this.getStartIndex() > this.getEndIndex()) {
+          this.goToPage(Math.max(1, this.currentPage - 1));
+        }
+        
+        // Mostrar notificação de sucesso
+        this.notificationService.success(
+          'Item excluído!', 
+          `O item "${this.itemToDelete!.code}" foi removido com sucesso.`
+        );
+        
+        // Fechar modal
+        this.onCancelDelete();
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        this.deleteLoading = false;
+        this.notificationService.error(
+          'Erro ao excluir',
+          'Não foi possível excluir o item. Tente novamente.'
+        );
         this.cdr.markForCheck();
       }
     });
+  }
+
+  onCancelDelete(): void {
+    this.showDeleteModal = false;
+    this.itemToDelete = null;
+    this.deleteLoading = false;
+    this.cdr.markForCheck();
   }
 
   cell(row: ItemAvaliacao, col: ColumnDef): unknown {

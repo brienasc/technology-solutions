@@ -146,7 +146,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: #059669;
+  background: #7c3aed;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -160,7 +160,7 @@
   font-size: 0.875em;
 }
 .add-button:hover {
-  background: #047857;
+  background: #5b21b6;
 }
 .add-button svg {
   width: 1.05em;

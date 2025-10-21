@@ -1,6 +1,6 @@
 <app-header></app-header>
 <app-accessibility-bar></app-accessibility-bar>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div class="itens-title">
   <div class="itens-title-content">
     <h1>
@@ -249,3 +249,31 @@
     </div>
   </div>
 </div>
+
+<app-create-item-modal
+  [isOpen]="showCreateModal"
+  [courseId]="courseId"
+  (close)="onModalClose()"
+  (itemCreated)="onItemCreated()">
+</app-create-item-modal>
+
+<app-item-view-edit-modal
+  [isOpen]="showViewModal"
+  [itemId]="selectedItemId"
+  (close)="onViewModalClose()"
+  (itemUpdated)="onItemUpdated()">
+</app-item-view-edit-modal>
+
+<!-- Modal de confirmação de exclusão -->
+<app-confirmation-modal
+  [show]="showDeleteModal"
+  type="danger"
+  title="Excluir Item"
+  message="Esta ação não pode ser desfeita. O item será removido permanentemente do sistema."
+  [itemInfo]="itemToDelete ? 'Código: ' + itemToDelete.code : ''"
+  confirmText="Excluir"
+  cancelText="Cancelar"
+  [loading]="deleteLoading"
+  (confirm)="onConfirmDelete()"
+  (cancel)="onCancelDelete()">
+</app-confirmation-modal>
