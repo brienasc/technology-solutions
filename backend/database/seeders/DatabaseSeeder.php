@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             ColabsSeeder::class,
             CursoSeeder::class,
             MatrizDemoSeeder::class,
+            ItensAlternativasSeeder::class
         ]);
 
         $cursoIds = Curso::pluck('id')->all();
