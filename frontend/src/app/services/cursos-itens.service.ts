@@ -21,7 +21,7 @@ export class CourseItemsService {
       .pipe(map(res => res?.data ?? []));
   }
 
-  create(itemData: any): Observable<any> {
+  createItem(itemData: any): Observable<any> {
     return this.http.post<ApiResponse<any>>(`${this.baseUrl}/itens`, itemData)
       .pipe(map(res => res?.data));
   }
@@ -42,6 +42,7 @@ export class CourseItemsService {
   }
 
   deleteItem(itemId: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/itens/${itemId}`);
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/itens/${itemId}`)
+      .pipe(map(() => void 0));
   }
 }

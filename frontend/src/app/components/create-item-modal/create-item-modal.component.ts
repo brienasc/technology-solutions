@@ -345,7 +345,7 @@ export class CreateItemModalComponent implements OnInit {
     
     console.log('Dados enviados para create:', this.formData);
     
-    this.itemService.create(this.formData).subscribe({
+    this.itemService.createItem(this.formData).subscribe({
       next: (response) => {
         console.log('Item finalizado com sucesso:', response);
         this.loading = false;
