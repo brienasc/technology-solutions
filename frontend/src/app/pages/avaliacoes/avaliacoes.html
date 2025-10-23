@@ -1,90 +1,140 @@
+<app-header></app-header>
+
 <div class="page-container">
 
-    <!-- Cabeçalho (similar à imagem 111111.jpg) -->
     <header class="header-section">
         <div class="info-text">
             <h2>Avaliações</h2>
-            <p>Gerencie as avaliações do curso {{ cursoNome }}</p>
+            <p>
+                Gerencie as avaliações do curso 
+                <span *ngIf="carregandoCurso" class="loading-dots">...</span>
+                <span *ngIf="!carregandoCurso">{{ cursoNome }}</span>
+            </p>
         </div>
         <button class="btn-new-avaliacao" (click)="abrirModalNovaAvaliacao()">
-      + Nova Avaliação
-    </button>
+            + Nova Avaliação
+        </button>
     </header>
 
-    <!-- Cards de Resumo (Mock) -->
+    <!-- Cards de Resumo -->
     <section class="summary-cards">
         <div class="card">
             <div class="card-icon">📄</div>
-            <h3>4</h3>
+            <h3>{{ totalAvaliacoes }}</h3>
             <p>Total de Avaliações</p>
         </div>
         <div class="card">
             <div class="card-icon">📅</div>
-            <h3>1</h3>
+            <h3>{{ agendadasCount }}</h3>
             <p>Agendadas</p>
         </div>
         <div class="card">
             <div class="card-icon">🕒</div>
-            <h3>1</h3>
+            <h3>{{ emAndamentoCount }}</h3>
             <p>Em Andamento</p>
         </div>
         <div class="card">
             <div class="card-icon">📈</div>
-            <h3>1</h3>
+            <h3>{{ finalizadasCount }}</h3>
             <p>Finalizadas</p>
         </div>
     </section>
 
-    <!-- Filtros e Pesquisa (Mock) -->
+    <!-- Filtros -->
     <section class="filters-section">
         <div class="search-input-group">
             <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Buscar avaliações...">
+            <input 
+                type="text" 
+                placeholder="Buscar avaliações..."
+                [(ngModel)]="searchTerm"
+                (keyup.enter)="buscarAvaliacoes()">
         </div>
-        <select class="filter-select">
-      <option>Todos os Tipos</option>
-    </select>
-        <select class="filter-select">
-      <option>Todos os Status</option>
-    </select>
-        <button class="btn-filter">
-      <span class="filter-icon">⚙️</span> Filtros
-    </button>
+        <select class="filter-select" [(ngModel)]="filtroTipo" (change)="aplicarFiltros()">
+            <option value="todos">Todos os Tipos</option>
+            <option value="prova">Prova</option>
+        </select>
+        <select class="filter-select" [(ngModel)]="filtroStatus" (change)="aplicarFiltros()">
+            <option value="todos">Todos os Status</option>
+            <option value="agendada">Agendadas</option>
+            <option value="em_andamento">Em Andamento</option>
+            <option value="finalizada">Finalizadas</option>
+        </select>
+        <button class="btn-filter" (click)="aplicarFiltros()">
+            <span class="filter-icon">⚙️</span> Aplicar Filtros
+        </button>
     </section>
 
     <!-- Lista de Avaliações -->
     <section class="avaliacoes-list">
-        <!-- Linhas 56-78 no seu screenshot -->
+        <!-- Loading -->
+        <div *ngIf="carregandoAvaliacoes" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Carregando avaliações...</p>
+        </div>
+
+        <!-- Mensagem quando não há avaliações -->
+        <div *ngIf="!carregandoAvaliacoes && avaliacoes.length === 0" class="empty-state">
+            <div class="empty-icon">📝</div>
+            <h3>Nenhuma avaliação encontrada</h3>
+            <p>Crie sua primeira avaliação clicando no botão "Nova Avaliação"</p>
+        </div>
+
+        <!-- Lista de avaliações -->
         <div *ngFor="let avaliacao of avaliacoes" class="avaliacao-item">
             <div class="avaliacao-details">
                 <span class="doc-icon">📄</span>
                 <div>
                     <h4>{{ avaliacao.nome }}</h4>
-                    <p>{{ avaliacao.status === 'Finalizadas' ? 'Exercícios práticos' : 'Prova sobre ' + avaliacao.nome }}</p>
+                    <p>{{ 
+                        avaliacao.tipo === 'prova' ? 'Prova avaliativa' : 
+                        avaliacao.tipo === 'simulado' ? 'Simulado prático' : 
+                        avaliacao.tipo === 'atividade' ? 'Atividade de exercícios' :
+                        'Avaliação'
+                    }}</p>
                     <div class="meta-info">
-                        <span>📅 {{ avaliacao.data }}</span>
-                        <span>🕒 {{ avaliacao.tempo }}</span>
-                        <span>{{ avaliacao.questoes }} questões</span>
-                        <span>👥 {{ avaliacao.alunos }} alunos</span>
+                        <span>📅 {{ formatarData(avaliacao.data_agendada) }}</span>
+                        <span>🕒 {{ calcularTempo(avaliacao.tempo_duracao) }}</span>
+                        <span>{{ avaliacao.quantidade_itens }} questões</span>
+                        <span>👥 {{ avaliacao.alunos_previstos || 0 }} alunos</span>
                     </div>
                 </div>
-                <!-- CORREÇÃO 1: Chama a função do TypeScript (getStatusCssClass) em vez de usar o pipe | replace -->
                 <span class="status-badge status-{{ getStatusCssClass(avaliacao.status) }}">
-          {{ avaliacao.status }}
-        </span>
-                <span *ngIf="avaliacao.tipo" class="type-badge">{{ avaliacao.tipo }}</span>
+                    {{ 
+                        avaliacao.status === 'em_andamento' ? 'Em Andamento' : 
+                        avaliacao.status === 'agendada' ? 'Agendada' :
+                        avaliacao.status === 'finalizada' ? 'Finalizada' :
+                        avaliacao.status 
+                    }}
+                </span>
+                <span class="type-badge">{{ avaliacao.tipo || 'prova' }}</span>
             </div>
 
             <div class="avaliacao-actions">
                 <button (click)="visualizar(avaliacao)">👁️ Visualizar</button>
                 <button (click)="editar(avaliacao)">✍️ Editar</button>
-                <!-- CORREÇÃO 2: Usa a função para checar o status "finalizadas" na condição ngIf -->
-                <button *ngIf="getStatusCssClass(avaliacao.status) === 'finalizadas'" (click)="relatorio(avaliacao)">📊 Relatório</button>
+                <button *ngIf="avaliacao.status === 'finalizada'" (click)="relatorio(avaliacao)">📊 Relatório</button>
                 <button (click)="excluir(avaliacao)" class="btn-excluir">🗑️ Excluir</button>
             </div>
         </div>
     </section>
 
-    <!-- Modal de Nova Avaliação (é o componente de duas etapas) -->
-    <app-modal-nova-avaliacao *ngIf="showModal" (closeModal)="fecharModal()" [cursoId]="cursoId"></app-modal-nova-avaliacao>
+    <!-- Modal -->
+    <app-modal-nova-avaliacao 
+        *ngIf="showModal" 
+        (closeModal)="fecharModal()" 
+        (avaliacaoCriada)="onAvaliacaoCriada()"
+        [cursoId]="cursoId">
+    </app-modal-nova-avaliacao>
+
+    <!-- Modal de Alerta -->
+    <app-alert-modal
+        [open]="showAlert"
+        [title]="alertTitle"
+        [message]="alertMessage"
+        [variant]="alertVariant"
+        [actions]="alertActions"
+        (action)="onAlertAction($event)"
+        (closed)="onAlertClosed()">
+    </app-alert-modal>
 </div>

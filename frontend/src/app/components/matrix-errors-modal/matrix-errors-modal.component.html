@@ -1,0 +1,35 @@
+@if (open) {
+  <div class="overlay" role="dialog" aria-modal="true">
+    <div class="modal modal-solid">
+      <header class="modal-header">
+        <h2 class="modal-title">Falhas na validação da matriz</h2>
+      </header>
+
+      @if (pending.length > 0) {
+        <section class="modal-body">
+          <ul class="errors-list">
+            @for (item of pending; track $index) {
+              <li class="error-card">
+                <div class="error-title">
+                  <span class="badge">Pendente</span>
+                  <h3>{{ item.titulo }}</h3>
+                </div>
+                @if (item.obs) {
+                  <p class="error-obs">{{ item.obs }}</p>
+                }
+              </li>
+            }
+          </ul>
+        </section>
+      } @else {
+        <section class="modal-body">
+          <p class="no-errors-text">Sem pendências para exibir.</p>
+        </section>
+      }
+
+      <footer class="modal-footer">
+        <button type="button" class="btn-close" (click)="close()">Fechar</button>
+      </footer>
+    </div>
+  </div>
+}

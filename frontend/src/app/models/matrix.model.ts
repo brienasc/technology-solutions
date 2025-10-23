@@ -65,3 +65,19 @@ export interface ImportMatrixPayload {
   courseId: string;
   file: File,
 }
+
+export interface CheckEntry {
+  titulo: string;
+  status: string;
+  obs: string
+}
+export interface ReportData {
+  has_errors: boolean;
+  checks: Record<string, CheckEntry>
+}
+export interface ApiResponse<T> {
+  status: string;
+  message?: string;
+  data?: T;
+  timestamp?: string
+}
