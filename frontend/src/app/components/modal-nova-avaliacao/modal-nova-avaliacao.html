@@ -1,7 +1,6 @@
 <div class="modal-backdrop" (click)="fecharModal()">
-    <!-- Conteúdo -->
     <div class="modal-content" (click)="$event.stopPropagation()">
-
+        
         <!-- Ícone de Fechar -->
         <button class="close-button" (click)="fecharModal()">
             &times;
@@ -110,7 +109,7 @@
 
                 <!-- Distribuição Fixa 30/40/30 -->
                 <div class="difficulty-box">
-                    <!-- Muito Fácil (30%) -->
+                    <!-- Fácil / Muito Fácil (30%) -->
                     <div class="difficulty-item">
                         <div class="level-info">
                             <span class="dot easy"></span>
@@ -140,7 +139,7 @@
                         </div>
                     </div>
 
-                    <!--  Difícil (30%) -->
+                    <!-- Difícil / Muito Difícil (30%) -->
                     <div class="difficulty-item">
                         <div class="level-info">
                             <span class="dot hard"></span>
@@ -178,6 +177,22 @@
                 </div>
             </form>
 
+            <!-- Loading durante criação da avaliação -->
+            <div *ngIf="criandoAvaliacao" class="loading-overlay">
+                <div class="loading-spinner"></div>
+                <p>Criando avaliação...</p>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Modal de Alerta -->
+<app-alert-modal
+  [open]="showAlert"
+  [title]="alertTitle"
+  [message]="alertMessage"
+  [variant]="alertVariant"
+  [actions]="alertActions"
+  (action)="onAlertAction($event)"
+  (closed)="onAlertClosed()"
+></app-alert-modal>
