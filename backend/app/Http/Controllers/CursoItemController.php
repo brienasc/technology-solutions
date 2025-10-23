@@ -157,4 +157,15 @@ class CursoItemController extends Controller
     {
         return $this->index(new Request(), $cursoId);
     }
+
+    public function calibrate(Request $request, string $id): JsonResponse
+    {
+        try {
+            $item = $this->cursosItensService->calibrateItem($id);
+            return $this->apiResponse->success($item, 'Item marcado como calibrado com sucesso');
+        } catch (Exception $e) {
+            Log::error('Erro ao calibrar item: ' . $e->getMessage());
+            return $this->apiResponse->badRequest($e->getMessage(), 'Falha ao calibrar item');
+        }
+    }
 }

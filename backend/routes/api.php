@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [CursoItemController::class, 'show']);
         Route::put('/{id}', [CursoItemController::class, 'update']);
         Route::delete('/{id}', [CursoItemController::class, 'destroy']);
+        Route::patch('/{id}/calibrate', [CursoItemController::class, 'calibrate']);
     });
 
     Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);

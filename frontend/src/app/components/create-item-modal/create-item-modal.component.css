@@ -680,6 +680,27 @@
   box-shadow: none !important;
 }
 
+/* Status calibrado */
+.status-calibrado {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  color: white;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Dark theme para status calibrado */
+:host-context(.dark-theme) .status-calibrado,
+:host-context([data-theme="dark"]) .status-calibrado {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;
+  color: white !important;
+}
+
+/* High contrast para status calibrado */
+:host-context(.high-contrast) .status-calibrado {
+  background: var(--color-highlight-neon) !important;
+  color: black !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
 /* Dark / High-contrast */
 :host-context(.dark-theme) .modal-content,
 :host-context([data-theme="dark"]) .modal-content {

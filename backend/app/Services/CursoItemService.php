@@ -178,6 +178,23 @@ class CursoItemService
         return $item->delete(); // As alternativas serão deletadas automaticamente (CASCADE)
     }
 
+    public function calibrateItem(string $itemId): array
+    {
+        $item = Item::findOrFail($itemId);
+
+        // Verificar se é finalizado (só finalizados podem ser calibrados)
+        if ($item->status !== 1) {
+            throw new Exception('Apenas itens finalizados podem ser calibrados');
+        }
+
+        $item->update(['status' => 2]); // 2 = Calibrado
+
+        // Retornar item atualizado com relacionamentos
+        $item->load(['alternativas', 'matriz']);
+
+        return $this->mapItemForList($item);
+    }
+
     // Métodos privados auxiliares
 
     private function validateItemData(array $data, bool $requireAlternativas = false): void
@@ -233,7 +250,7 @@ class CursoItemService
         $statusMap = [
             0 => 'Rascunho',
             1 => 'Finalizado',
-            2 => 'Arquivado'
+            2 => 'Calibrado'
         ];
 
         // Mapear dificuldade para texto

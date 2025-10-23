@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { CourseItemsService } from '../../services/cursos-itens.service';
 import { ItemAvaliacao } from '../../models/item-avaliacao.model';
 import { NotificationService } from '../../services/notification.service';
+import { AlertModalComponent } from '../alert/alert.component';
+import { AlertAction, AlertVariant } from '../../models/alert.model';
 
 interface Alternativa {
   texto: string;
@@ -14,7 +16,7 @@ interface Alternativa {
 @Component({
   selector: 'app-item-view-edit-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AlertModalComponent],
   templateUrl: './item-view-edit-modal.component.html',
   styleUrls: ['./item-view-edit-modal.component.css']
 })
@@ -28,6 +30,14 @@ export class ItemViewEditModalComponent implements OnInit {
   isEditMode = false;
   item: any = null;
   originalItem: any = null;
+
+  // Alert state
+  alertOpen = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertDescription = '';
+  alertVariant: AlertVariant = 'neutral';
+  alertActions: AlertAction[] = [];
 
   // Dados do formulário
   comando = '';
@@ -146,7 +156,10 @@ export class ItemViewEditModalComponent implements OnInit {
 
   onSave(): void {
     if (!this.isValidForm()) {
-      alert('Por favor, preencha todos os campos obrigatórios e marque exatamente uma alternativa como correta.');
+      this.showErrorAlert(
+        'Formulário Incompleto',
+        'Por favor, preencha todos os campos obrigatórios e marque exatamente uma alternativa como correta.'
+      );
       return;
     }
 
@@ -157,21 +170,30 @@ export class ItemViewEditModalComponent implements OnInit {
       contexto: this.contexto?.trim() || '',
       dificuldade: this.dificuldade,
       alternativas: this.alternativas,
-      finalizar: false // Manter como rascunho
+      finalizar: false
     };
 
     this.service.updateItem(this.itemId, itemData).subscribe({
       next: () => {
         this.loading = false;
         this.isEditMode = false;
-        this.itemUpdated.emit();
-        this.loadItem(); // Recarregar dados atualizados
+        this.showSuccessAlert(
+          'Sucesso!',
+          'Item salvo como rascunho com sucesso.'
+        );
+        setTimeout(() => {
+          this.itemUpdated.emit();
+          this.loadItem();
+        }, 1500);
         this.cdr.markForCheck();
       },
       error: (error) => {
         this.loading = false;
         console.error('Erro ao salvar item:', error);
-        alert('Erro ao salvar item. Tente novamente.');
+        this.showErrorAlert(
+          'Erro ao Salvar',
+          'Erro ao salvar item. Tente novamente.'
+        );
         this.cdr.markForCheck();
       }
     });
@@ -179,13 +201,24 @@ export class ItemViewEditModalComponent implements OnInit {
 
   onFinalize(): void {
     if (!this.isValidForm()) {
-      alert('Por favor, preencha todos os campos obrigatórios e marque exatamente uma alternativa como correta.');
+      this.showErrorAlert(
+        'Formulário Incompleto',
+        'Por favor, preencha todos os campos obrigatórios e marque exatamente uma alternativa como correta.'
+      );
       return;
     }
 
-    const confirmFinalize = confirm('Após finalizar, o item não poderá mais ser editado. Deseja continuar?');
-    if (!confirmFinalize) return;
+    this.showConfirmAlert(
+      'Finalizar Item',
+      'Após finalizar, o item não poderá mais ser editado. Deseja continuar?',
+      [
+        { id: 'cancel', label: 'Cancelar', kind: 'ghost' },
+        { id: 'finalize', label: 'Finalizar', kind: 'primary', autofocus: true }
+      ]
+    );
+  }
 
+  private performFinalization(): void {
     this.loading = true;
 
     const itemData = {
@@ -200,14 +233,84 @@ export class ItemViewEditModalComponent implements OnInit {
       next: () => {
         this.loading = false;
         this.isEditMode = false;
-        this.itemUpdated.emit();
-        this.loadItem(); // Recarregar dados atualizados
+        this.showSuccessAlert(
+          'Sucesso!',
+          'Item finalizado com sucesso.'
+        );
+        setTimeout(() => {
+          this.itemUpdated.emit();
+          this.loadItem();
+        }, 1500);
         this.cdr.markForCheck();
       },
       error: (error) => {
         this.loading = false;
         console.error('Erro ao finalizar item:', error);
-        alert('Erro ao finalizar item. Tente novamente.');
+        this.showErrorAlert(
+          'Erro ao Finalizar',
+          'Erro ao finalizar item. Tente novamente.'
+        );
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  onCalibrate(): void {
+    this.showConfirmAlert(
+      'Confirmar Calibração',
+      'Deseja marcar este item como calibrado?',
+      [
+        { id: 'cancel', label: 'Cancelar', kind: 'ghost' },
+        { id: 'calibrate', label: 'Calibrar', kind: 'primary', autofocus: true }
+      ]
+    );
+  }
+
+  private performCalibration(): void {
+    this.loading = true;
+
+    this.service.calibrateItem(this.itemId).subscribe({
+      next: (data) => {
+        console.log('Calibração bem-sucedida:', data);
+        this.loading = false;
+        this.showSuccessAlert(
+          'Sucesso!',
+          'Item marcado como calibrado com sucesso.'
+        );
+        setTimeout(() => {
+          this.itemUpdated.emit();
+          this.loadItem();
+        }, 1500);
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Erro detalhado ao calibrar:', error);
+        this.loading = false;
+        
+        let errorMessage = 'Erro inesperado ao calibrar item.';
+        
+        if (error.status === 200 || error.status === 201) {
+          this.showSuccessAlert(
+            'Sucesso!',
+            'Item calibrado com sucesso.'
+          );
+          setTimeout(() => {
+            this.itemUpdated.emit();
+            this.loadItem();
+          }, 1500);
+          return;
+        }
+        
+        if (error?.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error?.message) {
+          errorMessage = error.message;
+        }
+
+        this.showErrorAlert(
+          'Erro na Calibração',
+          errorMessage
+        );
         this.cdr.markForCheck();
       }
     });
@@ -239,11 +342,15 @@ export class ItemViewEditModalComponent implements OnInit {
     return this.item?.status === 0; // Só pode editar rascunhos
   }
 
+  get canCalibrate(): boolean {
+    return this.item?.status === 1; // Só pode calibrar itens finalizados
+  }
+
   get statusText(): string {
     const statusMap: { [key: number]: string } = {
       0: 'Rascunho',
       1: 'Finalizado',
-      2: 'Arquivado'
+      2: 'Calibrado'
     };
     return statusMap[this.item?.status] || 'Desconhecido';
   }
@@ -253,8 +360,53 @@ export class ItemViewEditModalComponent implements OnInit {
     return option?.label || 'Não definido';
   }
 
-  // Adicionar este método
   getAlternativaLabel(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  // Métodos para alertas
+  private showConfirmAlert(title: string, message: string, actions: AlertAction[]): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertVariant = 'warning';
+    this.alertActions = actions;
+    this.alertOpen = true;
+  }
+
+  private showSuccessAlert(title: string, message: string): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertVariant = 'success';
+    this.alertActions = [
+      { id: 'ok', label: 'OK', kind: 'primary', autofocus: true }
+    ];
+    this.alertOpen = true;
+  }
+
+  private showErrorAlert(title: string, message: string): void {
+    this.alertTitle = title;
+    this.alertMessage = message;
+    this.alertVariant = 'danger';
+    this.alertActions = [
+      { id: 'ok', label: 'OK', kind: 'primary', autofocus: true }
+    ];
+    this.alertOpen = true;
+  }
+
+  onAlertAction(action: AlertAction): void {
+    this.alertOpen = false;
+    
+    switch (action.id) {
+      case 'calibrate':
+        this.performCalibration();
+        break;
+      case 'finalize':
+        this.performFinalization();
+        break;
+    }
+  }
+
+  onAlertClosed(): void {
+    this.alertOpen = false;
   }
 }
