@@ -1,77 +1,213 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, LowerCasePipe } from '@angular/common'; // Inclui LowerCasePipe
+import { CommonModule, LowerCasePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
-// Importe o Modal de Criação de Avaliação (você vai criá-lo na próxima seção)
 import { ModalNovaAvaliacaoComponent } from '../../components/modal-nova-avaliacao/modal-nova-avaliacao';
+import { AvaliacaoService, Avaliacao } from '../../services/avaliacao.service';
+import { CursoService } from '../../services/curso.service';
+import { AlertVariant, AlertAction } from '../../models/alert.model';
+import { AlertModalComponent } from '../../components/alert/alert.component';
+import { Header } from '../../components/header/header';
 
 @Component({
   selector: 'app-avaliacoes',
   standalone: true,
   imports: [
     CommonModule, 
-    ModalNovaAvaliacaoComponent // Torna o modal de criação disponível
+    FormsModule,
+    Header,
+    ModalNovaAvaliacaoComponent,
+    AlertModalComponent
   ],
-  templateUrl: './avaliacoes.html', 
-  styleUrls: ['./avaliacoes.css'] // Certifique-se de criar este arquivo
+  templateUrl: './avaliacoes.html',
+  styleUrls: ['./avaliacoes.css']
 })
 export class AvaliacoesComponent implements OnInit {
-  // Estado para controlar a exibição do modal de nova avaliação
   showModal: boolean = false;
-  
-  // Armazena o ID do curso da URL
   cursoId: string | null = null;
-  cursoNome: string = 'Curso Carregando...'; // Mock para exibir no título
+  cursoNome: string = 'Carregando...';
+  carregandoCurso: boolean = false;
+  
+  avaliacoes: Avaliacao[] = [];
+  carregandoAvaliacoes: boolean = false;
+  
+  // Estatísticas
+  totalAvaliacoes: number = 0;
+  agendadasCount: number = 0;
+  emAndamentoCount: number = 0;
+  finalizadasCount: number = 0;
 
-  // Lista mockada de avaliações (para simular a tela 111111.jpg)
-  avaliacoes = [
-    { nome: 'Avaliação de HTML e CSS', data: '24/10/2025', tempo: '120 min', questoes: 30, alunos: 45, status: 'Agendadas', tipo: 'Prova' },
-    { nome: 'Simulado de JavaScript', data: '19/10/2025', tempo: '90 min', questoes: 25, alunos: 42, status: 'Em Andamento', tipo: 'Simulado' },
-    { nome: 'Atividade de React', data: '14/10/2025', tempo: '60 min', questoes: 15, alunos: 45, status: 'Finalizadas', tipo: 'Atividade' },
-  ];
+  // Filtros e busca
+  searchTerm: string = '';
+  filtroStatus: string = 'todos';
+  filtroTipo: string = 'todos';
 
-  // Instancia o pipe LowerCasePipe para uso em métodos de classe
+  // Alert modal
+  showAlert = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertVariant: AlertVariant = 'neutral';
+  alertActions: AlertAction[] = [{ id: 'ok', label: 'OK', kind: 'primary', autofocus: true }];
+
   private lowercasePipe = new LowerCasePipe();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private avaliacaoService: AvaliacaoService,
+    private cursoService: CursoService
+  ) {}
 
   ngOnInit(): void {
-    // Captura o ID do curso da URL (necessário para a lógica)
     this.route.paramMap.subscribe(params => {
       this.cursoId = params.get('id');
-      // **AQUI você faria a chamada ao serviço para buscar o nome do curso e as avaliações**
       if (this.cursoId) {
-         this.cursoNome = `ID ${this.cursoId}`; // Exemplo de uso do ID
+        this.carregarCursoENome();
+        this.carregarAvaliacoes();
       }
     });
   }
-  
-  /**
-   * Mapeia o status da avaliação para um nome de classe CSS válido.
-   * Por exemplo: "Em Andamento" -> "em-andamento"
-   * @param status O status original da avaliação.
-   * @returns O nome da classe CSS.
-   */
-  getStatusCssClass(status: string): string {
-    // 1. Converte para minúsculas usando o pipe injetado ou a string nativa
-    const lower = this.lowercasePipe.transform(status);
-    // 2. Substitui todos os espaços por hífens.
-    return lower.replace(/\s/g, '-');
+
+  private carregarCursoENome(): void {
+    if (!this.cursoId) return;
+    
+    this.carregandoCurso = true;
+    
+    // usa o método getById existente que chama /cursos/{id}/summary
+    this.cursoService.getById(this.cursoId).subscribe({
+      next: (curso) => {
+        this.cursoNome = curso.nome;
+        this.carregandoCurso = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar curso:', error);
+        this.cursoNome = 'Curso não encontrado';
+        this.carregandoCurso = false;
+        this.mostrarAlerta('Erro', 'Não foi possível carregar as informações do curso.', 'warning');
+      }
+    });
   }
-  
-  // Abre o modal de criação de nova avaliação
+
+  carregarAvaliacoes(): void {
+    if (!this.cursoId) return;
+    
+    this.carregandoAvaliacoes = true;
+    
+    this.avaliacaoService.getAvaliacoesPorCurso(this.cursoId).subscribe({
+      next: (response) => {
+        this.avaliacoes = response.data;
+        this.calcularEstatisticas();
+        this.carregandoAvaliacoes = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar avaliações:', error);
+        this.mostrarAlerta('Erro', 'Falha ao carregar avaliações.', 'warning');
+        this.carregandoAvaliacoes = false;
+        this.avaliacoes = []; // Lista vazia em caso de erro
+      }
+    });
+  }
+
+  private calcularEstatisticas(): void {
+    this.totalAvaliacoes = this.avaliacoes.length;
+    this.agendadasCount = this.avaliacoes.filter(a => a.status === 'agendada').length;
+    this.emAndamentoCount = this.avaliacoes.filter(a => a.status === 'em_andamento').length;
+    this.finalizadasCount = this.avaliacoes.filter(a => a.status === 'finalizada').length;
+  }
+
+  // Filtros
+  aplicarFiltros(): void {
+    // Por enquanto, recarrega todos os dados (ate o back ficar pronto, depois enviar filtros p api)
+    this.carregarAvaliacoes();
+  }
+
+  buscarAvaliacoes(): void {
+    this.aplicarFiltros();
+  }
+
+  // Ações
+  visualizar(avaliacao: Avaliacao): void {
+    console.log('Visualizar:', avaliacao.nome);
+    this.mostrarAlerta('Visualizar', `Abrindo avaliação: ${avaliacao.nome}`, 'info');
+  }
+
+  editar(avaliacao: Avaliacao): void {
+    console.log('Editar:', avaliacao.nome);
+    this.mostrarAlerta('Editar', `Editando avaliação: ${avaliacao.nome}`, 'info');
+  }
+
+  excluir(avaliacao: Avaliacao): void {
+    if (confirm(`Tem certeza que deseja excluir a avaliação "${avaliacao.nome}"?`)) {
+      this.avaliacaoService.excluirAvaliacao(avaliacao.id).subscribe({
+        next: () => {
+          this.mostrarAlerta('Sucesso', 'Avaliação excluída com sucesso!', 'success');
+          this.carregarAvaliacoes(); 
+        },
+        error: (error) => {
+          this.mostrarAlerta('Erro', error.message, 'warning');
+        }
+      });
+    }
+  }
+
+  relatorio(avaliacao: Avaliacao): void {
+    console.log('Relatório:', avaliacao.nome);
+    this.mostrarAlerta('Relatório', `Gerando relatório para: ${avaliacao.nome}`, 'info');
+  }
+
+  // Modal de nova avaliação
   abrirModalNovaAvaliacao(): void {
     this.showModal = true;
   }
-  
-  // Fecha o modal de criação de nova avaliação (chamado pelo EventEmitter do modal)
+
   fecharModal(): void {
     this.showModal = false;
   }
 
-  // Métodos de Ação (Mock para botões)
-  visualizar(avaliacao: any): void { console.log('Visualizar:', avaliacao.nome); }
-  editar(avaliacao: any): void { console.log('Editar:', avaliacao.nome); }
-  excluir(avaliacao: any): void { console.log('Excluir:', avaliacao.nome); }
-  relatorio(avaliacao: any): void { console.log('Relatório:', avaliacao.nome); }
+  onAvaliacaoCriada(): void {
+    this.fecharModal();
+    this.mostrarAlerta('Sucesso', 'Avaliação criada com sucesso!', 'success');
+    this.carregarAvaliacoes(); // Recarrega a lista após criação
+  }
+
+  // Utilitários
+  getStatusCssClass(status: string): string {
+    const lower = this.lowercasePipe.transform(status);
+    return lower.replace(/\s/g, '-').replace(/_/g, '-');
+  }
+
+  formatarData(data: string | undefined): string {
+    if (!data) return 'Não agendada';
+    try {
+      return new Date(data).toLocaleDateString('pt-BR');
+    } catch {
+      return 'Data inválida';
+    }
+  }
+
+  calcularTempo(tempoMinutos: number | undefined): string {
+    if (!tempoMinutos) return 'Não definido';
+    const horas = Math.floor(tempoMinutos / 60);
+    const minutos = tempoMinutos % 60;
+    
+    if (horas > 0) {
+      return `${horas}h ${minutos}min`;
+    }
+    return `${minutos} min`;
+  }
+
+  // Alert modal
+  mostrarAlerta(titulo: string, mensagem: string, variante: AlertVariant = 'neutral'): void {
+    this.alertTitle = titulo;
+    this.alertMessage = mensagem;
+    this.alertVariant = variante;
+    this.showAlert = true;
+  }
+
+  onAlertAction(action: AlertAction): void {
+    this.showAlert = false;
+  }
+
+  onAlertClosed(): void {
+    this.showAlert = false;
+  }
 }
