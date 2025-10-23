@@ -1,14 +1,9 @@
-/* Variáveis de cores */
-
  :host {
     --color-purple: #5d3f8f;
     --color-light-purple: #9b7de2;
     --color-easy: #28a745;
-    /* Verde */
     --color-medium: #ffc107;
-    /* Amarelo */
     --color-hard: #dc3545;
-    /* Vermelho */
 }
 
 .modal-backdrop {
@@ -48,7 +43,7 @@
 }
 
 
-/* Header Roxo */
+/* Header */
 
 .header-purple {
     background-color: var(--color-purple);
@@ -72,7 +67,7 @@
 }
 
 
-/* Títulos e Descrições */
+/* Títulos  */
 
 .section-title {
     font-size: 1.25rem;
@@ -98,7 +93,7 @@
 }
 
 
-/* Campos de Formulário */
+/* Formulário */
 
 .form-group {
     margin-bottom: 15px;
@@ -114,7 +109,6 @@
 
 .form-group label.required {
     color: var(--color-hard);
-    /* Destaca o label se for inválido e tocado */
 }
 
 .bullet {
@@ -132,7 +126,6 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f7f3ff;
-    /* Fundo roxo claro (similar à imagem) */
     color: #10002B;
     transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -140,7 +133,7 @@
 .purple-input:focus {
     border-color: var(--color-light-purple);
     box-shadow: 0 0 0 3px rgba(93, 63, 143, 0.2);
-    /* Sombra roxa suave */
+    /* Sombra roxa */
     outline: none;
 }
 
@@ -151,7 +144,7 @@
 }
 
 
-/* Box de Dificuldade */
+/* Dificuldade */
 
 .difficulty-box {
     border: 1px solid #ddd;
@@ -231,7 +224,7 @@
 }
 
 
-/* Mockup da barra de preenchimento (usando porcentagem fixa) */
+/*  barra de preenchimento (porcentagem fixa) */
 
 .slider-fill {
     height: 100%;
@@ -323,4 +316,36 @@
 
 .btn-voltar:hover {
     color: #10002B;
+}
+
+/*  carregamento e resumo */
+.loading-text {
+  color: #666;
+  font-size: 0.8em;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.selection-summary {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.selection-summary p {
+  margin: 5px 0;
+  color: #495057;
+}
+
+.selection-summary strong {
+  color: #10002B;
+}
+
+/* Estilo para selects desabilitados */
+.purple-input:disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
 }

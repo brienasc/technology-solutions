@@ -1,6 +1,5 @@
-<!-- Backdrop do Modal -->
 <div class="modal-backdrop" (click)="fecharModal()">
-    <!-- Conteúdo do Modal -->
+    <!-- Conteúdo -->
     <div class="modal-content" (click)="$event.stopPropagation()">
 
         <!-- Ícone de Fechar -->
@@ -8,17 +7,17 @@
             &times;
         </button>
 
-        <!-- Cabeçalho Roxo (Purple Header) -->
+        <!-- Cabeçalho -->
         <div class="header-purple">
             <h2 class="title">CRIAR AVALIAÇÃO</h2>
             <p class="step-indicator">Etapa {{ currentStep }} de 2</p>
         </div>
 
-        <!-- CONTEÚDO PRINCIPAL -->
+        <!-- CONTEÚDO -->
         <div class="main-body">
 
             <!-- ============================================================== -->
-            <!-- ETAPA 1: INFORMAÇÕES BÁSICAS (222222.jpg) -->
+            <!-- STEP 1: INFORMAÇÕES-->
             <!-- ============================================================== -->
             <form *ngIf="currentStep === 1" [formGroup]="etapa1Form" (ngSubmit)="proximaEtapa()">
                 <h3 class="section-title">Informações Básicas</h3>
@@ -40,11 +39,13 @@
                     <label for="curso" [ngClass]="{'required': etapa1Form.get('curso')?.invalid && etapa1Form.get('curso')?.touched}">
                         <span class="bullet"></span> Curso*
                     </label>
-                    <select id="curso" formControlName="curso" class="purple-input">
+                    <select id="curso" formControlName="curso" class="purple-input" [disabled]="cursoId !== null">
                         <option [ngValue]="''" disabled>Selecione o curso</option>
-                        <option value="1">Curso Técnico em Informática</option>
-                        <option value="2">Curso de Engenharia de Software</option>
+                        <option *ngFor="let curso of cursos" [value]="curso.id">
+                            {{ curso.nome }}
+                        </option>
                     </select>
+                    <div *ngIf="carregandoCursos" class="loading-text">Carregando cursos...</div>
                     <div *ngIf="etapa1Form.get('curso')?.invalid && etapa1Form.get('curso')?.touched" class="invalid-feedback">
                         Curso é obrigatório.
                     </div>
@@ -55,11 +56,15 @@
                     <label for="matriz" [ngClass]="{'required': etapa1Form.get('matriz')?.invalid && etapa1Form.get('matriz')?.touched}">
                         <span class="bullet"></span> Matriz*
                     </label>
-                    <select id="matriz" formControlName="matriz" class="purple-input">
-                        <option [ngValue]="''" disabled>Selecione a matriz</option>
-                        <option value="A">Matriz A (2024)</option>
-                        <option value="B">Matriz B (2023)</option>
+                    <select id="matriz" formControlName="matriz" class="purple-input" [disabled]="matrizes.length === 0">
+                        <option [ngValue]="''" disabled>
+                            {{ carregandoMatrizes ? 'Carregando matrizes...' : (matrizes.length === 0 ? 'Selecione um curso primeiro' : 'Selecione a matriz') }}
+                        </option>
+                        <option *ngFor="let matriz of matrizes" [value]="matriz.id">
+                            {{ matriz.name }} {{ matriz.version ? '(v' + matriz.version + ')' : '' }}
+                        </option>
                     </select>
+                    <div *ngIf="carregandoMatrizes" class="loading-text">Carregando matrizes...</div>
                     <div *ngIf="etapa1Form.get('matriz')?.invalid && etapa1Form.get('matriz')?.touched" class="invalid-feedback">
                         Matriz é obrigatória.
                     </div>
@@ -73,13 +78,20 @@
             </form>
 
             <!-- ============================================================== -->
-            <!-- ETAPA 2: CONFIGURAÇÃO DE ITENS (3333.jpg) -->
+            <!-- STEP 2: CONFIG DE ITENS -->
             <!-- ============================================================== -->
             <form *ngIf="currentStep === 2" [formGroup]="etapa2Form" (ngSubmit)="criarAvaliacao()">
                 <h3 class="section-title">Configuração de Itens</h3>
                 <p class="section-description">Defina a quantidade e a distribuição de dificuldade dos itens</p>
 
-                <!-- Quantidade de Itens -->
+                <!-- Resumo Etapa 1 -->
+                <div class="selection-summary">
+                    <p><strong>Avaliação:</strong> {{ etapa1Form.value.nomeAvaliacao }}</p>
+                    <p><strong>Curso:</strong> {{ getCursoNome(etapa1Form.value.curso) }}</p>
+                    <p><strong>Matriz:</strong> {{ getMatrizNome(etapa1Form.value.matriz) }}</p>
+                </div>
+
+                <!-- Qtd de Itens -->
                 <div class="form-group mb-4">
                     <label for="quantidade" [ngClass]="{'required': etapa2Form.get('quantidadeItens')?.invalid && etapa2Form.get('quantidadeItens')?.touched}">
                         <span class="bullet"></span> Quantidade de itens*
@@ -94,11 +106,11 @@
                 </div>
 
                 <h3 class="section-subtitle">Distribuição de Dificuldade dos Itens*</h3>
-                <p class="section-description-small">Ajuste os percentuais para definir a proporção de itens por nível de dificuldade. O total deve somar 100%.</p>
+                <p class="section-description-small">Abaixo estão as proporções de itens por nível de dificuldade. O total deve somar 100%.</p>
 
-                <!-- Distribuição Fixa 30/40/30 (Representada como resultados) -->
+                <!-- Distribuição Fixa 30/40/30 -->
                 <div class="difficulty-box">
-                    <!-- Fácil / Muito Fácil (30%) -->
+                    <!-- Muito Fácil (30%) -->
                     <div class="difficulty-item">
                         <div class="level-info">
                             <span class="dot easy"></span>
@@ -128,7 +140,7 @@
                         </div>
                     </div>
 
-                    <!-- Difícil / Muito Difícil (30%) -->
+                    <!--  Difícil (30%) -->
                     <div class="difficulty-item">
                         <div class="level-info">
                             <span class="dot hard"></span>
@@ -143,7 +155,7 @@
                         </div>
                     </div>
 
-                    <!-- Totalizador -->
+                    <!-- Total -->
                     <div class="total-summary">
                         <span>Total:</span>
                         <div [ngClass]="{'valid': totalItensCalculado === etapa2Form.value.quantidadeItens, 'invalid': totalItensCalculado !== etapa2Form.value.quantidadeItens}">
