@@ -17,6 +17,7 @@ import { ImportMatrixDialogComponent } from '../../components/import-matrix-dial
 import { AlertVariant, AlertAction } from '../../models/alert.model';
 import { AlertModalComponent } from '../../components/alert/alert.component';
 import { finalize, timeout } from 'rxjs';
+import { MatrixErrorsModalComponent } from '../../components/matrix-errors-modal/matrix-errors-modal.component';
 
 @Component({
   selector: 'app-matrices-page',
@@ -24,7 +25,7 @@ import { finalize, timeout } from 'rxjs';
   imports: [
     CommonModule, Header, AccessibilityBarComponent, FormsModule,
     MatricesTableComponent, MatrixViewerDialogComponent, ImportMatrixDialogComponent,
-    AlertModalComponent
+    AlertModalComponent, MatrixErrorsModalComponent
   ],
   templateUrl: './matrices-page.component.html',
   styleUrls: ['./matrices-page.component.css'],
@@ -77,6 +78,9 @@ export class MatricesPageComponent {
   alertDeleteDescription: string = '';
   showDeletePopUp: boolean = false;
   onDeleteRow: Matrix | undefined = undefined;
+
+  showErrorsModal: boolean = false;
+  matrixImportResponse: any = null;
 
   constructor(
     private matrices: MatricesService,
@@ -256,8 +260,16 @@ export class MatricesPageComponent {
       ).subscribe({
         next: (response) => {
           this.zone.run(() => {
+            if (response?.data?.has_errors === true) {
+              this.matrixImportResponse = response;
+              this.showErrorsModal = true;
+              this.cdr.markForCheck();
+
+              return;
+            }
+
             this.alertInfoTitle = 'Importação de Matriz';
-            this.alertInfoMessage = 'Matriz importada com sucesso!';
+            this.alertInfoMessage = response?.message || 'Matriz importada com sucesso!';
             this.alertInfo = 'success';
             this.showInfoPopUp = true;
             this.fetch(true);

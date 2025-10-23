@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Matrix, MatrixDetail } from '../models/matrix.model';
+import { ApiResponse, Matrix, MatrixDetail, ReportData } from '../models/matrix.model';
 import { Paginated } from '../models/pagination.model';
 
 @Injectable({ providedIn: 'root' })
@@ -29,8 +29,8 @@ export class MatricesService {
     return this.http.delete<void>(`/api/matrizes/${id}`);
   }
 
-  importMatrix(formData: FormData) {
-    return this.http.post('/api/matrizes', formData);
+  importMatrix(formData: FormData): Observable<ApiResponse<ReportData>> {
+    return this.http.post<ApiResponse<ReportData>>('/api/matrizes', formData);
   }
 
   private adaptPaginated(api: any): Paginated<Matrix> {

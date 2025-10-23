@@ -200,3 +200,9 @@
   (action)="onDeleteCbk($event)"
   (closed)="showDeletePopUp = false"
 ></app-alert-modal>
+
+<app-matrix-errors-modal
+  [open]="showErrorsModal"
+  [report]="matrixImportResponse?.data || null"
+  (closed)="showErrorsModal = false">
+</app-matrix-errors-modal>

@@ -1,0 +1,194 @@
+:root {
+  --modal-overlay-bg: rgba(0, 0, 0, 0.78);
+  --modal-overlay-bg-dark: rgba(0, 0, 0, 0.86);
+  --modal-bg: var(--theme-card-bg, #ffffff);
+  --modal-border: var(--theme-border-color, #e5e7eb);
+  --modal-text: var(--theme-text, #111827);
+  --modal-text-secondary: var(--theme-text-secondary, #6b7280);
+  --modal-danger: #ef4444;
+  --modal-radius: 1.25em;
+  --modal-inner-radius: 1em;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  z-index: 1000;
+}
+
+:host-context(.dark-theme) .overlay,
+:host-context([data-theme="dark"]) .overlay {
+  background: var(--modal-overlay-bg-dark);
+}
+
+.modal {
+  width: min(52em, 100%);
+  background: var(--modal-bg);
+  color: var(--modal-text);
+  border: 1px solid var(--modal-border);
+  border-radius: var(--modal-radius);
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.38), 0 10px 22px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  backdrop-filter: none;
+}
+
+.modal-solid {
+  background-color: #ffffff;
+  border-radius: var(--modal-radius);
+}
+
+:host-context(.dark-theme) .modal,
+:host-context([data-theme="dark"]) .modal {
+  background: #0f1115;
+  border-color: #2a2f3a;
+  color: #e5e7eb;
+}
+
+.modal-header {
+  padding: 1.25em 1.5em;
+  border-bottom: 1px solid var(--modal-border);
+  background: inherit;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--theme-heading-text, var(--modal-text));
+}
+
+.modal-body {
+  padding: 1.25em 1.5em;
+}
+
+.errors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1em;
+}
+
+.error-card {
+  border: 1px solid var(--modal-border);
+  border-radius: var(--modal-inner-radius);
+  padding: 1em;
+  background: #ffffff;
+}
+
+:host-context(.dark-theme) .error-card,
+:host-context([data-theme="dark"]) .error-card {
+  background: #151922;
+  border-color: #2a2f3a;
+}
+
+.error-title {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75em;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  border-radius: 9999px;
+  font-size: 0.75em;
+  font-weight: 600;
+  background: #fee2e2;
+  color: var(--modal-danger);
+  border: 1px solid #fecaca;
+}
+
+:host-context(.dark-theme) .badge,
+:host-context([data-theme="dark"]) .badge {
+  background: #3b0a0a;
+  border-color: #7f1d1d;
+  color: #fca5a5;
+}
+
+.error-title h3 {
+  margin: 0;
+  font-size: 1em;
+  color: var(--modal-text);
+}
+
+:host-context(.dark-theme) .error-title h3,
+:host-context([data-theme="dark"]) .error-title h3 {
+  color: #f3f4f6;
+}
+
+.error-obs {
+  margin: 0.25em 0 0 0;
+  font-size: 0.95em;
+  color: var(--modal-text-secondary);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.no-errors-text {
+  margin: 0;
+  font-size: 1em;
+  color: var(--modal-text-secondary);
+}
+
+.modal-footer {
+  padding: 1em 1.5em;
+  border-top: 1px solid var(--modal-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75em;
+  background: inherit;
+}
+
+.btn-close {
+  appearance: none;
+  border: 1px solid var(--modal-border);
+  background: var(--theme-button-bg, #f3f4f6);
+  color: var(--modal-text);
+  padding: 0.6em 1.1em;
+  border-radius: 0.75em;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: transform 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-close:hover {
+  background: var(--theme-button-hover, #e5e7eb);
+  transform: translateY(-0.03em);
+}
+
+:host-context(.high-contrast) .overlay {
+  background: black !important;
+}
+
+:host-context(.high-contrast) .modal,
+:host-context(.high-contrast) .error-card {
+  background: black !important;
+  color: white !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+  border-radius: var(--modal-radius) !important;
+}
+
+:host-context(.high-contrast) .badge {
+  background: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+  border-radius: 9999px !important;
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: 1em;
+  }
+  .modal {
+    width: 100%;
+  }
+}
