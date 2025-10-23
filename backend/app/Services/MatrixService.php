@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Matriz;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -172,7 +173,19 @@ class MatrixService
 
         $mapped = $this->parseFile($file);
 
-        return $this->persistMappedMatrix($mapped, $payload);
+        $validatedMapped = $this->validateMapped($mapped);
+        if ($validatedMapped['has_errors']) {
+            Log::error($validatedMapped['checks']);
+
+            return $validatedMapped;
+        } else {
+            $matrix = $this->persistMappedMatrix($mapped, $payload);
+
+            $returnData['matrix'] = $matrix;
+            $returnData['has_erros'] = false;
+
+            return $returnData;
+        }
     }
 
     public function parseFile(UploadedFile $file): array
@@ -192,14 +205,373 @@ class MatrixService
         );
 
         $ucCategorias    = $sheetUC ? $this->extractCategoriesAndCompetencies($sheetUC) : [];
-        $ucFuncoes       = $sheetUC ? $this->extractFuncoesSubfuncoes($sheetUC)        : [];
-        $ocConhecimentos = $sheetOC ? $this->extractConhecimentos($sheetOC)          : [];
+        $ucFuncoes       = $sheetUC ? $this->extractFuncoesSubfuncoes($sheetUC) : [];
+        $ocConhecimentos = $sheetOC ? $this->extractConhecimentos($sheetOC) : [];
+        $ucHeaders       = $sheetUC ? $this->detectUcHeaders($sheetUC) : [
+            'funcao' => false,
+            'subfuncao' => false,
+            'raw' => [
+                'A5' => null, 'B5' => null
+            ]
+        ];
+        $ucGeneral       = $sheetUC ? $this->extractGeneralCompetencie($sheetUC) : null;
+        $ucCruzamentos   = $sheetUC ? $this->extractCruzamentos($sheetUC, $ucFuncoes, $ucCategorias) : [];
 
         return [
-            'uc_categorias'    => $ucCategorias,
-            'uc_funcoes'       => $ucFuncoes,
-            'uc_cruzamentos'   => $sheetUC ? $this->extractCruzamentos($sheetUC, $ucFuncoes, $ucCategorias) : [],
-            'oc_conhecimentos' => $ocConhecimentos,
+            'meta' => [
+                'has_uc_sheet' => (bool) $sheetUC,
+                'has_oc_sheet' => (bool) $sheetOC,
+                'uc_headers'   => $ucHeaders,
+            ],
+            'uc_general_competencie' => $ucGeneral,
+            'uc_categorias'          => $ucCategorias,
+            'uc_funcoes'             => $ucFuncoes,
+            'uc_cruzamentos'         => $ucCruzamentos,
+            'oc_conhecimentos'       => $ocConhecimentos,
+        ];
+    }
+
+    public function persistMappedMatrix(array $mapped, array $payload): array
+    {
+        $cats   = $mapped['uc_categorias']    ?? [];
+        $funcs  = $mapped['uc_funcoes']       ?? [];
+        $knows  = $mapped['oc_conhecimentos'] ?? [];
+        $cross  = $mapped['uc_cruzamentos']   ?? [];
+
+        return DB::transaction(function () use ($payload, $cats, $funcs, $knows, $cross) {
+
+            try {
+                DB::statement('SET LOCAL synchronous_commit = OFF');
+            } catch (\Throwable $_) {
+            }
+
+            $now = now();
+
+            $matrizId = $this->upsertAndGetMatrizId($payload, $now);
+
+            $catRows = [];
+            foreach ($cats as $i => $c) {
+                $catRows[] = [
+                    'matriz_id'  => $matrizId,
+                    'nome'       => $c['nome'],
+                    'codigo'     => $i,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            if ($catRows) {
+                $this->chunkedUpsert('categorias', $catRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
+            }
+
+            $catIdsByName = $catRows
+                ? DB::table('categorias')->where('matriz_id', $matrizId)->pluck('id', 'nome')->all()
+                : [];
+
+            $cmpRows = [];
+            foreach ($cats as $c) {
+                $catId = $catIdsByName[$c['nome']] ?? null;
+                if (!$catId) {
+                    continue;
+                }
+
+                foreach ($c['competencias'] as $cp) {
+                    $cmpRows[] = [
+                        'categoria_id' => $catId,
+                        'nome'         => $cp['nome'] ?? ($cp['codigo'] ?? 'Sem nome'),
+                        'descricao'    => $cp['descricao'] ?? null,
+                        'created_at'   => $now,
+                        'updated_at'   => $now,
+                    ];
+                }
+            }
+            if ($cmpRows) {
+                $this->chunkedUpsert('competencias', $cmpRows, ['categoria_id','nome'], ['descricao','updated_at']);
+            }
+
+            $cmpAll = !empty($catIdsByName)
+                ? DB::table('competencias')->whereIn('categoria_id', array_values($catIdsByName))->get(['id','categoria_id','nome'])
+                : collect();
+
+            $cmpKey2Id = [];
+            foreach ($cmpAll as $row) {
+                $cmpKey2Id[$row->categoria_id . '|' . $row->nome] = (string)$row->id;
+            }
+
+            $cmpIdByCode = [];
+            $cmpIdByCol  = [];
+            foreach ($cats as $c) {
+                $catId = $catIdsByName[$c['nome']] ?? null;
+                if (!$catId) {
+                    continue;
+                }
+
+                foreach ($c['competencias'] as $cp) {
+                    $key = $catId . '|' . ($cp['nome'] ?? ($cp['codigo'] ?? 'Sem nome'));
+                    $cid = $cmpKey2Id[$key] ?? null;
+                    if (!$cid) {
+                        continue;
+                    }
+
+                    if (!empty($cp['codigo'])) {
+                        $cmpIdByCode[strtolower($cp['codigo'])] = $cid;
+                    }
+                    if (!empty($cp['col'])) {
+                        $cmpIdByCol[(int)$cp['col']] = $cid;
+                    }
+                }
+            }
+
+            $fnRows = [];
+            foreach ($funcs as $i => $f) {
+                $fnRows[] = [
+                    'matriz_id'  => $matrizId,
+                    'nome'       => $f['nome'],
+                    'codigo'     => $i,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            if ($fnRows) {
+                $this->chunkedUpsert('funcoes', $fnRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
+            }
+
+            $fnIdsByName = $fnRows
+                ? DB::table('funcoes')->where('matriz_id', $matrizId)->pluck('id', 'nome')->all()
+                : [];
+
+            $subRows = [];
+            foreach ($funcs as $f) {
+                $fid = $fnIdsByName[$f['nome']] ?? null;
+                if (!$fid) {
+                    continue;
+                }
+
+                foreach ($f['subfuncoes'] as $sf) {
+                    $subRows[] = [
+                        'funcao_id'   => $fid,
+                        'nome'        => $sf['nome'],
+                        'created_at'  => $now,
+                        'updated_at'  => $now,
+                    ];
+                }
+            }
+            if ($subRows) {
+                $this->chunkedUpsert('subfuncoes', $subRows, ['funcao_id','nome'], ['updated_at']);
+            }
+
+            $subAll = !empty($fnIdsByName)
+                ? DB::table('subfuncoes')->whereIn('funcao_id', array_values($fnIdsByName))->get(['id','funcao_id','nome'])
+                : collect();
+
+            $subKey2Id = [];
+            foreach ($subAll as $row) {
+                $subKey2Id[$row->funcao_id . '|' . $row->nome] = (string)$row->id;
+            }
+
+            $subIdByRow = [];
+            foreach ($funcs as $f) {
+                $fid = $fnIdsByName[$f['nome']] ?? null;
+                if (!$fid) {
+                    continue;
+                }
+
+                foreach ($f['subfuncoes'] as $sf) {
+                    $sid = $subKey2Id[$fid . '|' . $sf['nome']] ?? null;
+                    if ($sid && !empty($sf['row_idx'])) {
+                        $subIdByRow[(int)$sf['row_idx']] = $sid;
+                    }
+                }
+            }
+
+            $knRows = [];
+            foreach ($knows as $codeInt => $k) {
+                $knRows[] = [
+                    'matriz_id'  => $matrizId,
+                    'codigo'     => (int)$codeInt,
+                    'nome'       => $k['nome'] ?? "Conhecimento {$codeInt}",
+                    'descricao'  => $k['capacidade'] ?? null,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+            if ($knRows) {
+                $this->chunkedUpsert('conhecimentos', $knRows, ['matriz_id','codigo'], ['nome','descricao','updated_at']);
+            }
+
+            $knowIdsByCode = $knRows
+                ? DB::table('conhecimentos')->where('matriz_id', $matrizId)->pluck('id', 'codigo')->all()
+                : [];
+
+            [$hasIdCC, $hasIdMSC] = $this->pivotsHaveId();
+
+            $setCC  = [];
+            $setMSC = [];
+
+            foreach ($cross as $x) {
+                $rowIdx = (int)($x['subfuncao']['row'] ?? 0);
+
+                $subId  = $subIdByRow[$rowIdx] ?? null;
+                if (!$subId) {
+                    continue;
+                }
+
+                $compId = null;
+
+                $codeKey = isset($x['competencia']['codigo']) ? strtolower((string)$x['competencia']['codigo']) : null;
+                if ($codeKey) {
+                    $compId = $cmpIdByCode[$codeKey] ?? null;
+                }
+
+                if (!$compId && !empty($x['competencia']['col'])) {
+                    $compId = $cmpIdByCol[(int)$x['competencia']['col']] ?? null;
+                }
+
+                if (!$compId) {
+                    continue;
+                }
+
+                $nums = $x['valores'] ?? [];
+                foreach ($nums as $n) {
+                    $knowId = $knowIdsByCode[(int)$n] ?? null;
+                    if (!$knowId) {
+                        continue;
+                    }
+
+                    $setCC["$compId|$knowId"] = [$compId,$knowId];
+                    $setMSC["{$matrizId}|{$subId}|{$compId}|{$knowId}"] = [$matrizId,$subId,$compId,$knowId];
+                }
+            }
+
+            if ($setCC) {
+                $rows = [];
+
+                foreach ($setCC as [$compId,$knowId]) {
+                    $row = ['competencia_id' => $compId, 'conhecimento_id' => $knowId];
+                    $rows[] = $row;
+                }
+
+                $this->chunkedInsertIgnore('competencia_conhecimento', $rows);
+            }
+
+            if ($setMSC) {
+                $rows = [];
+                foreach ($setMSC as [$mid,$subId,$compId,$knowId]) {
+                    $rows[] = [
+                        'matriz_id'      => $mid,
+                        'subfuncao_id'   => $subId,
+                        'competencia_id' => $compId,
+                        'conhecimento_id' => $knowId,
+                    ];
+                }
+                $this->chunkedInsertIgnore('matriz_subfuncao_conhecimento', $rows);
+            }
+
+            return [
+                'matriz_id'     => (string) $matrizId,
+                'categorias'    => count($catIdsByName),
+                'competencias'  => count($cmpKey2Id),
+                'funcoes'       => count($fnIdsByName),
+                'subfuncoes'    => count($subIdByRow),
+                'conhecimentos' => count($knowIdsByCode),
+                'cruzamentos'   => count($setMSC),
+            ];
+        });
+    }
+
+    public function getMatrix(string $matrizId)
+    {
+        $matriz = Matriz::query()
+            ->with([
+                'curso:id,nome',
+                'categorias' => fn ($q) => $q
+                    ->select('id', 'matriz_id', 'nome')
+                    ->orderBy('codigo'),
+                'categorias.competencias:id,categoria_id,nome,descricao',
+                'funcoes' => fn ($q) => $q
+                    ->select('id', 'matriz_id', 'nome')
+                    ->orderBy('codigo'),
+                'funcoes:id,codigo,matriz_id,nome',
+                'funcoes.subfuncoes:id,funcao_id,nome',
+                'funcoes.subfuncoes.conhecimentosPivot' => fn ($q) => $q
+                    ->wherePivot('matriz_id', $matrizId)
+                    ->select(
+                        'conhecimentos.id',
+                        'conhecimentos.codigo',
+                        'conhecimentos.nome',
+                        'conhecimentos.descricao'
+                    ),
+                'conhecimentos:id,matriz_id,codigo,nome,descricao',
+                'conhecimentos.competencias:id',
+            ])
+            ->findOrFail($matrizId);
+
+        $categorias = $matriz->categorias->map(function ($cat) {
+            return [
+                'id'           => (string) $cat->id,
+                'nome'         => $cat->nome,
+                'codigo'       => $cat->codigo,
+                'competencias' => $cat->competencias->map(fn ($c) => [
+                    'id'        => (string) $c->id,
+                    'nome'      => $c->nome,
+                    'descricao' => $c->descricao,
+                ])->values()->all(),
+            ];
+        })->values()->all();
+
+        $funcoes = $matriz->funcoes->map(function ($f) {
+            return [
+                'id'         => (string) $f->id,
+                'nome'       => $f->nome,
+                'subfuncoes' => $f->subfuncoes->map(fn ($s) => [
+                    'id'   => (string) $s->id,
+                    'nome' => $s->nome,
+                ])->values()->all(),
+            ];
+        })->values()->all();
+
+        $conhecimentos = $matriz->conhecimentos->map(function ($k) {
+            return [
+                'id'                => (string) $k->id,
+                'codigo'            => $k->codigo,
+                'nome'              => $k->nome,
+                'descricao'         => $k->descricao,
+                'competencias_ids'  => $k->competencias->pluck('id')->map(fn ($id) => (string) $id)->values()->all(),
+            ];
+        })->values()->all();
+
+        $cruzamentos = collect($matriz->funcoes)
+            ->flatMap(fn ($f) => $f->subfuncoes)
+            ->flatMap(function ($sub) {
+                return $sub->conhecimentosPivot->map(fn ($k) => [
+                    'subfuncao_id'    => (string) $sub->id,
+                    'competencia_id'  => (string) $k->pivot->competencia_id,
+                    'conhecimento_id' => (string) $k->id,
+                    'conhecimento'    => [
+                        'id'     => (string) $k->id,
+                        'codigo' => $k->codigo,
+                        'nome'   => $k->nome,
+                    ],
+                ]);
+            })
+            ->values()
+            ->all();
+
+        return [
+            'id'        => (string) $matriz->id,
+            'nome'      => $matriz->nome,
+            'versao'    => $matriz->versao,
+            'vigencia'  => [
+                'de'  => $matriz->vigente_de,
+                'ate' => $matriz->vigente_ate,
+            ],
+            'curso'      => [
+                'id'   => (string) $matriz->curso->id,
+                'nome' => $matriz->curso->nome,
+            ],
+            'categorias'    => $categorias,
+            'funcoes'       => $funcoes,
+            'conhecimentos' => $conhecimentos,
+            'cruzamentos'   => $cruzamentos,
         ];
     }
 
@@ -208,7 +580,7 @@ class MatrixService
         $reader = new Xlsx();
         $names  = $reader->listWorksheetNames($file->getPathname());
 
-        $norm = fn($s) => preg_replace('/[^a-z0-9]/', '', mb_strtolower($s));
+        $norm = fn ($s) => preg_replace('/[^a-z0-9]/', '', mb_strtolower($s));
         $map  = [];
         foreach ($names as $n) {
             $map[$norm($n)] = $n;
@@ -257,7 +629,7 @@ class MatrixService
                 return $s;
             }
         }
-        $norm = fn($s) => preg_replace('/[^a-z0-9]/', '', mb_strtolower($s));
+        $norm = fn ($s) => preg_replace('/[^a-z0-9]/', '', mb_strtolower($s));
         $cand = array_map($norm, $candidates);
 
         foreach ($spreadsheet->getWorksheetIterator() as $sheet) {
@@ -266,6 +638,12 @@ class MatrixService
             }
         }
         return null;
+    }
+
+    private function extractGeneralCompetencie(Worksheet $sheet): ?string
+    {
+        $v = trim((string)$sheet->getCell('A4')->getFormattedValue());
+        return $v !== '' ? $v : null;
     }
 
     private function extractCategoriesAndCompetencies(Worksheet $sheet): array
@@ -578,253 +956,6 @@ class MatrixService
         return $conhecimentos;
     }
 
-    public function persistMappedMatrix(array $mapped, array $payload): array
-    {
-        $cats   = $mapped['uc_categorias']    ?? [];
-        $funcs  = $mapped['uc_funcoes']       ?? [];
-        $knows  = $mapped['oc_conhecimentos'] ?? [];
-        $cross  = $mapped['uc_cruzamentos']   ?? [];
-
-        return DB::transaction(function () use ($payload, $cats, $funcs, $knows, $cross) {
-
-            try {
-                DB::statement('SET LOCAL synchronous_commit = OFF');
-            } catch (\Throwable $_) {
-            }
-
-            $now = now();
-
-            $matrizId = $this->upsertAndGetMatrizId($payload, $now);
-
-            $catRows = [];
-            foreach ($cats as $i => $c) {
-                $catRows[] = [
-                    'matriz_id'  => $matrizId,
-                    'nome'       => $c['nome'],
-                    'codigo'     => $i,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-            }
-            if ($catRows) {
-                $this->chunkedUpsert('categorias', $catRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
-            }
-
-            $catIdsByName = $catRows
-                ? DB::table('categorias')->where('matriz_id', $matrizId)->pluck('id', 'nome')->all()
-                : [];
-
-            $cmpRows = [];
-            foreach ($cats as $c) {
-                $catId = $catIdsByName[$c['nome']] ?? null;
-                if (!$catId) {
-                    continue;
-                }
-
-                foreach ($c['competencias'] as $cp) {
-                    $cmpRows[] = [
-                        'categoria_id' => $catId,
-                        'nome'         => $cp['nome'] ?? ($cp['codigo'] ?? 'Sem nome'),
-                        'descricao'    => $cp['descricao'] ?? null,
-                        'created_at'   => $now,
-                        'updated_at'   => $now,
-                    ];
-                }
-            }
-            if ($cmpRows) {
-                $this->chunkedUpsert('competencias', $cmpRows, ['categoria_id','nome'], ['descricao','updated_at']);
-            }
-
-            $cmpAll = !empty($catIdsByName)
-                ? DB::table('competencias')->whereIn('categoria_id', array_values($catIdsByName))->get(['id','categoria_id','nome'])
-                : collect();
-
-            $cmpKey2Id = [];
-            foreach ($cmpAll as $row) {
-                $cmpKey2Id[$row->categoria_id . '|' . $row->nome] = (string)$row->id;
-            }
-
-            $cmpIdByCode = [];
-            $cmpIdByCol  = [];
-            foreach ($cats as $c) {
-                $catId = $catIdsByName[$c['nome']] ?? null;
-                if (!$catId) {
-                    continue;
-                }
-
-                foreach ($c['competencias'] as $cp) {
-                    $key = $catId . '|' . ($cp['nome'] ?? ($cp['codigo'] ?? 'Sem nome'));
-                    $cid = $cmpKey2Id[$key] ?? null;
-                    if (!$cid) {
-                        continue;
-                    }
-
-                    if (!empty($cp['codigo'])) {
-                        $cmpIdByCode[strtolower($cp['codigo'])] = $cid;
-                    }
-                    if (!empty($cp['col'])) {
-                        $cmpIdByCol[(int)$cp['col']] = $cid;
-                    }
-                }
-            }
-
-            $fnRows = [];
-            foreach ($funcs as $i => $f) {
-                $fnRows[] = [
-                    'matriz_id'  => $matrizId,
-                    'nome'       => $f['nome'],
-                    'codigo'     => $i,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-            }
-            if ($fnRows) {
-                $this->chunkedUpsert('funcoes', $fnRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
-            }
-
-            $fnIdsByName = $fnRows
-                ? DB::table('funcoes')->where('matriz_id', $matrizId)->pluck('id', 'nome')->all()
-                : [];
-
-            $subRows = [];
-            foreach ($funcs as $f) {
-                $fid = $fnIdsByName[$f['nome']] ?? null;
-                if (!$fid) {
-                    continue;
-                }
-
-                foreach ($f['subfuncoes'] as $sf) {
-                    $subRows[] = [
-                        'funcao_id'   => $fid,
-                        'nome'        => $sf['nome'],
-                        'created_at'  => $now,
-                        'updated_at'  => $now,
-                    ];
-                }
-            }
-            if ($subRows) {
-                $this->chunkedUpsert('subfuncoes', $subRows, ['funcao_id','nome'], ['updated_at']);
-            }
-
-            $subAll = !empty($fnIdsByName)
-                ? DB::table('subfuncoes')->whereIn('funcao_id', array_values($fnIdsByName))->get(['id','funcao_id','nome'])
-                : collect();
-
-            $subKey2Id = [];
-            foreach ($subAll as $row) {
-                $subKey2Id[$row->funcao_id . '|' . $row->nome] = (string)$row->id;
-            }
-
-            $subIdByRow = [];
-            foreach ($funcs as $f) {
-                $fid = $fnIdsByName[$f['nome']] ?? null;
-                if (!$fid) {
-                    continue;
-                }
-
-                foreach ($f['subfuncoes'] as $sf) {
-                    $sid = $subKey2Id[$fid . '|' . $sf['nome']] ?? null;
-                    if ($sid && !empty($sf['row_idx'])) {
-                        $subIdByRow[(int)$sf['row_idx']] = $sid;
-                    }
-                }
-            }
-
-            $knRows = [];
-            foreach ($knows as $codeInt => $k) {
-                $knRows[] = [
-                    'matriz_id'  => $matrizId,
-                    'codigo'     => (int)$codeInt,
-                    'nome'       => $k['nome'] ?? "Conhecimento {$codeInt}",
-                    'descricao'  => $k['capacidade'] ?? null,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
-            }
-            if ($knRows) {
-                $this->chunkedUpsert('conhecimentos', $knRows, ['matriz_id','codigo'], ['nome','descricao','updated_at']);
-            }
-
-            $knowIdsByCode = $knRows
-                ? DB::table('conhecimentos')->where('matriz_id', $matrizId)->pluck('id', 'codigo')->all()
-                : [];
-
-            [$hasIdCC, $hasIdMSC] = $this->pivotsHaveId();
-
-            $setCC  = [];
-            $setMSC = [];
-
-            foreach ($cross as $x) {
-                $rowIdx = (int)($x['subfuncao']['row'] ?? 0);
-
-                $subId  = $subIdByRow[$rowIdx] ?? null;
-                if (!$subId) {
-                    continue;
-                }
-
-                $compId = null;
-
-                $codeKey = isset($x['competencia']['codigo']) ? strtolower((string)$x['competencia']['codigo']) : null;
-                if ($codeKey) {
-                    $compId = $cmpIdByCode[$codeKey] ?? null;
-                }
-
-                if (!$compId && !empty($x['competencia']['col'])) {
-                    $compId = $cmpIdByCol[(int)$x['competencia']['col']] ?? null;
-                }
-
-                if (!$compId) {
-                    continue;
-                }
-
-                $nums = $x['valores'] ?? [];
-                foreach ($nums as $n) {
-                    $knowId = $knowIdsByCode[(int)$n] ?? null;
-                    if (!$knowId) {
-                        continue;
-                    }
-
-                    $setCC["$compId|$knowId"] = [$compId,$knowId];
-                    $setMSC["{$matrizId}|{$subId}|{$compId}|{$knowId}"] = [$matrizId,$subId,$compId,$knowId];
-                }
-            }
-
-            if ($setCC) {
-                $rows = [];
-
-                foreach ($setCC as [$compId,$knowId]) {
-                    $row = ['competencia_id' => $compId, 'conhecimento_id' => $knowId];
-                    $rows[] = $row;
-                }
-
-                $this->chunkedInsertIgnore('competencia_conhecimento', $rows);
-            }
-
-            if ($setMSC) {
-                $rows = [];
-                foreach ($setMSC as [$mid,$subId,$compId,$knowId]) {
-                    $rows[] = [
-                        'matriz_id'      => $mid,
-                        'subfuncao_id'   => $subId,
-                        'competencia_id' => $compId,
-                        'conhecimento_id' => $knowId,
-                    ];
-                }
-                $this->chunkedInsertIgnore('matriz_subfuncao_conhecimento', $rows);
-            }
-
-            return [
-                'matriz_id'     => (string) $matrizId,
-                'categorias'    => count($catIdsByName),
-                'competencias'  => count($cmpKey2Id),
-                'funcoes'       => count($fnIdsByName),
-                'subfuncoes'    => count($subIdByRow),
-                'conhecimentos' => count($knowIdsByCode),
-                'cruzamentos'   => count($setMSC),
-            ];
-        });
-    }
-
     private function pivotsHaveId(): array
     {
         if (self::$hasIdCC === null) {
@@ -912,100 +1043,314 @@ class MatrixService
         return true;
     }
 
-    public function getMatrix(string $matrizId)
+    private function validateMapped(array $mapped): array
     {
-        $matriz = Matriz::query()
-            ->with([
-                'curso:id,nome',
-                'categorias' => fn($q) => $q
-                    ->select('id', 'matriz_id', 'nome')
-                    ->orderBy('codigo'),
-                'categorias.competencias:id,categoria_id,nome,descricao',
-                'funcoes' => fn($q) => $q
-                    ->select('id', 'matriz_id', 'nome')
-                    ->orderBy('codigo'),
-                'funcoes:id,codigo,matriz_id,nome',
-                'funcoes.subfuncoes:id,funcao_id,nome',
-                'funcoes.subfuncoes.conhecimentosPivot' => fn ($q) => $q
-                    ->wherePivot('matriz_id', $matrizId)
-                    ->select(
-                        'conhecimentos.id',
-                        'conhecimentos.codigo',
-                        'conhecimentos.nome',
-                        'conhecimentos.descricao'
-                    ),
-                'conhecimentos:id,matriz_id,codigo,nome,descricao',
-                'conhecimentos.competencias:id',
-            ])
-            ->findOrFail($matrizId);
+        $meta  = $mapped['meta'] ?? [];
+        $hasUC = (bool)($meta['has_uc_sheet'] ?? false);
+        $hasOC = (bool)($meta['has_oc_sheet'] ?? false);
+        $ucHdr = $meta['uc_headers'] ?? [
+            'funcao' => false,
+            'subfuncao' => false,
+            'raw' => [
+                'A5' => null,
+                'B5' => null
+            ]
+        ];
 
-        $categorias = $matriz->categorias->map(function ($cat) {
-            return [
-                'id'           => (string) $cat->id,
-                'nome'         => $cat->nome,
-                'codigo'       => $cat->codigo,
-                'competencias' => $cat->competencias->map(fn ($c) => [
-                    'id'        => (string) $c->id,
-                    'nome'      => $c->nome,
-                    'descricao' => $c->descricao,
-                ])->values()->all(),
-            ];
-        })->values()->all();
+        $cats = $mapped['uc_categorias'] ?? [];
+        $funcs = $mapped['uc_funcoes'] ?? [];
+        $cruz = $mapped['uc_cruzamentos'] ?? [];
+        $oc = $mapped['oc_conhecimentos'] ?? [];
 
-        $funcoes = $matriz->funcoes->map(function ($f) {
-            return [
-                'id'         => (string) $f->id,
-                'nome'       => $f->nome,
-                'subfuncoes' => $f->subfuncoes->map(fn ($s) => [
-                    'id'   => (string) $s->id,
-                    'nome' => $s->nome,
-                ])->values()->all(),
-            ];
-        })->values()->all();
+        $checks = [
+            'rt00_uc_header_funcoes_row5' => [
+                'titulo' => 'Cabeçalho de Funções/Subfunções não encontrado na linha 5 da aba UC',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt00_uc_header_categorias_rows2a5' => [
+                'titulo' => 'Cabeçalhos de Categoria/Competências não encontrados nas linhas 2–5 da aba UC',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt00_oc_header_row3' => [
+                'titulo' => 'Cabeçalho de Objetos de Conhecimento não encontrado a partir da linha 3 da aba OC',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
 
-        $conhecimentos = $matriz->conhecimentos->map(function ($k) {
-            return [
-                'id'                => (string) $k->id,
-                'codigo'            => $k->codigo,
-                'nome'              => $k->nome,
-                'descricao'         => $k->descricao,
-                'competencias_ids'  => $k->competencias->pluck('id')->map(fn ($id) => (string) $id)->values()->all(),
-            ];
-        })->values()->all();
+            'rt01_capacidades_tem_cruzamento' => [
+                'titulo' => 'Verificar se todos as capacidades contêm, no mínimo, um (01) cruzamento com conhecimentos atrelados',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_capacidades_tem_descricao' => [
+                'titulo' => 'Verificar se todas as capacidades contêm descrições',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_funcoes_subfuncoes_tem_descricao' => [
+                'titulo' => 'Verificar a se as (Funções e Subfunções) estão com descrições',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_sem_funcoes_ou_subfuncoes_duplicadas' => [
+                'titulo' => 'Verificar se não existe (Função ou Subfunção) duplicada (com o mesmo nome)',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_competencia_geral_preenchida' => [
+                'titulo' => 'Verificar se competência geral está preenchida',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_categorias_batem_com_sistema' => [
+                'titulo' => 'Verificar se todas as categorias batem com as estruturas já cadastradas no sistema',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt01_uc_conteudo_em_oc' => [
+                'titulo' => 'Todos os conhecimentos da aba UC tem que estar presentes na aba objeto Conhecimento (OC), mas não necessariamente o contrário',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
 
-        $cruzamentos = collect($matriz->funcoes)
-            ->flatMap(fn ($f) => $f->subfuncoes)
-            ->flatMap(function ($sub) {
-                return $sub->conhecimentosPivot->map(fn ($k) => [
-                    'subfuncao_id'    => (string) $sub->id,
-                    'competencia_id'  => (string) $k->pivot->competencia_id,
-                    'conhecimento_id' => (string) $k->id,
-                    'conhecimento'    => [
-                        'id'     => (string) $k->id,
-                        'codigo' => $k->codigo,
-                        'nome'   => $k->nome,
-                    ],
-                ]);
-            })
-            ->values()
-            ->all();
+            'rt02_qtd_capacidades_confere' => ['titulo' => 'Verificar se a mesma quantidade de capacidades coincide com a quantidade de capacidades da aba UC',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+            'rt02_conhecimentos_sem_duplicidade' => ['titulo' => 'Nenhum Conhecimento duplicado: Mesmo código, mas descrições diferentes; Mesma descrição, mas códigos diferentes',
+                'status' => 'Entregue',
+                'obs' => ''
+            ],
+        ];
+
+        if ($hasUC && (!$ucHdr['funcao'] || !$ucHdr['subfuncao'])) {
+            $checks['rt00_uc_header_funcoes_row5']['status'] = 'Pendente';
+            $checks['rt00_uc_header_funcoes_row5']['obs'] = 'Esperado "Função" em A5 e "Subfunção" em B5. Lidos: A5="'.$ucHdr['raw']['A5'].'", B5="'.$ucHdr['raw']['B5'].'"';
+        }
+
+        if ($hasUC && empty($cats)) {
+            $checks['rt00_uc_header_categorias_rows2a5']['status'] = 'Pendente';
+            $checks['rt00_uc_header_categorias_rows2a5']['obs'] = 'Linhas 2–5 não apresentaram categorias/competências válidas.';
+        }
+
+        if ($hasOC && empty($oc)) {
+            $checks['rt00_oc_header_row3']['status'] = 'Pendente';
+            $checks['rt00_oc_header_row3']['obs'] = 'Estrutura esperada a partir da linha 3 (colunas A–C) não identificada.';
+        }
+
+        $competencias = [];
+        foreach ($cats as $c) {
+            foreach ($c['competencias'] as $cp) {
+                $competencias[] = [
+                    'categoria' => $c['nome'] ?? '',
+                    'codigo' => isset($cp['codigo']) ? strtolower((string)$cp['codigo']) : null,
+                    'nome' => $cp['nome'] ?? '',
+                    'col' => $cp['col'] ?? null,
+                ];
+            }
+        }
+
+        $crossByComp = [];
+        foreach ($cruz as $x) {
+            $ck = null;
+            if (!empty($x['competencia']['codigo'])) {
+                $ck = strtolower((string)$x['competencia']['codigo']);
+            } elseif (!empty($x['competencia']['col'])) {
+                $ck = 'col_' . (int)$x['competencia']['col'];
+            }
+            if ($ck === null) {
+                continue;
+            }
+            if (!isset($crossByComp[$ck])) {
+                $crossByComp[$ck] = 0;
+            }
+            $crossByComp[$ck] += count($x['valores'] ?? []);
+        }
+
+        $noCross = [];
+        foreach ($competencias as $cp) {
+            $k1 = $cp['codigo'] ? $cp['codigo'] : null;
+            $k2 = $cp['col'] ? 'col_' . (int)$cp['col'] : null;
+            $has = false;
+            if ($k1 && !empty($crossByComp[$k1])) {
+                $has = true;
+            }
+            if ($k2 && !empty($crossByComp[$k2])) {
+                $has = true;
+            }
+            if (!$has) {
+                $noCross[] = ($cp['codigo'] ?: $cp['nome'] ?: 'sem identificação');
+            }
+        }
+        if (!empty($noCross)) {
+            $checks['rt01_capacidades_tem_cruzamento']['status'] = 'Pendente';
+            $checks['rt01_capacidades_tem_cruzamento']['obs'] = 'Capacidades sem cruzamento: ' . implode(', ', $noCross);
+        }
+
+        $emptyNames = [];
+        foreach ($competencias as $cp) {
+            $nome = trim((string)($cp['nome'] ?? ''));
+            if ($nome === '') {
+                $emptyNames[] = ($cp['codigo'] ?: 'sem identificação');
+            }
+        }
+        if (!empty($emptyNames)) {
+            $checks['rt01_capacidades_tem_descricao']['status'] = 'Pendente';
+            $checks['rt01_capacidades_tem_descricao']['obs'] = 'Capacidades sem descrição: ' . implode(', ', $emptyNames);
+        }
+
+        $funcoesNomes = [];
+        $subfuncoesNomes = [];
+        foreach ($funcs as $f) {
+            $fn = trim((string)($f['nome'] ?? ''));
+            $funcoesNomes[] = $fn;
+            foreach ($f['subfuncoes'] as $sf) {
+                $subfuncoesNomes[] = trim((string)($sf['nome'] ?? ''));
+            }
+        }
+        $faltamDesc = [];
+        foreach ($funcs as $f) {
+            if (trim((string)($f['nome'] ?? '')) === '') {
+                $faltamDesc[] = 'Função sem nome';
+            }
+            foreach ($f['subfuncoes'] as $sf) {
+                if (trim((string)($sf['nome'] ?? '')) === '') {
+                    $faltamDesc[] = 'Subfunção sem nome';
+                }
+            }
+        }
+        if (!empty($faltamDesc)) {
+            $checks['rt01_funcoes_subfuncoes_tem_descricao']['status'] = 'Pendente';
+            $checks['rt01_funcoes_subfuncoes_tem_descricao']['obs'] = implode('; ', $faltamDesc);
+        }
+
+        $dupsFuncoes = array_values(array_unique(array_keys(array_filter(array_count_values(array_filter($funcoesNomes)), fn ($q) => $q > 1))));
+        $dupsSubfuncoes = array_values(array_unique(array_keys(array_filter(array_count_values(array_filter($subfuncoesNomes)), fn ($q) => $q > 1))));
+        $dupObs = [];
+        if (!empty($dupsFuncoes)) {
+            $dupObs[] = 'Funções duplicadas: ' . implode(', ', $dupsFuncoes);
+        }
+        if (!empty($dupsSubfuncoes)) {
+            $dupObs[] = 'Subfunções duplicadas: ' . implode(', ', $dupsSubfuncoes);
+        }
+        if (!empty($dupObs)) {
+            $checks['rt01_sem_funcoes_ou_subfuncoes_duplicadas']['status'] = 'Pendente';
+            $checks['rt01_sem_funcoes_ou_subfuncoes_duplicadas']['obs'] = implode(' | ', $dupObs);
+        }
+
+        if ($mapped['uc_general_competencie'] == null) {
+            $checks['rt01_competencia_geral_preenchida']['status'] = 'Pendente';
+            $checks['rt01_competencia_geral_preenchida']['obs'] = 'Não foi possível validar com os dados extraídos';
+        }
+
+        $checks['rt01_categorias_batem_com_sistema']['status'] = 'Entregue';
+        $checks['rt01_categorias_batem_com_sistema']['obs'] = '';
+
+        $ocCodes = array_map('intval', array_keys($oc));
+        $ocCodesSet = array_fill_keys($ocCodes, true);
+        $referenciados = [];
+        foreach ($cruz as $x) {
+            foreach ($x['valores'] ?? [] as $v) {
+                $referenciados[(int)$v] = true;
+            }
+        }
+        $missingInOC = [];
+        foreach (array_keys($referenciados) as $code) {
+            if (!isset($ocCodesSet[(int)$code])) {
+                $missingInOC[] = (int)$code;
+            }
+        }
+        if (!empty($missingInOC)) {
+            $checks['rt01_uc_conteudo_em_oc']['status'] = 'Pendente';
+            $checks['rt01_uc_conteudo_em_oc']['obs'] = 'Códigos referenciados em UC ausentes na aba OC: ' . implode(', ', $missingInOC);
+        }
+
+        $qtdCapUC = count($competencias);
+        $capInOC = [];
+        foreach ($oc as $row) {
+            $cap = trim((string)($row['capacidade'] ?? ''));
+            if ($cap !== '') {
+                $capInOC[$cap] = true;
+            }
+        }
+        $qtdCapOC = count($capInOC);
+        if ($qtdCapUC !== $qtdCapOC) {
+            $checks['rt02_qtd_capacidades_confere']['status'] = 'Pendente';
+            $checks['rt02_qtd_capacidades_confere']['obs'] = 'Capacidades UC: ' . $qtdCapUC . ' | Capacidades em OC: ' . $qtdCapOC;
+        }
+
+        $byCode = [];
+        $byDesc = [];
+        foreach ($oc as $code => $row) {
+            $code = (int)$code;
+            $nome = trim((string)($row['nome'] ?? ''));
+            if (!isset($byCode[$code])) {
+                $byCode[$code] = [];
+            }
+            $byCode[$code][$nome] = true;
+            if ($nome !== '') {
+                if (!isset($byDesc[$nome])) {
+                    $byDesc[$nome] = [];
+                }
+                $byDesc[$nome][$code] = true;
+            }
+        }
+        $conflicts = [];
+        foreach ($byCode as $code => $names) {
+            if (count($names) > 1) {
+                $conflicts[] = 'Código ' . $code . ' com descrições diferentes';
+            }
+        }
+        foreach ($byDesc as $desc => $codes) {
+            if (count($codes) > 1) {
+                $conflicts[] = 'Descrição "' . $desc . '" com códigos diferentes: ' . implode(', ', array_keys($codes));
+            }
+        }
+        if (!empty($conflicts)) {
+            $checks['rt02_conhecimentos_sem_duplicidade']['status'] = 'Pendente';
+            $checks['rt02_conhecimentos_sem_duplicidade']['obs'] = implode(' | ', $conflicts);
+        }
+
+        $hasErrors = false;
+        foreach ($checks as $c) {
+            if ($c['status'] === 'Pendente') {
+                $hasErrors = true;
+                break;
+            }
+        }
 
         return [
-            'id'        => (string) $matriz->id,
-            'nome'      => $matriz->nome,
-            'versao'    => $matriz->versao,
-            'vigencia'  => [
-                'de'  => $matriz->vigente_de,
-                'ate' => $matriz->vigente_ate,
-            ],
-            'curso'      => [
-                'id'   => (string) $matriz->curso->id,
-                'nome' => $matriz->curso->nome,
-            ],
-            'categorias'    => $categorias,
-            'funcoes'       => $funcoes,
-            'conhecimentos' => $conhecimentos,
-            'cruzamentos'   => $cruzamentos,
+            'has_errors' => $hasErrors,
+            'checks' => $checks,
+        ];
+    }
+
+    private function detectUcHeaders(Worksheet $sheet): array
+    {
+        $a5 = trim((string)$sheet->getCell('A5')->getFormattedValue());
+        $b5 = trim((string)$sheet->getCell('B5')->getFormattedValue());
+
+        $norm = function (?string $s): string {
+            $s = (string)$s;
+            $s = mb_strtolower($s);
+            $t = @iconv('UTF-8', 'ASCII//TRANSLIT', $s);
+            $s = $t !== false ? $t : $s;
+            $s = preg_replace('/[^a-z0-9]+/u', ' ', $s);
+            $s = trim(preg_replace('/\s+/', ' ', $s));
+            return $s;
+        };
+
+        $a5n = $norm($a5);
+        $b5n = $norm($b5);
+        $okFunc = (bool)preg_match('/^funcao(s)?$/', $a5n);
+        $okSub  = (bool)preg_match('/^subfuncao(s)?$/', $b5n);
+
+        return [
+            'funcao' => $okFunc,
+            'subfuncao' => $okSub,
+            'raw' => ['A5' => $a5, 'B5' => $b5],
         ];
     }
 }
