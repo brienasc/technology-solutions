@@ -34,7 +34,10 @@
           </div>
           <div class="info-item">
             <label>Status:</label>
-            <span class="status-badge" [class.status-rascunho]="item.status === 0" [class.status-finalizado]="item.status === 1">
+            <span class="status-badge" 
+                  [class.status-rascunho]="item.status === 0" 
+                  [class.status-finalizado]="item.status === 1"
+                  [class.status-calibrado]="item.status === 2">
               {{ statusText }}
             </span>
           </div>
@@ -137,6 +140,16 @@
             Editar
           </button>
           
+          <button 
+            *ngIf="canCalibrate" 
+            type="button" 
+            class="btn btn-success" 
+            (click)="onCalibrate()"
+            [disabled]="loading">
+            <i class="fas fa-check-circle"></i>
+            {{ loading ? 'Calibrando...' : 'Marcar como Calibrado' }}
+          </button>
+          
           <button type="button" class="btn btn-secondary" (click)="onClose()">
             Fechar
           </button>
@@ -174,3 +187,14 @@
     </div>
   </div>
 </div>
+
+<!-- Alert Modal -->
+<app-alert-modal
+  [open]="alertOpen"
+  [title]="alertTitle"
+  [message]="alertMessage"
+  [variant]="alertVariant"
+  [actions]="alertActions"
+  (action)="onAlertAction($event)"
+  (closed)="onAlertClosed()">
+</app-alert-modal>

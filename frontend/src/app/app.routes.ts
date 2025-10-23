@@ -56,13 +56,13 @@ export const routes: Routes = [
     path: 'matrizes',
     component: MatricesPageComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['Administrador'] }
+    data: { roles: ['Administrador', 'Elaborador de Itens'] }
   },
   {
     path: 'cursos/itens/:id',
     component: CursoItensComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['Administrador'] }
+    data: { roles: ['Administrador', 'Elaborador de Itens'] }
   },
   { path: 'cursos/:id/avaliacoes', 
     component: AvaliacoesComponent,
