@@ -21,6 +21,10 @@ Route::get('/convites/{id_convite}', [ConvitesController::class,'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/cursos/itens/{id}', [CursoItemController::class, 'index']);
+    Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
+
+    Route::get('/matrizes/list', [MatrixController::class, 'index']);
+    Route::get('/matrizes/{id}/details', [MatrixController::class, 'show']);
 
     Route::middleware('abilities:access:all')->group(function () {
         # Rotas de Convites

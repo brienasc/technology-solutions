@@ -17,10 +17,28 @@ export class MatricesService {
     return this.http.get<any>('/api/matrizes', { params: p }).pipe(map(r => this.adaptPaginated(r.data ?? r)));
   }
 
+  getMatricesForItems(): Observable<Matrix[]> {
+    return this.http.get<any>('/api/matrizes/list').pipe(
+      map(response => {
+        const data = response?.data ?? response;
+        const matrices = data?.matrices ?? data ?? [];
+        return matrices.map((m: any) => this.adaptMatrix(m));
+      })
+    );
+  }
+
   getMatrix(id: string): Observable<MatrixDetail> {
     let params = new HttpParams().set('include', 'categorias.competencias,funcoes.subfuncoes,conhecimentos,cruzamentos');
     
     return this.http.get<any>(`/api/matrizes/${id}`, { params }).pipe(
+      map(res => this.adaptMatrixDetail(res?.data ?? res))
+    );
+  }
+
+  getMatrixForItems(id: string): Observable<MatrixDetail> {
+    let params = new HttpParams().set('include', 'categorias.competencias,funcoes.subfuncoes,conhecimentos,cruzamentos');
+    
+    return this.http.get<any>(`/api/matrizes/${id}/details`, { params }).pipe(
       map(res => this.adaptMatrixDetail(res?.data ?? res))
     );
   }

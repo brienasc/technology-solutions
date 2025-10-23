@@ -126,15 +126,22 @@ export class CreateItemModalComponent implements OnInit {
     this.loadMatrizes();
   }
 
+  // método específico para Elaboradores
   loadMatrizes(): void {
-    this.matricesService.getMatrices({ include: ['curso'] }).subscribe({
-      next: (response) => {
-        this.matrizes = response.data;
+    this.matricesService.getMatricesForItems().subscribe({
+      next: (matrizes) => {
+        this.matrizes = matrizes;
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar matrizes:', error);
+        this.matrizes = [];
         this.cdr.markForCheck();
       }
     });
   }
 
+  // método específico para Elaboradores
   onMatrizChange(): void {
     if (!this.formData.matriz_id) {
       this.matrizSelecionada = null;
@@ -143,14 +150,15 @@ export class CreateItemModalComponent implements OnInit {
       return;
     }
 
-    // Incluir cruzamentos na requisição
-    this.matricesService.getMatrix(this.formData.matriz_id).subscribe({
+    // Usar o método específico para Elaboradores que busca os detalhes da matriz
+    this.matricesService.getMatrixForItems(this.formData.matriz_id).subscribe({
       next: (matriz) => {
         this.matrizSelecionada = matriz;
         this.resetAllSelections();
         this.cdr.markForCheck();
       },
-      error: () => {
+      error: (error) => {
+        console.error('Erro ao carregar detalhes da matriz:', error);
         this.matrizSelecionada = null;
         this.resetAllSelections();
         this.cdr.markForCheck();
