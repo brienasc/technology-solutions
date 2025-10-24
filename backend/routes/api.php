@@ -52,16 +52,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
         # Rotas de Itens
-    Route::prefix('itens')->group(function () {
-        Route::post('/', [CursoItemController::class, 'store']);
-        Route::post('/draft', [CursoItemController::class, 'saveDraft']);
-        Route::get('/{id}', [CursoItemController::class, 'show']);
-        Route::put('/{id}', [CursoItemController::class, 'update']);
-        Route::delete('/{id}', [CursoItemController::class, 'destroy']);
-        Route::patch('/{id}/calibrate', [CursoItemController::class, 'calibrate']);
-    });
+        Route::prefix('itens')->group(function () {
+            Route::post('/', [CursoItemController::class, 'store']);
+            Route::post('/draft', [CursoItemController::class, 'saveDraft']);
+            Route::get('/{id}', [CursoItemController::class, 'show']);
+            Route::put('/{id}', [CursoItemController::class, 'update']);
+            Route::delete('/{id}', [CursoItemController::class, 'destroy']);
+            Route::patch('/{id}/calibrate', [CursoItemController::class, 'calibrate']);
 
-    Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
+            Route::get('/export/{id}/{method}', [CursoItemController::class, 'export']);
+            Route::post('/import/{method}', [CursoItemController::class, 'import']);
+        });
+
+        Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
 
         #Rotas de matrizes
         Route::get('/matrizes', [MatrixController::class, 'index']);

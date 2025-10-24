@@ -6,6 +6,7 @@ use Exception;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use App\Services\CursoItemService;
 use Illuminate\Support\Facades\Validator;
@@ -166,6 +167,55 @@ class CursoItemController extends Controller
         } catch (Exception $e) {
             Log::error('Erro ao calibrar item: ' . $e->getMessage());
             return $this->apiResponse->badRequest($e->getMessage(), 'Falha ao calibrar item');
+        }
+    }
+
+    public function export(string $id, string $method): Response
+    {
+        try {
+            $method = strtolower($method);
+            if ($method === 'xml') {
+                $xml = $this->cursosItensService->exportXML($id);
+
+                return $this->apiResponse->respondItem($xml, 'xml', 'Exportado com sucesso!');
+            }
+
+            return $this->apiResponse->badRequest(null, 'Falha ao exportar!');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest($e->getMessage(), "Falha ao exportar!");
+        }
+    }
+
+    public function import(Request $request, string $method): JsonResponse
+    {
+        try {
+            if (!$request->hasFile('file')) {
+                return $this->apiResponse->success(['faltandooo' => ['file']], 'Falha ao importar!');
+            }
+
+            $file = $request->file('file');
+
+            if (!$file->isValid()) {
+                return $this->apiResponse->success(
+                    ['faltando' => ['file'], 'erro' => $file->getErrorMessage()],
+                    'Falha ao importar!'
+                );
+            }
+
+            if ($method === 'xml') {
+                $xml = file_get_contents($file->getRealPath());
+                $res = $this->cursosItensService->importXML($xml);
+            } else {
+                return $this->badRequest("Arquivo inválido", "Falha ao importar item");
+            }
+
+            if (!empty($res['erro'])) {
+                return $this->apiResponse->success(['faltando' => $res['faltando'] ?? []], 'Falha ao importar!');
+            }
+
+            return $this->apiResponse->success($res, 'Importado com sucesso!');
+        } catch (Exception $e) {
+            return $this->apiResponse->badRequest($e->getMessage(), 'Falha ao importar item');
         }
     }
 }
