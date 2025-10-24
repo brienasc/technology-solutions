@@ -79,3 +79,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
 });
+
