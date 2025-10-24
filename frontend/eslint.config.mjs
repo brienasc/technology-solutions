@@ -1,13 +1,24 @@
-import angular from "@angular-eslint/eslint-plugin";
-import angularTemplate from "@angular-eslint/eslint-plugin-template";
+// eslint.config.mjs
+import eslint from "@eslint/js";
+import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
+import angular from "angular-eslint";
 
-export default [
+export default defineConfig(
+  { ignores: ["dist/**", "coverage/**"] },
+
   {
     files: ["**/*.ts"],
-    extends: ["plugin:@angular-eslint/recommended"],
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.recommended,
+      ...angular.configs.tsRecommended,
+    ],
+    processor: angular.processInlineTemplates,
   },
+
   {
     files: ["**/*.html"],
-    extends: ["plugin:@angular-eslint/template/recommended"],
+    extends: [...angular.configs.templateRecommended],
   },
-];
+);

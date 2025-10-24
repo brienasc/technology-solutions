@@ -14,22 +14,26 @@ class ContactController extends Controller
 {
     private ApiResponse $apiResponse;
 
-    public function __construct(ApiResponse $apiResponse) {
+    public function __construct(ApiResponse $apiResponse)
+    {
         $this->apiResponse = $apiResponse;
     }
 
-    public function recv(Request $request): JsonResponse{
-        try{
-            $validateData = $request->validate([
+    public function recv(Request $request): JsonResponse
+    {
+        try {
+            $validateData = $request->validate(
+                [
                 'email' => 'required|email|max:255',
                 'name' => 'required|max:255',
                 'message' => 'required',
             ],
-            [
+                [
                 'required' => 'O campo :attribute é obrigatório.',
                 'max'      => 'O :attribute não pode ter mais de :max caracteres.',
                 'email'    => 'O e-mail deve ter um formato válido.',
-            ]);
+            ]
+            );
 
             $email_to = "contact@techsolutions.com";
             $email_from = $validateData['email'];
@@ -41,7 +45,7 @@ class ContactController extends Controller
             return $this->apiResponse->success(null, 'Mensagem enviada com sucesso!');
         } catch (ValidationException $e) {
             return $this->apiResponse->badRequest($e->errors(), 'Erro ao enviar mensagem');
-        } catch (Exception $e){
+        } catch (Exception $e) {
             return $this->apiResponse->badRequest(null, "Erro ao enviar mensagem");
         }
     }

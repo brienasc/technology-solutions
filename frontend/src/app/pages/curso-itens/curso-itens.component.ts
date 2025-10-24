@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  NgZone,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -7,12 +13,25 @@ import { AccessibilityBarComponent } from '../../components/accessibility-bar/ac
 import { CreateItemModalComponent } from '../../components/create-item-modal/create-item-modal.component';
 import { ItemAvaliacao } from '../../models/item-avaliacao.model';
 import { CourseItemsService } from '../../services/cursos-itens.service';
-import { CursoService } from '../../services/curso.service';
+import {
+  CursoService,
+  ApiResponse,
+  ImportFail,
+  ImportOk,
+} from '../../services/curso.service';
 import { ItemViewEditModalComponent } from '../../components/item-view-edit-modal/item-view-edit-modal.component';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 import { NotificationService } from '../../services/notification.service';
+import { AlertModalComponent } from '../../components/alert/alert.component';
+import { ImportFileModalComponent } from '../../components/import-file-modal/import-file-modal.component';
+import { AlertAction, AlertVariant } from '../../models/alert.model';
+import { finalize, timeout } from 'rxjs';
 
-type DataColumn = { label: string; property: keyof ItemAvaliacao; type?: undefined };
+type DataColumn = {
+  label: string;
+  property: keyof ItemAvaliacao;
+  type?: undefined;
+};
 type ActionColumn = { label: string; type: 'action' };
 type ColumnDef = DataColumn | ActionColumn;
 
@@ -20,18 +39,20 @@ type ColumnDef = DataColumn | ActionColumn;
   selector: 'app-curso-itens',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    RouterModule, 
-    Header, 
-    AccessibilityBarComponent, 
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    Header,
+    AccessibilityBarComponent,
     CreateItemModalComponent,
     ItemViewEditModalComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    AlertModalComponent,
+    ImportFileModalComponent,
   ],
   templateUrl: './curso-itens.component.html',
   styleUrls: ['./curso-itens.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CursoItensComponent implements OnInit {
   courseId = '';
@@ -44,7 +65,16 @@ export class CursoItensComponent implements OnInit {
   showCreateModal = false;
   showViewModal = false;
   selectedItemId = '';
-  
+  showImportModal = false;
+  showAlert = false;
+  alertTitle = '';
+  alertMessage = '';
+  alertDescription = '';
+  alertVariant: AlertVariant = 'neutral';
+  alertActions: AlertAction[] = [
+    { id: 'ok', label: 'OK', kind: 'primary', autofocus: true },
+  ];
+
   // Modal de confirmação
   showDeleteModal = false;
   itemToDelete: ItemAvaliacao | null = null;
@@ -55,7 +85,7 @@ export class CursoItensComponent implements OnInit {
     { label: 'Matriz', property: 'matriz_nome' },
     { label: 'Status', property: 'status_nome' },
     { label: 'Dificuldade', property: 'dificuldade_nome' },
-    { label: 'Ações', type: 'action' }
+    { label: 'Ações', type: 'action' },
   ];
 
   constructor(
@@ -63,8 +93,9 @@ export class CursoItensComponent implements OnInit {
     private service: CourseItemsService,
     private cursosService: CursoService,
     private cdr: ChangeDetectorRef,
-    private notificationService: NotificationService
-  ) { }
+    private zone: NgZone,
+    private notificationService: NotificationService,
+  ) {}
 
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id') || '';
@@ -74,21 +105,21 @@ export class CursoItensComponent implements OnInit {
 
   loadCourse(): void {
     this.cursosService.getById(this.courseId).subscribe({
-      next: curso => {
+      next: (curso) => {
         this.courseName = curso?.nome || '';
         this.cdr.markForCheck();
       },
       error: () => {
         this.courseName = '';
         this.cdr.markForCheck();
-      }
+      },
     });
   }
 
   fetch(): void {
     this.loading = true;
     this.service.getByCurso(this.courseId).subscribe({
-      next: data => {
+      next: (data) => {
         this.items = data;
         this.currentPage = 1;
         this.loading = false;
@@ -98,18 +129,19 @@ export class CursoItensComponent implements OnInit {
         this.items = [];
         this.loading = false;
         this.cdr.markForCheck();
-      }
+      },
     });
   }
 
   get filtered(): ItemAvaliacao[] {
     const term = this.searchTerm.trim().toLowerCase();
     if (!term) return this.items;
-    return this.items.filter(i =>
-      (i.code || '').toLowerCase().includes(term) ||
-      (i.status_nome || '').toLowerCase().includes(term) ||
-      (i.dificuldade_nome || '').toLowerCase().includes(term) ||
-      (i.matriz_nome || '').toLowerCase().includes(term)
+    return this.items.filter(
+      (i) =>
+        (i.code || '').toLowerCase().includes(term) ||
+        (i.status_nome || '').toLowerCase().includes(term) ||
+        (i.dificuldade_nome || '').toLowerCase().includes(term) ||
+        (i.matriz_nome || '').toLowerCase().includes(term),
     );
   }
 
@@ -156,8 +188,70 @@ export class CursoItensComponent implements OnInit {
     this.currentPage = 1;
   }
 
-  onAddItem(): void { 
+  onAddItem(): void {
     this.showCreateModal = true;
+  }
+
+  onInportItem(): void {
+    this.showImportModal = true;
+  }
+
+  onImportXml(file: File): void {
+    const nome = file?.name ?? 'Arquivo';
+
+    // Fechar modal imediatamente com CD
+    this.showImportModal = false;
+    this.cdr.detectChanges();
+
+    this.cursosService
+      .importItemXml(file)
+      .pipe(
+        timeout(15000),
+        finalize(() => {
+          // segurança extra: marca para verificação ao terminar
+          this.cdr.markForCheck();
+        }),
+      )
+      .subscribe({
+        next: (res: ApiResponse<ImportOk | ImportFail>) => {
+          const faltando =
+            'data' in res &&
+            (res.data as any)?.faltando &&
+            Array.isArray((res.data as any).faltando)
+              ? ((res.data as any).faltando as string[])
+              : [];
+
+          const fail = res.status === 'error' || faltando.length > 0;
+
+          this.zone.run(() => {
+            this.alertTitle = 'Importação de XML';
+            this.alertVariant = fail ? 'warning' : 'success';
+            this.alertMessage =
+              res.message ||
+              (fail
+                ? `Falha ao importar ${nome}!`
+                : `${nome} importado com sucesso!`);
+            this.alertDescription =
+              fail && faltando.length
+                ? `Faltou:\n${faltando.map((f) => `• ${f}`).join('\n')}`
+                : '';
+            this.showAlert = true;
+
+            this.cdr.detectChanges();
+          });
+        },
+        error: () => {
+          this.zone.run(() => {
+            this.alertTitle = 'Importação de XML';
+            this.alertVariant = 'warning';
+            this.alertMessage = `Falha ao importar ${nome}!`;
+            this.alertDescription = '';
+            this.showAlert = true;
+
+            this.cdr.detectChanges();
+          });
+        },
+      });
   }
 
   onModalClose(): void {
@@ -196,25 +290,25 @@ export class CursoItensComponent implements OnInit {
 
   onConfirmDelete(): void {
     if (!this.itemToDelete) return;
-    
+
     this.deleteLoading = true;
     this.cdr.markForCheck();
 
     this.service.deleteItem(this.itemToDelete.id).subscribe({
       next: () => {
-        this.items = this.items.filter(i => i.id !== this.itemToDelete!.id);
-        
+        this.items = this.items.filter((i) => i.id !== this.itemToDelete!.id);
+
         // Verificar se precisa voltar uma página
         if (this.getStartIndex() > this.getEndIndex()) {
           this.goToPage(Math.max(1, this.currentPage - 1));
         }
-        
+
         // Mostrar notificação de sucesso
         this.notificationService.success(
-          'Item excluído!', 
-          `O item "${this.itemToDelete!.code}" foi removido com sucesso.`
+          'Item excluído!',
+          `O item "${this.itemToDelete!.code}" foi removido com sucesso.`,
         );
-        
+
         // Fechar modal
         this.onCancelDelete();
         this.cdr.markForCheck();
@@ -223,10 +317,10 @@ export class CursoItensComponent implements OnInit {
         this.deleteLoading = false;
         this.notificationService.error(
           'Erro ao excluir',
-          'Não foi possível excluir o item. Tente novamente.'
+          'Não foi possível excluir o item. Tente novamente.',
         );
         this.cdr.markForCheck();
-      }
+      },
     });
   }
 

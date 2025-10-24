@@ -27,13 +27,12 @@
   color: var(--theme-text-secondary);
 }
 .itens-title p {
-  font-size: 1.25rem;
+  font-size: 1.25em;
   color: var(--theme-text-secondary);
   margin: 0;
   line-height: 1.6;
   font-weight: 400;
   opacity: 0.9;
-  font-size: 1.25em;
 }
 .itens-title::after {
   content: "";
@@ -47,7 +46,6 @@
   z-index: 1;
 }
 
-/* Dark / High-contrast */
 :host-context(.dark-theme) .itens-title,
 :host-context([data-theme="dark"]) .itens-title {
   background: #1a1a1a !important;
@@ -72,7 +70,6 @@
   margin: 0;
   padding: 0 2rem 3rem;
 }
-
 .table-container {
   background: var(--theme-card-bg);
   border-radius: 8px;
@@ -106,19 +103,20 @@
   padding: 8px 2.5rem 8px 12px;
   border: 2px solid var(--theme-border-color);
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1em;
   background: var(--theme-input-bg);
   color: var(--theme-text);
-  transition: border-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   min-width: 0;
-  font-size: 1em;
 }
 .search-bar input::placeholder {
   color: var(--theme-text-secondary, #9ca3af);
   font-size: 0.9em;
 }
 .search-bar input:focus {
-  outline: none;
+  outline: 0;
   border-color: var(--theme-button-primary-bg, #667eea);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -128,7 +126,7 @@
   top: 50%;
   transform: translateY(-50%);
   background: none;
-  border: none;
+  border: 0;
   color: var(--theme-text-secondary, #6b7280);
   cursor: pointer;
   padding: 0.25rem;
@@ -141,7 +139,11 @@
   height: 1.25em;
 }
 
-/* Botão primário "Adicionar" */
+.buttons-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
 .add-button {
   display: inline-flex;
   align-items: center;
@@ -151,13 +153,14 @@
   border: none;
   padding: 8px 16px;
   border-radius: 1.5625rem;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    filter 0.2s ease;
   white-space: nowrap;
   height: 46px;
-  font-size: 0.875em;
 }
 .add-button:hover {
   background: #5b21b6;
@@ -170,7 +173,6 @@
   stroke-width: 2;
 }
 
-/* Tabela */
 .table-responsive {
   background: transparent;
   border: none;
@@ -190,15 +192,21 @@
   vertical-align: middle;
 }
 
-/* Hover da linha exatamente #F8F5FE */
 .row-hover {
-  transition: background-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 .itens-table tbody tr.row-hover:hover {
   background: #f8f5fe;
 }
 
-/* Ações: sem background por padrão, tamanhos e cores conforme especificado */
+:host-context(.dark-theme) .itens-table tbody tr.row-hover:hover,
+:host-context([data-theme="dark"]) .itens-table tbody tr.row-hover:hover {
+  background: rgba(124, 58, 237, 0.22);
+  color: var(--theme-text, #e5e7eb);
+}
+
 .col-actions {
   width: 140px;
 }
@@ -218,7 +226,9 @@
   width: 36px;
   height: 36px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 }
 .icon-btn svg {
   width: 16px;
@@ -228,7 +238,7 @@
   background: var(--theme-button-hover, #e5e7eb);
 }
 .icon-btn:active {
-  transform: translateY(0);
+  filter: brightness(0.98);
 }
 .view-btn svg {
   color: #7120bd;
@@ -238,7 +248,6 @@
   stroke: #dc2626;
 }
 
-/* Paginação */
 .pagination-container {
   display: flex;
   justify-content: space-between;
@@ -275,7 +284,7 @@
   cursor: pointer;
 }
 .items-per-page select:focus {
-  outline: none;
+  outline: 0;
   border-color: var(--theme-primary-color, #7c3aed);
   box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
@@ -285,7 +294,6 @@
   font-weight: 500;
   color: var(--theme-text);
 }
-
 .pagination-controls {
   display: flex;
   gap: 4px;
@@ -302,7 +310,10 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
   padding: 0;
 }
 .pagination-btn:not(:disabled):hover {
@@ -323,31 +334,101 @@
   stroke: currentColor;
 }
 
-/* High contrast */
-:host-context(.high-contrast) .pagination-controls .pagination-btn {
-  background-color: black !important;
-  color: var(--color-highlight-neon) !important;
-  border: 2px solid var(--color-highlight-neon) !important;
-  box-shadow: none !important;
-}
+/* Alto contraste */
 :host-context(.high-contrast) .itens-title {
-  background: black !important;
-  border-bottom: 2px solid white !important;
+  background: #000 !important;
+  border-bottom: 2px solid #fff !important;
 }
-:host-context(.high-contrast) .itens-title h1 {
-  color: white !important;
-}
-:host-context(.high-contrast) .itens-title p {
-  color: white !important;
+:host-context(.high-contrast) .itens-title h1,
+:host-context(.high-contrast) .itens-title p,
+:host-context(.high-contrast) .itens-title .course-name {
+  color: #ffd400 !important;
+  opacity: 1 !important;
 }
 :host-context(.high-contrast) .itens-title::after {
-  background: var(--color-highlight-neon) !important;
+  background: #ffd400 !important;
   height: 3px !important;
   border-radius: 0 !important;
 }
-:host-context(.high-contrast) .itens-container {
-  background-color: black !important;
+
+:host-context(.high-contrast) .itens-table {
+  color: #ffd400;
+  background: #000;
+}
+:host-context(.high-contrast) .itens-table th,
+:host-context(.high-contrast) .itens-table td {
+  color: #ffd400;
+  border-bottom-color: #fff;
+}
+:host-context(.high-contrast) .itens-table tbody tr.row-hover:hover {
+  background: #111;
+}
+
+:host-context(.high-contrast) .icon-btn {
+  background: #000;
+  color: #ffd400 !important;
+  border: 2px solid #fff;
+}
+
+:host-context(.high-contrast) .icon-btn:hover {
+  background: #3f3f3f !important;
+}
+
+:host-context(.high-contrast) .icon-btn svg,
+:host-context(.high-contrast) .view-btn svg,
+:host-context(.high-contrast) .delete-btn svg {
   color: white !important;
+  stroke: #ffd400 !important;
+}
+
+:host-context(.high-contrast) .icon-btn svg,
+:host-context(.high-contrast) .view-btn svg,
+:host-context(.high-contrast) .delete-btn svg {
+  color: #ffd400 !important;
+  stroke: #ffd400 !important;
+}
+
+:host-context(.high-contrast) .view-btn svg {
+  fill: #ffd400 !important;
+}
+
+:host-context(.high-contrast) .delete-btn svg {
+  fill: none !important;
+}
+
+:host-context(.high-contrast) .add-button {
+  background: #000;
+  color: #ffd400;
+  border: 2px solid #fff;
+}
+:host-context(.high-contrast) .add-button:hover {
+  background: #1d1d1d !important;
+  filter: brightness(1.05);
+}
+
+:host-context(.high-contrast) .pagination-container {
+  background: #000;
+  color: #ffd400;
+  border-top-color: #fff;
+}
+:host-context(.high-contrast) .pagination-btn {
+  background: #000;
+  color: #ffd400;
+  border: 2px solid #fff;
+}
+:host-context(.high-contrast) .pagination-btn:not(:disabled):hover {
+  filter: brightness(1.05);
+  transform: none;
+  box-shadow: none;
+}
+:host-context(.high-contrast) .items-per-page select {
+  background: #000;
+  color: #ffd400;
+  border: 2px solid #fff;
+}
+:host-context(.high-contrast) .pagination-range,
+:host-context(.high-contrast) .items-per-page label {
+  color: #ffd400;
 }
 
 /* Responsivo */
