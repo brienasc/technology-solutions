@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+<<<<<<< HEAD
 import { LoginComponent } from './pages/login/login';
 import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
@@ -72,4 +73,18 @@ export const routes: Routes = [
     path: '**',
     redirectTo: ''
   }
+=======
+// export const routes: Routes = [];
+
+// frontend/src/app/app-routing.ts
+import { LoginComponent } from './pages/login/login'; 
+import { MenuGerencialComponent } from './pages/menu-gerencial/menu-gerencial';
+
+export const routes: Routes = [
+  // ... outras rotas
+  { path: 'login', component: LoginComponent }, 
+  { path: 'menu-gerencial', component: MenuGerencialComponent },
+  { path: '**', redirectTo: '' }
+  // ...
+>>>>>>> 70dba4379e0e55209f107b33a041cce7fcd12997
 ];

@@ -4,11 +4,15 @@ import { Observable, tap, take, catchError, finalize, EMPTY } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+<<<<<<< HEAD
   private apiLoginUrl = 'http://localhost:8080/api/login';
   private apiAuthUrl = 'http://localhost:8080/api/auth';
   private validating = false;
   private lastValidation = 0;
   private validationTtlMs = 5 * 60 * 1000;
+=======
+  private apiUrl = 'URL_DA_API/login'; // Substuir pela URL real da sua API de login da do backend
+>>>>>>> 70dba4379e0e55209f107b33a041cce7fcd12997
 
   constructor(private http: HttpClient) { }
 

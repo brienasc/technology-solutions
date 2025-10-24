@@ -1,9 +1,9 @@
-@import "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
-@import "https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
+/* You/* frontend/src/styles.css */
 
 /*  Variáveis de TEMA (Definidas no :root para o modo claro padrão) --- */
 
 :root {
+<<<<<<< HEAD
     /* MINHA PALETA PRINCIPAL- NAO VAI MUDAR COM O TEMA */
     --color-primary: #10002B;
     /* azul escuro/quase preto */
@@ -393,3 +393,26 @@ body {
         scroll-margin-top: 190px;
     }
 }
+=======
+  /* Cores */
+  --color-background-detail: #A9ABE1; /* Cor para detalhes de fundo */
+  --color-text-primary: #10002B;      /* Cor para títulos e textos */
+
+  /* Fontes */
+  --font-playfair-display: 'Playfair Display', serif;
+  --font-nunito-sans: 'Nunito Sans', sans-serif; 
+}
+
+html, body {
+  margin: 0; /* Remove a margem padrão do navegador */
+  padding: 0; /* Remove o padding padrão do navegador */
+  height: 100%; /* Garante que html e body ocupem 100% da altura da viewport */
+  width: 100%; /* Garante que html e body ocupem 100% da largura da viewport */
+  overflow: hidden; /* Evita barras de rolagem indesejadas se o conteúdo for maior */
+}
+
+body {
+  font-family: var(--font-nunito-sans); 
+  color: var(--color-text-primary);
+} 
+>>>>>>> 70dba4379e0e55209f107b33a041cce7fcd12997

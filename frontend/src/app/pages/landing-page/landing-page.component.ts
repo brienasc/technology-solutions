@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { Header } from "../../components/header/header";
 import { CommonModule } from '@angular/common';
@@ -23,3 +24,5 @@ import { AccessibilityBarComponent } from '../../components/accessibility-bar/ac
 export class LandingPageComponent {
 
 }
+=======
+>>>>>>> 70dba4379e0e55209f107b33a041cce7fcd12997
