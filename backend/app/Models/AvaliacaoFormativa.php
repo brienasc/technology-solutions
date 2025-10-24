@@ -18,4 +18,5 @@ class AvaliacaoFormativa extends Model
     protected $casts = [
         'distribuicao_dificuldade' => 'array'
     ];
+    
 }

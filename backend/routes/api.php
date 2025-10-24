@@ -57,9 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [CursoItemController::class, 'destroy']);
     });
 
-    Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
+    Route::post('/avaliacoes_formativas', [AvaliacaoFormativaController::class, 'store']);
 
-    Route::post('/avaliacoes_formativas', [AvaliacaoFormativaController::class, 'store']
+    Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
 
         #Rotas de matrizes
         Route::get('/matrizes', [MatrixController::class, 'index']);
@@ -71,3 +71,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/perfis', [PerfisController::class, 'index']);
     Route::get('/auth', [AuthController::class,'show']);
 });
+
