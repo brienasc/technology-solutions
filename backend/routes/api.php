@@ -10,6 +10,7 @@ use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MatrixController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AvaliacaoFormativaController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
@@ -57,6 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
+
+    Route::post('/avaliacoes_formativas', [AvaliacaoFormativaController::class, 'store']
 
         #Rotas de matrizes
         Route::get('/matrizes', [MatrixController::class, 'index']);
