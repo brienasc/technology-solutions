@@ -24,11 +24,23 @@ export type CursosIndex = {
   lastPage: number;
 };
 
-type ApiResponse<T> = {
+export type ApiResponse<T> = {
   status: 'success' | 'error';
   message?: string;
   data: T;
   timestamp?: string;
+};
+
+export type ImportOk = {
+  item_id: string;
+  code: string;
+  matriz: { id: string; nome: string };
+  cruzamento_id: string;
+  alternativas: number;
+};
+
+export type ImportFail = {
+  faltando: string[];
 };
 
 @Injectable({ providedIn: 'root' })
@@ -79,5 +91,11 @@ export class CursoService {
     return this.http
       .get<ApiResponse<Pick<Curso, 'id' | 'nome'>>>(`${this.apiUrl}/${id}/summary`)
       .pipe(map((res) => res.data));
+  }
+
+  importItemXml(file: File): Observable<ApiResponse<ImportOk | ImportFail>> {
+    const fd = new FormData();
+    fd.append('file', file);
+    return this.http.post<ApiResponse<ImportOk | ImportFail>>('/api/itens/import/xml', fd);
   }
 }
