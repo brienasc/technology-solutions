@@ -560,21 +560,22 @@ class MatrixService
             ->all();
 
         return [
-            'id'        => (string) $matriz->id,
-            'nome'      => $matriz->nome,
-            'versao'    => $matriz->versao,
-            'vigencia'  => [
-                'de'  => $matriz->vigente_de,
-                'ate' => $matriz->vigente_ate,
+            'id'                => (string) $matriz->id,
+            'nome'              => $matriz->nome,
+            'competencia_geral' => $matriz->competencia_geral,
+            'versao'            => $matriz->versao,
+            'vigencia'          => [
+                'de'   => $matriz->vigente_de,
+                'ate'  => $matriz->vigente_ate,
             ],
-            'curso'      => [
+            'curso'             => [
                 'id'   => (string) $matriz->curso->id,
                 'nome' => $matriz->curso->nome,
             ],
-            'categorias'    => $categorias,
-            'funcoes'       => $funcoes,
-            'conhecimentos' => $conhecimentos,
-            'cruzamentos'   => $cruzamentos,
+            'categorias'        => $categorias,
+            'funcoes'           => $funcoes,
+            'conhecimentos'     => $conhecimentos,
+            'cruzamentos'       => $cruzamentos,
         ];
     }
 
