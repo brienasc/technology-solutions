@@ -1,10 +1,17 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { ImportMatrixPayload } from '../../models/matrix.model';
+import { ImportMatrixDialogService, CourseOption } from './import-matrix-dialog.service';
 
-type CourseOption = { id: string; nome: string };
+function validityRangeValidator(group: AbstractControl) {
+  const from = group.get('validFrom')?.value as string | null;
+  const to = group.get('validTo')?.value as string | null;
+  if (!from || !to) return null;
+  const dFrom = new Date(from);
+  const dTo = new Date(to);
+  return dFrom.getTime() <= dTo.getTime() ? null : { range: true };
+}
 
 @Component({
   selector: 'app-import-matrix-dialog',
@@ -16,9 +23,9 @@ type CourseOption = { id: string; nome: string };
 })
 export class ImportMatrixDialogComponent {
   private fb = inject(FormBuilder);
-  private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
   private el: ElementRef<HTMLElement> = inject(ElementRef);
+  private svc = inject(ImportMatrixDialogService);
 
   visible = false;
   submitting = false;
@@ -35,28 +42,21 @@ export class ImportMatrixDialogComponent {
     courseId: ['', [Validators.required]],
     courseName: [''],
     file: [null, [Validators.required]]
-  }, { validators: this.validityRangeValidator });
+  }, { validators: validityRangeValidator });
 
   courseOpen = false;
   courseQuery = '';
   courseOptions: CourseOption[] = [];
 
-  /** cache local (primeira busca carrega tudo; demais filtram aqui) */
-  private allCourses: CourseOption[] = [];
-
   show() {
     this.visible = true;
     this.errorMsg = null;
     this.submitting = false;
-
-    // carrega a lista apenas se ainda não carregou
     this.fetchCourses('');
-
     setTimeout(() => {
       const first = this.el.nativeElement.querySelector<HTMLInputElement>('#im-name');
       first?.focus();
     }, 0);
-
     document.addEventListener('keydown', this.handleEsc, { capture: true });
   }
 
@@ -75,19 +75,9 @@ export class ImportMatrixDialogComponent {
     }
   };
 
-  private validityRangeValidator(group: AbstractControl) {
-    const from = group.get('validFrom')?.value as string | null;
-    const to = group.get('validTo')?.value as string | null;
-    if (!from || !to) return null;
-    const dFrom = new Date(from);
-    const dTo = new Date(to);
-    return dFrom.getTime() <= dTo.getTime() ? null : { range: true };
-  }
-
   openCourse() {
     this.courseOpen = true;
     this.cdr.markForCheck();
-
     setTimeout(() => {
       const input = this.el.nativeElement.querySelector<HTMLInputElement>('#im-course-search');
       input?.focus();
@@ -105,57 +95,24 @@ export class ImportMatrixDialogComponent {
 
   onCourseQuery(q: string) {
     this.courseQuery = q;
-    this.fetchCourses(q); // agora só filtra localmente após o primeiro load
+    this.fetchCourses(q);
   }
 
-  /**
-   * Busca inicial (uma vez). Depois disso, só filtra localmente (sem HTTP).
-   */
-  fetchCourses(q: string) {
-    // Se já temos cache, apenas filtra localmente.
-    if (this.allCourses.length) {
-      this.courseOptions = this.filterCoursesLocal(q, this.allCourses);
-      this.loadingCourses = false;
-      this.cdr.markForCheck();
-      return;
-    }
-
-    // Primeira carga: busca no servidor sem 'q' e guarda em cache.
+  private fetchCourses(q: string) {
     this.loadingCourses = true;
     this.cdr.markForCheck();
-
-    // Sem parâmetros de busca — carrega todas (ou o resumo padrão que sua API retornar)
-    this.http.get<{ status: string; data: CourseOption[] }>('/api/cursos/summary')
-      .subscribe({
-        next: res => {
-          this.allCourses = res?.data ?? [];
-          this.courseOptions = this.filterCoursesLocal(q, this.allCourses);
-          this.cdr.markForCheck();
-        },
-        error: () => {
-          this.allCourses = [];
-          this.courseOptions = [];
-          this.cdr.markForCheck();
-        },
-        complete: () => {
-          this.loadingCourses = false;
-          this.cdr.markForCheck();
-        }
-      });
-  }
-
-  /** filtro case-insensitive e acento-insensitive */
-  private filterCoursesLocal(q: string, list: CourseOption[]): CourseOption[] {
-    const term = this.normalize(q);
-    if (!term) return [...list];
-    return list.filter(c => this.normalize(c.nome).includes(term));
-  }
-
-  private normalize(s: string | null | undefined): string {
-    return (s ?? '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '');
+    this.svc.getCourses(q).subscribe({
+      next: list => {
+        this.courseOptions = list;
+        this.loadingCourses = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.courseOptions = [];
+        this.loadingCourses = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   selectCourse(opt: CourseOption) {
@@ -191,10 +148,8 @@ export class ImportMatrixDialogComponent {
       this.cdr.markForCheck();
       return;
     }
-
     this.submitting = true;
     this.cdr.markForCheck();
-
     const v = this.form.value;
     const payload: ImportMatrixPayload = {
       name: v.name,
@@ -204,7 +159,6 @@ export class ImportMatrixDialogComponent {
       courseId: v.courseId,
       file: v.file ?? null
     };
-
     this._complete(payload);
   }
 
