@@ -14,7 +14,14 @@ class Matriz extends Model
     protected $table = 'matrizes';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['curso_id','nome','versao','vigente_de','vigente_ate'];
+    protected $fillable = [
+        'curso_id',
+        'nome',
+        'competencia_geral',
+        'versao',
+        'vigente_de',
+        'vigente_ate'
+    ];
 
     public function curso()
     {
