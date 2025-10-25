@@ -233,12 +233,13 @@ class MatrixService
 
     public function persistMappedMatrix(array $mapped, array $payload): array
     {
-        $cats   = $mapped['uc_categorias']    ?? [];
-        $funcs  = $mapped['uc_funcoes']       ?? [];
-        $knows  = $mapped['oc_conhecimentos'] ?? [];
-        $cross  = $mapped['uc_cruzamentos']   ?? [];
+        $cats       = $mapped['uc_categorias']            ?? [];
+        $funcs      = $mapped['uc_funcoes']               ?? [];
+        $knows      = $mapped['oc_conhecimentos']         ?? [];
+        $cross      = $mapped['uc_cruzamentos']           ?? [];
+        $genComp    = $mapped['uc_general_competencie']   ?? '';
 
-        return DB::transaction(function () use ($payload, $cats, $funcs, $knows, $cross) {
+        return DB::transaction(function () use ($payload, $genComp, $cats, $funcs, $knows, $cross) {
 
             try {
                 DB::statement('SET LOCAL synchronous_commit = OFF');
@@ -247,7 +248,7 @@ class MatrixService
 
             $now = now();
 
-            $matrizId = $this->upsertAndGetMatrizId($payload, $now);
+            $matrizId = $this->upsertAndGetMatrizId($payload, $genComp, $now);
 
             $catRows = [];
             foreach ($cats as $i => $c) {
@@ -259,6 +260,7 @@ class MatrixService
                     'updated_at' => $now,
                 ];
             }
+
             if ($catRows) {
                 $this->chunkedUpsert('categorias', $catRows, ['matriz_id','nome'], ['codigo', 'updated_at']);
             }
@@ -468,6 +470,7 @@ class MatrixService
 
             return [
                 'matriz_id'     => (string) $matrizId,
+                'competencia_geral' => $genComp,
                 'categorias'    => count($catIdsByName),
                 'competencias'  => count($cmpKey2Id),
                 'funcoes'       => count($fnIdsByName),
@@ -986,7 +989,7 @@ class MatrixService
         }
     }
 
-    private function upsertAndGetMatrizId(array $payload, $now): string
+    private function upsertAndGetMatrizId(array $payload, string $competencia_geral, $now): string
     {
         $row = DB::table('matrizes')
             ->select('id')
@@ -998,13 +1001,14 @@ class MatrixService
 
         if (!$row) {
             DB::table('matrizes')->insertOrIgnore([
-                'curso_id'   => $payload['curso_id'],
-                'nome'       => $payload['nome'],
-                'versao'     => $payload['versao'],
-                'vigente_de' => $payload['vigente_de'] ?? null,
-                'vigente_ate' => $payload['vigente_ate'] ?? null,
-                'created_at' => $now,
-                'updated_at' => $now,
+                'curso_id'           => $payload['curso_id'],
+                'nome'               => $payload['nome'],
+                'competencia_geral'  => $competencia_geral,
+                'versao'             => $payload['versao'],
+                'vigente_de'         => $payload['vigente_de'] ?? null,
+                'vigente_ate'        => $payload['vigente_ate'] ?? null,
+                'created_at'         => $now,
+                'updated_at'         => $now,
             ]);
 
             $row = DB::table('matrizes')

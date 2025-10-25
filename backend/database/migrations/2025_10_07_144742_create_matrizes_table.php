@@ -4,13 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class () extends Migration {
     public function up(): void
     {
         Schema::create('matrizes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('curso_id')->constrained('cursos')->cascadeOnDelete();
             $table->string('nome');
+            $table->string('competencia_geral', 1024)->nullable(true);
             $table->string('versao')->nullable();
             $table->date('vigente_de')->nullable();
             $table->date('vigente_ate')->nullable();
