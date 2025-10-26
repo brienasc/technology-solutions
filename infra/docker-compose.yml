@@ -5,14 +5,18 @@ services:
       dockerfile: infra/php/Dockerfile
     networks:
       - internal
+    environment:
+      HOST_UID: "${UID:-1000}"
+      HOST_GID: "${GID:-1000}"
     volumes:
-      - ../backend/:/var/www/html/
-      - ../logs/php.log:/var/log/fpm-php.www.log
+      - ../backend:/var/www/html:delegated
+      - php_vendor:/var/www/html/vendor
+      - php_cache:/var/www/html/bootstrap/cache
       - ./php/entrypoint.sh:/entrypoint.sh
     container_name: php
     expose:
       - "9000"
-    entrypoint: ["sh", "-c", "chmod +x /entrypoint.sh && /entrypoint.sh"]
+    entrypoint: ["sh","-lc","chmod +x /entrypoint.sh && /entrypoint.sh"]
 
   angular:
     build:
@@ -26,8 +30,6 @@ services:
     container_name: angular
     networks:
       - internal
-    ports:
-      - "4200:4200"
 
   postgres:
     container_name: postgres-db
@@ -40,8 +42,9 @@ services:
       POSTGRES_USER: hoppe
       POSTGRES_PASSWORD: passwd
       POSTGRES_DB: techsolu_db_docker
+      PGDATA: /var/lib/postgresql/18/docker
     volumes:
-      - ../db-data:/var/lib/postgresql/data
+      - ../db-data:/var/lib/postgresql/18/docker
       - ../backend/database/:/docker-entrypoint-initdb.d/
     networks:
       - internal
@@ -66,3 +69,7 @@ services:
 networks:
   internal:
     driver: bridge
+
+volumes:
+  php_vendor:
+  php_cache:
