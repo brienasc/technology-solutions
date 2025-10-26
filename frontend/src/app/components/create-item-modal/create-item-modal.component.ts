@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { MatricesService } from '../../services/matrices.service';
 import { CourseItemsService } from '../../services/cursos-itens.service';
 import { MatrixDetail } from '../../models/matrix.model';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 export interface Alternativa {
   texto: string;
@@ -64,6 +67,25 @@ interface Conhecimento {
   codigo: number;
 }
 
+// Nova interface para o formato da resposta da API da IA (para tipagem)
+interface AIApiResponse {
+  status: string;
+  message: string;
+  data: {
+    item: {
+      enunciado: string;
+      comando: string;
+      contexto: string;
+      alternativas: {
+        letra: string;
+        texto: string;
+        justificativa: string; // O backend retorna 'justificativa'
+        correta: boolean;
+      }[];
+    };
+  };
+}
+
 @Component({
   selector: 'app-create-item-modal',
   standalone: true,
@@ -116,10 +138,13 @@ export class CreateItemModalComponent implements OnInit {
     tipo_criacao: 'manual'
   };
 
+  private aiApiUrl = '/ai/create';
+
   constructor(
     private matricesService: MatricesService,
     private itemService: CourseItemsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -240,7 +265,15 @@ export class CreateItemModalComponent implements OnInit {
   }
 
   nextStep(): void {
-    this.currentStep++;
+    // 1. Intercepta a transição do Step 2 (Prompt IA) para o Step 3 (Revisão)
+    if (this.currentStep === 2 && this.tipoSelecionado === 'ia' && this.canProceedToNextStep()) {
+      // Se for IA e o prompt for válido, dispara a geração do item
+      this.generateItemByAI();
+    } else if (this.canProceedToNextStep()) {
+      // 2. Para todas as outras transições válidas
+      this.currentStep++;
+      this.cdr.markForCheck(); 
+    }
   }
 
   prevStep(): void {
@@ -306,6 +339,89 @@ export class CreateItemModalComponent implements OnInit {
       default:
         return true;
     }
+  }
+
+  // Novo método para gerar o item via API da IA
+  generateItemByAI(): void {
+    this.loading = true;
+
+    // 1. Montar o Payload da Requisição
+    // Usando os "nomes" dos itens, que são mais descritivos para a IA,
+    // e o código/nome para o Objeto de Conhecimento, como na sua matriz.
+   const aiPayload = {
+      "dificuldade": this.formData.dificuldade, // (1...5)
+      // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
+      "matriz": {
+        // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
+        "competencia_geral": this.selectedCategoria?.nome || 'N/A', 
+        // Mapeamento: Função (Frontend) -> funcao (Backend)
+        "funcao": this.selectedFuncao?.nome || 'N/A',
+        // Mapeamento: Subfuncao (Frontend) -> subfuncao (Backend)
+        "subfuncao": this.selectedSubfuncao?.nome || 'N/A',
+        // Mapeamento: Conhecimento (Frontend) -> capacidade (Backend)
+        "capacidade": this.selectedConhecimento?.nome || 'N/A', 
+        // Mapeamento: Objeto de Conhecimento (Frontend) -> objeto_conhecimento (Backend)
+        "objeto_conhecimento": (this.selectedConhecimento?.codigo + ' - ' + this.selectedConhecimento?.nome) || 'N/A',
+        // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria), 
+        // mas não foi listado no payload do colega. Vamos incluir apenas o que foi pedido,
+        // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
+      },
+      // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o. 
+      "prompt_ia": this.formData.prompt_ia,
+    };
+
+    console.log('Payload enviado para a IA:', aiPayload); // Útil para debug
+
+    // 2. Chamar a API (POST /ai/create)
+    this.http.post<AIApiResponse>(this.aiApiUrl, aiPayload).pipe(
+      catchError(error => {
+        this.loading = false;
+        this.cdr.markForCheck();
+        console.error('Erro na chamada da API da IA:', error);
+        alert('Erro ao gerar item via IA: ' + (error.error?.message || 'Erro de conexão ou servidor.'));
+        // Retorna um Observable que emite um array vazio ou um erro, dependendo do seu serviço/HTTP interceptor.
+        // Aqui, forçamos um Observable de array vazio (ou apenas um erro para parar o fluxo).
+        throw new Error('AI Generation Failed'); 
+      })
+    ).subscribe({
+      next: (response: AIApiResponse) => {
+        // 3. Mapear a Resposta para o Form (se for sucesso)
+        if (response.status === 'success' && response.data?.item) {
+          const generatedItem = response.data.item;
+
+          // 3.1. Atualizar os campos principais do formulário
+          // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
+          this.formData.comando = generatedItem.comando;
+          this.formData.contexto = generatedItem.contexto || generatedItem.enunciado; 
+          
+          // 3.2. Mapear e preencher as alternativas
+          this.formData.alternativas = [];
+          generatedItem.alternativas.forEach(alt => {
+            this.formData.alternativas.push({
+              texto: alt.texto,
+              correta: alt.correta,
+              explicacao: alt.justificativa // Mapeando a 'justificativa' do backend para a 'explicacao' do frontend
+            });
+          });
+          
+          // 3.3. Mudar para o passo de Revisão
+          this.currentStep++;
+          this.loading = false;
+          this.cdr.markForCheck(); // Força a atualização da view
+
+        } else {
+          this.loading = false;
+          this.cdr.markForCheck();
+          alert('Geração da IA falhou: ' + response.message);
+        }
+      },
+      error: (err: unknown) => {
+        // O erro já foi tratado no catchError, mas se houver outro erro no subscribe.
+        // O catchError já trata a maioria, mas é bom ter esse fallback para o loading.
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
   }
 
   saveDraft(): void {
