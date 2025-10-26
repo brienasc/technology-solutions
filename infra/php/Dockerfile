@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
   libzip-dev \
   unzip \
   libpq-dev \
+  acl \
   && docker-php-ext-install pdo_pgsql pgsql mbstring xml zip gd iconv \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
