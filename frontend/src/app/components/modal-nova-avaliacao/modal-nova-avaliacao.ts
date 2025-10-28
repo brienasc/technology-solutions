@@ -153,10 +153,9 @@ export class ModalNovaAvaliacaoComponent implements OnInit, OnChanges {
     // --- ETAPA 2 ---
     this.etapa2Form = this.fb.group({
       quantidadeItens: [20, [Validators.required, Validators.min(1), Validators.max(50), positiveIntegerValidator]],
-      // não editáveis
-      percentualFacil: [{value: this.DIFICULDADE.FACIL, disabled: true}],
-      percentualMedio: [{value: this.DIFICULDADE.MEDIO, disabled: true}],
-      percentualDificil: [{value: this.DIFICULDADE.DIFICIL, disabled: true}]
+      percentualFacil: [this.DIFICULDADE.FACIL],
+      percentualMedio: [this.DIFICULDADE.MEDIO],
+      percentualDificil: [this.DIFICULDADE.DIFICIL]
     });
 
     // Assina mudanças na quantidade de itens para recalcular
@@ -231,15 +230,17 @@ export class ModalNovaAvaliacaoComponent implements OnInit, OnChanges {
     if (this.etapa2Form.valid && totalOk) {
       this.criandoAvaliacao = true;
       
+      const formValues = this.etapa2Form.getRawValue();
+      
       const payload: CriarAvaliacaoPayload = {
         nome: this.etapa1Form.value.nomeAvaliacao,
         curso_id: this.etapa1Form.value.curso,
         matriz_id: this.etapa1Form.value.matriz,
-        quantidade_itens: this.etapa2Form.value.quantidadeItens,
+        quantidade_itens: formValues.quantidadeItens,
         distribuicao: {
-          facil_muito_facil_qtd: this.etapa2Form.value.percentualFacil,
-          media_qtd: this.etapa2Form.value.percentualMedio,
-          dificil_muito_dificil_qtd: this.etapa2Form.value.percentualDificil,
+          facil_muito_facil_qtd: formValues.percentualFacil,
+          media_qtd: formValues.percentualMedio,
+          dificil_muito_dificil_qtd: formValues.percentualDificil,
           distribuicao_percentual: {
             facil_muito_facil: this.DIFICULDADE.FACIL,
             media: this.DIFICULDADE.MEDIO,
@@ -263,15 +264,36 @@ export class ModalNovaAvaliacaoComponent implements OnInit, OnChanges {
           console.error('Erro ao criar avaliação:', error);
           
           let mensagemErro = 'Erro ao criar avaliação.';
+          let tituloErro = 'Erro';
+          
+          // ← TRATAMENTO ESPECÍFICO PARA DIFERENTES TIPOS DE ERRO
           if (error.status === 400) {
-            mensagemErro = 'Dados inválidos. Verifique as informações e tente novamente.';
+            // Verificar se é erro de itens insuficientes
+            if (error.error?.message && error.error.message.includes('ITENS INSUFICIENTES')) {
+              tituloErro = '📊 Itens Insuficientes';
+              mensagemErro = this.formatarErroItensInsuficientes(error.error.message);
+            } else if (error.error?.message && error.error.message.includes('dados inválidos')) {
+              tituloErro = '⚠️ Dados Inválidos';
+              mensagemErro = 'Verifique as informações preenchidas e tente novamente.';
+            } else {
+              tituloErro = '⚠️ Dados Inválidos';
+              mensagemErro = error.error?.message || 'Dados inválidos. Verifique as informações e tente novamente.';
+            }
           } else if (error.status === 409) {
-            mensagemErro = 'Já existe uma avaliação com este nome.';
+            tituloErro = '⚠️ Nome Duplicado';
+            mensagemErro = 'Já existe uma avaliação com este nome. Escolha um nome diferente.';
+          } else if (error.status === 422) {
+            tituloErro = '⚠️ Validação';
+            mensagemErro = 'Alguns campos não foram preenchidos corretamente.';
           } else if (error.status >= 500) {
-            mensagemErro = 'Erro interno do servidor. Tente novamente mais tarde.';
+            tituloErro = '🔧 Erro do Servidor';
+            mensagemErro = 'Erro interno do servidor. Tente novamente em alguns instantes.';
+          } else if (error.status === 0) {
+            tituloErro = '🌐 Erro de Conexão';
+            mensagemErro = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
           }
           
-          this.mostrarAlerta('Erro', mensagemErro, 'warning');
+          this.mostrarAlerta(tituloErro, mensagemErro, 'warning');
         }
       });
     } else {
@@ -314,5 +336,43 @@ export class ModalNovaAvaliacaoComponent implements OnInit, OnChanges {
   getMatrizNome(matrizId: string): string {
     const matriz = this.matrizes.find(m => m.id === matrizId);
     return matriz ? matriz.name : 'Matriz não encontrada';
+  }
+
+  // Formatar erro de itens insuficientes
+  private formatarErroItensInsuficientes(mensagemErro: string): string {
+    try {
+      // Extrair informações do erro do backend
+      const linhas = mensagemErro.split('\n');
+      let mensagemFormatada = '❌ Não há itens suficientes na matriz selecionada:\n\n';
+      
+      linhas.forEach(linha => {
+        if (linha.includes('Itens fáceis:')) {
+          const match = linha.match(/disponível (\d+), solicitado (\d+)/);
+          if (match) {
+            mensagemFormatada += `• 🟢 Fáceis: ${match[1]} disponíveis, ${match[2]} necessários\n`;
+          }
+        } else if (linha.includes('Itens médios:')) {
+          const match = linha.match(/disponível (\d+), solicitado (\d+)/);
+          if (match) {
+            mensagemFormatada += `• 🟡 Médios: ${match[1]} disponíveis, ${match[2]} necessários\n`;
+          }
+        } else if (linha.includes('Itens difíceis:')) {
+          const match = linha.match(/disponível (\d+), solicitado (\d+)/);
+          if (match) {
+            mensagemFormatada += `• 🔴 Difíceis: ${match[1]} disponíveis, ${match[2]} necessários\n`;
+          }
+        }
+      });
+      
+      mensagemFormatada += '\n💡 Sugestões:\n';
+      mensagemFormatada += '• Reduza a quantidade total de itens\n';
+      mensagemFormatada += '• Adicione mais itens à matriz\n';
+      mensagemFormatada += '• Escolha uma matriz com mais itens disponíveis';
+      
+      return mensagemFormatada;
+    } catch (e) {
+      // Fallback caso não consiga formatar
+      return 'Não há itens suficientes na matriz selecionada para criar esta avaliação. Reduza a quantidade de itens ou escolha uma matriz com mais itens disponíveis.';
+    }
   }
 }

@@ -71,27 +71,75 @@ export class AvaliacaoService {
   
   constructor(private http: HttpClient) { }
 
-  criarAvaliacao(payload: CriarAvaliacaoPayload): Observable<AvaliacaoResponse> {
-    return this.http.post<AvaliacaoResponse>(this.apiUrl, payload)
-      .pipe(
-        timeout(15000),
-        catchError(this.handleError)
-      );
+  private getHeaders() {
+    return {
+      'Content-Type': 'application/json'
+    };
   }
 
-  getAvaliacoesPorCurso(cursoId: string, params?: { page?: number; perPage?: number; status?: string }): Observable<PaginatedResponse<Avaliacao>> {
-    let httpParams = new HttpParams();
-    
-    if (params?.page) httpParams = httpParams.set('page', params.page.toString());
-    if (params?.perPage) httpParams = httpParams.set('per_page', params.perPage.toString());
-    if (params?.status) httpParams = httpParams.set('status', params.status);
+  criarAvaliacao(payload: CriarAvaliacaoPayload): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, payload, {
+      headers: this.getHeaders()
+    }).pipe(
+      catchError(error => {
+        console.error('Erro detalhado na criação:', error);
+        // Extraindo a mensagem de erro específica
+        let mensagemEspecifica = 'Erro ao criar avaliação.';
+        
+        if (error.error) {
+          if (error.error.message) {
+            mensagemEspecifica = error.error.message;
+          }
+          else if (error.error.data && typeof error.error.data === 'object') {
+            const primeiroErro = Object.values(error.error.data)[0];
+            if (Array.isArray(primeiroErro)) {
+              mensagemEspecifica = primeiroErro[0];
+            }
+          }
+          else if (typeof error.error === 'string') {
+            mensagemEspecifica = error.error;
+          }
+        }
 
-    return this.http.get<PaginatedResponse<Avaliacao>>(`${this.apiUrl}/curso/${cursoId}`, { params: httpParams })
-      .pipe(
-        timeout(10000),
-        map(response => this.adaptPaginatedResponse(response)),
-        catchError(this.handleError)
-      );
+        // Criar um erro customizado com a mensagem específica
+        const erroCustomizado = {
+          ...error,
+          mensagemUsuario: mensagemEspecifica
+        };
+        
+        return throwError(() => erroCustomizado);
+      })
+    );
+  }
+
+  getAvaliacoesPorCurso(cursoId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/curso/${cursoId}`, {
+      headers: this.getHeaders()
+    }).pipe(
+      map(response => {
+        if (response.status === 'success' && response.data) {
+          if (response.data.data && Array.isArray(response.data.data)) {
+            return {
+              ...response,
+              data: response.data.data
+            };
+          }
+          if (Array.isArray(response.data)) {
+            return response;
+          }
+        }
+        
+        return {
+          status: 'success',
+          data: [],
+          message: 'Nenhuma avaliação encontrada'
+        };
+      }),
+      catchError(error => {
+        console.error('Erro no getAvaliacoesPorCurso:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getAvaliacoes(params?: { page?: number; perPage?: number; status?: string; search?: string }): Observable<PaginatedResponse<Avaliacao>> {
