@@ -68,18 +68,35 @@ interface Conhecimento {
 }
 
 // Nova interface para o formato da resposta da API da IA (para tipagem)
+// interface AIApiResponse {
+//   status: string;
+//   message: string;
+//   data: {
+//     item: {
+//       enunciado: string;
+//       comando: string;
+//       // contexto: string;
+//       alternativas: {
+//         letra: string;
+//         texto: string;
+//         justificativa: string; // O backend retorna 'justificativa'
+//         correta: boolean;
+//       }[];
+//     };
+//   };
+// }
+
 interface AIApiResponse {
   status: string;
   message: string;
   data: {
     item: {
-      enunciado: string;
+      enunciado: string; // Este campo será usado para o ENUNCIADO/CONTEXTO do seu formulário
       comando: string;
-      contexto: string;
       alternativas: {
         letra: string;
         texto: string;
-        justificativa: string; // O backend retorna 'justificativa'
+        justificativa: string; 
         correta: boolean;
       }[];
     };
@@ -138,7 +155,7 @@ export class CreateItemModalComponent implements OnInit {
     tipo_criacao: 'manual'
   };
 
-  private aiApiUrl = '/ai/create';
+  private aiApiUrl = 'api/ai/create';
 
   constructor(
     private matricesService: MatricesService,
@@ -348,8 +365,16 @@ export class CreateItemModalComponent implements OnInit {
     // 1. Montar o Payload da Requisição
     // Usando os "nomes" dos itens, que são mais descritivos para a IA,
     // e o código/nome para o Objeto de Conhecimento, como na sua matriz.
+
+    this.formData.curso_id = this.courseId; // Garante que o ID do curso está no formulário.
+
    const aiPayload = {
+
+    // 1. ADICIONAR O CURSO NO PAYLOAD PRINCIPAL
+      "curso_id": this.formData.curso_id, 
       "dificuldade": this.formData.dificuldade, // (1...5)
+
+
       // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
       "matriz": {
         // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
@@ -367,7 +392,7 @@ export class CreateItemModalComponent implements OnInit {
         // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
       },
       // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o. 
-      "prompt_ia": this.formData.prompt_ia,
+      "contexto": this.formData.prompt_ia,
     };
 
     console.log('Payload enviado para a IA:', aiPayload); // Útil para debug
@@ -389,32 +414,61 @@ export class CreateItemModalComponent implements OnInit {
         if (response.status === 'success' && response.data?.item) {
           const generatedItem = response.data.item;
 
-          // 3.1. Atualizar os campos principais do formulário
-          // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
-          this.formData.comando = generatedItem.comando;
-          this.formData.contexto = generatedItem.contexto || generatedItem.enunciado; 
-          
-          // 3.2. Mapear e preencher as alternativas
-          this.formData.alternativas = [];
-          generatedItem.alternativas.forEach(alt => {
-            this.formData.alternativas.push({
-              texto: alt.texto,
-              correta: alt.correta,
-              explicacao: alt.justificativa // Mapeando a 'justificativa' do backend para a 'explicacao' do frontend
+          ///////////////
+          // 4. AJUSTE: A IA só retorna ENUNCIADO e COMANDO.
+            // Mapear 'enunciado' para 'contexto' no seu formulário.
+            this.formData.comando = generatedItem.comando;
+            // Se o backend removeu o campo 'contexto' da resposta:
+            this.formData.contexto = generatedItem.enunciado; // <--- ENUNCIADO RETORNADO
+            
+            // 3.2. Mapear e preencher as alternativas 
+            this.formData.alternativas = [];
+            generatedItem.alternativas.forEach(alt => {
+              this.formData.alternativas.push({
+                texto: alt.texto,
+                correta: alt.correta,
+                explicacao: alt.justificativa
+              });
             });
-          });
-          
-          // 3.3. Mudar para o passo de Revisão
-          this.currentStep++;
-          this.loading = false;
-          this.cdr.markForCheck(); // Força a atualização da view
+            
+            // 3.3. Mudar para o passo de Revisão
+            this.currentStep++;
+            this.loading = false;
+            this.cdr.markForCheck(); 
 
-        } else {
-          this.loading = false;
-          this.cdr.markForCheck();
-          alert('Geração da IA falhou: ' + response.message);
-        }
-      },
+          } else {
+            this.loading = false;
+            this.cdr.markForCheck();
+            alert('Geração da IA falhou: ' + response.message);
+          }
+        },
+
+        //   // 3.1. Atualizar os campos principais do formulário
+        //   // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
+        //   this.formData.comando = generatedItem.comando;
+        //   this.formData.contexto = generatedItem.enunciado; 
+          
+        //   // 3.2. Mapear e preencher as alternativas
+        //   this.formData.alternativas = [];
+        //   generatedItem.alternativas.forEach(alt => {
+        //     this.formData.alternativas.push({
+        //       texto: alt.texto,
+        //       correta: alt.correta,
+        //       explicacao: alt.justificativa // Mapeando a 'justificativa' do backend para a 'explicacao' do frontend
+        //     });
+        //   });
+          
+        //   // 3.3. Mudar para o passo de Revisão
+        //   this.currentStep++;
+        //   this.loading = false;
+        //   this.cdr.markForCheck(); // Força a atualização da view
+
+        // } else {
+        //   this.loading = false;
+        //   this.cdr.markForCheck();
+        //   alert('Geração da IA falhou: ' + response.message);
+        // }
+      // },
       error: (err: unknown) => {
         // O erro já foi tratado no catchError, mas se houver outro erro no subscribe.
         // O catchError já trata a maioria, mas é bom ter esse fallback para o loading.
