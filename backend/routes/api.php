@@ -24,8 +24,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cursos/itens/{id}', [CursoItemController::class, 'index']);
     Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
 
+    Route::get('/matrizes', [MatrixController::class, 'index']);
+    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
     Route::get('/matrizes/list', [MatrixController::class, 'index']);
     Route::get('/matrizes/{id}/details', [MatrixController::class, 'show']);
+
+    Route::get('/cursos/summary', [CursoController::class, 'summary']);
+    Route::get('/cursos/{id}/summary', [CursoController::class, 'idSummary']);
+    Route::get('/cursos', [CursoController::class, 'index']);
 
     # Rotas de Itens
     Route::prefix('itens')->group(function () {
@@ -69,17 +75,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/colabs/{id}/cursos', [ColabsController::class, 'syncCursos']);
 
         #Rotas de Cursos
-        Route::get('/cursos/summary', [CursoController::class, 'summary']);
-        Route::get('/cursos/{id}/summary', [CursoController::class, 'idSummary']);
-        Route::get('/cursos', [CursoController::class, 'index']);
         Route::post('/cursos', [CursoController::class, 'store']);
         Route::patch('/cursos/{id}', [CursoController::class, 'update']);
         Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
         #Rotas de matrizes
-        Route::get('/matrizes', [MatrixController::class, 'index']);
         Route::post('/matrizes', [MatrixController::class,'store']);
-        Route::get('/matrizes/{id}', [MatrixController::class,'show']);
         Route::delete('/matrizes/{id}', [MatrixController::class, 'destroy']);
     });
 
