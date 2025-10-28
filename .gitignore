@@ -1,6 +1,12 @@
 node_modules
 
 # ------------------------------
+# Python - backend
+# ------------------------------
+__pycache__/
+ai_service.egg-info/
+
+# ------------------------------
 # Laravel - backend
 # ------------------------------
 /backend/vendor/
