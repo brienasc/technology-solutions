@@ -90,19 +90,24 @@ export class AvaliacoesComponent implements OnInit {
   carregarAvaliacoes(): void {
     if (!this.cursoId) return;
     
+    console.log('🔍 Carregando avaliações para curso:', this.cursoId);
     this.carregandoAvaliacoes = true;
     
     this.avaliacaoService.getAvaliacoesPorCurso(this.cursoId).subscribe({
       next: (response) => {
-        this.avaliacoes = response.data;
+        console.log('✅ Resposta da API:', response);
+        
+        this.avaliacoes = response.data || [];
         this.calcularEstatisticas();
         this.carregandoAvaliacoes = false;
+        
+        console.log('📋 Avaliações carregadas:', this.avaliacoes.length);
       },
       error: (error) => {
-        console.error('Erro ao carregar avaliações:', error);
+        console.error('❌ Erro ao carregar avaliações:', error);
         this.mostrarAlerta('Erro', 'Falha ao carregar avaliações.', 'warning');
         this.carregandoAvaliacoes = false;
-        this.avaliacoes = []; // Lista vazia em caso de erro
+        this.avaliacoes = [];
       }
     });
   }
