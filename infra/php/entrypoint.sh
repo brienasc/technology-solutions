@@ -13,18 +13,9 @@ if [ ! -f vendor/autoload.php ] || [ composer.lock -nt vendor/autoload.php ]; th
   composer install --no-interaction --prefer-dist --no-progress
 fi
 
-
 php artisan key:generate --ansi --force || true
 
 mkdir -p storage bootstrap/cache
-
-# Permissões (ver seção 2 para explicação do HOST_UID/HOST_GID)
-=======
-
-php artisan key:generate --ansi --force || true
-
-mkdir -p storage bootstrap/cache
-
 
 if [ -n "${HOST_UID}" ] && [ -n "${HOST_GID}" ]; then
   addgroup --gid "${HOST_GID}" hostgroup 2>/dev/null || true
@@ -46,10 +37,4 @@ php artisan config:clear || true
 php artisan cache:clear || true
 php artisan view:clear || true
 
-
 exec php-fpm -F
-
-
-
-exec php-fpm -F
-
