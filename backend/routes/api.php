@@ -10,6 +10,7 @@ use App\Http\Controllers\ColabsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MatrixController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AvaliacaoController;
 
 # Contact Route
 Route::post('/contact-form', [ContactController::class, 'recv']);
@@ -23,8 +24,38 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cursos/itens/{id}', [CursoItemController::class, 'index']);
     Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
 
+    Route::get('/matrizes', [MatrixController::class, 'index']);
+    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
     Route::get('/matrizes/list', [MatrixController::class, 'index']);
     Route::get('/matrizes/{id}/details', [MatrixController::class, 'show']);
+
+    Route::get('/cursos/summary', [CursoController::class, 'summary']);
+    Route::get('/cursos/{id}/summary', [CursoController::class, 'idSummary']);
+    Route::get('/cursos', [CursoController::class, 'index']);
+
+    # Rotas de Itens
+    Route::prefix('itens')->group(function () {
+        Route::post('/', [CursoItemController::class, 'store']);
+        Route::post('/draft', [CursoItemController::class, 'saveDraft']);
+        Route::get('/{id}', [CursoItemController::class, 'show']);
+        Route::put('/{id}', [CursoItemController::class, 'update']);
+        Route::delete('/{id}', [CursoItemController::class, 'destroy']);
+        Route::patch('/{id}/calibrate', [CursoItemController::class, 'calibrate']);
+
+        Route::get('/export/{id}/{method}', [CursoItemController::class, 'export']);
+        Route::post('/import/{method}', [CursoItemController::class, 'import']);
+        });
+
+    // Rotas de Avaliações
+    Route::prefix('avaliacoes')->group(function () {
+        Route::post('/', [AvaliacaoController::class, 'store']);
+        Route::get('/', [AvaliacaoController::class, 'index']);
+        Route::get('/curso/{cursoId}', [AvaliacaoController::class, 'getByCurso']);
+        Route::get('/{id}', [AvaliacaoController::class, 'show']);
+        Route::put('/{id}', [AvaliacaoController::class, 'update']);
+        Route::delete('/{id}', [AvaliacaoController::class, 'destroy']);
+        Route::post('/verificar-disponibilidade', [AvaliacaoController::class, 'verificarDisponibilidade']);
+    });
 
     Route::middleware('abilities:access:all')->group(function () {
         # Rotas de Convites
@@ -44,32 +75,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/colabs/{id}/cursos', [ColabsController::class, 'syncCursos']);
 
         #Rotas de Cursos
-        Route::get('/cursos/summary', [CursoController::class, 'summary']);
-        Route::get('/cursos/{id}/summary', [CursoController::class, 'idSummary']);
-        Route::get('/cursos', [CursoController::class, 'index']);
         Route::post('/cursos', [CursoController::class, 'store']);
         Route::patch('/cursos/{id}', [CursoController::class, 'update']);
         Route::delete('/cursos/{id}', [CursoController::class, 'destroy']);
 
-        # Rotas de Itens
-        Route::prefix('itens')->group(function () {
-            Route::post('/', [CursoItemController::class, 'store']);
-            Route::post('/draft', [CursoItemController::class, 'saveDraft']);
-            Route::get('/{id}', [CursoItemController::class, 'show']);
-            Route::put('/{id}', [CursoItemController::class, 'update']);
-            Route::delete('/{id}', [CursoItemController::class, 'destroy']);
-            Route::patch('/{id}/calibrate', [CursoItemController::class, 'calibrate']);
-
-            Route::get('/export/{id}/{method}', [CursoItemController::class, 'export']);
-            Route::post('/import/{method}', [CursoItemController::class, 'import']);
-        });
-
-        Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
-
         #Rotas de matrizes
-        Route::get('/matrizes', [MatrixController::class, 'index']);
         Route::post('/matrizes', [MatrixController::class,'store']);
-        Route::get('/matrizes/{id}', [MatrixController::class,'show']);
         Route::delete('/matrizes/{id}', [MatrixController::class, 'destroy']);
     });
 

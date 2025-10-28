@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalNovaAvaliacao } from './modal-nova-avaliacao';
+import { ModalNovaAvaliacaoComponent } from './modal-nova-avaliacao';
 
-describe('ModalNovaAvaliacao', () => {
-  let component: ModalNovaAvaliacao;
-  let fixture: ComponentFixture<ModalNovaAvaliacao>;
+describe('ModalNovaAvaliacaoComponent', () => {
+  let component: ModalNovaAvaliacaoComponent;
+  let fixture: ComponentFixture<ModalNovaAvaliacaoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalNovaAvaliacao]
+      imports: [ModalNovaAvaliacaoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalNovaAvaliacao);
+    fixture = TestBed.createComponent(ModalNovaAvaliacaoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

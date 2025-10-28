@@ -165,6 +165,13 @@
                     </div>
                 </div>
 
+                <!-- ← CAMPOS HIDDEN para o FormControl funcionar -->
+                <div style="display: none;">
+                    <input type="number" formControlName="percentualFacil">
+                    <input type="number" formControlName="percentualMedio">
+                    <input type="number" formControlName="percentualDificil">
+                </div>
+
                 <!-- Botões da Etapa 2 -->
                 <div class="modal-actions">
                     <button type="button" class="btn-voltar" (click)="voltarEtapa()"> < Voltar </button>
