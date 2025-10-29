@@ -67,32 +67,14 @@ interface Conhecimento {
   codigo: number;
 }
 
-// Nova interface para o formato da resposta da API da IA (para tipagem)
-// interface AIApiResponse {
-//   status: string;
-//   message: string;
-//   data: {
-//     item: {
-//       enunciado: string;
-//       comando: string;
-//       // contexto: string;
-//       alternativas: {
-//         letra: string;
-//         texto: string;
-//         justificativa: string; // O backend retorna 'justificativa'
-//         correta: boolean;
-//       }[];
-//     };
-//   };
-// }
-
 interface AIApiResponse {
-  status: string;
+  status: number; //  number para corresponder ao 200 do backend
   message: string;
   data: {
     item: {
-      enunciado: string; // Este campo será usado para o ENUNCIADO/CONTEXTO do seu formulário
+      enunciado: string; // Vai para this.formData.contexto
       comando: string;
+      contexto: string; // Mantido para refletir o JSON do backend, mas pode vir vazio
       alternativas: {
         letra: string;
         texto: string;
@@ -101,7 +83,25 @@ interface AIApiResponse {
       }[];
     };
   };
+  timestamp: string;
 }
+
+// interface AIApiResponse {
+//   status: string;
+//   message: string;
+//   data: {
+//     item: {
+//       enunciado: string; // Este campo será usado para o ENUNCIADO/CONTEXTO do seu formulário
+//       comando: string;
+//       alternativas: {
+//         letra: string;
+//         texto: string;
+//         justificativa: string; 
+//         correta: boolean;
+//       }[];
+//     };
+//   };
+// }
 
 @Component({
   selector: 'app-create-item-modal',
@@ -113,6 +113,7 @@ interface AIApiResponse {
 })
 export class CreateItemModalComponent implements OnInit {
   @Input() isOpen = false;
+  @Input() courseName: string = '';
   @Input() courseId = '';
   @Output() close = new EventEmitter<void>();
   @Output() itemCreated = new EventEmitter<void>();
@@ -358,7 +359,6 @@ export class CreateItemModalComponent implements OnInit {
     }
   }
 
-  // Novo método para gerar o item via API da IA
   generateItemByAI(): void {
     this.loading = true;
 
@@ -371,9 +371,9 @@ export class CreateItemModalComponent implements OnInit {
    const aiPayload = {
 
     // 1. ADICIONAR O CURSO NO PAYLOAD PRINCIPAL
-      "curso_id": this.formData.curso_id, 
-      "dificuldade": this.formData.dificuldade, // (1...5)
-
+      "curso_id": this.courseId, 
+      "curso_nome": this.courseName || 'Nome do Curso Não Informado', // Adicionando o nome
+      "dificuldade": this.formData.dificuldade,
 
       // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
       "matriz": {
@@ -402,46 +402,136 @@ export class CreateItemModalComponent implements OnInit {
       catchError(error => {
         this.loading = false;
         this.cdr.markForCheck();
-        console.error('Erro na chamada da API da IA:', error);
+        console.error('Erro na chamada da API da IA (HTTP Error):', error);
         alert('Erro ao gerar item via IA: ' + (error.error?.message || 'Erro de conexão ou servidor.'));
-        // Retorna um Observable que emite um array vazio ou um erro, dependendo do seu serviço/HTTP interceptor.
-        // Aqui, forçamos um Observable de array vazio (ou apenas um erro para parar o fluxo).
-        throw new Error('AI Generation Failed'); 
+        // Usa throwError para encerrar o stream Observable em caso de erro HTTP
+        return throwError(() => new Error('AI Generation Failed')); 
       })
     ).subscribe({
       next: (response: AIApiResponse) => {
-        // 3. Mapear a Resposta para o Form (se for sucesso)
-        if (response.status === 'success' && response.data?.item) {
+        
+        // 4. Checar a presença do item no retorno (garante que a IA gerou os dados)
+        if (response.data?.item) {
           const generatedItem = response.data.item;
 
-          ///////////////
-          // 4. AJUSTE: A IA só retorna ENUNCIADO e COMANDO.
-            // Mapear 'enunciado' para 'contexto' no seu formulário.
-            this.formData.comando = generatedItem.comando;
-            // Se o backend removeu o campo 'contexto' da resposta:
-            this.formData.contexto = generatedItem.enunciado; // <--- ENUNCIADO RETORNADO
-            
-            // 3.2. Mapear e preencher as alternativas 
-            this.formData.alternativas = [];
-            generatedItem.alternativas.forEach(alt => {
-              this.formData.alternativas.push({
-                texto: alt.texto,
-                correta: alt.correta,
-                explicacao: alt.justificativa
-              });
+          // 4.1. Mapeamento Crucial: 'enunciado' da API para 'contexto' do formulário
+          this.formData.comando = generatedItem.comando;
+          this.formData.contexto = generatedItem.enunciado; 
+          
+          // 4.2. Mapear e preencher as alternativas
+          this.formData.alternativas = [];
+          generatedItem.alternativas.forEach(alt => {
+            this.formData.alternativas.push({
+              texto: alt.texto,
+              correta: alt.correta,
+              explicacao: alt.justificativa
             });
-            
-            // 3.3. Mudar para o passo de Revisão
-            this.currentStep++;
-            this.loading = false;
-            this.cdr.markForCheck(); 
+          });
+          
+          // 4.3. Sucesso: Mudar para o passo de Revisão
+          this.currentStep++;
+          this.loading = false;
+          this.cdr.markForCheck(); 
 
-          } else {
-            this.loading = false;
-            this.cdr.markForCheck();
-            alert('Geração da IA falhou: ' + response.message);
-          }
-        },
+        } else {
+          // O backend retornou HTTP 200, mas o JSON está incompleto (sem item)
+          this.loading = false;
+          this.cdr.markForCheck();
+          alert('Geração da IA falhou: ' + (response.message || 'Resposta de sucesso incompleta do servidor.'));
+        }
+      },
+      error: (_err: unknown) => {
+        // Bloco de fallback para desativar o loading em caso de erros não pegos pelo catchError
+        this.loading = false;
+        this.cdr.markForCheck();
+      }
+    });
+  }
+  // // Novo método para gerar o item via API da IA
+  // generateItemByAI(): void {
+  //   this.loading = true;
+
+  //   // 1. Montar o Payload da Requisição
+  //   // Usando os "nomes" dos itens, que são mais descritivos para a IA,
+  //   // e o código/nome para o Objeto de Conhecimento, como na sua matriz.
+
+  //   this.formData.curso_id = this.courseId; // Garante que o ID do curso está no formulário.
+
+  //  const aiPayload = {
+
+  //   // 1. ADICIONAR O CURSO NO PAYLOAD PRINCIPAL
+  //     "curso_id": this.formData.curso_id, 
+  //     "dificuldade": this.formData.dificuldade, // (1...5)
+
+
+  //     // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
+  //     "matriz": {
+  //       // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
+  //       "competencia_geral": this.selectedCategoria?.nome || 'N/A', 
+  //       // Mapeamento: Função (Frontend) -> funcao (Backend)
+  //       "funcao": this.selectedFuncao?.nome || 'N/A',
+  //       // Mapeamento: Subfuncao (Frontend) -> subfuncao (Backend)
+  //       "subfuncao": this.selectedSubfuncao?.nome || 'N/A',
+  //       // Mapeamento: Conhecimento (Frontend) -> capacidade (Backend)
+  //       "capacidade": this.selectedConhecimento?.nome || 'N/A', 
+  //       // Mapeamento: Objeto de Conhecimento (Frontend) -> objeto_conhecimento (Backend)
+  //       "objeto_conhecimento": (this.selectedConhecimento?.codigo + ' - ' + this.selectedConhecimento?.nome) || 'N/A',
+  //       // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria), 
+  //       // mas não foi listado no payload do colega. Vamos incluir apenas o que foi pedido,
+  //       // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
+  //     },
+  //     // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o. 
+  //     "contexto": this.formData.prompt_ia,
+  //   };
+
+  //   console.log('Payload enviado para a IA:', aiPayload); // Útil para debug
+
+  //   // 2. Chamar a API (POST /ai/create)
+  //   this.http.post<AIApiResponse>(this.aiApiUrl, aiPayload).pipe(
+  //     catchError(error => {
+  //       this.loading = false;
+  //       this.cdr.markForCheck();
+  //       console.error('Erro na chamada da API da IA:', error);
+  //       alert('Erro ao gerar item via IA: ' + (error.error?.message || 'Erro de conexão ou servidor.'));
+  //       // Retorna um Observable que emite um array vazio ou um erro, dependendo do seu serviço/HTTP interceptor.
+  //       // Aqui, forçamos um Observable de array vazio (ou apenas um erro para parar o fluxo).
+  //       throw new Error('AI Generation Failed'); 
+  //     })
+  //   ).subscribe({
+  //     next: (response: AIApiResponse) => {
+  //       // 3. Mapear a Resposta para o Form (se for sucesso)
+  //       if (response.status === 'success' && response.data?.item) {
+  //         const generatedItem = response.data.item;
+
+  //         ///////////////
+  //         // 4. AJUSTE: A IA só retorna ENUNCIADO e COMANDO.
+  //           // Mapear 'enunciado' para 'contexto' no seu formulário.
+  //           this.formData.comando = generatedItem.comando;
+  //           // Se o backend removeu o campo 'contexto' da resposta:
+  //           this.formData.contexto = generatedItem.enunciado; // <--- ENUNCIADO RETORNADO
+            
+  //           // 3.2. Mapear e preencher as alternativas 
+  //           this.formData.alternativas = [];
+  //           generatedItem.alternativas.forEach(alt => {
+  //             this.formData.alternativas.push({
+  //               texto: alt.texto,
+  //               correta: alt.correta,
+  //               explicacao: alt.justificativa
+  //             });
+  //           });
+            
+  //           // 3.3. Mudar para o passo de Revisão
+  //           this.currentStep++;
+  //           this.loading = false;
+  //           this.cdr.markForCheck(); 
+
+  //         } else {
+  //           this.loading = false;
+  //           this.cdr.markForCheck();
+  //           alert('Geração da IA falhou: ' + response.message);
+  //         }
+  //       },
+        //////
 
         //   // 3.1. Atualizar os campos principais do formulário
         //   // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
@@ -469,14 +559,14 @@ export class CreateItemModalComponent implements OnInit {
         //   alert('Geração da IA falhou: ' + response.message);
         // }
       // },
-      error: (err: unknown) => {
-        // O erro já foi tratado no catchError, mas se houver outro erro no subscribe.
-        // O catchError já trata a maioria, mas é bom ter esse fallback para o loading.
-        this.loading = false;
-        this.cdr.markForCheck();
-      }
-    });
-  }
+  //     error: (err: unknown) => {
+  //       // O erro já foi tratado no catchError, mas se houver outro erro no subscribe.
+  //       // O catchError já trata a maioria, mas é bom ter esse fallback para o loading.
+  //       this.loading = false;
+  //       this.cdr.markForCheck();
+  //     }
+  //   });
+  // }
 
   saveDraft(): void {
     this.formData.curso_id = this.courseId;
