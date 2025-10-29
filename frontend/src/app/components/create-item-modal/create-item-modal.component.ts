@@ -167,6 +167,8 @@ export class CreateItemModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMatrizes();
+    console.log('ID do Curso recebido:', this.courseId);
+   console.log('NOME do Curso recebido:', this.courseName);
   }
 
   // método específico para Elaboradores
@@ -370,7 +372,7 @@ export class CreateItemModalComponent implements OnInit {
 
    const aiPayload = {
 
-    // 1. ADICIONAR O CURSO NO PAYLOAD PRINCIPAL
+    // 1. PAYLOAD PRINCIPAL
       "curso_id": this.courseId, 
       "curso_nome": this.courseName || 'Nome do Curso Não Informado', // Adicionando o nome
       "dificuldade": this.formData.dificuldade,
