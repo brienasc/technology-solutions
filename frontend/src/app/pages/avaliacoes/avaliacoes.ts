@@ -3,6 +3,7 @@ import { CommonModule, LowerCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ModalNovaAvaliacaoComponent } from '../../components/modal-nova-avaliacao/modal-nova-avaliacao';
+import { ModalDetalhesAvaliacaoComponent } from '../../components/modal-detalhes-avaliacao/modal-detalhes-avaliacao'; // 👈 ADICIONAR
 import { AvaliacaoService, Avaliacao } from '../../services/avaliacao.service';
 import { CursoService } from '../../services/curso.service';
 import { AlertVariant, AlertAction } from '../../models/alert.model';
@@ -17,6 +18,7 @@ import { Header } from '../../components/header/header';
     FormsModule,
     Header,
     ModalNovaAvaliacaoComponent,
+    ModalDetalhesAvaliacaoComponent, 
     AlertModalComponent
   ],
   templateUrl: './avaliacoes.html',
@@ -31,6 +33,9 @@ export class AvaliacoesComponent implements OnInit {
   avaliacoes: Avaliacao[] = [];
   carregandoAvaliacoes: boolean = false;
   
+  showModalDetalhes = false;
+  avaliacaoSelecionada: Avaliacao | null = null;
+
   // Estatísticas
   totalAvaliacoes: number = 0;
   agendadasCount: number = 0;
@@ -72,7 +77,6 @@ export class AvaliacoesComponent implements OnInit {
     
     this.carregandoCurso = true;
     
-    // usa o método getById existente que chama /cursos/{id}/summary
     this.cursoService.getById(this.cursoId).subscribe({
       next: (curso) => {
         this.cursoNome = curso.nome;
@@ -121,7 +125,6 @@ export class AvaliacoesComponent implements OnInit {
 
   // Filtros
   aplicarFiltros(): void {
-    // Por enquanto, recarrega todos os dados (ate o back ficar pronto, depois enviar filtros p api)
     this.carregarAvaliacoes();
   }
 
@@ -129,10 +132,15 @@ export class AvaliacoesComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // Ações
   visualizar(avaliacao: Avaliacao): void {
-    console.log('Visualizar:', avaliacao.nome);
-    this.mostrarAlerta('Visualizar', `Abrindo avaliação: ${avaliacao.nome}`, 'info');
+    console.log('🎯 Abrindo modal para:', avaliacao.nome);
+    this.avaliacaoSelecionada = avaliacao;
+    this.showModalDetalhes = true;
+  }
+
+  fecharModalDetalhes(): void {
+    this.showModalDetalhes = false;
+    this.avaliacaoSelecionada = null;
   }
 
   editar(avaliacao: Avaliacao): void {
@@ -171,7 +179,7 @@ export class AvaliacoesComponent implements OnInit {
   onAvaliacaoCriada(): void {
     this.fecharModal();
     this.mostrarAlerta('Sucesso', 'Avaliação criada com sucesso!', 'success');
-    this.carregarAvaliacoes(); // Recarrega a lista após criação
+    this.carregarAvaliacoes();
   }
 
   // Utilitários
@@ -211,7 +219,6 @@ export class AvaliacoesComponent implements OnInit {
   onAlertAction(action: AlertAction): void {
     this.showAlert = false;
   }
-
   onAlertClosed(): void {
     this.showAlert = false;
   }

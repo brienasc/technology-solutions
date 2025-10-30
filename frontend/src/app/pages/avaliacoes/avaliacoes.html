@@ -137,4 +137,10 @@
         (action)="onAlertAction($event)"
         (closed)="onAlertClosed()">
     </app-alert-modal>
+<app-modal-detalhes-avaliacao 
+  *ngIf="showModalDetalhes && avaliacaoSelecionada"
+  [avaliacao]="avaliacaoSelecionada"
+  (closeModal)="fecharModalDetalhes()">
+</app-modal-detalhes-avaliacao>
+    
 </div>
