@@ -52,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [AvaliacaoController::class, 'index']);
         Route::get('/curso/{cursoId}', [AvaliacaoController::class, 'getByCurso']);
         Route::get('/{id}', [AvaliacaoController::class, 'show']);
+        Route::get('/{id}/itens', [AvaliacaoController::class, 'getItensAvaliacao']);
+        Route::get('/{id}/completa', [AvaliacaoController::class, 'getAvaliacaoCompleta']);
         Route::put('/{id}', [AvaliacaoController::class, 'update']);
         Route::delete('/{id}', [AvaliacaoController::class, 'destroy']);
         Route::post('/verificar-disponibilidade', [AvaliacaoController::class, 'verificarDisponibilidade']);

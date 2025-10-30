@@ -204,4 +204,67 @@ class AvaliacaoController extends Controller
             return $this->apiResponse->error($e->getMessage(), 'Erro na verificação');
         }
     }
+
+    /**
+     * Buscar itens detalhados de uma avaliação específica
+     */
+    public function getItensAvaliacao(string $id): JsonResponse
+    {
+        try {
+            Log::info('📦 Buscando itens detalhados da avaliação:', ['avaliacao_id' => $id]);
+
+            $itens = $this->avaliacaoService->getItensDetalhados($id);
+
+            Log::info('✅ Itens encontrados:', [
+                'avaliacao_id' => $id,
+                'quantidade_itens' => count($itens)
+            ]);
+
+            return $this->apiResponse->success($itens, 'Itens da avaliação retornados com sucesso');
+        } catch (Exception $e) {
+            Log::error('❌ Erro ao buscar itens da avaliação:', [
+                'avaliacao_id' => $id,
+                'erro' => $e->getMessage(),
+                'arquivo' => $e->getFile(),
+                'linha' => $e->getLine()
+            ]);
+            
+            return $this->apiResponse->error(
+                $e->getMessage(), 
+                'Erro ao buscar itens da avaliação',
+                500
+            );
+        }
+    }
+
+    /**
+     * Buscar avaliação completa com todos os itens detalhados
+     */
+    public function getAvaliacaoCompleta(string $id): JsonResponse
+    {
+        try {
+            Log::info('📋 Buscando avaliação completa:', ['avaliacao_id' => $id]);
+
+            $avaliacao = $this->avaliacaoService->getByIdComItensDetalhados($id);
+
+            if (!$avaliacao) {
+                return $this->apiResponse->error(null, 'Avaliação não encontrada', 404);
+            }
+
+            Log::info('✅ Avaliação completa encontrada:', [
+                'avaliacao_id' => $id,
+                'nome' => $avaliacao->nome,
+                'quantidade_itens' => $avaliacao->itens->count()
+            ]);
+
+            return $this->apiResponse->success($avaliacao, 'Avaliação completa retornada com sucesso');
+        } catch (Exception $e) {
+            Log::error('❌ Erro ao buscar avaliação completa:', [
+                'avaliacao_id' => $id,
+                'erro' => $e->getMessage()
+            ]);
+            
+            return $this->apiResponse->error($e->getMessage(), 'Erro ao buscar avaliação completa');
+        }
+    }
 }
