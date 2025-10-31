@@ -25,8 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cursos/itens/{cursoId}', [CursoItemController::class, 'getByCurso']);
 
     Route::get('/matrizes', [MatrixController::class, 'index']);
-    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
     Route::get('/matrizes/list', [MatrixController::class, 'index']);
+    Route::get('/matrizes/{id}', [MatrixController::class,'show']);
     Route::get('/matrizes/{id}/details', [MatrixController::class, 'show']);
 
     Route::get('/cursos/summary', [CursoController::class, 'summary']);
@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/export/{id}/{method}', [CursoItemController::class, 'export']);
         Route::post('/import/{method}', [CursoItemController::class, 'import']);
-        });
+    });
 
     // Rotas de Avaliações
     Route::prefix('avaliacoes')->group(function () {
