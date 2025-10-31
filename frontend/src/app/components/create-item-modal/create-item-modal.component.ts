@@ -78,7 +78,7 @@ interface AIApiResponse {
       alternativas: {
         letra: string;
         texto: string;
-        justificativa: string; 
+        justificativa: string;
         correta: boolean;
       }[];
     };
@@ -96,7 +96,7 @@ interface AIApiResponse {
 //       alternativas: {
 //         letra: string;
 //         texto: string;
-//         justificativa: string; 
+//         justificativa: string;
 //         correta: boolean;
 //       }[];
 //     };
@@ -156,19 +156,19 @@ export class CreateItemModalComponent implements OnInit {
     tipo_criacao: 'manual'
   };
 
-  private aiApiUrl = 'api/ai/create';
+  private aiApiUrl = 'http://localhost:8000/ai/create';
 
   constructor(
     private matricesService: MatricesService,
     private itemService: CourseItemsService,
     private cdr: ChangeDetectorRef,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadMatrizes();
     console.log('ID do Curso recebido:', this.courseId);
-   console.log('NOME do Curso recebido:', this.courseName);
+    console.log('NOME do Curso recebido:', this.courseName);
   }
 
   // método específico para Elaboradores
@@ -233,7 +233,7 @@ export class CreateItemModalComponent implements OnInit {
     this.formData.funcao_id = undefined;
     this.formData.subfuncao_id = undefined;
     this.formData.conhecimento_id = undefined;
-    
+
     if (this.selectedCategoria) {
       this.formData.categoria_id = this.selectedCategoria.id;
     }
@@ -246,7 +246,7 @@ export class CreateItemModalComponent implements OnInit {
     this.formData.funcao_id = undefined;
     this.formData.subfuncao_id = undefined;
     this.formData.conhecimento_id = undefined;
-    
+
     if (this.selectedCompetencia) {
       this.formData.competencia_id = this.selectedCompetencia.id;
     }
@@ -257,7 +257,7 @@ export class CreateItemModalComponent implements OnInit {
     this.selectedConhecimento = null;
     this.formData.subfuncao_id = undefined;
     this.formData.conhecimento_id = undefined;
-    
+
     if (this.selectedFuncao) {
       this.formData.funcao_id = this.selectedFuncao.id;
     }
@@ -266,7 +266,7 @@ export class CreateItemModalComponent implements OnInit {
   onSubfuncaoChange(): void {
     this.selectedConhecimento = null;
     this.formData.conhecimento_id = undefined;
-    
+
     if (this.selectedSubfuncao) {
       this.formData.subfuncao_id = this.selectedSubfuncao.id;
     }
@@ -292,7 +292,7 @@ export class CreateItemModalComponent implements OnInit {
     } else if (this.canProceedToNextStep()) {
       // 2. Para todas as outras transições válidas
       this.currentStep++;
-      this.cdr.markForCheck(); 
+      this.cdr.markForCheck();
     }
   }
 
@@ -340,19 +340,19 @@ export class CreateItemModalComponent implements OnInit {
       case 0:
         return this.tipoSelecionado !== null;
       case 1:
-        return this.formData.matriz_id !== '' && 
-               this.formData.dificuldade > 0 &&
-               this.selectedCategoria !== null &&
-               this.selectedCompetencia !== null &&
-               this.selectedFuncao !== null &&
-               this.selectedSubfuncao !== null &&
-               this.selectedConhecimento !== null;
+        return this.formData.matriz_id !== '' &&
+          this.formData.dificuldade > 0 &&
+          this.selectedCategoria !== null &&
+          this.selectedCompetencia !== null &&
+          this.selectedFuncao !== null &&
+          this.selectedSubfuncao !== null &&
+          this.selectedConhecimento !== null;
       case 2:
         if (this.tipoSelecionado === 'manual') {
-          return this.formData.comando.trim() !== '' && 
-                 this.formData.contexto.trim() !== '' &&
-                 this.formData.alternativas.every(alt => alt.texto.trim() !== '') &&
-                 this.formData.alternativas.some(alt => alt.correta);
+          return this.formData.comando.trim() !== '' &&
+            this.formData.contexto.trim() !== '' &&
+            this.formData.alternativas.every(alt => alt.texto.trim() !== '') &&
+            this.formData.alternativas.some(alt => alt.correta);
         } else {
           return this.formData.prompt_ia?.trim() !== '';
         }
@@ -370,30 +370,30 @@ export class CreateItemModalComponent implements OnInit {
 
     this.formData.curso_id = this.courseId; // Garante que o ID do curso está no formulário.
 
-   const aiPayload = {
+    const aiPayload = {
 
-    // 1. PAYLOAD PRINCIPAL
-      "curso_id": this.courseId, 
+      // 1. PAYLOAD PRINCIPAL
+      "curso_id": this.courseId,
       "curso_nome": this.courseName || 'Nome do Curso Não Informado', // Adicionando o nome
       "dificuldade": this.formData.dificuldade,
 
       // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
       "matriz": {
         // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
-        "competencia_geral": this.selectedCategoria?.nome || 'N/A', 
+        "competencia_geral": this.selectedCategoria?.nome || 'N/A',
         // Mapeamento: Função (Frontend) -> funcao (Backend)
         "funcao": this.selectedFuncao?.nome || 'N/A',
         // Mapeamento: Subfuncao (Frontend) -> subfuncao (Backend)
         "subfuncao": this.selectedSubfuncao?.nome || 'N/A',
         // Mapeamento: Conhecimento (Frontend) -> capacidade (Backend)
-        "capacidade": this.selectedConhecimento?.nome || 'N/A', 
+        "capacidade": this.selectedConhecimento?.nome || 'N/A',
         // Mapeamento: Objeto de Conhecimento (Frontend) -> objeto_conhecimento (Backend)
         "objeto_conhecimento": (this.selectedConhecimento?.codigo + ' - ' + this.selectedConhecimento?.nome) || 'N/A',
-        // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria), 
+        // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria),
         // mas não foi listado no payload do colega. Vamos incluir apenas o que foi pedido,
         // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
       },
-      // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o. 
+      // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o.
       "contexto": this.formData.prompt_ia,
     };
 
@@ -407,19 +407,19 @@ export class CreateItemModalComponent implements OnInit {
         console.error('Erro na chamada da API da IA (HTTP Error):', error);
         alert('Erro ao gerar item via IA: ' + (error.error?.message || 'Erro de conexão ou servidor.'));
         // Usa throwError para encerrar o stream Observable em caso de erro HTTP
-        return throwError(() => new Error('AI Generation Failed')); 
+        return throwError(() => new Error('AI Generation Failed'));
       })
     ).subscribe({
       next: (response: AIApiResponse) => {
-        
+
         // 4. Checar a presença do item no retorno (garante que a IA gerou os dados)
         if (response.data?.item) {
           const generatedItem = response.data.item;
 
           // 4.1. Mapeamento Crucial: 'enunciado' da API para 'contexto' do formulário
           this.formData.comando = generatedItem.comando;
-          this.formData.contexto = generatedItem.enunciado; 
-          
+          this.formData.contexto = generatedItem.enunciado;
+
           // 4.2. Mapear e preencher as alternativas
           this.formData.alternativas = [];
           generatedItem.alternativas.forEach(alt => {
@@ -429,11 +429,11 @@ export class CreateItemModalComponent implements OnInit {
               explicacao: alt.justificativa
             });
           });
-          
+
           // 4.3. Sucesso: Mudar para o passo de Revisão
           this.currentStep++;
           this.loading = false;
-          this.cdr.markForCheck(); 
+          this.cdr.markForCheck();
 
         } else {
           // O backend retornou HTTP 200, mas o JSON está incompleto (sem item)
@@ -462,27 +462,27 @@ export class CreateItemModalComponent implements OnInit {
   //  const aiPayload = {
 
   //   // 1. ADICIONAR O CURSO NO PAYLOAD PRINCIPAL
-  //     "curso_id": this.formData.curso_id, 
+  //     "curso_id": this.formData.curso_id,
   //     "dificuldade": this.formData.dificuldade, // (1...5)
 
 
   //     // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
   //     "matriz": {
   //       // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
-  //       "competencia_geral": this.selectedCategoria?.nome || 'N/A', 
+  //       "competencia_geral": this.selectedCategoria?.nome || 'N/A',
   //       // Mapeamento: Função (Frontend) -> funcao (Backend)
   //       "funcao": this.selectedFuncao?.nome || 'N/A',
   //       // Mapeamento: Subfuncao (Frontend) -> subfuncao (Backend)
   //       "subfuncao": this.selectedSubfuncao?.nome || 'N/A',
   //       // Mapeamento: Conhecimento (Frontend) -> capacidade (Backend)
-  //       "capacidade": this.selectedConhecimento?.nome || 'N/A', 
+  //       "capacidade": this.selectedConhecimento?.nome || 'N/A',
   //       // Mapeamento: Objeto de Conhecimento (Frontend) -> objeto_conhecimento (Backend)
   //       "objeto_conhecimento": (this.selectedConhecimento?.codigo + ' - ' + this.selectedConhecimento?.nome) || 'N/A',
-  //       // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria), 
+  //       // O campo 'competencia' existe na sua estrutura Angular (dentro de Categoria),
   //       // mas não foi listado no payload do colega. Vamos incluir apenas o que foi pedido,
   //       // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
   //     },
-  //     // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o. 
+  //     // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o.
   //     "contexto": this.formData.prompt_ia,
   //   };
 
@@ -497,7 +497,7 @@ export class CreateItemModalComponent implements OnInit {
   //       alert('Erro ao gerar item via IA: ' + (error.error?.message || 'Erro de conexão ou servidor.'));
   //       // Retorna um Observable que emite um array vazio ou um erro, dependendo do seu serviço/HTTP interceptor.
   //       // Aqui, forçamos um Observable de array vazio (ou apenas um erro para parar o fluxo).
-  //       throw new Error('AI Generation Failed'); 
+  //       throw new Error('AI Generation Failed');
   //     })
   //   ).subscribe({
   //     next: (response: AIApiResponse) => {
@@ -511,8 +511,8 @@ export class CreateItemModalComponent implements OnInit {
   //           this.formData.comando = generatedItem.comando;
   //           // Se o backend removeu o campo 'contexto' da resposta:
   //           this.formData.contexto = generatedItem.enunciado; // <--- ENUNCIADO RETORNADO
-            
-  //           // 3.2. Mapear e preencher as alternativas 
+
+  //           // 3.2. Mapear e preencher as alternativas
   //           this.formData.alternativas = [];
   //           generatedItem.alternativas.forEach(alt => {
   //             this.formData.alternativas.push({
@@ -521,11 +521,11 @@ export class CreateItemModalComponent implements OnInit {
   //               explicacao: alt.justificativa
   //             });
   //           });
-            
+
   //           // 3.3. Mudar para o passo de Revisão
   //           this.currentStep++;
   //           this.loading = false;
-  //           this.cdr.markForCheck(); 
+  //           this.cdr.markForCheck();
 
   //         } else {
   //           this.loading = false;
@@ -533,34 +533,34 @@ export class CreateItemModalComponent implements OnInit {
   //           alert('Geração da IA falhou: ' + response.message);
   //         }
   //       },
-        //////
+  //////
 
-        //   // 3.1. Atualizar os campos principais do formulário
-        //   // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
-        //   this.formData.comando = generatedItem.comando;
-        //   this.formData.contexto = generatedItem.enunciado; 
-          
-        //   // 3.2. Mapear e preencher as alternativas
-        //   this.formData.alternativas = [];
-        //   generatedItem.alternativas.forEach(alt => {
-        //     this.formData.alternativas.push({
-        //       texto: alt.texto,
-        //       correta: alt.correta,
-        //       explicacao: alt.justificativa // Mapeando a 'justificativa' do backend para a 'explicacao' do frontend
-        //     });
-        //   });
-          
-        //   // 3.3. Mudar para o passo de Revisão
-        //   this.currentStep++;
-        //   this.loading = false;
-        //   this.cdr.markForCheck(); // Força a atualização da view
+  //   // 3.1. Atualizar os campos principais do formulário
+  //   // O campo 'enunciado' da resposta é o 'contexto' do seu formulário.
+  //   this.formData.comando = generatedItem.comando;
+  //   this.formData.contexto = generatedItem.enunciado;
 
-        // } else {
-        //   this.loading = false;
-        //   this.cdr.markForCheck();
-        //   alert('Geração da IA falhou: ' + response.message);
-        // }
-      // },
+  //   // 3.2. Mapear e preencher as alternativas
+  //   this.formData.alternativas = [];
+  //   generatedItem.alternativas.forEach(alt => {
+  //     this.formData.alternativas.push({
+  //       texto: alt.texto,
+  //       correta: alt.correta,
+  //       explicacao: alt.justificativa // Mapeando a 'justificativa' do backend para a 'explicacao' do frontend
+  //     });
+  //   });
+
+  //   // 3.3. Mudar para o passo de Revisão
+  //   this.currentStep++;
+  //   this.loading = false;
+  //   this.cdr.markForCheck(); // Força a atualização da view
+
+  // } else {
+  //   this.loading = false;
+  //   this.cdr.markForCheck();
+  //   alert('Geração da IA falhou: ' + response.message);
+  // }
+  // },
   //     error: (err: unknown) => {
   //       // O erro já foi tratado no catchError, mas se houver outro erro no subscribe.
   //       // O catchError já trata a maioria, mas é bom ter esse fallback para o loading.
@@ -573,9 +573,9 @@ export class CreateItemModalComponent implements OnInit {
   saveDraft(): void {
     this.formData.curso_id = this.courseId;
     this.loading = true;
-    
+
     console.log('Dados enviados para saveDraft:', this.formData);
-    
+
     this.itemService.saveDraft(this.formData).subscribe({
       next: (response) => {
         console.log('Rascunho salvo com sucesso:', response);
@@ -590,7 +590,7 @@ export class CreateItemModalComponent implements OnInit {
         console.error('Mensagem:', error.message);
         console.error('URL:', error.url);
         this.loading = false;
-        
+
         // Mensagem de erro mais específica
         let errorMessage = 'Erro ao salvar rascunho.';
         if (error.status === 0) {
@@ -602,7 +602,7 @@ export class CreateItemModalComponent implements OnInit {
         } else if (error.error?.message) {
           errorMessage = error.error.message;
         }
-        
+
         alert(errorMessage);
         this.cdr.markForCheck();
       }
@@ -612,9 +612,9 @@ export class CreateItemModalComponent implements OnInit {
   finalizeItem(): void {
     this.formData.curso_id = this.courseId;
     this.loading = true;
-    
+
     console.log('Dados enviados para create:', this.formData);
-    
+
     this.itemService.createItem(this.formData).subscribe({
       next: (response) => {
         console.log('Item finalizado com sucesso:', response);
@@ -629,7 +629,7 @@ export class CreateItemModalComponent implements OnInit {
         console.error('Mensagem:', error.message);
         console.error('URL:', error.url);
         this.loading = false;
-        
+
         // Mensagem de erro mais específica
         let errorMessage = 'Erro ao finalizar item.';
         if (error.status === 0) {
@@ -641,7 +641,7 @@ export class CreateItemModalComponent implements OnInit {
         } else if (error.error?.message) {
           errorMessage = error.error.message;
         }
-        
+
         alert(errorMessage);
         this.cdr.markForCheck();
       }
@@ -691,10 +691,10 @@ export class CreateItemModalComponent implements OnInit {
 
   get funcoesDisponiveis(): Funcao[] {
     if (!this.selectedCompetencia) return [];
-    
+
     // Filtrar apenas as funções que têm cruzamentos válidos para a competência selecionada
     if (!this.matrizSelecionada?.cruzamentos) return [];
-    
+
     const funcoesComCruzamento = new Set<string>();
     this.matrizSelecionada.cruzamentos
       .filter((c: Cruzamento) => c.competencia_id === this.selectedCompetencia!.id)
@@ -708,39 +708,39 @@ export class CreateItemModalComponent implements OnInit {
           });
         });
       });
-    
+
     return (this.matrizSelecionada?.funcoes || []).filter((f: Funcao) => funcoesComCruzamento.has(f.id));
   }
 
   get subfuncoesDisponiveis(): Subfuncao[] {
     if (!this.selectedFuncao || !this.selectedCompetencia) return [];
-    
+
     // Filtrar apenas as subfunções que têm cruzamentos válidos para a competência selecionada
     if (!this.matrizSelecionada?.cruzamentos) return [];
-    
+
     const subfuncoesComCruzamento = new Set<string>();
     this.matrizSelecionada.cruzamentos
       .filter((c: Cruzamento) => c.competencia_id === this.selectedCompetencia!.id)
       .forEach((cruzamento: Cruzamento) => {
         subfuncoesComCruzamento.add(cruzamento.subfuncao_id);
       });
-    
+
     return (this.selectedFuncao.subfuncoes || []).filter((s: Subfuncao) => subfuncoesComCruzamento.has(s.id));
   }
 
   get conhecimentosDisponiveis(): Conhecimento[] {
     if (!this.selectedCompetencia || !this.selectedSubfuncao) return [];
-    
+
     // Filtrar conhecimentos baseado nos cruzamentos válidos
     if (!this.matrizSelecionada?.cruzamentos) return [];
-    
+
     const conhecimentosValidos = this.matrizSelecionada.cruzamentos
-      .filter((c: Cruzamento) => 
-        c.competencia_id === this.selectedCompetencia!.id && 
+      .filter((c: Cruzamento) =>
+        c.competencia_id === this.selectedCompetencia!.id &&
         c.subfuncao_id === this.selectedSubfuncao!.id
       )
       .map((c: Cruzamento) => c.conhecimento_id);
-    
+
     return (this.matrizSelecionada?.conhecimentos || [])
       .filter((k: Conhecimento) => conhecimentosValidos.includes(k.id));
   }
