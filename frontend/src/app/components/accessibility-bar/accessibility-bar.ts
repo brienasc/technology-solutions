@@ -1,9 +1,10 @@
 // src/app/components/accessibility-bar/accessibility-bar.component.ts
-import { Component, Renderer2, OnInit } from '@angular/core';
+import { Component, Renderer2, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button'; // Para estilização Material
 // IMPORTAR MatIconModule SE VOCÊ OPTAR POR ÍCONES SVG DO MATERIAL
 import { OnDestroy } from '@angular/core'; //cancelar a fala quando mudar de pagina
+import { MatIconModule } from '@angular/material/icon';
 
 // Defina os limites e o valor inicial para o recurso de Fonte
 // const MAX_FONT_LEVEL = 3; 
@@ -14,12 +15,13 @@ import { OnDestroy } from '@angular/core'; //cancelar a fala quando mudar de pag
   standalone: true,
   imports: [
     CommonModule, 
-    MatButtonModule // Incluir MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   templateUrl: './accessibility-bar.html',
   styleUrls: ['./accessibility-bar.css'],
 })
-export class AccessibilityBarComponent implements OnInit {
+export class AccessibilityBarComponent implements OnInit{
   
     readonly MAX_FONT_LEVEL = 3; 
   readonly MIN_FONT_LEVEL = 0; 
@@ -51,41 +53,62 @@ export class AccessibilityBarComponent implements OnInit {
       this.fontSizeLevel = parseInt(storedLevel, 10);
       this.applyFontSizeClass();
     }
+    
   }
+
+  // 2.1 DESTRUIÇÃO (ngOnDestroy)
+    ngOnDestroy(): void {
+      // Cancela a fala quando o usuário navegar para fora desta página
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
 
   // 3. MÉTODOS DE CONTROLE (Chamados pelo HTML)
 
   // LÓGICA DE ALTO CONTRASTE
-  toggleHighContrast(): void {
+  public toggleHighContrast(): void {
     this.isHighContrast = !this.isHighContrast;
     this.applyContrastClass();
     localStorage.setItem('contrast', this.isHighContrast ? 'high' : 'normal');
   }
   
   // LÓGICA DE TEMA ESCURO/CLARO
-  toggleTheme(): void {
+  public toggleDarkTheme(): void {
     this.isDarkTheme = !this.isDarkTheme; 
     this.applyThemeClass(); 
     localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light'); 
   }
 
-  // AUMENTAR FONTE
-  increaseFontSize(): void {
-    if (this.fontSizeLevel < this.MAX_FONT_LEVEL) {
-      this.fontSizeLevel++;
-      this.applyFontSizeClass();
+  // // AUMENTAR FONTE
+  // public changeFontSize(): void {
+  //   if (this.fontSizeLevel < this.MAX_FONT_LEVEL) {
+  //     this.fontSizeLevel++;
+  //     this.applyFontSizeClass();
+  //   }
+  //   // this.isMenuOpen = false;
+  // }
+
+  // LÓGICA DE TAMANHO DA FONTE (Unificado para changeFontSize(step))
+    public changeFontSize(step: number): void { // <-- NOVO: HTML chama este método
+        const newLevel = this.fontSizeLevel + step;
+        
+        if (newLevel >= this.MIN_FONT_LEVEL && newLevel <= this.MAX_FONT_LEVEL) {
+            this.fontSizeLevel = newLevel;
+            this.applyFontSizeClass();
+            this.updateFontSizeDisplay();
+        }
+        // Não fecha o menu aqui, o usuário pode querer mais ajustes
     }
-    // this.isMenuOpen = false;
-  }
 
   // DIMINUIR FONTE
-  decreaseFontSize(): void {
-    if (this.fontSizeLevel > this.MIN_FONT_LEVEL) {
-      this.fontSizeLevel--;
-      this.applyFontSizeClass();
-    }
-      // this.isMenuOpen = false;
-  }
+  // decreaseFontSize(): void {
+  //   if (this.fontSizeLevel > this.MIN_FONT_LEVEL) {
+  //     this.fontSizeLevel--;
+  //     this.applyFontSizeClass();
+  //   }
+  //     // this.isMenuOpen = false;
+  // }
   
     // método para fechar o menu
   closeAccessibilityMenu(): void {
@@ -98,14 +121,27 @@ export class AccessibilityBarComponent implements OnInit {
   //   this.isMenuOpen = false;
   // }
   // ------- jac- pra scrollar na tela
-scrollToSection(sectionId: string): void {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.focus(); // foco para acessibilidade (opcional, importante para leitores de tela)
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    this.isMenuOpen = false; // opcional: fecha barra após clicar no botão
-  }
-}
+// scrollToSection(sectionId: string): void {
+//   const element = document.getElementById(sectionId);
+//   if (element) {
+//     element.focus(); // foco para acessibilidade (opcional, importante para leitores de tela)
+//     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+//     this.isMenuOpen = false; // opcional: fecha barra após clicar no botão
+//   }
+// }
+
+    // Método para navegar rapidamente para seções (âncoras)
+    public scrollToSection(sectionId: string): void {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            // Rola a tela suavemente até a seção
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            this.isMenuOpen = false; // Fecha a barra após o clique
+            console.log(`Rolando para a seção: ${sectionId}`);
+        } else {
+            console.error(`Elemento com ID '${sectionId}' não encontrado.`);
+        }
+      }
 //---- fim de scrolar na tela
 
   // 4. MÉTODOS PRIVADOS DE APLICAÇÃO (Manipulação do DOM)
@@ -142,6 +178,19 @@ scrollToSection(sectionId: string): void {
     localStorage.setItem('fontSizeLevel', this.fontSizeLevel.toString());
   }
 
+  // Atualiza o texto do display para o usuário
+private updateFontSizeDisplay(): void {
+    const baseSize = 16;
+    const step = 2;
+    const sizeMap: { [key: number]: string } = {
+        0: '16px (Padrão)',
+        1: `${baseSize + (step * 1)}px (Nível 1)`,
+        2: `${baseSize + (step * 2)}px (Nível 2)`,
+        3: `${baseSize + (step * 3)}px (Nível 3)`,
+    };
+    this.displayFontSize = sizeMap[this.fontSizeLevel] || sizeMap[0];
+}
+
 
   // 5. MÉTODO DE RESET (Final da Classe)
   
@@ -153,7 +202,7 @@ scrollToSection(sectionId: string): void {
     
     // Reseta Tema
     if (this.isDarkTheme) {
-        this.toggleTheme();
+        this.toggleDarkTheme();
     }
     
     // Reseta Fonte
@@ -186,44 +235,51 @@ scrollToSection(sectionId: string): void {
   // }
 
 
-readPageAloud(): void {
-  console.log("Tentando iniciar a leitura da página...");
-  
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel(); 
-    
-    // 1. Tenta capturar o texto selecionado (STRING LIMPA)
-    const selection = window.getSelection();
-    let textToRead = '';
-    
-    // Converte a seleção para string e remove espaços em branco (trim)
-    if (selection) {
-        textToRead = selection.toString().trim(); 
-    }
-    
-    // 2. Verifica se a seleção é válida (maior que 5 caracteres)
-    if (textToRead && textToRead.length > 20) {
-        console.log("Lendo seleção: ", textToRead.substring(0, 50) + "...");
-        // A leitura é da seleção
-    } else {
-        // Se a seleção for muito curta ou inexistente, faz o fallback para o body
-        const mainContent = document.body;
-        textToRead = mainContent.innerText;
-        console.log("Lendo página inteira (Fallback).");
-    }
-    
-    if (textToRead && textToRead.length > 0) {
-        const speech = new SpeechSynthesisUtterance(textToRead);
-        speech.lang = 'pt-BR'; 
+// Método para ler o texto selecionado ou a página inteira
+    public readPageAloud(): void {
+        console.log("Tentando iniciar a leitura da página...");
         
-        window.speechSynthesis.speak(speech);
-    } 
+        if (!('speechSynthesis' in window)) {
+             alert('Seu navegador não suporta a funcionalidade de leitura de tela.');
+             return;
+        }
+
+        window.speechSynthesis.cancel(); 
+        
+        const selection = window.getSelection();
+        let textToRead = '';
+        
+        if (selection) {
+            textToRead = selection.toString().trim(); 
+        }
+        
+        // Prioriza a seleção, se for substancial
+        if (textToRead && textToRead.length > 20) {
+            // Se houver lógica de filtro de conteúdo, aplique aqui
+            console.log("Lendo seleção...");
+        } else {
+            // Fallback: lê o conteúdo principal do corpo (ajuste o seletor se houver um <main>)
+            const mainContent = document.body;
+            textToRead = mainContent.innerText || mainContent.textContent || '';
+            console.log("Lendo página inteira (Fallback).");
+        }
+        
+        if (textToRead && textToRead.length > 0) {
+            // Cria um objeto de fala
+            const speech = new SpeechSynthesisUtterance(textToRead);
+            
+            // Opcional: Configurações de voz (se necessário)
+            // speech.lang = 'pt-BR'; 
+            // speech.pitch = 1; 
+            // speech.rate = 1;
+
+            window.speechSynthesis.speak(speech);
+        } else {
+            console.log("Nenhum texto encontrado para ler.");
+        }
+    }
     
-  } else {
-    alert('Seu navegador não suporta a função de leitura de tela (Text-to-Speech).');
-  }
-  
-  this.isMenuOpen = false;
-}
+
+    
 
 }
