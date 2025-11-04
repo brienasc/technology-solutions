@@ -12,12 +12,34 @@ export interface CriarAvaliacaoPayload {
     facil_muito_facil_qtd: number;
     media_qtd: number;
     dificil_muito_dificil_qtd: number;
-    distribuicao_percentual: {
-      facil_muito_facil: number;
-      media: number;
-      dificil_muito_dificil: number;
-    };
   };
+}
+
+export interface Alternativa {
+  id: string;
+  texto: string;
+  ordem: number;
+  is_correct: boolean;
+  justificativa?: string;
+}
+
+export interface ItemAvaliacaoDetalhado {
+  id: string;
+  code: string;
+  comando: string;
+  contexto?: string;
+  status: number;
+  status_nome: string;
+  dificuldade: number;
+  dificuldade_nome: string;
+  curso_id: string;
+  curso_nome: string;
+  matriz_id: string;
+  matriz_nome: string;
+  ordem_na_avaliacao: number;
+  alternativas: Alternativa[];
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Avaliacao {
@@ -40,6 +62,7 @@ export interface Avaliacao {
     media_qtd: number;
     dificil_muito_dificil_qtd: number;
   };
+  itens?: ItemAvaliacaoDetalhado[];
 }
 
 export interface AvaliacaoResponse {
@@ -78,36 +101,26 @@ export class AvaliacaoService {
   }
 
   criarAvaliacao(payload: CriarAvaliacaoPayload): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}`, payload, {
+    const backendPayload = {
+      nome: payload.nome,
+      curso_id: payload.curso_id,
+      matriz_id: payload.matriz_id,
+      quantidade_itens: payload.quantidade_itens,
+      distribuicao: {
+        facil_muito_facil_qtd: payload.distribuicao.facil_muito_facil_qtd,
+        media_qtd: payload.distribuicao.media_qtd,
+        dificil_muito_dificil_qtd: payload.distribuicao.dificil_muito_dificil_qtd
+      }
+    };
+
+    console.log('📤 Payload corrigido para backend:', backendPayload);
+
+    return this.http.post<any>(`${this.apiUrl}`, backendPayload, {
       headers: this.getHeaders()
     }).pipe(
       catchError(error => {
-        console.error('Erro detalhado na criação:', error);
-        // Extraindo a mensagem de erro específica
-        let mensagemEspecifica = 'Erro ao criar avaliação.';
-        
-        if (error.error) {
-          if (error.error.message) {
-            mensagemEspecifica = error.error.message;
-          }
-          else if (error.error.data && typeof error.error.data === 'object') {
-            const primeiroErro = Object.values(error.error.data)[0];
-            if (Array.isArray(primeiroErro)) {
-              mensagemEspecifica = primeiroErro[0];
-            }
-          }
-          else if (typeof error.error === 'string') {
-            mensagemEspecifica = error.error;
-          }
-        }
-
-        // Criar um erro customizado com a mensagem específica
-        const erroCustomizado = {
-          ...error,
-          mensagemUsuario: mensagemEspecifica
-        };
-        
-        return throwError(() => erroCustomizado);
+        console.error('❌ Erro detalhado:', error);
+        return throwError(() => error);
       })
     );
   }
@@ -140,6 +153,56 @@ export class AvaliacaoService {
         return throwError(() => error);
       })
     );
+  }
+
+  getAvaliacaoComItens(avaliacaoId: string): Observable<Avaliacao> {
+    return this.http.get<any>(`${this.apiUrl}/${avaliacaoId}`)
+      .pipe(
+        timeout(10000),
+        map(response => {
+          console.log('📦 Resposta completa da avaliação:', response);
+          
+          const data = response.data || response;
+          
+          return this.adaptAvaliacaoComItens(data);
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getItensAvaliacao(avaliacaoId: string): Observable<any[]> {
+    return this.getAvaliacaoComItens(avaliacaoId)
+      .pipe(
+        map(avaliacao => {
+          return avaliacao.itens || [];
+        })
+      );
+  }
+
+  getItensAvaliacaoDetalhados(avaliacaoId: string): Observable<ItemAvaliacaoDetalhado[]> {
+    return this.http.get<any>(`${this.apiUrl}/${avaliacaoId}/itens`)
+      .pipe(
+        timeout(10000),
+        map(response => {
+          console.log('📦 Resposta detalhada dos itens:', response);
+          
+          if (response.status === 'success' && response.data) {
+            return this.adaptItensDetalhados(response.data);
+          }
+          
+          if (Array.isArray(response)) {
+            return this.adaptItensDetalhados(response);
+          }
+          
+          if (response.data && Array.isArray(response.data)) {
+            return this.adaptItensDetalhados(response.data);
+          }
+          
+          console.warn('⚠️ Formato inesperado da resposta:', response);
+          return [];
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getAvaliacoes(params?: { page?: number; perPage?: number; status?: string; search?: string }): Observable<PaginatedResponse<Avaliacao>> {
@@ -210,8 +273,39 @@ export class AvaliacaoService {
       tempo_duracao: data.tempo_duracao,
       alunos_previstos: data.alunos_previstos,
       alunos_realizados: data.alunos_realizados,
-      distribuicao: data.distribuicao
+      distribuicao: data.distribuicao,
+      itens: []
     };
+  }
+
+  private adaptAvaliacaoComItens(data: any): Avaliacao {
+    const avaliacaoBase = this.adaptAvaliacao(data);
+    
+    return {
+      ...avaliacaoBase,
+      itens: data.itens || data.data?.itens || []
+    };
+  }
+
+  private adaptItensDetalhados(itens: any[]): ItemAvaliacaoDetalhado[] {
+    return itens.map(item => ({
+      id: item.id,
+      code: item.code,
+      comando: item.comando,
+      contexto: item.contexto,
+      status: item.status,
+      status_nome: item.status_nome,
+      dificuldade: item.dificuldade,
+      dificuldade_nome: item.dificuldade_nome,
+      curso_id: item.curso_id,
+      curso_nome: item.curso_nome,
+      matriz_id: item.matriz_id,
+      matriz_nome: item.matriz_nome,
+      ordem_na_avaliacao: item.ordem_na_avaliacao,
+      alternativas: item.alternativas || [],
+      created_at: item.created_at,
+      updated_at: item.updated_at
+    }));
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -243,7 +337,6 @@ export class AvaliacaoService {
           errorMessage = `Erro ${error.status}: ${error.message}`;
       }
     }
-    
     return throwError(() => new Error(errorMessage));
   }
 }

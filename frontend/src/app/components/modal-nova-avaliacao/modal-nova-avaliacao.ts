@@ -241,14 +241,8 @@ export class ModalNovaAvaliacaoComponent implements OnInit, OnChanges {
           facil_muito_facil_qtd: formValues.percentualFacil,
           media_qtd: formValues.percentualMedio,
           dificil_muito_dificil_qtd: formValues.percentualDificil,
-          distribuicao_percentual: {
-            facil_muito_facil: this.DIFICULDADE.FACIL,
-            media: this.DIFICULDADE.MEDIO,
-            dificil_muito_dificil: this.DIFICULDADE.DIFICIL
-          }
         }
       };
-
       console.log('Enviando dados para API:', payload);
 
       this.avaliacaoService.criarAvaliacao(payload).subscribe({
