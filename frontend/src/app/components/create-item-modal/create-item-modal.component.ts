@@ -377,7 +377,7 @@ export class CreateItemModalComponent implements OnInit {
       "curso_nome": this.courseName || 'Nome do Curso Não Informado', // Adicionando o nome
       "dificuldade": this.formData.dificuldade,
 
-      // O campo "competencia_geral" do payload do backend deve vir da sua 'Categoria'
+      // O campo "competencia_geral" do payload do backend 'Categoria'
       "matriz": {
         // Mapeamento: Categoria (Frontend) -> competencia_geral (Backend)
         "competencia_geral": this.selectedCategoria?.nome || 'N/A',
@@ -393,7 +393,7 @@ export class CreateItemModalComponent implements OnInit {
         // mas não foi listado no payload do colega. Vamos incluir apenas o que foi pedido,
         // mas se a geração falhar, tente adicionar 'competencia': this.selectedCompetencia?.nome || 'N/A'.
       },
-      // INCLUSÃO DO PROMPT: Se a IA precisar do texto do usuário, envie-o.
+      // Se a IA precisar do texto do usuário
       "contexto": this.formData.prompt_ia,
     };
 
