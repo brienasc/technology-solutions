@@ -1,0 +1,262 @@
+<div class="modal-backdrop" (click)="fecharModal()">
+    <div class="modal-content large-modal" (click)="$event.stopPropagation()">
+        
+        <!-- Ícone de Fechar -->
+        <button class="close-button" (click)="fecharModal()">
+            &times;
+        </button>
+
+        <!-- Cabeçalho -->
+        <div class="header-purple">
+            <h2 class="title">DETALHES DA AVALIAÇÃO</h2>
+            <p class="subtitle">{{ avaliacao?.nome }}</p>
+            <div class="avaliacao-info">
+                <span><strong>Curso:</strong> {{ avaliacao?.curso_nome }}</span>
+                <span><strong>Matriz:</strong> {{ avaliacao?.matriz_nome }}</span>
+                <span><strong>Total de Itens:</strong> {{ avaliacao?.quantidade_itens }}</span>
+            </div>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="main-body">
+
+            <!-- Informações Gerais -->
+            <section class="info-section">
+                <h3 class="section-title">Informações Gerais</h3>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Curso:</label>
+                        <span>{{ avaliacao?.curso_nome || 'Carregando...' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Matriz:</label>
+                        <span>{{ avaliacao?.matriz_nome || 'Carregando...' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Status:</label>
+                        <span class="status-badge status-{{ avaliacao?.status }}">
+                            {{ 
+                                avaliacao?.status === 'em_andamento' ? 'Em Andamento' : 
+                                avaliacao?.status === 'agendada' ? 'Agendada' :
+                                avaliacao?.status === 'finalizada' ? 'Finalizada' :
+                                avaliacao?.status 
+                            }}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <label>Tipo:</label>
+                        <span class="type-badge">{{ avaliacao?.tipo || 'prova' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Data de Criação:</label>
+                        <span>{{ (avaliacao?.data_criacao | date: 'dd/MM/yyyy') || 'Não informada' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Data Agendada:</label>
+                        <span>{{ (avaliacao?.data_agendada | date: 'dd/MM/yyyy') || 'Não agendada' }}</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Estatísticas de Itens -->
+            <section class="stats-section">
+                <h3 class="section-title">Distribuição de Itens</h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">{{ avaliacao?.quantidade_itens || 0 }}</div>
+                        <div class="stat-label">Total de Itens</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" [style.color]="getDificuldadeCor(1)">
+                            {{ avaliacao?.distribuicao?.facil_muito_facil_qtd || 0 }}
+                        </div>
+                        <div class="stat-label">Fáceis / Muito Fáceis</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" [style.color]="getDificuldadeCor(3)">
+                            {{ avaliacao?.distribuicao?.media_qtd || 0 }}
+                        </div>
+                        <div class="stat-label">Médios</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" [style.color]="getDificuldadeCor(5)">
+                            {{ avaliacao?.distribuicao?.dificil_muito_dificil_qtd || 0 }}
+                        </div>
+                        <div class="stat-label">Difíceis / Muito Difíceis</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lista de Itens -->
+            <section class="itens-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        Itens da Avaliação 
+                        <span class="matriz-info">— {{ avaliacao?.matriz_nome }}</span>
+                    </h3>
+                    <span class="items-count">{{ itens.length }} itens</span>
+                </div>
+
+                <!-- Loading -->
+                <div *ngIf="carregandoItens" class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <p>Carregando itens da avaliação...</p>
+                </div>
+
+                <!-- Tabela de Itens -->
+                <div *ngIf="!carregandoItens" class="table-container">
+                    <div class="table-responsive">
+                        <table class="itens-table" aria-label="Lista de Itens da Avaliação">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    @for (col of columns; track col.label) {
+                                        <th>{{ col.label }}</th>
+                                    }
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (!itens || itens.length === 0) {
+                                    <tr>
+                                        <td [attr.colspan]="columns.length + 2" class="text-center">
+                                            Nenhum item encontrado nesta avaliação.
+                                        </td>
+                                    </tr>
+                                } @else {
+                                    @for (item of itens; track item.id; let i = $index) {
+                                        <tr class="row-hover">
+                                            <!-- Ordem -->
+                                            <td class="text-center">
+                                                <strong>{{ i + 1 }}</strong>
+                                            </td>
+                                            
+                                            <!-- Colunas normais -->
+                                            @for (col of columns; track col.label) {
+                                                <td>
+                                                    {{ cell(item, col) }}
+                                                </td>
+                                            }
+                                            
+                                            <!-- Ações -->
+                                            <td class="text-center col-actions">
+                                                <div class="actions" role="group" aria-label="Ações">
+                                                    <button
+                                                        class="icon-btn view-btn"
+                                                        title="Expandir Detalhes"
+                                                        aria-label="Expandir Detalhes"
+                                                        (click)="alternarItem(i)"
+                                                    >
+                                                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                                                            <path
+                                                                d="M1.5 12s4.5-7.5 10.5-7.5S22.5 12 22.5 12 18 19.5 12 19.5 1.5 12 1.5 12Z"
+                                                            />
+                                                            <circle cx="12" cy="12" r="3.75" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- Linha expandida com detalhes completos do item -->
+                                        <tr *ngIf="itemExpandido === i" class="expanded-row">
+                                            <td [attr.colspan]="columns.length + 2">
+                                                <div class="item-details-expanded">
+                                                    <!-- Cabeçalho do item expandido -->
+                                                    <div class="expanded-header">
+                                                        <h4>Detalhes do Item #{{ i + 1 }}</h4>
+                                                        <button 
+                                                            class="btn-close-expanded"
+                                                            (click)="alternarItem(i)"
+                                                            aria-label="Fechar detalhes"
+                                                        >
+                                                            &times;
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Informações do Item -->
+                                                    <div class="item-info-grid">
+                                                        <div class="info-group">
+                                                            <label>Código:</label>
+                                                            <span>{{ item.code }}</span>
+                                                        </div>
+                                                        <div class="info-group">
+                                                            <label>Curso:</label>
+                                                            <span>{{ item.curso_nome }}</span>
+                                                        </div>
+                                                        <div class="info-group">
+                                                            <label>Matriz:</label>
+                                                            <span>{{ item.matriz_nome }}</span>
+                                                        </div>
+                                                        <div class="info-group">
+                                                            <label>Status:</label>
+                                                            <span class="status-badge" [style.background-color]="getStatusCor(item.status)">
+                                                                {{ item.status_nome }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="info-group">
+                                                            <label>Dificuldade:</label>
+                                                            <span class="dificuldade-badge" [style.background-color]="getDificuldadeCor(item.dificuldade)">
+                                                                {{ item.dificuldade_nome }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Comando -->
+                                                    <div class="comando-section">
+                                                        <h5>Comando:</h5>
+                                                        <p class="comando-text">{{ item.comando }}</p>
+                                                    </div>
+
+                                                    <!-- Contexto -->
+                                                    <div *ngIf="item.contexto" class="contexto-section">
+                                                        <h5>Contexto:</h5>
+                                                        <p class="contexto-text">{{ item.contexto }}</p>
+                                                    </div>
+
+                                                    <!-- Alternativas -->
+                                                    <div class="alternativas-section">
+                                                        <h5>Alternativas:</h5>
+                                                        <div class="alternativas-list">
+                                                            <div *ngFor="let alt of item.alternativas" 
+                                                                 class="alternativa-item"
+                                                                 [class.alternativa-correta]="alt.is_correct">
+                                                                <div class="alternativa-content">
+                                                                    <div class="alternativa-header">
+                                                                        <span class="alternativa-letra">{{ formatarLetraAlternativa(alt.ordem) }}</span>
+                                                                        <span class="alternativa-texto">{{ alt.texto }}</span>
+                                                                        <span *ngIf="alt.is_correct" class="correta-indicator">
+                                                                            ✓ Correta
+                                                                        </span>
+                                                                    </div>
+                                                                    
+                                                                    <!-- Justificativa (se existir) -->
+                                                                    <div *ngIf="alt.justificativa" class="justificativa-section">
+                                                                        <strong>Justificativa:</strong>
+                                                                        <p class="justificativa-text">{{ alt.justificativa }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Botões de Ação -->
+            <div class="modal-actions">
+                <button type="button" class="btn-primary" (click)="fecharModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>

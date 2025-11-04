@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Avaliacao extends Model
 {
@@ -48,10 +49,19 @@ class Avaliacao extends Model
         return $this->belongsTo(Matriz::class, 'matriz_id');
     }
 
+    // Relacionamento através da tabela pivot avaliacao_itens
+    public function avaliacaoItens(): HasMany
+    {
+        return $this->hasMany(AvaliacaoItem::class, 'avaliacao_id');
+    }
+
+    // Relacionamento muitos-para-muitos com itens através da tabela pivot
     public function itens(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, 'avaliacao_itens', 'avaliacao_id', 'item_id')
-                    ->withTimestamps();
+                    ->withPivot('ordem')
+                    ->withTimestamps()
+                    ->orderBy('avaliacao_itens.ordem');
     }
 
     public function getDistribuicaoAttribute(): array

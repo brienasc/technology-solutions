@@ -72,6 +72,125 @@ class AvaliacaoService
         }
     }
 
+    public function getByIdComItensDetalhados(string $id): ?Avaliacao
+    {
+        return Avaliacao::with([
+            'curso',
+            'matriz',
+            'itens.alternativas', // Carrega os itens com suas alternativas
+            'itens.curso',
+            'itens.matriz'
+        ])->find($id);
+    }
+
+    /**
+     * Método específico para buscar apenas os itens da avaliação com todos os detalhes
+     * NOVO FORMATO: igual ao usado na página de cursos itens
+     */
+    public function getItensDetalhados(string $avaliacaoId): array
+    {
+        try {
+            Log::info('🔍 Buscando itens detalhados para avaliação:', ['avaliacao_id' => $avaliacaoId]);
+
+            $itens = AvaliacaoItem::where('avaliacao_id', $avaliacaoId)
+                ->with([
+                    'item.alternativas', // Alternativas do item
+                    'item.curso',        // Curso do item
+                    'item.matriz'        // Matriz do item
+                ])
+                ->orderBy('ordem')
+                ->get()
+                ->map(function ($avaliacaoItem) {
+                    $item = $avaliacaoItem->item;
+                    
+                    if (!$item) {
+                        Log::warning('Item não encontrado para AvaliacaoItem:', [
+                            'avaliacao_item_id' => $avaliacaoItem->id,
+                            'item_id' => $avaliacaoItem->item_id
+                        ]);
+                        return null;
+                    }
+
+                    // FORMATO COMPATÍVEL COM A PÁGINA DE CURSOS ITENS
+                    return [
+                        'id' => $item->id,
+                        'code' => $item->code,
+                        'comando' => $item->comando,
+                        'contexto' => $item->contexto,
+                        'status' => $item->status,
+                        'status_nome' => $this->getStatusNome($item->status), // Adiciona nome do status
+                        'dificuldade' => $item->dificuldade,
+                        'dificuldade_nome' => $this->getDificuldadeNome($item->dificuldade), // Adiciona nome da dificuldade
+                        'curso_id' => $item->curso_id,
+                        'curso_nome' => $item->curso->nome ?? 'N/A',
+                        'matriz_id' => $item->matriz_id,
+                        'matriz_nome' => $item->matriz->nome ?? 'N/A',
+                        'ordem_na_avaliacao' => $avaliacaoItem->ordem,
+                        'alternativas' => $item->alternativas->map(function ($alternativa) {
+                            return [
+                                'id' => $alternativa->id,
+                                'texto' => $alternativa->texto,
+                                'ordem' => $alternativa->ordem,
+                                'is_correct' => (bool)$alternativa->is_correct,
+                                'justificativa' => $alternativa->justificativa
+                            ];
+                        })->sortBy('ordem')->values()->toArray(),
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at
+                    ];
+                })
+                ->filter() // Remove itens nulos
+                ->values() // Reindexa o array
+                ->toArray();
+
+            Log::info('✅ Itens detalhados processados:', [
+                'avaliacao_id' => $avaliacaoId,
+                'quantidade_itens' => count($itens)
+            ]);
+
+            return $itens;
+
+        } catch (Exception $e) {
+            Log::error('❌ Erro ao buscar itens detalhados:', [
+                'avaliacao_id' => $avaliacaoId,
+                'erro' => $e->getMessage(),
+                'arquivo' => $e->getFile(),
+                'linha' => $e->getLine()
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Converter código de status para nome
+     */
+    private function getStatusNome(int $status): string
+    {
+        $statusMap = [
+            0 => 'Rascunho',
+            1 => 'Finalizado',
+            2 => 'Calibrado'
+        ];
+        
+        return $statusMap[$status] ?? 'Desconhecido';
+    }
+
+    /**
+     * Converter código de dificuldade para nome
+     */
+    private function getDificuldadeNome(int $dificuldade): string
+    {
+        $dificuldadeMap = [
+            1 => 'Muito Fácil',
+            2 => 'Fácil',
+            3 => 'Médio',
+            4 => 'Difícil',
+            5 => 'Muito Difícil'
+        ];
+        
+        return $dificuldadeMap[$dificuldade] ?? 'Não definida';
+    }
+
     // Selecionar itens aleatórios e inserir na avaliação
     private function selecionarEInserirItens(string $avaliacaoId, string $matrizId, array $distribuicao): void
     {
