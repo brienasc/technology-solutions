@@ -10,7 +10,7 @@
 
 .imd-dialog {
   width: min(45em, 92vw);
-  max-height: 90vh;
+  max-height: 95vh;
   display: flex;
   flex-direction: column;
   background: var(--theme-card-bg);
@@ -24,35 +24,67 @@
 .imd-header {
   position: sticky;
   top: 0;
-  background: var(--theme-form-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em 1.125em;
   border-bottom: 1px solid var(--theme-border-color);
   z-index: 2;
+
+  border: 1px solid red;
+  background-image: linear-gradient(to right, #7B2CBF, #a78bfa);
 }
 
 .imd-header h2 {
   margin: 0;
   font-size: 1.125em;
-  color: var(--theme-heading-text);
+
+  color: #ffffff;
   font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  gap: 0.625em;
+}
+
+.imd-header h2 .header-icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.5em;
+}
+
+.imd-header h2 .header-icon-wrapper svg {
+  width: 1.25em;
+  height: 1.25em;
+  color: #ffffff;
 }
 
 .imd-close {
-  border: 1px solid var(--theme-border-color);
-  background: var(--theme-button-bg);
-  color: var(--theme-text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.15);
+  color: var(--color-white);
+
   width: 2.25em;
   height: 2.25em;
-  border-radius: 0.625em;
+  border-radius: 50%;
   font-size: 1.25em;
-  line-height: 1;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 .imd-close:hover {
-  background: var(--theme-button-hover);
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 .imd-close:focus-visible {
   outline: 2px solid var(--theme-button-primary-bg);
@@ -93,9 +125,14 @@ label {
 }
 
 input[type="text"],
+input[type="date"],
+.combo-trigger {
+  background: #C7C7EB;
+  border: none;
+}
+
+input[type="text"],
 input[type="date"] {
-  border: 1px solid var(--theme-border-color);
-  background: var(--theme-input-bg);
   color: var(--theme-input-text);
   border-radius: 0.5em;
   padding: 0.625em 0.75em;
@@ -117,8 +154,6 @@ input:focus {
   align-items: center;
   justify-content: space-between;
   gap: 0.5em;
-  border: 1px solid var(--theme-border-color);
-  background: var(--theme-input-bg);
   color: var(--theme-input-text);
   border-radius: 0.5em;
   padding: 0.625em 0.75em;
@@ -194,28 +229,58 @@ input:focus {
 
 .file-line {
   position: relative;
+
+  width: 100% !important;
 }
 
 .file-line input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.file-line .file-label-custom {
+  display: flex;
+  align-items: center;
   width: 100%;
   font-size: 0.95em;
-  color: var(--theme-input-text);
+  user-select: none;
+  cursor: pointer;
+
+  overflow: hidden;
 }
 
-.file-line input[type="file"]::-webkit-file-upload-button {
+.file-line .file-button-custom {
   -webkit-appearance: none;
   appearance: none;
-  border: 1px solid var(--theme-border-color);
-  background: var(--theme-button-hover, #bacbeb);
-  color: var(--theme-text);
+
+  border: 1px solid var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary);
+
   border-radius: 0.5em;
   padding: 0.625em 0.875em;
-  cursor: pointer;
   margin-right: 0.75em;
+
   transition: background-color 0.2s ease-in-out;
+  display: inline-block;
+
+  flex-shrink: 0;
 }
 
-.file-line input[type="file"]::-webkit-file-upload-button:hover {
+.file-line .file-text-custom {
+  color: #555;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.file-line .file-label-custom:hover .file-button-custom {
   background: var(--theme-button-hover, #e5e7eb);
 }
 
@@ -229,13 +294,14 @@ input:focus {
   border-radius: 999px;
   padding: 0.375em 0.625em 0.375em 0.75em;
   max-width: 100%;
+
 }
 
 .file-chip .name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 28ch;
+  max-width: 35ch;
   font-size: 0.9em;
 }
 
