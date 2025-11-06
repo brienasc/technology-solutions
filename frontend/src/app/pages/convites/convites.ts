@@ -112,14 +112,10 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   }
 
   onPageChange(newPage: number): void {
-    if (newPage >= 1 && newPage <= this.totalPages()) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
       this.currentPage = newPage;
       this.loadInvitations();
     }
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.totalItems / this.pageSize);
   }
 
   onPageSizeChange(newSize: number): void {
@@ -557,6 +553,49 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
   private resetOptions(): void {
     this.selectedCursoConvite = undefined;
     this.selectedPerfilConvite = undefined;
+  }
+
+  applyFilter(): void {
+    this.currentPage = 1;
+    this.loadInvitations();
+  }
+
+  updatePageSize(): void {
+    this.currentPage = 1;
+    this.loadInvitations();
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadInvitations();
+    }
+  }
+
+  goToPrevious(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadInvitations();
+    }
+  }
+
+  goToNext(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadInvitations();
+    }
+  }
+
+  getStartIndex(): number {
+    return (this.currentPage - 1) * this.pageSize + 1;
+  }
+
+  getEndIndex(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 }
 
