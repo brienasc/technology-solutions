@@ -8,14 +8,31 @@
   >
     <div class="imd-dialog" (click)="stop($event)">
       <div class="imd-header">
-        <h2 id="imd-title">Importar Matriz</h2>
+        <h2 id="imd-title">
+          <span class="header-icon-wrapper">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+              />
+            </svg>
+          </span>
+          <span>Importar Matriz</span>
+        </h2>
         <button
           type="button"
           class="imd-close"
           (click)="cancel()"
           aria-label="Fechar"
         >
-          ×
+          <p>×</p>
         </button>
       </div>
 
@@ -89,7 +106,7 @@
             </div>
           </div>
 
-          <div class="imd-row">
+          <div class="imd-row-complete">
             <div class="imd-col">
               <label>Curso <span class="req">*</span></label>
 
@@ -156,18 +173,25 @@
             </div>
           </div>
 
-          <div class="imd-row">
+          <div class="imd-row-complete">
             <div class="imd-col">
               <label for="im-file">Arquivo <span class="req">*</span></label>
 
-              <div class="file-line">
-                <input
-                  id="im-file"
-                  type="file"
-                  (change)="onFileChange($event)"
-                  accept=".xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                />
-              </div>
+              @if (!fileName) {
+                <div class="file-line">
+                  <input
+                    id="im-file"
+                    type="file"
+                    (change)="onFileChange($event)"
+                    accept=".xlsx,.xls,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  />
+
+                  <label for="im-file" class="file-label-custom">
+                    <span class="file-button-custom">Escolher arquivo</span>
+                    <span class="file-text-custom">Nenhum arquivo selecionado</span>
+                  </label>
+                </div>
+              }
 
               @if (fileName) {
                 <div class="file-chip">
@@ -181,9 +205,7 @@
                     ×
                   </button>
                 </div>
-              }
-
-              @if (form.get("file")?.touched && form.get("file")?.invalid) {
+              } @if (form.get("file")?.touched && form.get("file")?.invalid) {
                 <small class="imd-field-error">Envie um arquivo.</small>
               }
             </div>
