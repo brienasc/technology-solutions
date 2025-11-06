@@ -16,29 +16,36 @@
         </button>
     </header>
 
-    <!-- Cards de Resumo -->
     <section class="summary-cards">
-        <div class="card">
-            <div class="card-icon">📄</div>
-            <h3>{{ totalAvaliacoes }}</h3>
-            <p>Total de Avaliações</p>
+    <div class="card">
+        <div class="card-icon icon-document">
+            <mat-icon>description</mat-icon> 
         </div>
-        <div class="card">
-            <div class="card-icon">📅</div>
-            <h3>{{ agendadasCount }}</h3>
-            <p>Agendadas</p>
+        <h3>{{ totalAvaliacoes }}</h3>
+        <p>Total de Avaliações</p>
+    </div>
+    <div class="card">
+        <div class="card-icon icon-calendar">
+            <mat-icon>calendar_today</mat-icon> 
         </div>
-        <div class="card">
-            <div class="card-icon">🕒</div>
-            <h3>{{ emAndamentoCount }}</h3>
-            <p>Em Andamento</p>
+        <h3>{{ agendadasCount }}</h3>
+        <p>Agendadas</p>
+    </div>
+    <div class="card">
+        <div class="card-icon icon-progress">
+            <mat-icon>schedule</mat-icon> 
         </div>
-        <div class="card">
-            <div class="card-icon">📈</div>
-            <h3>{{ finalizadasCount }}</h3>
-            <p>Finalizadas</p>
+        <h3>{{ emAndamentoCount }}</h3>
+        <p>Em Andamento</p>
+    </div>
+    <div class="card">
+        <div class="card-icon icon-completed">
+            <mat-icon>check_circle_outline</mat-icon> 
         </div>
-    </section>
+        <h3>{{ finalizadasCount }}</h3>
+        <p>Finalizadas</p>
+    </div>
+</section>
 
     <!-- Filtros -->
     <section class="filters-section">
@@ -73,12 +80,14 @@
             <p>Carregando avaliações...</p>
         </div>
 
-        <!-- Mensagem quando não há avaliações -->
-        <div *ngIf="!carregandoAvaliacoes && avaliacoes.length === 0" class="empty-state">
-            <div class="empty-icon">📝</div>
-            <h3>Nenhuma avaliação encontrada</h3>
-            <p>Crie sua primeira avaliação clicando no botão "Nova Avaliação"</p>
-        </div>
+
+    <div *ngIf="!carregandoAvaliacoes && avaliacoes.length === 0" class="empty-state">
+    <div class="empty-icon-container">
+        <mat-icon class="empty-state-icon">edit_note</mat-icon>
+    </div>
+    <h3>Nenhuma avaliação encontrada</h3>
+    <p>Crie sua primeira avaliação clicando no botão "Nova Avaliação"</p>
+</div>
 
         <!-- Lista de avaliações -->
         <div *ngFor="let avaliacao of avaliacoes" class="avaliacao-item">
