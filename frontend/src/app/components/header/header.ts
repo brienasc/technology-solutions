@@ -1,8 +1,9 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ElementRef, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-header',
@@ -15,35 +16,152 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
-export class Header implements OnInit { // << usarei o OnInit que importei
+export class Header implements OnInit {
 
-  isDarkTheme: boolean = false; // Propriedade para controlar o tema, vai armazenar como ta o estado atual do tema
+  isDarkTheme: boolean = false;
   isMobileMenuOpen: boolean = false;
   isLoggedIn: boolean = false;
 
-  // agora uso private renderer para adicionar ou remover classes diretamente do body da pagina
-  constructor(private renderer: Renderer2, private el: ElementRef, private router: Router, public authService: AuthService) { }
+  // PROPRIEDADES PARA USUÁRIO LOGADO
+  isSidebarOpen = false;
+  userName = '';
+  userEmail = '';
+  userProfile = '';
 
-  ngOnInit(): void { // aqui vou assumir o tema claro por padrão, mas carregar o dark quando for preciso
+  constructor(
+    private renderer: Renderer2, 
+    private el: ElementRef, 
+    private router: Router, 
+    public authService: AuthService
+  ) { }
+
+  ngOnInit(): void {
     this.isDarkTheme = localStorage.getItem('theme') === 'dark';
-    this.applyThemeClass(); //aplico
-    this.isLoggedIn = this.authService.isLoggedIn()
+    this.applyThemeClass();
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.loadUserData();
+    
+    if (this.isLoggedIn) {
+        this.applyBodyClass();
+    }
+    
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+        this.isLoggedIn = isLoggedIn;
+        if (isLoggedIn) {
+            this.loadUserData();
+            this.applyBodyClass();
+        } else {
+            this.isSidebarOpen = false;
+            this.userName = '';
+            this.userEmail = '';
+            this.userProfile = '';
+            this.removeBodyClass();
+        }
+    });
+  }
+
+  // MÉTODO DE RESIZE
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+      if (this.isLoggedIn) {
+          if (event.target.innerWidth > 767) {
+              this.renderer.addClass(document.body, 'has-sidebar');
+          } else {
+              this.renderer.removeClass(document.body, 'has-sidebar');
+          }
+      }
+  }
+
+  private applyBodyClass(): void {
+    if (window.innerWidth > 767) {
+        this.renderer.addClass(document.body, 'has-sidebar');
+    }
+  }
+
+  private removeBodyClass(): void {
+    this.renderer.removeClass(document.body, 'has-sidebar');
+  }
+
+  loadUserData() {
+    const userData = this.authService.getCurrentUser();
+    if (userData) {
+      this.userName = userData.name || 'Usuário';
+      this.userEmail = userData.email || '';
+      this.userProfile = userData.profile || this.authService.getUserProfile();
+    } else {
+      this.userName = 'Usuário';
+      this.userEmail = '';
+      this.userProfile = this.authService.getUserProfile() || 'Comum';
+    }
+
+    if (this.userName === 'Usuário' || !this.userName) {
+      const profile = this.authService.getUserProfile();
+      if (profile && profile !== 'Comum') {
+        this.userName = `Usuário ${profile}`;
+      }
+    }
+  }
+
+  getInitials(): string {
+    if (!this.userName || this.userName === 'Usuário') {
+      return 'U';
+    }
+    
+    return this.userName
+      .split(' ')
+      .map(name => name.charAt(0))
+      .join('')
+      .substring(0, 2)
+      .toUpperCase();
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar() {
+    this.isSidebarOpen = false;
+  }
+
+  toggleMobileMenu(): void {
+    if (this.isLoggedIn && window.innerWidth <= 767) {
+        this.isSidebarOpen = !this.isSidebarOpen;
+        
+        if (this.isSidebarOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    } else if (!this.isLoggedIn) {
+        this.isMobileMenuOpen = !this.isMobileMenuOpen;
+        
+        if (this.isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+    this.isSidebarOpen = false;
+    document.body.style.overflow = 'auto';
   }
 
   // Método que ALTERNA O TEMA
   toggleTheme(): void {
-    this.isDarkTheme = !this.isDarkTheme; // inverto o estado do tema
-    this.applyThemeClass(); // aplico a classe CSS dele
+    this.isDarkTheme = !this.isDarkTheme;
+    this.applyThemeClass();
     this.applyMobileMenuTheme();
-    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light'); // Salvo o que será usado agora, se é o dark ou light
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
   }
 
-  // Método que adiciona ou remove o dark do body, usando o renderer2 para garantir que é seguro
   private applyThemeClass(): void {
     if (this.isDarkTheme) {
-      this.renderer.addClass(document.body, 'dark-theme'); // Adiciona a classe 'dark-theme' ao body
+      this.renderer.addClass(document.body, 'dark-theme');
     } else {
-      this.renderer.removeClass(document.body, 'dark-theme'); // Remove a classe 'dark-theme' do body
+      this.renderer.removeClass(document.body, 'dark-theme');
     }
   }
 
@@ -62,37 +180,15 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     }
   }
 
-  // Toggle do menu mobile
-  toggleMobileMenu(): void {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
-
-    // Previne scroll quando menu está aberto
-    if (this.isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }
-
-  // Fechar menu mobile ao clicar em um link
-  closeMobileMenu(): void {
-    this.isMobileMenuOpen = false;
-    document.body.style.overflow = 'auto';
-  }
-
-  // Navegação para home
   navigateToHome(): void {
     this.closeMobileMenu();
-    // VERIFICAÇÃO: Se o usuário estiver logado, redireciona para /dashboard
     if (this.authService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
     } else {
-      // Se deslogado, volta para a Landing Page principal (/)
       this.router.navigate(['/']);
     }
   }
 
-  // Outros métodos de navegação (caso precise usar programaticamente)
   navigateToLogin(): void {
     this.closeMobileMenu();
     this.router.navigate(['/login']);
@@ -100,7 +196,6 @@ export class Header implements OnInit { // << usarei o OnInit que importei
 
   navigateToAbout(): void {
     this.closeMobileMenu();
-    // Scroll para seção sobre nós
     const element = document.getElementById('sobre-nos');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -109,31 +204,26 @@ export class Header implements OnInit { // << usarei o OnInit que importei
 
   navigateToContact(): void {
     this.closeMobileMenu();
-    // Scroll para rodapé/contato
     const element = document.getElementById('contato');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
-
-
   onLogout(): void {
-    // 1. Limpa o token e o estado de login (mantendo sua lógica atual)
     this.authService.logout();
     this.isLoggedIn = false;
-
-    // 2. Redireciona o usuário para a Landing Page principal (/)
+    this.isSidebarOpen = false;
+    this.userName = '';
+    this.userEmail = '';
+    this.userProfile = '';
     this.router.navigate(['/']);
-    //   this.authService.logout();
-    //   this.isLoggedIn = false;
   }
 
   onMenuGerencialClick(): void {
     this.router.navigate(['/menu-gerencial']);
   }
 
-  // Método para navegar para a tela de convites >>
   onConvitesClick(): void {
     this.closeMobileMenu();
     this.router.navigate(['/convites']);
@@ -148,5 +238,6 @@ export class Header implements OnInit { // << usarei o OnInit que importei
     this.closeMobileMenu();
     this.router.navigate(['/matrizes']);
   }
+
 }
 
