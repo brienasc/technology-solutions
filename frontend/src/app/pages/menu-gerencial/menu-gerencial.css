@@ -51,6 +51,37 @@
 }
 
 
+/* Contêiner principal para o título e o botão de exportar no topo */
+
+.menu-gerencial-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+    /* Empurra o botão para a direita */
+    align-items: center;
+    /* Alinha verticalmente */
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    /* O mesmo padding do .menu-gerencial-title */
+    background: var(--theme-card-bg);
+    /* Fundo branco do card */
+    border-bottom: 1px solid var(--theme-border-color);
+    /* Linha divisória inferior */
+    margin-bottom: 25px;
+    /* Margem para separar da seção de pesquisa abaixo */
+}
+
+
+/* Garanta que o .menu-gerencial-title não tenha margem superior ou inferior extra */
+
+.menu-gerencial-title {
+    /* Mantenha o que já temos aqui, mas remova 'margin-bottom' se houver */
+    position: relative;
+    margin: 0;
+    /* Remove margens que possam atrapalhar o alinhamento */
+    padding: 0;
+    /* Remove padding que possa atrapalhar o alinhamento, já que o wrapper tem padding */
+}
+
+
 /* 1. Botões de Ação Principais (Convidar e Exportar) */
 
 .invite-button,
@@ -407,15 +438,43 @@ button[type="submit"]:disabled {
 /* Seção do título principal */
 
 .menu-gerencial-title {
-    background: #f8f8f8;
+    position: relative;
+    /* Necessário para posicionar o :after */
+    background: var(--theme-card-bg);
+    /* Fundo da seção (Branco) */
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    /* Ajuste o padding para dar espaço */
+    border-bottom: 1px solid var(--theme-border-color);
+    /* Linha divisória sutil */
+    /* Remove a margem superior que pode ter sido herdada */
+    margin-top: 0;
+    /* background: #f8f8f8; */
     /* Tema claro */
-    border-bottom: 1px solid var(--theme-input-border);
+    /* border-bottom: 1px solid var(--theme-input-border);
     padding: 1rem 0 1rem;
     margin-bottom: 2rem;
     text-align: left;
     position: relative;
-    overflow: hidden;
+    overflow: hidden; */
 }
+
+
+/* LINHA ROXA ENTRE O TÍTULO E O SUBTÍTULO */
+
+.menu-gerencial-title h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    /* Mantido, puxa a linha 8px para baixo do h1 */
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--theme-primary-color);
+    border-radius: 2px;
+}
+
+
+/* O Retângulo Roxo/Gradiente Fixo no Topo */
 
 .menu-gerencial-title-content {
     position: relative;
@@ -429,25 +488,29 @@ button[type="submit"]:disabled {
 /* Título principal */
 
 .menu-gerencial-title h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    position: relative;
+    display: block;
+    color: var(--theme-heading-text);
+    margin: 0;
+    padding-bottom: 12px;
+    /* font-size: 2rem;
     font-weight: 700;
     margin: 0 0 1rem 2rem;
     color: var(--theme-heading-text);
     text-shadow: none;
     letter-spacing: -0.025em;
-    line-height: 1.1;
+    line-height: 1.1; */
 }
 
 
 /* Subtítulo */
 
 .menu-gerencial-title p {
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--theme-text-secondary);
-    margin: 0 0 0 2rem;
-    line-height: 1.6;
-    font-weight: 400;
-    opacity: 0.9;
+    margin-top: 15px;
+    margin-bottom: 0;
 }
 
 
@@ -632,5 +695,9 @@ body.dark-theme div.menu-gerencial-title h1 {
 body.dark-theme .menu-gerencial-title p,
 html body.dark-theme .menu-gerencial-title p,
 body.dark-theme div.menu-gerencial-title p {
+    color: #cccccc !important;
+}
+
+ody.dark-theme div.menu-gerencial-title p {
     color: #cccccc !important;
 }
