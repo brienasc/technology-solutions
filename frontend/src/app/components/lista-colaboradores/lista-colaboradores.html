@@ -1,22 +1,12 @@
 <!-- frontend/src/app/components/lista-colaboradores/lista-colaboradores.component.html -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<div
-  class="lista-colaboradores-container"
-  role="main"
-  aria-label="Lista de Colaboradores"
->
-  <div class="controls-section">
-    <!-- Barra de pesquisa à esquerda -->
-    <div class="search-container">
-      <div class="search-bar">
-        <input
-          type="text"
-          placeholder="Pesquisar por nome, e-mail ou CPF..."
-          [(ngModel)]="searchTerm"
-          (input)="onSearchChange()"
-          aria-label="Campo de pesquisa de colaboradores por nome, e-mail ou CPF"
-        />
-        <button class="search-button" aria-label="Iniciar Pesquisa">
+<div class="lista-colaboradores-container" role="main" aria-label="Lista de Colaboradores">
+    <div class="controls-section">
+        <!-- Barra de pesquisa à esquerda -->
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar por nome, e-mail ou CPF..." [(ngModel)]="searchTerm" (input)="onSearchChange()" aria-label="Campo de pesquisa de colaboradores por nome, e-mail ou CPF" />
+                <button class="search-button" aria-label="Iniciar Pesquisa">
           <svg
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -31,16 +21,12 @@
             />
           </svg>
         </button>
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <!-- Botões à direita: Exportar -->
-    <div class="buttons-container">
-      <button
-        class="export-button"
-        (click)="exportToExcel()"
-        aria-label="Exportar dados para planilha Excel"
-      >
+        <!-- Botões à direita: Exportar -->
+        <div class="buttons-container">
+            <button class="export-button" (click)="exportToExcel()" aria-label="Exportar dados para planilha Excel">
         <svg
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
@@ -57,75 +43,62 @@
         </svg>
         Exportar para Excel
       </button>
+        </div>
     </div>
-  </div>
 
-  <!-- Tabela de Colaboradores -->
-  <div class="table-responsive">
-    <table
-      class="colaboradores-table"
-      aria-label="Lista de colaboradores da empresa"
-    >
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>E-mail</th>
-          <th>CPF</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Exibe uma mensagem de carregamento enquanto os dados são buscados -->
-        <tr *ngIf="loading">
-          <td colspan="4" class="text-center">Carregando colaboradores...</td>
-        </tr>
-        <!-- Exibe uma mensagem se não houver colaboradores -->
-        <tr *ngIf="!loading && filteredColaboradores.length === 0">
-          <td colspan="4" class="text-center">
-            Nenhum colaborador encontrado.
-          </td>
-        </tr>
-        <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
-        <tr *ngFor="let colaborador of paginatedColaboradores; trackBy: trackByColaborador">
-          <td>{{ colaborador.nome }}</td>
-          <td>{{ colaborador.email }}</td>
-          <td>{{ colaborador.cpf }}</td>
-          <td>
-            <button
-              class="details-button"
-              (click)="viewDetails(colaborador)"
-              aria-label="Ver detalhes de {{ colaborador.nome }}"
-              title="Ver detalhes de {{ colaborador.nome }}"
-            >
+    <!-- Tabela de Colaboradores -->
+    <div class="table-responsive">
+        <table class="colaboradores-table" aria-label="Lista de colaboradores da empresa">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>CPF</th>
+                    <th style="width: 120px;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Exibe uma mensagem de carregamento enquanto os dados são buscados -->
+                <tr *ngIf="loading">
+                    <td colspan="4" class="text-center">Carregando colaboradores...</td>
+                </tr>
+                <!-- Exibe uma mensagem se não houver colaboradores -->
+                <tr *ngIf="!loading && filteredColaboradores.length === 0">
+                    <td colspan="4" class="text-center">
+                        Nenhum colaborador encontrado.
+                    </td>
+                </tr>
+                <!-- Itera sobre a lista filtrada e paginada de colaboradores -->
+                <tr *ngFor="let colaborador of paginatedColaboradores; trackBy: trackByColaborador">
+                    <td>{{ colaborador.nome }}</td>
+                    <td>{{ colaborador.email }}</td>
+                    <td>{{ colaborador.cpf }}</td>
+                    <td>
+                        <button class="details-button" (click)="viewDetails(colaborador)" aria-label="Ver detalhes de {{ colaborador.nome }}" title="Ver detalhes de {{ colaborador.nome }}">
               Detalhes
             </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-  <!-- PAGINAÇÃO -->
-  <div class="pagination-container" *ngIf="!loading && totalItems > 0">
-    <div class="pagination-info">
-      <div class="items-per-page">
-        <label for="itemsPerPage">Itens por página:</label>
-        <select
-          id="itemsPerPage"
-          [(ngModel)]="itemsPerPage"
-          (change)="updateItemsPerPage()"
-        >
+    <!-- PAGINAÇÃO -->
+    <div class="pagination-container" *ngIf="!loading && totalItems > 0">
+        <div class="pagination-info">
+            <div class="items-per-page">
+                <label for="itemsPerPage">Itens por página:</label>
+                <select id="itemsPerPage" [(ngModel)]="itemsPerPage" (change)="updateItemsPerPage()">
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="25">25</option>
           <option value="50">50</option>
         </select>
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <div class="pagination-range">
-      <span
-        >{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span
+        <div class="pagination-range">
+            <span>{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span
       >
     </div>
 
@@ -250,63 +223,51 @@
             <div class="info-item">
               <label>Nome Completo:</label>
               <span>{{ selectedColaborador.nome }}</span>
-            </div>
-            <div class="info-item">
-              <label>CPF:</label>
-              <span>{{ selectedColaborador.cpf }}</span>
-            </div>
-            
-            <div class="info-item">
-              <label>E-mail:</label>
-              <span>{{ selectedColaborador.email }}</span>
-            </div>
-            <div class="info-item" *ngIf="selectedColaborador.celular; else emptyCell">
-              <label>Celular:</label>
-              <span>{{ selectedColaborador.celular }}</span>
-            </div>
-            <ng-template #emptyCell>
-              <div class="info-item">
-                <label>Celular:</label>
-                <span>Não informado</span>
-              </div>
-            </ng-template>
-          </div>
+        </div>
+        <div class="info-item">
+            <label>CPF:</label>
+            <span>{{ selectedColaborador.cpf }}</span>
         </div>
 
-        <!-- LINHA DIVISÓRIA VERTICAL -->
-        <div class="vertical-divider"></div>
+        <div class="info-item">
+            <label>E-mail:</label>
+            <span>{{ selectedColaborador.email }}</span>
+        </div>
+        <div class="info-item" *ngIf="selectedColaborador.celular; else emptyCell">
+            <label>Celular:</label>
+            <span>{{ selectedColaborador.celular }}</span>
+        </div>
+        <ng-template #emptyCell>
+            <div class="info-item">
+                <label>Celular:</label>
+                <span>Não informado</span>
+            </div>
+        </ng-template>
+    </div>
+</div>
 
-        <!-- Informações Profissionais (Direita) -->
-        <div class="info-section">
-          <h3 class="section-title">
-            <i class="fas fa-briefcase" aria-hidden="true"></i> Informações Profissionais
-          </h3>
-          <div class="info-grid single-column">
-            <div class="info-item" *ngIf="selectedColaborador.perfil">
-              <label>Perfil de Acesso:</label>
+<!-- LINHA DIVISÓRIA VERTICAL -->
+<div class="vertical-divider"></div>
 
-              <div *ngIf="!isEditingProfile" class="perfil-badges-container">
-                <span
-                  class="perfil-badge"
-                  [ngClass]="selectedColaborador.perfil | lowercase"
-                >
+<!-- Informações Profissionais (Direita) -->
+<div class="info-section">
+    <h3 class="section-title">
+        <i class="fas fa-briefcase" aria-hidden="true"></i> Informações Profissionais
+    </h3>
+    <div class="info-grid single-column">
+        <div class="info-item" *ngIf="selectedColaborador.perfil">
+            <label>Perfil de Acesso:</label>
+
+            <div *ngIf="!isEditingProfile" class="perfil-badges-container">
+                <span class="perfil-badge" [ngClass]="selectedColaborador.perfil | lowercase">
                   {{ selectedColaborador.perfil }}
                 </span>
-              </div>
+            </div>
 
-              <!-- MODO EDIÇÃO: Substitui badges por select e botões -->
-              <div *ngIf="isEditingProfile" class="perfil-edit-inline">
+            <!-- MODO EDIÇÃO: Substitui badges por select e botões -->
+            <div *ngIf="isEditingProfile" class="perfil-edit-inline">
                 <div class="perfil-select-container">
-                  <select
-                    id="perfil-change-select"
-                    name="perfil-change-select"
-                    class="perfil-select"
-                    [value]="getPerfilId(selectedColaborador?.perfil || '')"
-                    (change)="onPerfilChange($event)"
-                    [disabled]="isChangingProfile"
-                    autocomplete="off"
-                    aria-label="Selecionar novo perfil de acesso"
-                  >
+                    <select id="perfil-change-select" name="perfil-change-select" class="perfil-select" [value]="getPerfilId(selectedColaborador?.perfil || '')" (change)="onPerfilChange($event)" [disabled]="isChangingProfile" autocomplete="off" aria-label="Selecionar novo perfil de acesso">
                     <option
                       *ngFor="let perfil of getPerfisPermitidos()"
                       [value]="perfil.id"
@@ -316,198 +277,131 @@
                   </select>
                 </div>
 
-              </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
+</div>
 
-      <!-- SEÇÃO DE CURSOS ASSOCIADOS -->
-      <div
-        class="info-section full-width"
-        *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'"
-      >
-        <h3 class="section-title">
-          <i class="fas fa-graduation-cap" aria-hidden="true"></i> Cursos Associados
-        </h3>
+<!-- SEÇÃO DE CURSOS ASSOCIADOS -->
+<div class="info-section full-width" *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'">
+    <h3 class="section-title">
+        <i class="fas fa-graduation-cap" aria-hidden="true"></i> Cursos Associados
+    </h3>
 
-        <!-- MODO VISUALIZAÇÃO -->
-        <div *ngIf="!isManagingCursos" class="cursos-view-mode">
-          <!-- Lista de cursos atuais -->
-          <div
-            class="cursos-list"
-            *ngIf="
+    <!-- MODO VISUALIZAÇÃO -->
+    <div *ngIf="!isManagingCursos" class="cursos-view-mode">
+        <!-- Lista de cursos atuais -->
+        <div class="cursos-list" *ngIf="
               selectedColaborador.cursos &&
               selectedColaborador.cursos.length > 0
-            "
-          >
-            <div
-              class="curso-item-readonly"
-              *ngFor="let curso of selectedColaborador.cursos"
-            >
-              <div class="curso-info">
-                <span class="curso-nome">{{ curso.nome }}</span>
-                <span
-                  class="curso-status"
-                  [class]="curso.status ? 'ativo' : 'inativo'"
-                >
+            ">
+            <div class="curso-item-readonly" *ngFor="let curso of selectedColaborador.cursos">
+                <div class="curso-info">
+                    <span class="curso-nome">{{ curso.nome }}</span>
+                    <span class="curso-status" [class]="curso.status ? 'ativo' : 'inativo'">
                   <i class="fas fa-circle"></i> {{ curso.status ? 'Ativo' : 'Inativo' }}
                 </span>
-              </div>
+                </div>
             </div>
-          </div>
-
-          <!-- Mensagem quando não há cursos -->
-          <div
-            class="no-cursos"
-            *ngIf="
-              !selectedColaborador.cursos ||
-              selectedColaborador.cursos.length === 0
-            "
-          >
-            <i class="fas fa-info-circle"></i>
-            <span>Nenhum curso associado a este elaborador.</span>
-          </div>
         </div>
 
-        <!-- MODO GERENCIAMENTO -->
-        <div *ngIf="isManagingCursos" class="cursos-manage-mode">
-          <div class="add-curso-section">
+        <!-- Mensagem quando não há cursos -->
+        <div class="no-cursos" *ngIf="
+              !selectedColaborador.cursos ||
+              selectedColaborador.cursos.length === 0
+            ">
+            <i class="fas fa-info-circle"></i>
+            <span>Nenhum curso associado a este elaborador.</span>
+        </div>
+    </div>
+
+    <!-- MODO GERENCIAMENTO -->
+    <div *ngIf="isManagingCursos" class="cursos-manage-mode">
+        <div class="add-curso-section">
             <h4><i class="fas fa-plus-circle"></i> Associar Novo Curso</h4>
             <div class="add-curso-form">
-              <div class="curso-select-container">
-                <input
-                  type="text"
-                  class="curso-search-input"
-                  placeholder="Digite para pesquisar ou selecione um curso..."
-                  [(ngModel)]="cursoSearchTerm"
-                  (input)="onCursoSearch()"
-                  (focus)="onCursoInputFocus()"
-                  [disabled]="cursosLoading"
-                />
-                <div class="curso-dropdown" *ngIf="showCursoDropdown && (filteredCursosDisponiveis.length > 0 || (cursoSearchTerm && filteredCursosDisponiveis.length === 0))">
-                  <div
-                    *ngIf="filteredCursosDisponiveis.length === 0 && cursoSearchTerm"
-                    class="curso-dropdown-item no-results"
-                  >
-                    Nenhum curso encontrado
-                  </div>
-                  <div
-                    *ngFor="let curso of filteredCursosDisponiveis"
-                    class="curso-dropdown-item"
-                    (click)="selectCurso(curso)"
-                  >
-                    {{ curso.nome }}
-                  </div>
+                <div class="curso-select-container">
+                    <input type="text" class="curso-search-input" placeholder="Digite para pesquisar ou selecione um curso..." [(ngModel)]="cursoSearchTerm" (input)="onCursoSearch()" (focus)="onCursoInputFocus()" [disabled]="cursosLoading" />
+                    <div class="curso-dropdown" *ngIf="showCursoDropdown && (filteredCursosDisponiveis.length > 0 || (cursoSearchTerm && filteredCursosDisponiveis.length === 0))">
+                        <div *ngIf="filteredCursosDisponiveis.length === 0 && cursoSearchTerm" class="curso-dropdown-item no-results">
+                            Nenhum curso encontrado
+                        </div>
+                        <div *ngFor="let curso of filteredCursosDisponiveis" class="curso-dropdown-item" (click)="selectCurso(curso)">
+                            {{ curso.nome }}
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <button
-                type="button"
-                class="btn-action btn-add"
-                (click)="addCursoToColaborador()"
-                [disabled]="!selectedCursoToAdd || cursosLoading"
-              >
+                <button type="button" class="btn-action btn-add" (click)="addCursoToColaborador()" [disabled]="!selectedCursoToAdd || cursosLoading">
                 <span *ngIf="cursosLoading" class="loading-spinner-inline"></span>
                 <i *ngIf="!cursosLoading" class="fas fa-plus"></i>
                 Associar
               </button>
             </div>
-          </div>
+        </div>
 
-          <!-- Lista de cursos para gerenciar -->
-          <div class="manage-cursos-section">
+        <!-- Lista de cursos para gerenciar -->
+        <div class="manage-cursos-section">
             <h4><i class="fas fa-list"></i> Cursos Atuais</h4>
-            <div
-              class="cursos-list-manage"
-              *ngIf="selectedColaboradorCursos.length > 0"
-            >
-              <div
-                class="curso-item-manage"
-                *ngFor="let curso of selectedColaboradorCursos"
-              >
-                <div class="curso-info">
-                  <span class="curso-nome">{{ curso.nome }}</span>
-                  <span
-                    class="curso-status"
-                    [class]="curso.status ? 'ativo' : 'inativo'"
-                  >
+            <div class="cursos-list-manage" *ngIf="selectedColaboradorCursos.length > 0">
+                <div class="curso-item-manage" *ngFor="let curso of selectedColaboradorCursos">
+                    <div class="curso-info">
+                        <span class="curso-nome">{{ curso.nome }}</span>
+                        <span class="curso-status" [class]="curso.status ? 'ativo' : 'inativo'">
                     <i class="fas fa-circle"></i> {{ curso.status ? 'Ativo' : 'Inativo' }}
                   </span>
-                </div>
-                <button
-                  class="curso-remove-btn"
-                  (click)="removeCursoFromColaborador(curso.id)"
-                  [disabled]="cursosLoading"
-                  title="Remover curso"
-                >
+                    </div>
+                    <button class="curso-remove-btn" (click)="removeCursoFromColaborador(curso.id)" [disabled]="cursosLoading" title="Remover curso">
                   <i class="fas fa-trash"></i>
                 </button>
-              </div>
+                </div>
             </div>
 
-            <div
-              class="no-cursos-manage"
-              *ngIf="selectedColaboradorCursos.length === 0"
-            >
-              <i class="fas fa-info-circle"></i>
-              <span>Nenhum curso associado.</span>
+            <div class="no-cursos-manage" *ngIf="selectedColaboradorCursos.length === 0">
+                <i class="fas fa-info-circle"></i>
+                <span>Nenhum curso associado.</span>
             </div>
-          </div>
-
         </div>
 
-        <!-- Mensagens de cursos -->
-        <div class="message-container" *ngIf="cursosSuccess || cursosError">
-          <div *ngIf="cursosSuccess" class="success-message">
-            <i class="fas fa-check-circle"></i> {{ cursosSuccess }}
-          </div>
-          <div *ngIf="cursosError" class="error-message">
-            <i class="fas fa-exclamation-circle"></i> {{ cursosError }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Mensagens de feedback -->
-      <div
-        class="message-container"
-        *ngIf="profileChangeSuccess || profileChangeError"
-      >
-        <div *ngIf="profileChangeSuccess" class="success-message">
-          <i class="fas fa-check-circle" aria-hidden="true"></i>
-          {{ profileChangeSuccess }}
-        </div>
-
-        <div *ngIf="profileChangeError" class="error-message">
-          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
-          {{ profileChangeError }}
-        </div>
-      </div>
     </div>
 
-    <!-- FOOTER DO MODAL - BOTÕES DINÂMICOS -->
-    <div class="modal-footer">
-      <div class="modal-actions">
-        
+    <!-- Mensagens de cursos -->
+    <div class="message-container" *ngIf="cursosSuccess || cursosError">
+        <div *ngIf="cursosSuccess" class="success-message">
+            <i class="fas fa-check-circle"></i> {{ cursosSuccess }}
+        </div>
+        <div *ngIf="cursosError" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> {{ cursosError }}
+        </div>
+    </div>
+</div>
+
+<!-- Mensagens de feedback -->
+<div class="message-container" *ngIf="profileChangeSuccess || profileChangeError">
+    <div *ngIf="profileChangeSuccess" class="success-message">
+        <i class="fas fa-check-circle" aria-hidden="true"></i> {{ profileChangeSuccess }}
+    </div>
+
+    <div *ngIf="profileChangeError" class="error-message">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ profileChangeError }}
+    </div>
+</div>
+</div>
+
+<!-- FOOTER DO MODAL - BOTÕES DINÂMICOS -->
+<div class="modal-footer">
+    <div class="modal-actions">
+
         <!-- MODO NORMAL: Botões principais -->
         <ng-container *ngIf="!isEditingProfile && !isManagingCursos">
-          <!-- Botão Alterar Perfil -->
-          <button
-            *ngIf="canChangeProfile()"
-            type="button"
-            class="btn btn-primary"
-            (click)="startEditingProfile()"
-          >
+            <!-- Botão Alterar Perfil -->
+            <button *ngIf="canChangeProfile()" type="button" class="btn btn-primary" (click)="startEditingProfile()">
             <i class="fas fa-user-cog" aria-hidden="true"></i>
             Alterar Perfil
           </button>
 
-          <!-- Botão Gerenciar Cursos -->
-          <button
-            *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'"
-            type="button"
-            class="btn btn-secondary"
-            (click)="startManagingCursos()"
-          >
+            <!-- Botão Gerenciar Cursos -->
+            <button *ngIf="selectedColaborador && selectedColaborador.perfil === 'Elaborador de Itens'" type="button" class="btn btn-secondary" (click)="startManagingCursos()">
             <i class="fas fa-graduation-cap" aria-hidden="true"></i>
             Gerenciar Cursos
           </button>
@@ -515,23 +409,11 @@
 
         <!-- MODO EDIÇÃO DE PERFIL: Botões de perfil -->
         <ng-container *ngIf="isEditingProfile">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            (click)="cancelEditingProfile()"
-            [disabled]="isChangingProfile"
-            aria-label="Cancelar alteração de perfil"
-          >
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelEditingProfile()" [disabled]="isChangingProfile" aria-label="Cancelar alteração de perfil">
             <i class="fas fa-times" aria-hidden="true"></i>
             Cancelar
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="saveProfileChange()"
-            [disabled]="isChangingProfile"
-            aria-label="Salvar alterações no perfil"
-          >
+            <button type="button" class="btn btn-primary" (click)="saveProfileChange()" [disabled]="isChangingProfile" aria-label="Salvar alterações no perfil">
             <span
               *ngIf="isChangingProfile"
               class="loading-spinner-inline"
@@ -549,27 +431,17 @@
 
         <!-- MODO GERENCIAMENTO DE CURSOS: Botões de cursos -->
         <ng-container *ngIf="isManagingCursos">
-          <button
-            type="button"
-            class="btn btn-outline-secondary"
-            (click)="cancelManagingCursos()"
-            [disabled]="cursosLoading"
-          >
+            <button type="button" class="btn btn-outline-secondary" (click)="cancelManagingCursos()" [disabled]="cursosLoading">
             <i class="fas fa-times"></i> Cancelar
           </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="saveManagingCursos()"
-            [disabled]="cursosLoading"
-          >
+            <button type="button" class="btn btn-primary" (click)="saveManagingCursos()" [disabled]="cursosLoading">
             <span *ngIf="cursosLoading" class="loading-spinner-inline"></span>
             <i *ngIf="!cursosLoading" class="fas fa-check" aria-hidden="true"></i>
             {{ cursosLoading ? 'Salvando...' : 'Salvar Alterações' }}
           </button>
         </ng-container>
 
-      </div>
     </div>
-  </div>
+</div>
+</div>
 </div>
