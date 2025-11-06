@@ -393,3 +393,36 @@ body {
         scroll-margin-top: 190px;
     }
 }
+
+/* ===== CORREÇÃO PARA SIDEBAR FIXA ===== */
+body.has-sidebar {
+    padding-left: 250px !important;
+    transition: padding-left 0.3s ease !important;
+}
+
+body.has-sidebar * {
+    box-sizing: border-box !important;
+}
+
+/* GARANTIR QUE O CONTEÚDO SE ADAPTE */
+body.has-sidebar .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: none !important;
+}
+
+body.has-sidebar app-root,
+body.has-sidebar main {
+    width: 100% !important;
+    display: block !important;
+}
+
+@media (max-width: 767px) {
+    body.has-sidebar {
+        padding-left: 0 !important;
+    }
+}
+
+body.has-sidebar {
+    overflow-x: hidden !important;
+}
