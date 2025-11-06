@@ -102,15 +102,9 @@ body,
 /* Estilos para o contêiner principal da tela de convites */
 
 .convites-container {
-    max-width: 2000px;
-    margin: 40px auto;
-    padding: 0 2rem;
-    background-color: transparent;
-    color: var(--theme-body-text);
-    border-radius: 8px;
-    box-shadow: none;
-    transition: background-color 0.5s ease, color 0.5s ease;
-    font-family: var(--font-nunito-sans);
+  width: 100%;
+  margin: 0;
+  padding: 0 1rem 3rem;
 }
 
 
@@ -118,9 +112,9 @@ body,
 
 .header-section {
     background-color: var(--theme-background);
-    border-bottom: 1px solid var(--theme-input-border);
-    padding: 1rem 2rem 1rem;
-    margin-bottom: 2rem;
+    border-bottom: none;
+    padding: 1rem 0;
+    margin-bottom: 1.5rem;
     text-align: left;
     position: relative;
     overflow: hidden;
@@ -134,39 +128,30 @@ body,
 .header-text-group {
     display: flex;
     flex-direction: column;
-    /* Organiza os itens (h1 e p) em uma coluna */
     align-items: flex-start;
-    /* Alinha os itens à esquerda */
     gap: 10px;
-    /* Adiciona um pequeno espaço entre o título e o subtítulo */
     font-family: var(--font-nunito-sans);
 }
 
 .header-section h1 {
-    font-family: var(--font-nunito-sans);
-    font-style: normal;
-    font-size: 2rem;
-    font-weight: 700;
-    color: black;
-    margin: 0;
-    text-shadow: none;
-    letter-spacing: -0.025em;
+    font-weight: 500;
+    margin: 0 0 0.5rem 0;
+    color: var(--color-secondary);
+    letter-spacing: -0.02em;
     line-height: 1.1;
+    font-size: 1.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid #0B061D;
 }
 
-.header-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 2rem;
-    width: 400px;
-    height: 4px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-light-primary) 100%);
-    border-radius: 2px;
-    z-index: 1;
-    transition: background 0.5s ease;
+.header-section p {
+    font-size: 1rem;
+    color: var(--color-secondary);
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 400;
+    opacity: 0.9;
 }
-
 
 /* Estilos para o botão "Criar Novo Convite" */
 
@@ -175,17 +160,17 @@ body,
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    background-color: var(--color-light-primary);
+    background-color: #10002B;
     color: var(--color-white);
     border: none;
-    border-radius: 25px;
+    border-radius: 10px;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .create-invite-button:hover {
-    background-color: var(--color-secondary);
+    background-color: var(--color-light-primary);
     color: var(--color-white);
 }
 
@@ -219,9 +204,9 @@ body,
 .back-button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: var(--color-light-primary);
-    color: var(--theme-button-text);
-    border: 1px solid var(--color-light-primary);
+    background-color: none;
+    color: var(--color-light-primary);
+    border: 2px solid var(--color-light-primary);
     border-radius: 25px;
     cursor: pointer;
     font-size: 1em;
@@ -288,7 +273,7 @@ body,
     padding: 1.5rem 2rem;
     margin-bottom: 0;
     border-bottom: none;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #240046, #612a94);
     color: white;
     border-radius: 10px 10px 0 0;
 }
@@ -353,23 +338,19 @@ body,
 .modal-body input[type="email"] {
     width: 100%;
     padding: 12px;
-    border: 2px solid var(--theme-input-border);
-    /* Mudança: borda igual aos selects */
+    border: 2px solid #C7C7EB;
     border-radius: 6px;
-    /* Mudança: border-radius igual aos selects */
     font-size: 1em;
-    background-color: var(--theme-input-bg);
-    /* Mudança: fundo igual aos selects */
-    color: var(--theme-input-text);
+    background-color: #C7C7EB;
+    color: #4c1d95;
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    /* Adicionado box-shadow */
     box-sizing: border-box;
 }
 
 .modal-body input[type="email"]:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
 }
 
 
@@ -388,7 +369,7 @@ body,
 
 .modal-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 15px;
     margin-top: 2rem;
     border-top: 1px solid var(--theme-input-border);
@@ -396,6 +377,7 @@ body,
 }
 
 .modal-actions button {
+    flex: 1;
     padding: 12px 24px;
     border-radius: 25px;
     font-size: 0.95em;
@@ -405,23 +387,21 @@ body,
 }
 
 .modal-actions .cancel-button {
-    background-color: #ef4444;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #ef4444;
     border: 1px solid #ef4444;
 }
 
 .modal-actions .cancel-button:hover {
     background-color: #dc2626;
+    color: #ffffff;
     border-color: #dc2626;
 }
 
 .modal-actions .send-button {
-    background-color: var(--color-light-primary);
-    /* Fundo roxo */
+    background-color: #10002B;
     color: var(--color-white);
-    /* Texto branco */
-    border: 1px solid var(--color-light-primary);
-    /* Borda roxa */
+    border: 1px #10002B;
     padding: 10px 18px;
     border-radius: 20px;
     font-size: 0.95em;
@@ -431,17 +411,14 @@ body,
 }
 
 .modal-actions .send-button:hover:not(:disabled) {
-    background-color: var(--theme-background);
-    border-color: var(--theme-input-border);
+    background-color: #7b2cbf;
+    border-color: #7b2cbf;
 }
 
 .modal-actions .send-button:disabled {
-    background-color: var(--color-light-primary);
-    /* Fundo cinza */
+    background-color: #969697;
     color: var(--color-white);
-    /* Texto cinza */
-    border: 1px solid var(--color-light-primary);
-    /* Borda cinza */
+    border: #969697;
     opacity: 1;
     cursor: not-allowed;
 }
@@ -450,359 +427,568 @@ body,
 /* Garante que o hover não mude a cor do botão desabilitado */
 
 .modal-actions .send-button:hover:disabled {
-    background-color: var(--color-light-primary);
+    background-color: #969697;
 }
 
-
-/* Responsividade */
-
-@media (max-width: 768px) {
-    .convites-container {
-        margin: 20px;
-        padding: 15px;
-    }
-    .header-section {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .header-section .theme-switch {
-        order: -1;
-        margin-left: 0;
-        margin-top: 0;
-        align-self: flex-end;
-    }
-    .title-and-button-group {
-        width: 100%;
-        justify-content: space-between;
-        gap: 10px;
-        order: 2;
-    }
-    .create-invite-button {
-        display: flex;
-        align-items: center;
-        /* Alinha o ícone e o texto verticalmente */
-        gap: 8px;
-        /* Espaço entre o ícone e o texto */
-        padding: 12px 20px;
-        background-color: var(--color-light-primary);
-        color: var(--color-white);
-        border: none;
-        border-radius: 25px;
-        font-size: 1em;
-        cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    .create-invite-button svg {
-        width: 20px;
-        height: 20px;
-        color: var(--color-white);
-        /* Garante que a cor do ícone seja branca */
-    }
-    .header-section h1 {
-        flex-grow: 1;
-        font-size: 2em;
-    }
-    .modal-dialog {
-        width: 95%;
-        padding: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-section h1 {
-        font-size: 1.8em;
-    }
-    .create-invite-button {
-        font-size: 0.9em;
-        padding: 10px 15px;
-    }
-    .title-and-button-group {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .create-invite-button {
-        width: 100%;
-        max-width: none;
-    }
-}
-
-
-/* Desktop (a partir de 769px) */
-
-@media (min-width: 769px) {
-    .header-section {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 2rem 1rem;
-    }
-    .theme-switch {
-        order: 1;
-        margin-left: 0;
-        margin-right: auto;
-    }
-    .title-and-button-group {
-        order: 2;
-        flex-grow: 0;
-        width: auto;
-        flex-wrap: nowrap;
-    }
-}
-
-
-/* Desktop 1200px+ */
-
-@media (min-width: 1200px) {
-    .header-section {
-        padding: 1rem 2rem 1rem;
-    }
-    .header-section h1 {
-        font-size: 2.5rem;
-    }
-    .header-section::after {
-        left: 2rem;
-        width: 400px;
-    }
-}
-
-
-/* TEMA ESCURO - Sobrepõe as cores do tema claro */
-
-body.dark-theme .header-section {
-    background-color: var(--theme-background) !important;
-    border-bottom-color: var(--theme-input-border) !important;
-}
-
-body.dark-theme .header-section h1 {
-    color: var(--theme-heading-text) !important;
-}
-
-body.dark-theme .header-section::after {
-    background: linear-gradient(135deg, var(--color-light-primary) 0%, var(--color-secondary) 100%) !important;
-}
-
-
-/* ===================== ESTILOS DOS SELECTS ===================== */
-
-
-/* Campos select do formulário - igual ao lista-colaboradores */
-
-.form-control select,
-.form-select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid var(--theme-input-border);
-    border-radius: 6px;
-    font-size: 1rem;
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
-    /* Seta personalizada do select */
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 18px 18px;
-    padding-right: 3.25rem;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-
-/* Estado de foco dos selects - igual ao lista-colaboradores */
-
-.form-control select:focus,
-.form-select:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-
-/* Select com erro - igual ao lista-colaboradores */
-
-.form-control select.error,
-.form-select.error {
-    border-color: #ef4444;
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
-}
-
-.form-control select.error:focus,
-.form-select.error:focus {
-    border-color: #ef4444;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-
-/* Opções do select - igual ao lista-colaboradores */
-
-.form-control select option,
-.form-select option {
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    padding: 0.5rem;
-}
-
-
-/* Tema escuro para os selects */
-
-[data-theme="dark"] .form-control select,
-[data-theme="dark"] .form-select {
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    border-color: var(--theme-input-border);
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
-}
-
-.dark-theme .form-control select,
-.dark-theme .form-select {
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-    border-color: var(--theme-input-border);
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23a78bfa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
-}
-
-[data-theme="dark"] .form-control select option,
-[data-theme="dark"] .form-select option,
-.dark-theme .form-control select option,
-.dark-theme .form-select option {
-    background: var(--theme-input-bg);
-    color: var(--theme-body-text);
-}
-
-
-/* Mobile - ajuste do tamanho da seta */
-
-@media (max-width: 768px) {
-    .form-control select,
-    .form-select {
-        background-size: 16px 16px;
-        padding-right: 2.75rem;
-    }
-}
-
-
-/* ===================== SELECT NO TEMA ESCURO ===================== */
-
-
-/* Estilos base dos selects - funciona na maioria dos navegadores */
-
-body.dark-theme select,
-.dark-theme select {
-    background-color: var(--theme-input-bg) !important;
-    color: var(--theme-body-text) !important;
-    border-color: var(--theme-input-border) !important;
-}
-
-
-/* Força estilos das opções - Firefox principalmente */
-
-body.dark-theme select option,
-.dark-theme select option {
-    background-color: #2d3748 !important;
-    color: #e2e8f0 !important;
-}
-
-
-/* Para WebKit browsers - força cores específicas */
-
-body.dark-theme select option:not(:checked) {
-    background-color: #2d3748 !important;
-    color: #e2e8f0 !important;
-}
-
-
-/* Seleção ativa */
-
-body.dark-theme select option:checked {
-    background-color: #4a5568 !important;
-    color: #ffffff !important;
-}
-
-
-/* Hover */
-
-body.dark-theme select option:hover {
-    background-color: #4a5568 !important;
-    color: #ffffff !important;
-}
-
-
-/* Input de email no tema escuro */
-
-body.dark-theme .modal-body input[type="email"],
-.dark-theme .modal-body input[type="email"] {
-    background-color: var(--theme-input-bg) !important;
-    color: var(--theme-body-text) !important;
-    border-color: var(--theme-input-border) !important;
-}
-
-
-/* MENSAGENS ESTILIZADAS */
-
-
-/* Success/Error message container */
-
+/* ===================== MENSAGENS DE SUCESSO E ERRO (MODAL) ===================== */
 .message-container {
-    margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
-
-
-/* Mensagens de sucesso e erro estilizadas */
 
 .success-message,
 .error-message {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
-
-
-/* Mensagem de sucesso - verde */
 
 .success-message {
-    background: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+  background-color: #d1fae5;
+  border: 1px solid #10b981;
+  color: #065f46;
 }
 
-
-/* Mensagem de erro - vermelho */
+.success-message svg {
+  width: 20px;
+  height: 20px;
+  color: #10b981;
+  flex-shrink: 0;
+}
 
 .error-message {
-    background: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
+  background-color: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
 }
 
-
-/* Ícones das mensagens */
-
-.success-message svg,
 .error-message svg {
-    width: 1.25rem;
-    height: 1.25rem;
-    flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+/* ===================== VALIDAÇÃO DE CAMPOS ===================== */
+.invalid-feedback {
+  display: block;
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--theme-label-text);
+  font-size: 0.875rem;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+/* Estilos para campos com erro */
+.form-control.error,
+.form-select.error {
+  border-color: #ef4444 !important;
+}
+
+.form-control.error:focus,
+.form-select.error:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.error-messages {
+  margin-top: 0.5rem;
+}
+
+.error-text {
+  display: block;
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Estilos para a seção de controles (nova) */
+
+.controls-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  gap: 0.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+.search-container {
+  flex: 1;
+}
+
+.search-bar {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 12px 10px 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.9em;
+  background: #C7C7EB;
+  color: #4c1d95;
+  transition: border-color 0.3s ease;
+  min-width: 0;
+  width: 100%;
+}
+
+.search-bar input::placeholder {
+  color: #7c3aed;
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #7c3aed;
+  background: #C7C7EB;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.search-button {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #7c3aed;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+.filter-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: var(--color-secondary);
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.filter-group select {
+  padding: 8px 12px;
+  border: 1px solid #e0d7fe;
+  border-radius: 6px;
+  background: #C7C7EB;
+  color: #4c1d95;
+  font-size: 0.875rem;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
 }
 
 
-/* Tema escuro para as mensagens */
-
-body.dark-theme .success-message,
-.dark-theme .success-message {
-    background: #065f46;
-    color: #86efac;
-    border-color: #047857;
+/* ===================== SEÇÃO DE PAGINAÇÃO ===================== */
+.pagination-section {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  margin-top: 1.5rem;
 }
 
-body.dark-theme .error-message,
-.dark-theme .error-message {
-    background: #7f1d1d;
-    color: #fca5a5;
-    border-color: #dc2626;
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  color: var(--theme-text);
+  font-size: 0.875em;
+
+}
+
+.pagination-info {
+  display: flex;
+  align-items: center;
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.items-per-page label {
+  font-weight: 500;
+  color: var(--theme-text);
+  white-space: nowrap;
+}
+
+.items-per-page select {
+  padding: 4px 8px;
+  border: 1px solid #e0d7fe;
+  border-radius: 6px;
+  background: #C7C7EB;
+  color: #4c1d95;
+  font-size: 14px;
+  min-width: 56px;
+  cursor: pointer;
+}
+
+.items-per-page select:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+}
+
+.pagination-range {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  color: var(--theme-text);
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e0d7fe;
+  background: #f7f5ff;
+  color: #7c3aed;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.pagination-btn:not(:disabled):hover {
+  background: #ede9fe;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f7f5ff;
+}
+
+.pagination-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+}
+
+/* ===================== MODAL ACTIONS - BOTÕES METADE CADA ===================== */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 2rem;
+  border-top: 1px solid var(--theme-input-border);
+  padding-top: 20px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  font-weight: 600;
+}
+
+/* ===================== INPUTS E SELECTS ROXOS ===================== */
+.modal-body input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #C7C7EB;
+  border-radius: 6px;
+  font-size: 1em;
+  background-color: #C7C7EB;
+  color: #4c1d95;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.modal-body input[type="email"]:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.form-control select,
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #C7C7EB;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #C7C7EB;
+  color: #4c1d95;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%237c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 18px 18px;
+  padding-right: 3.25rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form-control select:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* ===================== RESPONSIVIDADE PARA NOVAS SEÇÕES ===================== */
+@media (max-width: 768px) {
+  .controls-section {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .search-container,
+  .filter-container {
+    width: 100%;
+  }
+
+  .filter-container {
+    justify-content: flex-start;
+  }
+
+  .filter-group select {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .pagination-info {
+    order: 1;
+    justify-content: center;
+  }
+
+  .pagination-range {
+    order: 2;
+  }
+
+  .pagination-controls {
+    order: 3;
+    justify-content: center;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+}
+
+/* ===================== TEMA ESCURO ===================== */
+:host-context(.dark-theme) .header-section,
+:host-context([data-theme="dark"]) .header-section {
+  background: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+:host-context(.dark-theme) .header-section h1,
+:host-context([data-theme="dark"]) .header-section h1 {
+  color: #ffffff !important;
+  border-bottom-color: #374151 !important;
+}
+
+:host-context(.dark-theme) .header-section p,
+:host-context([data-theme="dark"]) .header-section p {
+  color: #d1d5db !important;
+  opacity: 1 !important;
+}
+
+:host-context(.dark-theme) .controls-section,
+:host-context(.dark-theme) .pagination-section,
+:host-context([data-theme="dark"]) .controls-section,
+:host-context([data-theme="dark"]) .pagination-section {
+  background: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+:host-context(.dark-theme) .search-bar input,
+:host-context(.dark-theme) .filter-group select,
+:host-context(.dark-theme) .items-per-page select,
+:host-context([data-theme="dark"]) .search-bar input,
+:host-context([data-theme="dark"]) .filter-group select,
+:host-context([data-theme="dark"]) .items-per-page select {
+  background: #374151;
+  color: #ede9fe;
+  border-color: #4b5563;
+}
+
+:host-context(.dark-theme) .success-message,
+:host-context([data-theme="dark"]) .success-message {
+  background-color: #065f46;
+  border-color: #10b981;
+  color: #d1fae5;
+}
+
+:host-context(.dark-theme) .error-message,
+:host-context([data-theme="dark"]) .error-message {
+  background-color: #991b1b;
+  border-color: #ef4444;
+  color: #fee2e2;
+}
+
+:host-context(.dark-theme) .invalid-feedback,
+:host-context(.dark-theme) .error-text,
+:host-context([data-theme="dark"]) .invalid-feedback,
+:host-context([data-theme="dark"]) .error-text {
+  color: #fca5a5;
+}
+
+/* ===================== ALTO CONTRASTE ===================== */
+:host-context(.high-contrast) .header-section {
+  background: black !important;
+  border-bottom: none !important;
+}
+
+:host-context(.high-contrast) .header-section h1 {
+  color: white !important;
+  border-bottom-color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .header-section p {
+  color: white !important;
+}
+
+:host-context(.high-contrast) .search-bar input {
+  background: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+  box-shadow: none !important;
+}
+
+:host-context(.high-contrast) .search-bar input::placeholder {
+  color: var(--color-highlight-neon) !important;
+  opacity: 0.7;
+}
+
+:host-context(.high-contrast) .search-bar input:focus {
+  background: black !important;
+  box-shadow: 0 0 0 2px var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .search-button {
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .controls-section,
+:host-context(.high-contrast) .pagination-section {
+  background-color: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .search-bar input,
+:host-context(.high-contrast) .filter-group select,
+:host-context(.high-contrast) .items-per-page select {
+  background: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .pagination-btn {
+  background-color: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .success-message {
+  background-color: black !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .success-message svg {
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .error-message {
+  background-color: black !important;
+  border: 2px solid #ff0000 !important;
+  color: #ff0000 !important;
+}
+
+:host-context(.high-contrast) .error-message svg {
+  color: #ff0000 !important;
+}
+
+:host-context(.high-contrast) .invalid-feedback,
+:host-context(.high-contrast) .error-text {
+  color: #ff0000 !important;
+}
+
+:host-context(.high-contrast) .required {
+  color: #ff0000 !important;
 }

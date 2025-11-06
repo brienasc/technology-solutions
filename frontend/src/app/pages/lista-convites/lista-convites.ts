@@ -17,12 +17,12 @@ export class ListaConvitesComponent implements OnInit {
   // Dados de entrada que virão do componente pai (ConvitesComponent)
   @Input() invitations: Invitation[] = [];
   
-  // Propriedades para paginação customizada
+  // Propriedades para paginação (mantidas apenas para compatibilidade com o pai)
   @Input() totalItems: number = 0;
   @Input() pageSize: number = 10;
   @Input() currentPage: number = 1;
 
-  // Propriedades para filtro e busca
+  // Propriedades para filtro (mantidas apenas para compatibilidade com o pai)
   @Input() statusFilter: string = 'all';
   @Input() emailFilter: string = '';
 
@@ -32,73 +32,13 @@ export class ListaConvitesComponent implements OnInit {
   @Output() pageSizeChanged = new EventEmitter<number>();
   @Output() viewDetails = new EventEmitter<Invitation>();
 
-  // Opções de tamanho de página para o paginator customizado
-  pageSizes: number[] = [5, 10, 25, 50];
-
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  // ============ MÉTODOS DO PAGINATOR CUSTOMIZADO ============
-
-  // Atualizar tamanho da página
-  updatePageSize() {
-    this.currentPage = 1; // Reset para primeira página
-    this.pageSizeChanged.emit(this.pageSize);
-    this.pageChanged.emit(this.currentPage);
-  }
-
-  // Navegar para página específica
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.pageChanged.emit(this.currentPage);
-    }
-  }
-
-  // Página anterior
-  goToPrevious() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.pageChanged.emit(this.currentPage);
-    }
-  }
-
-  // Próxima página
-  goToNext() {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-      this.pageChanged.emit(this.currentPage);
-    }
-  }
-
-  // Calcular total de páginas
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.pageSize);
-  }
-
-  // Índice inicial dos itens exibidos
-  getStartIndex(): number {
-    if (this.totalItems === 0) return 0;
-    return ((this.currentPage - 1) * this.pageSize) + 1;
-  }
-
-  // Índice final dos itens exibidos
-  getEndIndex(): number {
-    const endIndex = this.currentPage * this.pageSize;
-    return Math.min(endIndex, this.totalItems);
-  }
-
   /**
-   * Dispara o evento 'filterApplied' com os valores atuais dos filtros de status e e-mail.
-   */
-  applyFilter(): void {
-    this.filterApplied.emit({ status: this.statusFilter, email: this.emailFilter });
-  }
-
-  /**
-   * Dispara o evento 'viewDetails' (mantido caso seja reintroduzido).
+   * Dispara o evento 'viewDetails' (mantido para funcionalidade futura).
    * @param invitation O objeto Invitation a ser visualizado.
    */
   onViewDetails(invitation: Invitation): void {
