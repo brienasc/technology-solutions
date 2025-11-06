@@ -9,43 +9,20 @@
 </div>
 
 <div class="matrizes-container" role="main" aria-label="Lista de Matrizes">
-  <div class="table-container">
-    <div class="controls-section">
-      <div class="search-container">
-        <div class="search-bar">
-          <input
-            type="text"
-            placeholder="Pesquisar por nome da matriz..."
-            [(ngModel)]="searchTerm"
-            aria-label="Campo de pesquisa de matrizes por nome"
-            (keyup.enter)="onBuscar()"
-          />
-          <button
-            class="search-button"
-            aria-label="Iniciar Pesquisa"
-            (click)="onBuscar()"
-          >
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="buttons-container">
+  <div class="controls-section">
+    <div class="search-container">
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Pesquisar por nome da matriz..."
+          [(ngModel)]="searchTerm"
+          aria-label="Campo de pesquisa de matrizes por nome"
+          (keyup.enter)="onBuscar()"
+        />
         <button
-          class="export-button import-button"
-          (click)="onImportMatrix()"
-          aria-label="Importar Matriz"
+          class="search-button"
+          aria-label="Iniciar Pesquisa"
+          (click)="onBuscar()"
         >
           <svg
             aria-hidden="true"
@@ -53,15 +30,38 @@
             viewBox="0 0 24 24"
             fill="currentColor"
           >
-            <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
-            <path d="m7 10 5-5 5 5"></path>
-            <path d="M12 5v9"></path>
+            <path
+              fill-rule="evenodd"
+              d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z"
+              clip-rule="evenodd"
+            />
           </svg>
-          Importar Matriz
         </button>
       </div>
     </div>
 
+    <div class="buttons-container">
+      <button
+        class="export-button import-button"
+        (click)="onImportMatrix()"
+        aria-label="Importar Matriz"
+      >
+        <svg
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path>
+          <path d="m7 10 5-5 5 5"></path>
+          <path d="M12 5v9"></path>
+        </svg>
+        Importar Matriz
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
     <div class="table-responsive">
       <app-matrices-table
         [data]="data"

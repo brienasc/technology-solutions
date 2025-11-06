@@ -380,7 +380,7 @@ input:focus {
 
 :host-context(.dark-theme) .imd-dialog,
 :host-context([data-theme="dark"]) .imd-dialog {
-  background: #111827;
+  background: #000000;
   border-color: #374151;
   color: #e5e7eb;
 }

@@ -14,9 +14,9 @@
   border-bottom: 1px solid var(--theme-border-color);
 }
 .matrizes-table th {
-  background: var(--theme-form-bg);
+  background: #C7C7EB;
   color: var(--theme-heading-text);
-  font-weight: 600;
+  font-weight: bold;
   font-size: 0.75em;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -103,4 +103,13 @@
   .col-actions {
     width: 76px;
   }
+}
+
+:host-context(.dark-theme) .matrizes-table th{
+  background: #1F2937;
+}
+
+:host-context(.high-contrast) .matrizes-table th{
+  background: #000000;
+  border-bottom: 1px solid var(--color-highlight-neon);
 }
