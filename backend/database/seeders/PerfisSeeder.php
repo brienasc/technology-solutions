@@ -19,12 +19,7 @@ class PerfisSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'perfil_name' => 'Gente e Cultura',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'perfil_name' => 'Colaborador Comum',
+                'perfil_name' => 'Elaborador de Itens',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

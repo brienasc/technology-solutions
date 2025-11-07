@@ -1,0 +1,874 @@
+    /* frontend/src/app/components/sobre/sobre */
+    /*
+
+    
+* -----------------------------------------------------------
+* Variáveis e Seção Principal (Adaptação do modelo)
+* -----------------------------------------------------------
+*/
+    /* --- ESTILO PARA O BOTÃO DE ÁUDIO DA IMAGEM HERO --- */
+    
+    .about-hero-image {
+        position: relative;
+        /* Torna o contêiner a referência para o botão flutuante */
+        /* ... (mantenha os estilos de largura, altura e box-shadow) ... */
+    }
+    
+    .read-alt-hero-button {
+        position: absolute;
+        bottom: 20px;
+        /* Ajuste a posição para o canto inferior direito */
+        right: 20px;
+        z-index: 10;
+        /* Estilo visual */
+        background-color: rgba(255, 255, 255, 0.9);
+        color: var(--color-primary);
+        border: none;
+        border-radius: 5px;
+        padding: 8px 10px;
+        font-size: 1.1em;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s;
+    }
+    /* Garante o Alto Contraste */
+    
+    :host-context(.high-contrast) .read-alt-hero-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* --- CSS PARA O BOTÃO DE ÁUDIO DO DEPOIMENTO --- */
+    
+    .card-image-container-author {
+        position: relative;
+        /* Define este container como ponto de referência */
+        margin-right: 15px;
+        /* Mantém o espaço para o texto */
+        display: inline-block;
+        /* Para o position: relative funcionar corretamente */
+    }
+    
+    .read-alt-author-button {
+        position: absolute;
+        top: -5px;
+        /* Ajusta a posição vertical */
+        right: -5px;
+        /* Ajusta a posição horizontal */
+        z-index: 10;
+        width: 25px;
+        height: 25px;
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 10px;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .platform-link-button {
+        display: flex;
+        align-items: center;
+        color: var(--color-info-blue);
+        background-color: var(--color-lighten-primary);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-decoration: none;
+        margin-bottom: 20px;
+    }
+    /* contraste*/
+    
+     :host-context(.high-contrast) .btn-secondary {
+        background-color: black !important;
+        /* Fundo Preto */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+        /* Borda Amarela */
+    }
+    
+     :host-context(.high-contrast) .btn-secondary:hover {
+        background-color: #111 !important;
+        /* Um leve cinza no hover */
+    }
+    /* No seu sobre.css */
+    /* Contêiner dos Ícones (Fundo Preto, Borda Amarela) */
+    
+     :host-context(.high-contrast) .icon-wrapper {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Contorno do Ícone (SVG) */
+    
+     :host-context(.high-contrast) .icon-wrapper svg {
+        stroke: var(--color-highlight-neon) !important;
+        fill: none !important;
+    }
+    /* NOVO: Regras para a Tagline "Revolucione suas avaliações" */
+    
+     :host-context(.high-contrast) .hero-pre-tagline {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 1px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Botão Primário ("Começar Gratuitamente") */
+    
+     :host-context(.high-contrast) .primary-button {
+        background-color: var(--color-highlight-neon) !important;
+        color: black !important;
+        /* Texto preto para alto contraste no fundo amarelo */
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    
+     :host-context(.high-contrast) .primary-button:hover {
+        background-color: white !important;
+    }
+    /* Botão Secundário ("Ver Demonstração") */
+    
+     :host-context(.high-contrast) .secondary-button {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+    }
+    /* Corrigir o gradiente roxo no título para Amarelo Neon */
+    
+     :host-context(.high-contrast) h1 .highlight-text {
+        /* Usa a cor direta para sobrescrever o gradiente */
+        color: var(--color-highlight-neon) !important;
+        /* Remove gradientes e text-fill-color transparentes */
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        /* Compatibilidade padrão */
+        -webkit-text-fill-color: var(--color-highlight-neon) !important;
+    }
+    /* Cartões Flutuantes no modo Alto Contraste */
+    
+     :host-context(.high-contrast) .floating-card {
+        background-color: black !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        color: var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .floating-card span,
+     :host-context(.high-contrast) .floating-card small {
+        color: var(--color-highlight-neon) !important;
+    }
+    /* Botões Parceiros (Senai, TriEduc, etc.) */
+    
+     :host-context(.high-contrast) .partner-btn {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Título e Texto (Precisão, Conteúdo, Analytics) */
+    
+     :host-context(.high-contrast) .benefit-title,
+     :host-context(.high-contrast) .benefit-text {
+        color: var(--color-highlight-neon) !important;
+        /* Força o texto para Amarelo */
+    }
+    /* Card de Depoimento */
+    
+     :host-context(.high-contrast) .testimonial-card {
+        background-color: black !important;
+        border: 2px solid white !important;
+        /* Borda branca */
+        color: white !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge {
+        background-color: black !important;
+        /* Fundo Branco */
+        color: var(--color-highlight-neon) !important;
+        /* Texto Amarelo Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    
+     :host-context(.high-contrast) .efficiency-badge .percentage,
+     :host-context(.high-contrast) .efficiency-badge .description {
+        color: var(--color-highlight-neon) !important;
+        /* Garante que o texto dentro seja Amarelo */
+        background: #111 !important;
+    }
+    /* Aspas e Dots */
+    
+     :host-context(.high-contrast) .testimonial-card::before {
+        color: var(--color-highlight-neon) !important;
+        /* Aspas Amarelas */
+        opacity: 1 !important;
+    }
+    
+     :host-context(.high-contrast) .btn-primary {
+        /* Fundo Amarelo Neon */
+        background-color: var(--color-highlight-neon) !important;
+        /* Texto Preto (para contraste máximo no fundo amarelo) */
+        color: black !important;
+        /* Borda Amarela Neon */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Garante que o hover também mantenha o contraste */
+    
+     :host-context(.high-contrast) .btn-primary:hover {
+        background-color: white !important;
+        /* Pode usar branco puro no hover */
+    }
+    /* No seu sobre.css, DENTRO do bloco :host-context(.high-contrast) */
+    
+     :host-context(.high-contrast) .platform-link-button {
+        /* Fundo Preto */
+        background-color: black !important;
+        /* Texto Amarelo Neon */
+        color: var(--color-highlight-neon) !important;
+        /* Adiciona borda amarela para visibilidade */
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    /* Se o ícone SVG da lâmpada for de preenchimento, force a cor amarela */
+    
+     :host-context(.high-contrast) .platform-link-button svg path {
+        fill: var(--color-highlight-neon) !important;
+    }
+    /* Corrigir a cor do Cargo */
+    
+    .author-role {
+        font-size: 0.85em;
+        color: var(--color-secondary) !important;
+        /* Roxo Médio */
+        margin: 0;
+    }
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
+    /* O texto principal do H1 já será amarelo neon pelas regras globais */
+    
+    .platform-link-button .lamp-icon {
+        /* Define o tamanho do ícone */
+        width: 20px;
+        height: 20px;
+        /* Adiciona margem para separar o ícone do texto */
+        margin-right: 8px;
+    }
+    
+    .about-section {
+        padding: 80px 40px;
+        background-color: var(--color-background-detail);
+        position: relative;
+        /* Adiciona a cor de fundo cinza/roxo claro que o modelo usa */
+        color: var(--color-text-primary);
+    }
+    
+    .main-content-container {
+        display: flex;
+        /* Padrão desktop: Imagem (Esquerda) e Conteúdo (Direita) */
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        /* Alinha o conteúdo ao topo */
+        max-width: 1200px;
+        margin: 0 auto;
+        gap: 80px;
+        /* Espaço entre as duas colunas */
+    }
+    /*
+* -----------------------------------------------------------
+* LADO ESQUERDO: Imagem Hero
+* -----------------------------------------------------------
+*/
+    
+    .about-hero-image {
+        flex: 1;
+        max-width: 50%;
+        position: relative;
+        order: 1;
+        /* Desktop: Imagem à esquerda */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .about-hero-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    /* Badge de Eficiência (+95%) */
+    
+    .efficiency-badge {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--color-white);
+        color: var(black);
+        padding: 15px 8px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .efficiency-badge .percentage {
+        display: block;
+        font-size: 1.5em;
+        font-weight: 700;
+    }
+    
+    .efficiency-badge .description {
+        font-size: 0.8em;
+        opacity: 0.9;
+    }
+    /*
+* -----------------------------------------------------------
+* LADO DIREITO: Detalhes e Vantagens
+* -----------------------------------------------------------
+*/
+    
+    .about-details-content {
+        flex: 1;
+        max-width: 50%;
+        order: 2;
+        /* Desktop: Conteúdo à direita */
+    }
+    
+    .platform-link-button {
+        display: inline-block;
+        color: var(--color-info-blue);
+        background-color: var(--color-lighten-primary);
+        /* Lilás bem claro */
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        text-decoration: none;
+        margin-bottom: 20px;
+    }
+    
+    .about-title {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+    
+    .about-description {
+        font-size: 1em;
+        color: var(--color-paragraph-text);
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+    /* --- Lista de Benefícios (Ícone + Texto) --- */
+    
+    .benefits-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+    
+    .icon-wrapper {
+        /* Fundo do ícone (branco) */
+        background-color: var(--color-white);
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .icon-wrapper svg {
+        /* Cor do ícone (o roxo/azul do modelo) */
+        fill: var(--color-light-primary);
+        width: 25px;
+        height: 25px;
+    }
+    
+    .benefit-title {
+        font-size: 1em;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+    
+    .benefit-text {
+        font-size: 0.9em;
+        color: var(--color-paragraph-text);
+    }
+    /* --- Botões de Ação --- */
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .btn-primary {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--color-secondary);
+    }
+    
+    .btn-secondary {
+        background-color: white;
+        color: var(--color-primary);
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-weight: 600;
+        border: 1px solid var(--color-white);
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background-color: var(--color-primary);
+        color: var(--color-white);
+    }
+    /*
+* -----------------------------------------------------------
+* SEÇÃO DEPOIMENTOS (Reutilização do Carrossel)
+* -----------------------------------------------------------
+*/
+    
+    .benefits-grid {
+        display: flex;
+        /* Faz os itens ficarem lado a lado */
+        overflow-x: scroll;
+        /* Habilita a rolagem lateral */
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 15px;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .benefits-grid::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .benefits-grid-container {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .benefits-grid {
+        display: flex;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        gap: 15px;
+        padding-bottom: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .benefits-grid::-webkit-scrollbar {
+        display: none;
+    }
+    /* Garante que o container tenha largura total */
+    
+    .carousel-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    /* Garante a largura dos cards para que o carrossel funcione */
+    
+    .benefit-card,
+    .testimonial-card {
+        /* Força cada card a ter uma largura (85% no mobile, sem encolher) */
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
+    
+    @media (min-width: 1200px) {
+        .benefit-card,
+        .testimonial-card {
+            flex: 0 0 calc(33.33% - 16.66px);
+            scroll-snap-align: start;
+        }
+    }
+    
+    .testimonial-card {
+        /* orça o layout interno a empilhar corretamente */
+        display: flex;
+        flex-direction: column;
+        background-color: var(--color-white);
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        justify-content: flex-start;
+        min-height: 380px;
+        position: relative;
+        justify-content: space-between;
+        text-align: left;
+    }
+    
+    .author-photo {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        /* Torna a foto redonda */
+        object-fit: cover;
+        margin-right: 15px;
+        border: none;
+        /* Remove qualquer borda */
+        padding: 0;
+        /* Remove qualquer padding que impediria o border-radius */
+    }
+    
+    .testimonial-card::before {
+        content: "\201C";
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 8em;
+        color: var(--color-lighten-primary);
+        opacity: 0.3;
+        line-height: 1;
+        font-family: serif;
+        z-index: 0;
+    }
+    /* Garante que o conteúdo fique visível acima da aspa */
+    
+    .rating {
+        /* ... */
+        position: relative;
+        z-index: 1;
+        /* Coloca as estrelas e o texto acima da aspa */
+        margin-top: 40px;
+        color: gold;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+    
+    .testimonial-quote {
+        /* ... */
+        position: relative;
+        z-index: 1;
+    }
+    /* --- Informações do Autor (Foto, Nome, Cargo, Empresa) --- */
+    
+    .author-name {
+        font-weight: 700;
+        color: var(--color-primary);
+        margin: 0;
+        line-height: 1.3;
+    }
+    /* Instituição (Colégio Excelência) - Roxo Médio/Claro (Light-Primary) */
+    
+    .author-company {
+        font-size: 0.8em;
+        color: var(--color-light-primary);
+        font-weight: 600;
+        margin: 0;
+    }
+    
+    .testimonials-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 40px;
+        /* Centraliza o bloco e adiciona margem no fundo */
+    }
+    /* Garanta que o título e o parágrafo usem as cores corretas: */
+    
+    .testimonials-header h2 {
+        font-size: 2em;
+        font-weight: 700;
+        color: var(--theme-heading-text);
+        margin-bottom: 10px;
+    }
+    
+    .testimonials-header p {
+        font-size: 1em;
+        color: var(--color-paragraph-text);
+    }
+    /* Ajuste da Imagem e Nomes do Autor */
+    
+    .author-info {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        /* Aumenta a distância entre o depoimento e o autor */
+        padding-top: 20px;
+        /* Adiciona uma linha divisória sutil acima da seção do autor */
+        border-top: 1px solid var(--color-lighten-primary);
+        position: relative;
+        z-index: 1;
+    }
+    
+    .nav-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--color-lighten-primary);
+        color: var(--color-primary);
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        z-index: 10;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        line-height: 1;
+        display: none;
+        /* Escondido por padrão */
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    
+    .testimonials-section {
+        /* O carrossel deve ser centralizado dentro desta seção */
+        text-align: center;
+        padding: 60px 20px;
+        background-color: var(--theme-background);
+    }
+    /* Contêiner dos indicadores de slide (pontos). */
+    
+    .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        position: absolute;
+        /* Essencial para o posicionamento vertical */
+        /* Centralização horizontal */
+        left: 50%;
+        transform: translateX(-50%);
+        /* Posição na parte inferior do carousel-wrapper */
+        bottom: 0px;
+        margin-top: 20px;
+    }
+    /* Cada ponto indicador. */
+    
+    .indicator-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--color-light-gray);
+        /* Cor do dot inativo */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    /* O ponto ativo. */
+    
+    .indicator-dot.active {
+        background-color: var(--color-primary);
+        /* Cor do dot ativo (roxo) */
+        transform: scale(1.2);
+    }
+    
+    .nav-button.prev {
+        left: 20px;
+    }
+    
+    .nav-button.next {
+        right: 20px;
+    }
+    
+    .section-divider {
+        /* Cor da linha: Usa o seu lilás claro/roxo claro (cor de detalhe) */
+        border: none;
+        border-top: 1px solid var(--color-lighten-primary);
+        /* Espaçamento: Garante que haja espaço entre o carrossel e a linha, e entre a linha e o texto. */
+        margin: 60px auto 40px;
+        /* 60px Topo | Auto (centraliza) | 40px Baixo */
+        /* Largura: Para que a linha não ocupe 100% (se necessário, ajuste a largura) */
+        width: 80%;
+        /* Ocupa 80% da largura do contêiner */
+        max-width: 900px;
+        /* Limita a largura máxima no desktop */
+    }
+    /* --- Seção de Marcas Parceiras --- */
+    
+    .partner-logos {
+        padding: 0 0 40px;
+    }
+    
+    .confidence-text {
+        font-size: 0.9em;
+        color: var(--color-paragraph-text);
+        margin-bottom: 20px;
+    }
+    
+    .logo-list {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .partner-btn {
+        background-color: var(--color-lighten-primary);
+        /* Lilás bem claro */
+        color: var(--color-primary);
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        font-size: 0.9em;
+        cursor: default;
+    }
+    /* --- ESTILOS ESPECÍFICOS PARA O MODO ESCURO (DEPOIMENTOS) --- */
+    /* O seletor :host-context(.dark-theme) aplica estilos quando o body tem a classe 'dark-theme' */
+    
+     :host-context(.dark-theme) {
+        /* Força o fundo do card para um cinza/preto escuro diferente,
+       que é mais agradável do que o fundo geral do body preto (#000000) */
+        .testimonial-card {
+            background-color: #1a1a1a;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+            /* Sombra clara */
+            border: 1px solid #333;
+            /* Borda sutil */
+        }
+        /* Título principal do depoimento (Citação) - Garante o texto branco */
+        .testimonial-quote {
+            color: var(--theme-body-text) !important;
+            /* Força Branco (#FFFFFF) */
+        }
+        /* As aspas grandes no canto - Cor Lilás (Clara) */
+        .testimonial-card::before {
+            color: var(--color-lighten-primary);
+            /* Roxo/Lilás Claro */
+            opacity: 0.5;
+        }
+        /* Estrelas (Rating) - Mantém Amarelo */
+        .rating {
+            color: var(--color-warning);
+            /* Amarelo/Laranja do tema */
+        }
+        /* --- Informações do Autor (Texto) --- */
+        /* Nome do Autor - Roxo Claro do tema */
+        /* Botões de navegação (Setas) */
+        .nav-button {
+            background-color: #333 !important;
+            /* Fundo mais escuro */
+            color: var(--theme-button-text) !important;
+            /* Seta branca */
+        }
+        /* Dots de navegação (Bolinhas) */
+        .indicator-dot.active {
+            background-color: var(--color-lighten-primary) !important;
+            /* Dot ativo lilás */
+        }
+    }
+    /*
+* -----------------------------------------------------------
+* Media Queries (Responsividade)
+* -----------------------------------------------------------
+*/
+    /* Tablet/Mobile - Inverte a ordem e empilha */
+    
+    @media (max-width: 1200px) {
+        .benefits-grid-section {
+            padding: 80px 40px;
+        }
+        .main-content-container {
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        .about-hero-image {
+            max-width: 90%;
+            order: 2;
+            /* Mobile: Imagem abaixo do texto */
+        }
+        .about-details-content {
+            max-width: 90%;
+            text-align: center;
+            order: 1;
+            /* Mobile: Texto acima da imagem */
+        }
+        .about-title {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .about-description {
+            margin-bottom: 20px;
+        }
+        .action-buttons {
+            justify-content: center;
+        }
+        .benefits-list {
+            align-items: center;
+        }
+        .benefit-item {
+            /* Centraliza os itens no mobile */
+            max-width: 350px;
+            flex-direction: column;
+            text-align: center;
+        }
+        .icon-wrapper {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+        /* Botões de Navegação (Setas) */
+        .nav-button {
+            display: block !important;
+            /* Mostra as setas no desktop */
+            top: 50%;
+            /* Traz para o centro vertical */
+            transform: translateY(-50%);
+            /* Ajusta o centro perfeito */
+            z-index: 20;
+            /* Garante que fiquem acima dos cards */
+        }
+        .nav-button.prev {
+            left: 0px;
+            /* Posiciona a seta esquerda para fora do carrossel */
+        }
+        .nav-button.next {
+            right: 0px;
+            /* Posiciona a seta direita para fora do carrossel */
+        }
+        /* Indicadores (Dots) */
+        .carousel-indicators {
+            bottom: -30px;
+            /* Move os dots para baixo para não colidirem */
+        }
+        .carousel-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+    }
+    /* Mobile Fino */
+    
+    @media (max-width: 600px) {
+        .about-section {
+            padding: 50px 20px;
+        }
+        .action-buttons {
+            flex-direction: column;
+        }
+        .testimonial-card {
+            min-height: 300px;
+        }
+    }

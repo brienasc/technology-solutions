@@ -1,0 +1,85 @@
+<div class="table-responsive">
+  <table class="matrizes-table" aria-label="Lista de Matrizes">
+    <thead>
+      <tr>
+        @for (c of columns; track c.label) {
+          <th
+            [class.text-center]="c.type === 'action'"
+            [class.col-actions]="c.type === 'action'"
+          >
+            {{ c.label }}
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading) {
+        <tr>
+          <td [attr.colspan]="columns.length" class="text-center">
+            Carregando...
+          </td>
+        </tr>
+      } @else if (!data || data.length === 0) {
+        <tr>
+          <td [attr.colspan]="columns.length" class="text-center">
+            Nenhuma matriz encontrada.
+          </td>
+        </tr>
+      } @else {
+        @for (row of data; track row.id ?? $index) {
+          <tr>
+            @for (c of columns; track c.label) {
+              <td
+                [class.text-center]="c.type === 'action'"
+                [class.col-actions]="c.type === 'action'"
+              >
+                @switch (c.type) {
+                  @case ("action") {
+                    <div class="actions" role="group" aria-label="Ações">
+                      <button
+                        class="icon-btn view-btn"
+                        title="Detalhes"
+                        aria-label="Detalhes"
+                        (click)="rowAction.emit({ action: 'details', row })"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true"
+                            fill="none" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M1.5 12s4.5-7.5 10.5-7.5S22.5 12 22.5 12 18 19.5 12 19.5 1.5 12 1.5 12Z"/>
+                          <circle cx="12" cy="12" r="3.75"/>
+                        </svg>
+                      </button>
+                      <button
+                        class="icon-btn delete-btn"
+                        title="Excluir"
+                        aria-label="Excluir"
+                        (click)="rowAction.emit({ action: 'delete', row })"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          aria-hidden="true"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0 1 16.138 21H7.862a2 2 0 0 1-1.995-1.858L5 7m5 4v6m4-6v6M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-9 0h10"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  }
+                  @default {
+                    {{ row[c.property] ?? "—" }}
+                  }
+                }
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

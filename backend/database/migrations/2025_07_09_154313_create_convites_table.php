@@ -16,6 +16,10 @@ return new class extends Migration
 
             $table->string('email_colab', 255)->nullable(false);
 
+            $table->bigInteger('perfil_id')->nullable(false);
+
+            $table->uuid('curso_id')->nullable(false);
+
             $table->tinyInteger('status_code')->default(0);
 
             $table->timestamp('expires_at')->nullable();

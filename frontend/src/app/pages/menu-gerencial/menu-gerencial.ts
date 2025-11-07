@@ -3,6 +3,7 @@ import { Component, OnInit, Renderer2, ElementRef, AfterViewInit } from '@angula
 import { CommonModule } from '@angular/common'; 
 import { ListaColaboradoresComponent } from '../../components/lista-colaboradores/lista-colaboradores'; 
 import { Header } from '../../components/header/header';
+import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
 
 @Component({
   selector: 'app-menu-gerencial',
@@ -11,6 +12,7 @@ import { Header } from '../../components/header/header';
     CommonModule, 
     ListaColaboradoresComponent, 
     Header,
+    AccessibilityBarComponent,
   ],
   templateUrl: './menu-gerencial.html', 
   styleUrls: ['./menu-gerencial.css'] 
@@ -78,12 +80,10 @@ export class MenuGerencialComponent implements OnInit, AfterViewInit {
   onViewColaboradorDetails(colaborador: any): void {
     this.selectedColaborador = colaborador;
     this.showModal = true;
-    console.log('Abrindo modal para:', colaborador);
   }
 
   closeModal(): void {
     this.showModal = false;
     this.selectedColaborador = null;
-    console.log('Fechando modal.');
   }
 }

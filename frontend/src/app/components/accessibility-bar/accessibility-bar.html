@@ -1,0 +1,163 @@
+<button class="access-floating-toggle" (click)="isMenuOpen = true" aria-label="Abrir Opções de Acessibilidade" title="Explore suas opções de acessibilidade" [attr.aria-expanded]="isMenuOpen" tabindex="0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-universal-access-circle" viewBox="0 0 16 16">
+        <path d="M8 4.143A1.071 1.071 0 1 0 8 2a1.071 1.071 0 0 0 0 2.143m-4.668 1.47 3.24.316v2.5l-.323 4.585A.383.383 0 0 0 7 13.14l.826-4.017c.045-.18.301-.18.346 0L9 13.139a.383.383 0 0 0 .752-.125L9.43 8.43v-2.5l3.239-.316a.38.38 0 0 0-.047-.756H3.379a.38.38 0 0 0-.047.756Z"/>
+        <path fill-rule="evenodd" d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8"/>
+    </svg>
+</button>
+
+<div class="access-bar-menu" [class.open]="isMenuOpen" role="dialog" aria-modal="true" aria-labelledby="access-menu-title">
+    <button class="close-btn" (click)="isMenuOpen = false" aria-label="Fechar Opções de Acessibilidade" title="Fechar">
+        &times;
+    </button>
+
+    <h2 id="access-menu-title">Acessibilidade</h2>
+
+    <div class="access-control-group">
+        <h3 class="group-title">Ajuste da Fonte</h3>
+
+        <div class="font-control-container" role="group" aria-label="Controle de Zoom da Fonte">
+            <button class="control-btn" (click)="changeFontSize(-1)" [disabled]="fontSizeLevel <= MIN_FONT_LEVEL" aria-label="Diminuir Fonte" title="Diminuir em um nível">
+                A-
+            </button>
+
+            <span class="font-size-display" aria-live="polite">
+                {{ displayFontSize }}
+            </span>
+
+            <button class="control-btn" (click)="changeFontSize(1)" [disabled]="fontSizeLevel >= MAX_FONT_LEVEL" aria-label="Aumentar Fonte" title="Aumentar em um nível">
+                A+
+            </button>
+        </div>
+    </div>
+
+    <div class="access-control-group">
+        <h3 class="group-title">Ajuste de Cor</h3>
+
+        <button class="option-btn" (click)="toggleHighContrast()" [class.active]="isHighContrast" aria-pressed="{{isHighContrast}}" aria-label="Alternar para Alto Contraste" title="Melhora a leitura para baixa visão e daltonismo">
+            <span class="option-icon" aria-hidden="true">
+                {{ isHighContrast ? '👁' : '👁' }}
+            </span>
+            Alto Contraste
+        </button>
+
+        <button class="option-btn" (click)="toggleDarkTheme()" [class.active]="isDarkTheme" aria-pressed="{{isDarkTheme}}" aria-label="Alternar para Modo Escuro" title="Reduz o cansaço visual">
+            <span class="option-icon" aria-hidden="true">
+                {{ isDarkTheme ? '☾☀︎' : '☾☀︎' }}
+            </span>
+            Tema Escuro
+        </button>
+    </div>
+
+    <div class="access-control-group">
+        <h3 class="group-title">Leitura e Navegação</h3>
+
+        <button onclick="document.querySelector('[vw-access-button]').click()" class="option-btn" aria-label="Ativar VLibras" title="Ativa a janela da Língua Brasileira de Sinais">
+            <span class="option-icon" aria-hidden="true">✋︎</span>
+            VLibras
+        </button>
+
+        <button class="option-btn" (click)="readPageAloud()" aria-label="Ativar Leitor de Tela, lê o texto selecionado ou a página inteira" title="Lê a seleção ou a página inteira">
+            <span class="option-icon" aria-hidden="true">🕪</span>
+            Leitor de Tela
+        </button>
+    </div>
+
+    <div class="access-control-group">
+        <h3 class="group-title">Navegação Rápida</h3>
+
+        <div role="toolbar" aria-label="Navegar para seções principais">
+            <button class="control-btn" aria-label="Ir para o menu principal" title="Ir para o menu" tabindex="0" (click)="scrollToSection('home')">
+                Menu
+            </button>
+
+            <button class="control-btn" aria-label="Ir para o conteúdo principal" title="Ir para o conteúdo" tabindex="0" (click)="scrollToSection('funcionalidades')">
+                Conteúdo
+            </button>
+
+            <button class="control-btn" aria-label="Ir para o rodapé" title="Ir para o rodapé" tabindex="0" (click)="scrollToSection('rodape')">
+                Rodapé
+            </button>
+        </div>
+    </div>
+
+    <button class="control-btn reset-btn" (click)="resetAcessibilitySettings()" aria-label="Resetar todas as configurações de acessibilidade" title="Voltar para as configurações padrão">
+        Resetar
+    </button>
+
+</div>
+
+<!-- <button class="access-floating-toggle" (click)="isMenuOpen = true" aria-label="Abrir Opções de Acessibilidade" title="Explore suas opções de acessibilidade" [attr.aria-expanded]="isMenuOpen" tabindex="0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-universal-access-circle" viewBox="0 0 16 16">
+  <path d="M8 4.143A1.071 1.071 0 1 0 8 2a1.071 1.071 0 0 0 0 2.143m-4.668 1.47 3.24.316v2.5l-.323 4.585A.383.383 0 0 0 7 13.14l.826-4.017c.045-.18.301-.18.346 0L9 13.139a.383.383 0 0 0 .752-.125L9.43 8.43v-2.5l3.239-.316a.38.38 0 0 0-.047-.756H3.379a.38.38 0 0 0-.047.756Z"/>
+  <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8"/>
+</svg>
+</button>
+
+<div class="accessibility-panel-overlay" [class.open]="isMenuOpen" *ngIf="isMenuOpen" role="dialog" aria-modal="true" aria-label="Menu de Acessibilidade Completo">
+
+    <div class="panel-header">
+        <h2 class="panel-title">Acessibilidade</h2>
+        <button class="panel-close-btn" (click)="isMenuOpen = false" aria-label="Fechar Painel de Acessibilidade">&times;</button>
+    </div>
+
+    <div class="panel-options-grid">
+        <div class="access-control-group">
+            <h3 class="group-title">Ajuste de Cor</h3>
+            <button (click)="toggleHighContrast()" [attr.aria-pressed]="isHighContrast" class="option-btn" aria-label="Alternar Auto Contraste" title="Auto Contraste">
+    <span class="option-icon">☀</span>
+    Auto Contraste
+</button>
+            <button (click)="toggleTheme()" [attr.aria-pressed]="isDarkTheme" class="option-btn">
+    <span class="option-icon">🌙</span>
+    Tema Escuro
+</button>
+        </div>
+
+        <div class="access-control-group">
+            <h3 class="group-title">Ajuste de Fonte</h3>
+            <div class="font-size-control">
+                <button mat-icon-button color="basic" class="font-btn minus-btn" (click)="decreaseFontSize()" [disabled]="fontSizeLevel === MIN_FONT_LEVEL" aria-label="Diminuir tamanho da fonte" title="Diminuir Fonte">
+        —
+    </button>
+                <span class="font-size-indicator">{{ displayFontSize }}</span>
+                <button mat-icon-button color="basic" class="font-btn plus-btn" (click)="increaseFontSize()" [disabled]="fontSizeLevel === MAX_FONT_LEVEL" aria-label="Aumentar tamanho da fonte" title="Aumentar Fonte">
+        +
+    </button>
+            </div>
+        </div>
+
+        <div class="access-control-group">
+            <h3 class="group-title">Leitura e Navegação</h3>
+            <button onclick="document.querySelector('[vw-access-button]').click()" class="option-btn">
+                <span class="option-icon">🗣️</span>
+                VLibras
+            </button>
+            <button class="option-btn" (click)="readPageAloud()" aria-label="Ativar Leitor de Tela, lêo texto selecionado ou a página inteira" title="Lê a seleção ou a página inteira">
+                <span class="option-icon">🔊</span>
+                Leitor de Tela
+            </button>
+        </div>
+
+        <div class="access-control-group">
+            <h3 class="group-title">Navegação Rápida</h3>
+
+            <div role="toolbar" aria-label="Navegar para seções principais">
+                <button class="control-btn" aria-label="Ir para o menu principal" title="Ir para o menu" tabindex="0" (click)="scrollToSection('home')">
+            Menu
+        </button>
+
+                <button class="control-btn" aria-label="Ir para o conteúdo principal" title="Ir para o conteúdo" tabindex="0" (click)="scrollToSection('funcionalidades')">
+            Conteúdo
+        </button>
+
+                <button class="control-btn" aria-label="Ir para o rodapé" title="Ir para o rodapé" tabindex="0" (click)="scrollToSection('rodape')">
+            Rodapé
+        </button>
+            </div>
+        </div>
+
+        <button class="control-btn reset-btn" (click)="resetAcessibilitySettings()" aria-label="Redefinir todas as configurações de acessibilidade" title="Reset">
+    Reset
+</button>
+    </div>
+</div> -->

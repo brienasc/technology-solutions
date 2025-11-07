@@ -1,11 +1,73 @@
-<section id="home" class="hero-section">
+<section id="home" class="hero-section" role="main" aria-label="Introdução e chamadas principais da Education Solutions">
     <div class="hero-content">
-        <h1>Transforme a jornada dos seus colaboradores desde o primeiro dia</h1>
-        <p>A Technology Solutions oferece uma plataforma inteligente, segura e eficiente para simplificar o processo de onboarding.</p>
+        <!-- Tagline Pequena (Rosa) -->
+        <div class="hero-pre-tagline">Revolucione suas avaliações</div>
+
+        <!-- Título -->
+        <h1>O que há de melhor em <span class="highlight-text">avaliação educacional</span></h1>
+
+        <p>Um hub completo que atua na resolução de todos os problemas dentro do ciclo avaliativo. Desenvolvido para aprimorar a criação de questões e avaliações para sua escola.</p>
+
+
+        <!-- Botões -->
+        <div class="cta-group">
+            <button class="primary-button" aria-label="Começar Gratuitamente Agora">
+    Começar Gratuitamente
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+</button>
+
+            <button class="secondary-button" aria-label="Ver a Demonstração do Produto">
+    Ver Demonstração
+</button>
+        </div>
+
+
+
+        <!-- Estatísticas -->
+        <div class="metrics-group">
+            <div class="metric-item">
+                <span class="metric-value">10k+</span>
+                <span class="metric-label">Questões disponíveis</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-value">500+</span>
+                <span class="metric-label">Escolas parceiras</span>
+            </div>
+            <div class="metric-item">
+                <span class="metric-value">98%</span>
+                <span class="metric-label">Satisfação</span>
+            </div>
+        </div>
     </div>
 
-    <div class="hero-image-container">
-        <img ngSrc="app/assets/imagens/imagemhero.png" width="500" height="500" alt="Colaboradores trabalhando"/>
+
+    <!-- WRAPPER: É O PAI RELATIVO PARA POSICIONAR OS CARTÕES -->
+    <div class="image-cards-wrapper">
+
+        <!-- <div class="hero-image-container">
+            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" alt="No lado direito da tela, há um grande card retangular em roxo claro. Ele contém uma foto de três mulheres jovens em uma sala de aula, sentadas em carteiras de madeira. A mulher da frente, no centro, sorri enquanto olha para seu celular. À sua direita, outra mulher também olha para seu celular com um sorriso, e à sua esquerda, uma terceira mulher tem seu celular em mãos. Todas parecem estar interagindo com a tecnologia em um ambiente de aprendizado."
+                [attr.title]="
+                'No lado direito da tela, há um grande card retangular em roxo claro. Ele contém uma foto de três mulheres jovens em uma sala de aula, sentadas em carteiras de madeira. A mulher da frente, no centro, sorri enquanto olha para seu celular. À sua direita, outra mulher também olha para seu celular com um sorriso, e à sua esquerda, uma terceira mulher tem seu celular em mãos. Todas parecem estar interagindo com a tecnologia em um ambiente de aprendizado.' "
+                priority="" />
+        </div> -->
+
+        <div class="hero-image-container">
+            <img ngSrc="app/assets/imagens/img_hero_nova.png" width="500" height="500" [alt]="heroImageAltDescription" [attr.title]="heroImageAltDescription" priority="" />
+            <button class="read-alt-button" (click)="readHeroImageDescription()" aria-label="Ouvir descrição detalhada da imagem" title="Ouvir descrição detalhada da imagem">🔊</button>
+        </div>
+
+        <!-- CARTÕES FLUTUANTES -->
+        <div class="floating-card top-left ">
+            <span>Banco de Questões</span>
+            <small>+2.5k questões adicionadas</small>
+        </div>
+
+
+        <div class="floating-card bottom-right ">
+            <span>Avaliação Dinâmica</span>
+            <small>Adaptação em tempo real</small>
+        </div>
+
     </div>
-    
+
 </section>

@@ -5,14 +5,18 @@ services:
       dockerfile: infra/php/Dockerfile
     networks:
       - internal
+    environment:
+      HOST_UID: "${UID:-1000}"
+      HOST_GID: "${GID:-1000}"
     volumes:
-      - ../backend/:/var/www/html/
-      - ../logs/php.log:/var/log/fpm-php.www.log
+      - ../backend:/var/www/html:delegated
+      - php_vendor:/var/www/html/vendor
+      - php_cache:/var/www/html/bootstrap/cache
       - ./php/entrypoint.sh:/entrypoint.sh
     container_name: php
     expose:
       - "9000"
-    entrypoint: ["sh", "-c", "chmod +x /entrypoint.sh && /entrypoint.sh"]
+    entrypoint: ["sh","-lc","chmod +x /entrypoint.sh && /entrypoint.sh"]
 
   angular:
     build:
@@ -26,13 +30,11 @@ services:
     container_name: angular
     networks:
       - internal
-    ports:
-      - "4200:4200"
 
   postgres:
     container_name: postgres-db
     restart: always
-    image: postgres:latest
+    image: postgres:17
     platform: linux/x86_64
     ports:
       - "5433:5432"
@@ -40,13 +42,16 @@ services:
       POSTGRES_USER: hoppe
       POSTGRES_PASSWORD: passwd
       POSTGRES_DB: techsolu_db_docker
+      # PGDATA: /var/lib/postgresql/18/docker
     volumes:
+      # - ../db-data:/var/lib/postgresql/18/docker
       - ../db-data:/var/lib/postgresql/data
       - ../backend/database/:/docker-entrypoint-initdb.d/
     networks:
       - internal
 
   nginx:
+    container_name: nginx
     build:
       context: ..
       dockerfile: infra/nginx/Dockerfile
@@ -61,8 +66,78 @@ services:
       - ../backend/:/var/www/html/
       # - ../frontend/dist/frontend-app/browser:/usr/share/nginx/html
       - ../logs/nginx:/var/log/nginx/
-    container_name: nginx
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:latest
+    networks: [internal]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    expose:
+      - "11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+    profiles: ["llm"]
+    ports:
+      - '11434:11434'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  ollama-init:
+    container_name: ollama-init
+    image: ollama/ollama:latest
+    networks: [internal]
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_BASE_MODEL=qwen3:14b
+    depends_on:
+      ollama:
+        condition: service_healthy
+    command:  ["pull", "${OLLAMA_BASE_MODEL:-qwen3:14b}"]
+    profiles: ["llm"]
+
+  fastapi:
+    container_name: fastapi
+    build:
+      context: ..
+      dockerfile: infra/fastapi/Dockerfile
+      target: runtime
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_BASE_MODEL=qwen3:14b
+    depends_on:
+      ollama:
+        condition: service_healthy
+      ollama-init:
+        condition: service_completed_successfully
+    volumes:
+      - ../ai-service:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks: [internal]
+    ports: 
+      - "8000:8000"
+    restart: unless-stopped
+    profiles: ["llm"]
 
 networks:
   internal:
     driver: bridge
+
+volumes:
+  php_vendor:
+  php_cache:
+  ollama:
+    external: true
+    name: ollama

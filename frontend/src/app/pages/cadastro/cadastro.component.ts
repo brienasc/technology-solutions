@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router'; // Removido o RouterLink
+import { ActivatedRoute, Router } from '@angular/router';
 import { CadastroService } from '../../services/cadastroservice';
 import { CommonModule } from '@angular/common';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -33,9 +33,13 @@ export class CadastroComponent implements OnInit {
       // campo de e-mail é pré-preenchido e não editável
       email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
       cpf: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11), Validators.pattern(/^\d{11}$/)]],
+      password: ['', [
+        Validators.required,
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      ]],
       cep: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8), Validators.pattern(/^\d{8}$/)]],
       uf: ['', [Validators.required]],
-      localidade: ['', [Validators.required]],
+      cidade: ['', [Validators.required]],
       bairro: ['', [Validators.required]],
       logradouro: ['', [Validators.required]],
       numero: ['', [Validators.required]],
@@ -49,13 +53,19 @@ export class CadastroComponent implements OnInit {
     if (token) {
       this.cadastroService.validarConvite(token).subscribe({
         next: (response: any) => {
-          this.conviteValido = true;
-          this.cadastroForm.patchValue({ email: response.email });
+          const status = response.data.status_code
+
+          if (status === 0) {
+            this.conviteValido = true;
+            this.cadastroForm.patchValue({ email: response.data.email_colab });
+          } else {
+            this.conviteValido = false;
+            this.mensagemErro = 'Convite expirado ou inválido.';
+          }
         },
         error: (error: any) => {
           this.conviteValido = false;
-          // Exibe a mensagem de erro específica do backend ou uma genérica
-          this.mensagemErro = error.error.message || 'Convite expirado ou inválido.';
+          this.mensagemErro = 'Convite expirado ou inválido.';
         }
       });
     } else {
@@ -65,14 +75,13 @@ export class CadastroComponent implements OnInit {
 
     //  autocompletar CEP
     this.cadastroForm.get('cep')?.valueChanges.subscribe(cep => {
-      // Remove caracteres não numéricos para verificar o comprimento
       const cepLimpo = cep ? cep.replace(/\D/g, '') : '';
       if (cepLimpo.length === 8) {
         this.cadastroService.buscarEnderecoPorCep(cepLimpo).subscribe({
           next: (dados: any) => {
             this.cadastroForm.patchValue({
               uf: dados.uf,
-              localidade: dados.localidade,
+              cidade: dados.localidade,
               bairro: dados.bairro,
               logradouro: dados.logradouro
             });
@@ -87,21 +96,17 @@ export class CadastroComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // para enviar o e-mail que está desabilitado, é preciso obter o valor cru do formulário
     const formData = this.cadastroForm.getRawValue();
     const token = this.route.snapshot.paramMap.get('token');
-    
-    // Adiciona o token e o e-mail ao objeto a ser enviado
+
     const cadastroData = { ...formData, token };
-    
     if (this.cadastroForm.valid) {
       this.cadastroService.cadastrarColaborador(cadastroData).subscribe({
         next: (response: any) => {
-          console.log('Cadastro realizado com sucesso!', response);
-          this.router.navigate(['/sucesso']);
+          this.router.navigate(['/']);
         },
         error: (error: any) => {
-          // Captura e exibe a mensagem de erro do backend (ex: CPF duplicado)
+          // exibe a mensagem de erro do backend
           this.mensagemErro = error.error.message || 'Erro ao realizar o cadastro. Tente novamente.';
           console.error('Erro no cadastro:', error);
         }

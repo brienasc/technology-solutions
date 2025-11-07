@@ -1,0 +1,200 @@
+<div class="modal-overlay" *ngIf="isOpen" [class.show]="isOpen" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i class="fas fa-file-alt"></i>
+        {{ isEditMode ? 'Editar Item' : 'Visualizar Item' }}
+      </h2>
+      <button type="button" class="close-btn" (click)="onClose()" title="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-content">
+      <p>Carregando...</p>
+    </div>
+
+    <!-- Conteúdo -->
+    <div *ngIf="!loading && item" class="modal-body">
+      
+      <!-- Informações do Item -->
+      <div class="item-info-section" *ngIf="!isEditMode">
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Código:</label>
+            <span>{{ item.code }}</span>
+          </div>
+          <div class="info-item">
+            <label>Matriz:</label>
+            <span>{{ item.matriz_nome || '—' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Status:</label>
+            <span class="status-badge" 
+                  [class.status-rascunho]="item.status === 0" 
+                  [class.status-finalizado]="item.status === 1"
+                  [class.status-calibrado]="item.status === 2">
+              {{ statusText }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Dificuldade:</label>
+            <span>{{ dificuldadeText }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário de Edição ou Visualização -->
+      <div class="form-section">
+        <!-- Comando -->
+        <div class="form-group">
+          <label for="comando">Comando da Questão</label>
+          <textarea 
+            id="comando"
+            [(ngModel)]="comando"
+            [readonly]="!isEditMode"
+            [class.readonly]="!isEditMode"
+            rows="3"
+            placeholder="Digite o comando da questão...">
+          </textarea>
+        </div>
+
+        <!-- Contexto -->
+        <div class="form-group">
+          <label for="contexto">Contexto (opcional)</label>
+          <textarea 
+            id="contexto"
+            [(ngModel)]="contexto"
+            [readonly]="!isEditMode"
+            [class.readonly]="!isEditMode"
+            rows="4"
+            placeholder="Digite o contexto da questão (se houver)...">
+          </textarea>
+        </div>
+
+        <!-- Dificuldade (apenas no modo edição) -->
+        <div class="form-group" *ngIf="isEditMode">
+          <label for="dificuldade">Dificuldade</label>
+          <select id="dificuldade" [(ngModel)]="dificuldade">
+            <option *ngFor="let option of dificuldadeOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Alternativas -->
+        <div class="alternativas-section">
+          <h4>Alternativas</h4>
+          <div *ngFor="let alt of alternativas; let i = index" class="alternativa-group">
+            <div class="alternativa-header">
+              <span class="alternativa-label">{{ getAlternativaLabel(i) }})</span>
+              <input 
+                *ngIf="isEditMode"
+                type="radio" 
+                [name]="'correta'"
+                [checked]="alt.correta"
+                (change)="alt.correta = true; onAlternativaCorretaChange(i)"
+                class="alternativa-radio">
+              <span *ngIf="!isEditMode && alt.correta" class="correct-indicator">✓ Correta</span>
+            </div>
+            
+            <div class="alternativa-content">
+              <div class="alternativa-texto">
+                <textarea 
+                  [(ngModel)]="alt.texto"
+                  [readonly]="!isEditMode"
+                  [class.readonly]="!isEditMode"
+                  [class.correct-alternative]="alt.correta && !isEditMode"
+                  [placeholder]="'Digite a alternativa ' + getAlternativaLabel(i) + '...'">
+                </textarea>
+                
+                <textarea 
+                  [(ngModel)]="alt.explicacao"
+                  [readonly]="!isEditMode"
+                  [class.readonly]="!isEditMode"
+                  placeholder="Explicação/Justificativa (opcional)...">
+                </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer" *ngIf="!loading && item">
+      <div class="footer-buttons">
+        
+        <!-- Modo Visualização -->
+        <div *ngIf="!isEditMode" class="view-mode-buttons">
+          <button 
+            *ngIf="canEdit" 
+            type="button" 
+            class="btn btn-primary" 
+            (click)="onEdit()">
+            <i class="fas fa-edit"></i>
+            Editar
+          </button>
+          
+          <button 
+            *ngIf="canCalibrate" 
+            type="button" 
+            class="btn btn-success" 
+            (click)="onCalibrate()"
+            [disabled]="loading">
+            <i class="fas fa-check-circle"></i>
+            {{ loading ? 'Calibrando...' : 'Marcar como Calibrado' }}
+          </button>
+          
+          <button type="button" class="btn btn-secondary" (click)="onClose()">
+            Fechar
+          </button>
+        </div>
+
+        <!-- Modo Edição -->
+        <div *ngIf="isEditMode" class="edit-mode-buttons">
+          <button 
+            type="button" 
+            class="btn btn-success" 
+            (click)="onSave()"
+            [disabled]="loading">
+            <i class="fas fa-save"></i>
+            {{ loading ? 'Salvando...' : 'Salvar Rascunho' }}
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-primary" 
+            (click)="onFinalize()"
+            [disabled]="loading">
+            <i class="fas fa-check"></i>
+            Finalizar Item
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn btn-secondary" 
+            (click)="onCancelEdit()"
+            [disabled]="loading">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alert Modal -->
+<app-alert-modal
+  [open]="alertOpen"
+  [title]="alertTitle"
+  [message]="alertMessage"
+  [variant]="alertVariant"
+  [actions]="alertActions"
+  (action)="onAlertAction($event)"
+  (closed)="onAlertClosed()">
+</app-alert-modal>

@@ -1,256 +1,389 @@
 /* frontend/src/app/components/lista-convites/lista-convites.component.css */
 
+
+/* ===================== CONTAINER PRINCIPAL ===================== */
 .lista-convites-container {
-    padding: 20px;
-
-    background-color: var(--theme-card-bg);
-    color: var(--theme-body-text);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
-    border: 1px solid var(--theme-input-border); /* Borda sutil para definir o card */
-    
-    transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease; /* Adiciona transição para a borda */
-    font-family: var(--font-nunito-sans);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-nunito-sans);
 }
 
-.controls-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 20px;
+/* ===================== GRID DE CARDS ===================== */
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
 }
 
-.filter-group, .search-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* ===================== CARD DE CONVITE ===================== */
+.invite-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: flex-start;
+  min-height: 100px;
+  width: 100%;
 }
 
-.filter-group label, .search-group label {
-    font-weight: bold;
-    color: var(--theme-label-text);
+.invite-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-.controls-section select, .controls-section input {
-    padding: 8px 12px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    font-size: 1em;
-    background-color: var(--theme-card-bg);
-    color: var(--theme-input-text);
-}
-
-.search-group button {
-    padding: 8px 15px;
-    background-color: var(--theme-button-secondary-bg);
-    color: var(--theme-button-text);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.search-group button:hover {
-    background-color: var(--color-light-primary);
-}
-
-.table-section {
-    overflow-x: auto; /* Permite rolagem horizontal em telas pequenas para a tabela */
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--theme-input-border);
-    color: var(--theme-body-text);
-}
-
-thead th {
-    background-color: var(--theme-background);
-    font-weight: bold;
-    text-transform: uppercase;
-    color: var(--theme-label-text);
-}
-
-tbody tr:nth-child(even) {
-    background-color: var(--theme-card-bg);
-}
-
-tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Um leve destaque no hover */
-}
-
+/* ===================== BADGES DE STATUS ===================== */
 .status-badge {
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: bold;
-    color: white;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .status-em-aberto {
-    background-color: var(--color-warning);
+  background: #8b5cf6;
+  color: white;
 }
 
 .status-finalizado {
-    background-color: var(--color-success);
+  background: #22c55e;
+  color: white;
 }
 
 .status-vencido {
-    background-color: var(--color-danger);
+  background: #ef4444;
+  color: white;
 }
 
+/* ===================== ÍCONE DO CARD ===================== */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: #C7C7EB;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #4c1d95;
+}
+
+/* ===================== CONTEÚDO PRINCIPAL (CENTRO) ===================== */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-right: 4rem;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* ===================== EMAIL ===================== */
+.card-email {
+  font-size: 1em;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* ===================== STATUS DESCRITIVO ===================== */
+.card-status {
+  font-size: 0.875em;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ===================== FOOTER DO CARD (DATAS + DETALHES) ===================== */
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ===================== DATAS ===================== */
+.card-dates {
+  display: flex;
+  gap: 15rem;
+}
+
+.date-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875em;
+  color: #6b7280;
+}
+
+.date-item svg {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+/* ===================== AÇÕES DO CARD ===================== */
+.card-actions {
+  display: flex;
+  align-items: center;
+}
+
+.details-link {
+  background: none;
+  border: none;
+  color: #7c3aed;
+  font-size: 0.875em;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.details-link:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.details-link:not(:disabled):hover {
+  color: #6d28d9;
+}
+
+/* ===================== BOTÕES ===================== */
 .details-button {
-    padding: 6px 10px;
-    background-color: var(--theme-button-primary-bg);
-    color: var(--theme-button-text);
-    border: 1px solid var(--theme-button-primary-bg);
-    border-radius: 5px;
-    font-size: 0.85em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 6px 10px;
+  background-color: var(--theme-button-primary-bg);
+  color: var(--theme-button-text);
+  border: 1px solid var(--theme-button-primary-bg);
+  border-radius: 5px;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .details-button:hover {
-    background-color: var(--theme-button-primary-hover);
-    border-color: var(--theme-button-primary-hover);
+  background-color: var(--theme-button-primary-hover);
+  border-color: var(--theme-button-primary-hover);
 }
 
-.no-data-message {
-    text-align: center;
-    padding: 20px;
-    font-style: italic;
-    color: var(--theme-muted-text);
+/* ===================== ESTADO VAZIO ===================== */
+.no-invitations {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #6b7280;
 }
 
-/* Estilos para MatPaginator  */
-.mat-paginator {
-    background-color: var(--theme-form-bg); /* Fundo do paginator */
-    color: var(--theme-body-text); /* Cor do texto do paginator */
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    transition: background-color 0.5s ease, color 0.5s ease;
+.no-invitations-icon {
+  width: 64px;
+  height: 64px;
+  background: #f3f4f6;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
-/* Estilos para os botões de navegação do paginator */
-:host ::ng-deep .mat-paginator-navigation-previous,
-:host ::ng-deep .mat-paginator-navigation-next {
-    background-color: var(--theme-button-primary-bg);
-    color: var(--theme-button-text);
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+.no-invitations-icon svg {
+  width: 32px;
+  height: 32px;
+  color: #9ca3af;
 }
 
-:host ::ng-deep .mat-paginator-navigation-previous:not([disabled]):hover,
-:host ::ng-deep .mat-paginator-navigation-next:not([disabled]):hover {
-    background-color: var(--theme-button-primary-hover);
+.no-invitations h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
 }
 
-/* Estilos para o seletor de itens por página */
-:host ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
-}
-:host ::ng-deep .mat-form-field-underline {
-    display: none;
-}
-:host ::ng-deep .mat-select-value-text,
-:host ::ng-deep .mat-select-arrow,
-:host ::ng-deep .mat-paginator-page-size-label,
-:host ::ng-deep .mat-paginator-range-label {
-    color: var(--theme-body-text);
+.no-invitations p {
+  font-size: 0.875em;
+  color: #6b7280;
+  margin: 0;
+  max-width: 400px;
+  line-height: 1.5;
 }
 
-.pagination-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.pagination-section .nav-button {
-    padding: 8px 15px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    background-color: var(--theme-form-bg);
-    color: var(--theme-body-text);
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.pagination-section .nav-button:hover:not(:disabled) {
-    background-color: var(--theme-background);
-    border-color: var(--theme-focus-border);
-}
-
-.pagination-section .nav-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.pagination-section .page-info {
-    font-weight: bold;
-    color: var(--theme-body-text);
-}
-
-.page-size-group {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.page-size-group label {
-    color: var(--theme-label-text);
-    font-size: 0.9em;
-}
-
-.page-size-group select {
-    padding: 6px 10px;
-    border: 1px solid var(--theme-input-border);
-    border-radius: 5px;
-    background-color: var(--theme-card-bg);
-    color: var(--theme-input-text);
-    font-size: 0.9em;
-}
-
-
-/* Responsividade */
+/* ===================== RESPONSIVIDADE ===================== */
 @media (max-width: 768px) {
-    .controls-section {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .filter-group, .search-group {
-        width: 100%;
-    }
-    .pagination-section {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .invite-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .card-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .card-content {
+    padding-right: 3rem;
+  }
+
+  .card-dates {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .status-badge {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
 }
 
-    .secondary-button-outline {
-        padding: 12px 24px; /* Botão um pouco maior */
-        color: var(--theme-button-primary-bg);
-        border-radius: 25px;
-        cursor: pointer;
-        font-size: 0.95em;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        width: auto;
-        max-width: none;
-        text-align: center;
-        background-color: transparent;
-        border: 2px solid var(--theme-button-primary-bg);
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
+@media (max-width: 480px) {
+  .invite-card {
+    padding: 1rem;
+  }
+
+  .card-content {
+    padding-right: 2.5rem;
+  }
+
+  .status-badge {
+    font-size: 0.7em;
+    padding: 3px 8px;
+  }
+
+  .card-email {
+    font-size: 0.9em;
+  }
+
+  .date-item {
+    font-size: 0.8em;
+  }
+}
+
+/* ===================== TEMA ESCURO ===================== */
+:host-context(.dark-theme) .invite-card,
+:host-context([data-theme="dark"]) .invite-card {
+  background: #1f2937;
+  border-color: #374151;
+  color: #d1d5db;
+}
+
+:host-context(.dark-theme) .card-email,
+:host-context([data-theme="dark"]) .card-email {
+  color: #ffffff;
+}
+
+:host-context(.dark-theme) .card-status,
+:host-context(.dark-theme) .date-item,
+:host-context([data-theme="dark"]) .card-status,
+:host-context([data-theme="dark"]) .date-item {
+  color: #9ca3af;
+}
+
+:host-context(.dark-theme) .card-icon,
+:host-context([data-theme="dark"]) .card-icon {
+  background: #374151;
+}
+
+:host-context(.dark-theme) .card-icon svg,
+:host-context([data-theme="dark"]) .card-icon svg {
+  color: #a78bfa;
+}
+
+:host-context(.dark-theme) .card-actions,
+:host-context([data-theme="dark"]) .card-actions {
+  border-top-color: #374151;
+}
+
+:host-context(.dark-theme) .details-link,
+:host-context([data-theme="dark"]) .details-link {
+  color: #a78bfa;
+}
+
+:host-context(.dark-theme) .details-link:not(:disabled):hover,
+:host-context([data-theme="dark"]) .details-link:not(:disabled):hover {
+  color: #8b5cf6;
+}
+
+:host-context(.dark-theme) .no-invitations-icon,
+:host-context([data-theme="dark"]) .no-invitations-icon {
+  background: #374151;
+}
+
+:host-context(.dark-theme) .no-invitations h3,
+:host-context([data-theme="dark"]) .no-invitations h3 {
+  color: #ffffff;
+}
+
+/* ===================== ALTO CONTRASTE ===================== */
+:host-context(.high-contrast) .invite-card {
+  background-color: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .card-email {
+  color: white !important;
+}
+
+:host-context(.high-contrast) .card-status,
+:host-context(.high-contrast) .date-item {
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .card-icon {
+  background: black !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .card-icon svg {
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .status-badge {
+  background: var(--color-highlight-neon) !important;
+  color: black !important;
+}
+
+:host-context(.high-contrast) .details-link {
+  color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .card-actions {
+  border-top-color: var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .no-invitations-icon {
+  background: black !important;
+  border: 2px solid var(--color-highlight-neon) !important;
+}
+
+:host-context(.high-contrast) .no-invitations h3 {
+  color: white !important;
+}
+
+:host-context(.high-contrast) .no-invitations p {
+  color: var(--color-highlight-neon) !important;
+}

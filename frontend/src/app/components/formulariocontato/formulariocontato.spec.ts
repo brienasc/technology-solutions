@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuadroVantagensComponent } from './quadro-vantagens';
+import { Formulariocontato } from './formulariocontato';
 
-describe('QuadroVantagens', () => {
-  let component: QuadroVantagensComponent;
-  let fixture: ComponentFixture<QuadroVantagensComponent>;
+describe('Formulariocontato', () => {
+  let component: Formulariocontato;
+  let fixture: ComponentFixture<Formulariocontato>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuadroVantagensComponent]
+      imports: [Formulariocontato]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QuadroVantagensComponent);
+    fixture = TestBed.createComponent(Formulariocontato);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
+  });
 });

@@ -1,6 +1,12 @@
 node_modules
 
 # ------------------------------
+# Python - backend
+# ------------------------------
+__pycache__/
+ai_service.egg-info/
+
+# ------------------------------
 # Laravel - backend
 # ------------------------------
 /backend/vendor/
@@ -59,7 +65,11 @@ yarn-error.log
 testem.log
 /typings
 
+**/*.cache
+
 **/.env
 db-data/
 **/*.log
 logs/
+
+**/*.pgsql

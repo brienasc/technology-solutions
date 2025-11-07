@@ -1,76 +1,56 @@
-<footer id="contato" class="app-footer">
-    <div class="footer-content-wrapper">
-        <div class="contact-section">
-            <h2 class="footer-title">Entre em contato conosco e retornaremos em breve!</h2>
-            <div class="contact-form-container">
-                @if (submissionMessage) {
-                    <div class="submission-message" [class.success]="isSuccess" [class.error]="!isSuccess">
-                        {{ submissionMessage }}
-                    </div>
-                }
-                <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Nome</label>
-                        <input type="text" id="name" formControlName="name" placeholder="Seu nome completo">
-                        @if (isSubmitted && contactForm.get('name')?.errors) {
-                            <div class="error-message">
-                                @if (contactForm.get('name')?.errors?.['required']) {
-                                    <span>Nome é obrigatório.</span>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" formControlName="email" placeholder="seu-email@dominio.com">
-                        @if (isSubmitted && contactForm.get('email')?.errors) {
-                            <div class="error-message">
-                                @if (contactForm.get('email')?.errors?.['required']) {
-                                    <span>E-mail é obrigatório.</span>
-                                }
-                                @if (contactForm.get('email')?.errors?.['email']) {
-                                    <span>Por favor, insira um e-mail válido.</span>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Mensagem</label>
-                        <textarea id="message" formControlName="message" rows="4" placeholder="Sua mensagem"></textarea>
-                        @if (isSubmitted && contactForm.get('message')?.errors) {
-                            <div class="error-message">
-                                @if (contactForm.get('message')?.errors?.['required']) {
-                                    <span>Mensagem é obrigatória.</span>
-                                }
-                            </div>
-                        }
-                    </div>
-                    <button type="submit" [disabled]="contactForm.invalid">Enviar</button>
-                </form>
-            </div>
+<footer id="rodape" class="footer" tabindex="-1">
+    <div class="container">
+        <div class="footer-col about">
+            <h3>Education Solutions</h3>
+            <p>Transformando a educação através de soluções inovadoras de avaliação. O futuro da educação começa aqui.</p>
         </div>
 
-        <div class="footer-columns-wrapper">
-            <div class="footer-column contact-info">
-                <h3>Contato</h3>
-                <ul>
-                    <li>contato@techsolutions.com</li>
-                    <li>(82) 8888-9999</li>
-                    <li>Maceió - Alagoas</li>
-                </ul>
+        <div class="footer-col links">
+            <h4>Recursos</h4>
+            <ul>
+                <li><a href="#">Banco de Questões</a></li>
+                <li><a href="#">Banco de Avaliações</a></li>
+                <li><a href="#">Aplicações Dinâmicas</a></li>
+                <li><a href="#">Analytics</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col links">
+            <h4>Suporte</h4>
+            <ul>
+                <li><a href="#">Central de Ajuda</a></li>
+                <li><a href="#">Documentação</a></li>
+                <li><a href="#">Tutoriais</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col contact">
+            <h4>Contato</h4>
+            <div class="contact-info">
+                <span><i class="fa-solid fa-envelope"></i> contato@educationsolutions.com</span>
             </div>
-            <div class="footer-column social-media">
-                <h3>Redes Sociais</h3>
-                <ul>
-                    <li>Instagram: tech-solutions</li>
-                    <li>LinkedIn: tech-solutions</li>
-                </ul>
+            <div class="contact-info">
+                <span><i class="fa-solid fa-phone"></i> (11) 9999-9999</span>
+            </div>
+            <div class="contact-info">
+                <span><i class="fa-solid fa-location-dot"></i> São Paulo, SP - Brasil</span>
             </div>
         </div>
     </div>
 
-    <div class="footer-column direitos">
-        <p>&copy; 2025 TechnologySolutions. Todos os direitos reservados.</p>
-        <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
+    <div class="footer-bottom">
+        <div class="container bottom-content">
+            <span class="copyright">
+                © 2025 Education Solutions. Todos os direitos reservados.
+            </span>
+            <div class="legal-links">
+                <a href="#">Política de Privacidade</a>
+                <span>|</span>
+                <a href="#">Termos de Uso</a>
+                <span>|</span>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
     </div>
 </footer>

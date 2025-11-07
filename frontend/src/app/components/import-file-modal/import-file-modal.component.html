@@ -1,0 +1,95 @@
+@if (open) {
+  <div class="overlay" role="dialog" aria-modal="true" (click)="onBackdrop()">
+    <div
+      class="modal"
+      role="document"
+      aria-labelledby="importXmlTitle"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        class="modal-close"
+        type="button"
+        aria-label="Fechar"
+        (click)="onClose()"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+
+      <header class="modal-header">
+        <h2 id="importXmlTitle" class="modal-title">Importar XML</h2>
+      </header>
+
+      <section class="modal-body">
+        <div
+          class="dropzone"
+          [class.is-over]="isDragOver"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+          tabindex="0"
+          aria-label="Solte o arquivo XML aqui ou clique para selecionar"
+          (click)="fileInput.click()"
+        >
+          <div class="dz-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 3v10m0 0l3.5-3.5M12 13L8.5 9.5M5 17a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M7 17h10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <p class="dz-title">Arraste e solte o arquivo XML aqui</p>
+          <p class="dz-sub">ou</p>
+          <button
+            type="button"
+            class="file-choose-btn"
+            (click)="$event.stopPropagation(); fileInput.click()"
+          >
+            Escolher arquivo
+          </button>
+          <input
+            #fileInput
+            id="xmlFile"
+            class="file-input"
+            type="file"
+            accept=".xml,application/xml"
+            (change)="onFile($event)"
+          />
+        </div>
+
+        @if (file) {
+          <p class="file-name" aria-live="polite">{{ file.name }}</p>
+        }
+      </section>
+
+      <footer class="modal-footer">
+        <button
+          type="button"
+          class="btn-primary"
+          [disabled]="!file"
+          (click)="onConfirm()"
+        >
+          Confirmar
+        </button>
+      </footer>
+    </div>
+  </div>
+}

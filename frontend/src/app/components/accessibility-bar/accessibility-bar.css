@@ -1,0 +1,499 @@
+/* src/app/components/accessibility-bar/accessibility-bar.component.css */
+
+
+/* VARIÁVEIS DE TEMA (Recomendado para consistência) */
+
+:root {
+    --color-primary: #5a189a;
+    /* Roxo principal */
+    --color-secondary: #00bfff;
+    /* Cor de destaque (ex: azul claro) */
+    --color-text-normal: #333;
+    /* Texto padrão */
+    --color-text-light: #555;
+    /* Texto mais claro */
+    --theme-bg: #f5f5f5;
+    /* Fundo da página (geral) */
+    --theme-card-bg: #ffffff;
+    /* Fundo de componentes/cards */
+    --color-highlight-neon: #ceff2d;
+    /* Amarelo Neon para alto contraste */
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 1. BOTÃO FLUTUANTE DE ACESSIBILIDADE (Inicial) */
+
+
+/* ---------------------------------------------------- */
+
+.access-floating-toggle {
+    position: fixed;
+    bottom: auto;
+    /* POSICIONAMENTO: Mudando de inferior esquerdo para antes do header (topo/lateral) */
+    /* position: fixed; */
+    top: 160px;
+    /* NOVO: Distância do topo */
+    left: auto;
+    /* Distância da esquerda (Ou ajuste para right se for o caso) */
+    bottom: auto;
+    /* Remove o posicionamento inferior */
+    right: 20px;
+    /* Remove o posicionamento direito */
+    z-index: 1000;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    /* TAMANHO: Aumentando o tamanho */
+    width: 45px;
+    /* Aumenta a largura (Exemplo de 50px para 60px) */
+    height: 45px;
+    /* Aumenta a altura */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Aumenta o ícone/texto interno */
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.access-floating-toggle svg {
+    width: 50px;
+    /* Ajuste o tamanho do SVG aqui */
+    height: 50px;
+}
+
+.access-floating-toggle:hover {
+    background-color: #7b2cbf;
+    /* Um pouco mais claro no hover */
+    transform: scale(1.05);
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 2. MENU PRINCIPAL DE ACESSIBILIDADE (Aberto) */
+
+
+/* ---------------------------------------------------- */
+
+.access-bar-menu {
+    position: fixed;
+    top: 80px;
+    /* Distância do topo */
+    right: 20px;
+    /* Distância da lateral */
+    /* bottom: 0; <--- Remova ou defina como auto para que a altura se ajuste */
+    width: 300px;
+    max-width: 90vw;
+    max-height: 85vh;
+    /* Limita a altura e permite rolagem */
+    z-index: 1100;
+    background-color: var(--theme-card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    /* Bordas suaves */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* Sombra de pop-up */
+    transform: translateX(120%);
+    /* Ajuste a transição para a nova margem */
+    transition: transform 0.4s ease-out;
+    overflow-y: auto;
+}
+
+.access-bar-menu.open {
+    transform: translateX(0);
+    /* Desliza para dentro */
+}
+
+
+/* Botão de Fechar */
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--color-text-light);
+    /* Cor cinza suave */
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: var(--color-primary);
+    /* Cor de destaque no hover */
+}
+
+
+/* Título da Barra */
+
+.access-bar-menu h2 {
+    /* color: var(--color-primary);
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 10px; */
+    /* 1. Mudar o fundo para a cor principal (roxo) */
+    background-color: var(--color-primary);
+    /* 2. Mudar a cor da letra para branco */
+    color: white;
+    font-size: 1.5rem;
+    /* 3. Ajustar o padding e margens */
+    margin-top: -20px;
+    /* Puxa para cima para preencher o espaço do padding do menu */
+    margin-right: -20px;
+    /* Puxa para a direita */
+    margin-left: -20px;
+    /* Puxa para a esquerda */
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    /* Padding interno */
+    /* 4. Remover a borda de baixo e ajustar cantos */
+    border-bottom: none;
+    /* Remove a borda se estiver lá */
+    border-top-left-radius: 12px;
+    /* Arredonda canto superior esquerdo */
+    border-top-right-radius: 12px;
+    /* Arredonda canto superior direito */
+}
+
+
+/* Títulos dos Grupos */
+
+.group-title {
+    /* font-size: 1.1em;
+    font-weight: 700;
+    color: var(--color-text-normal);
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee; */
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--color-text-normal);
+    /* Texto normal (escuro) */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    /* Linha de separação */
+    background-color: transparent;
+    /* Certifica que não tem fundo */
+    padding-left: 0;
+    padding-right: 0;
+    border-radius: 0;
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 3. ESTILOS DE BOTÕES DE CONTROLE GERAIS */
+
+
+/* ---------------------------------------------------- */
+
+.control-btn {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+    min-height: 40px;
+    /* Garante altura mínima para acessibilidade */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    background-color: #7b2cbf;
+    /* Roxo mais claro */
+}
+
+.control-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 4. GRUPOS DE CONTROLE (Tamanho da Fonte, Tema, etc.) */
+
+
+/* ---------------------------------------------------- */
+
+.access-control-group {
+    margin-bottom: 25px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: var(--theme-bg);
+    /* Fundo levemente diferente para agrupar */
+    border: 1px solid #ddd;
+}
+
+
+/* Estilo para os botões de opção (e.g., A+, A-, Tema Escuro) */
+
+
+/* Adicione esta regra ao seu arquivo accessibility-bar.css */
+
+.option-btn.active {
+    background-color: var(--color-primary);
+    /* Fundo com a cor primária (roxo) */
+    color: white;
+    /* Texto branco para contraste */
+    border-color: var(--color-primary);
+    /* Borda da mesma cor */
+}
+
+
+/* Garante que os ícones fiquem brancos quando o botão estiver ativo */
+
+.option-btn.active .option-icon {
+    color: white;
+}
+
+.option-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Espaçamento entre ícone e texto */
+    background-color: var(--theme-card-bg);
+    /* Fundo claro */
+    color: var(--color-primary);
+    /* Texto roxo */
+    border: 1px solid#ccc;
+    /* Borda roxa */
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    width: 100%;
+    /* Ocupa a largura total do grupo */
+    margin-top: 8px;
+    /* Espaçamento entre botões */
+}
+
+.option-btn:hover {
+    background-color: var(--color-primary);
+    /* Fundo roxo */
+    color: white;
+    /* Texto branco */
+}
+
+.option-btn .option-icon {
+    font-size: 1.2em;
+}
+
+
+/* Layout dos controles de Zoom/Fonte (A+, A-, Reset) */
+
+.font-control-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.font-control-container .control-btn {
+    /* Botões A+ e A- */
+    width: 45px;
+    height: 45px;
+    padding: 5px;
+    font-size: 1.2em;
+    border-radius: 50%;
+    /* Circular */
+    flex-shrink: 0;
+}
+
+.font-size-display {
+    /* Mostrador de nível de zoom */
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--color-text-normal);
+    margin: 0 5px;
+    flex-grow: 1;
+    /* Ocupa espaço central */
+    text-align: center;
+}
+
+
+/* Botão de Reset */
+
+.reset-btn {
+    background-color: #ef4444;
+    /* Vermelho de erro/reset */
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 25px;
+    /* Mais espaço acima */
+    width: 100%;
+    /* LARGURA TOTAL */
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 5. NAVEGAÇÃO RÁPIDA (Grupo de botões toolbar) */
+
+
+/* ---------------------------------------------------- */
+
+.access-control-group [role="toolbar"] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+
+/* Estilo específico para os botões de navegação por seção */
+
+.access-control-group [role="toolbar"] button {
+    /* Reajuste para a toolbar */
+    padding: 8px 12px;
+    font-size: 0.9em;
+    font-weight: 600;
+    /* MODIFICADO: Fundo Branco (igual à imagem) */
+    background-color: var(--theme-card-bg);
+    /* MODIFICADO: Texto Escuro/Normal */
+    color: var(--color-primary);
+    /* MODIFICADO: Borda Cinza Suave */
+    border: 1px solid #ccc;
+    transition: background-color 0.3s;
+    /* Garante que o botão seja flexível na largura */
+    flex-grow: 1;
+}
+
+.access-control-group [role="toolbar"] button:hover {
+    background-color: #f0f0f0;
+    color: var(--color-primary);
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 6. RESPONSIVIDADE (Para telas menores) */
+
+
+/* ---------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .access-bar-menu {
+        width: 100vw;
+        /* Ocupa a largura total em telas muito pequenas */
+    }
+    .access-floating-toggle {
+        bottom: 10px;
+        right: 10px;
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+/* ---------------------------------------------------- */
+
+
+/* 7. ESTILOS PARA ALTO CONTRASTE (CSS Condicional) */
+
+
+/* ---------------------------------------------------- */
+
+:host-context(.high-contrast) {
+    .access-bar-menu {
+        background-color: black !important;
+        border: 2px solid white !important;
+        box-shadow: none !important;
+    }
+    .group-title {
+        color: white !important;
+        border-bottom-color: white !important;
+    }
+    .access-bar-menu h2 {
+        color: white !important;
+        border-bottom-color: white !important;
+    }
+    .access-control-group {
+        background-color: black !important;
+        border: 2px solid white !important;
+    }
+    .close-btn {
+        color: white !important;
+    }
+    .close-btn:hover {
+        color: var(--color-highlight-neon) !important;
+    }
+    .control-btn {
+        background-color: black !important;
+        color: var(--color-highlight-neon) !important;
+        border: 2px solid var(--color-highlight-neon) !important;
+        box-shadow: none !important;
+    }
+    .control-btn:hover {
+        background-color: white !important;
+        color: black !important;
+    }
+    /* Estilo para os botões de opção no Alto Contraste */
+    .option-btn {
+        background-color: black !important;
+        color: white !important;
+        border: 2px solid white !important;
+        box-shadow: none !important;
+    }
+    .option-btn:hover {
+        background-color: white !important;
+        color: black !important;
+        border-color: white !important;
+    }
+    /* Ícones dentro dos botões */
+    .option-btn .option-icon {
+        color: var(--color-highlight-neon) !important;
+    }
+    .option-btn:hover .option-icon {
+        color: black !important;
+    }
+    /* Controles de Fonte */
+    .font-size-display {
+        color: white !important;
+    }
+    /* Botão de Reset */
+    .reset-btn {
+        background-color: #ff0000 !important;
+        color: white !important;
+        border: 2px solid white !important;
+    }
+    /* Botões de Navegação Rápida (Toolbar) */
+    .access-control-group [role="toolbar"] button {
+        background-color: black !important;
+        color: white !important;
+        border: 2px solid white !important;
+    }
+    .access-control-group [role="toolbar"] button:hover {
+        background-color: white !important;
+        color: black !important;
+        border-color: white !important;
+    }
+}

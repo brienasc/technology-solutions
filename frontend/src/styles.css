@@ -2,191 +2,427 @@
 @import "https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap";
 
 /*  Variáveis de TEMA (Definidas no :root para o modo claro padrão) --- */
-:root {
-  /* MINHA PALETA PRINCIPAL- NAO VAI MUDAR COM O TEMA */
-  --color-primary: #10002B; /* azul escuro/quase preto */
-  --color-secondary: #3C096C; /* roxo mais escuro */
-  --color-background-detail: #A9ABE1; /* lilás/roxo claro (usado na imagem de fundo) */
-  --color-light-primary: #7B2CBF; /* roxo médio */
-  --color-lighten-primary: #C6C7EB; /*  lilás bem claro */
-  
-  /* Cores de texto e fundo que NÃO mudam com o tema */
-  --color-text-primary: #10002B; /* Cor principal para textos, títulos */
-  --color-text-secondary: #240046; /* Texto secundário */
-  --color-body-text: #333; /* Cor geral para textos do body/html */
-  --color-body-background: #f8f8f8; /* Cor de fundo geral do body */
-  --color-paragraph-text: #555; /* Cor para parágrafos */
-  --color-muted-text: #999; /* Cor para textos muted */
-  --color-footer-link: #ccc; /* Cor de links no rodapé */
-  --color-light-background: #fdfdff; /* Cor de fundo para seções claras */
-  --color-white: #ffffff; /* Branco puro */
-  --color-light-gray: #ccc; /* Cinza claro para bordas de input */
-  --color-medium-gray: #cccccc; /* Cinza médio para botões desabilitados */
-  --color-danger: #dc3545; /* Vermelho para erros */
-  --color-success: #28a745; /* Verde para sucesso */
-  --color-warning: #ffc107; /* Amarelo para avisos */
-  --color-info-blue: #007bff; /* Azul para links e foco de input */
-  --color-info-blue-dark: #0056b3; /* Azul escuro para hover de link/botão */
 
-  /* Fontes que usamos */
-  --font-playfair-display: 'Playfair Display', serif;
-  --font-nunito-sans: 'Nunito Sans', sans-serif;
-  --font-secondary: 'Allura', sans-serif;
-  
-  /* Variáveis de TEMA que serão usadas no modo LIGHT  */
-  --theme-background: var(--color-body-background); /* Fundo geral da página */
-  --theme-form-bg: var(--color-white); /* Fundo da seção do formulário  */
-  --theme-card-bg: var(--color-white); /* Fundo do cartão do formulário  */
-  --theme-heading-text: var(--color-primary); /* Cor do texto de títulos  */
-  --theme-body-text: var(--color-paragraph-text); /* Cor do texto do corpo  */
-  --theme-label-text: var(--color-primary); /* Cor do texto dos rótulos */
-  --theme-input-text: var(--color-text-primary); /* Cor do texto dentro dos inputs  */
-  --theme-input-border: var(--color-light-gray); /* Cor da borda dos inputs  */
-  --theme-focus-border: var(--color-info-blue); /* Cor da borda no foco */
-  --theme-focus-shadow: rgba(0, 123, 255, 0.25); /* Cor da sombra no foco  */
-  --theme-button-primary-bg: var(--color-primary); /* Cor de fundo do botão primário  */
-  --theme-button-primary-hover: var(--color-secondary); /* Cor de hover do botão primário  */
-  --theme-button-text: var(--color-white); /* Cor do texto dos botões  */
-  --theme-link-text: var(--color-info-blue); /* Cor do texto dos links  */
-  --theme-button-disabled-bg: var(--color-medium-gray); /* Cor do botão desabilitado */
-  --theme-button-secondary-bg: var(--color-primary); /* Cor de fundo do botão secundário  */
-  --theme-image-section-bg: var(--color-background-detail); /* Fundo da seção da imagem */
-  --theme-invalid-feedback-text: #96020b; /* Cor do texto de feedback (vermelho) no modo claro */
+:root {
+    /* MINHA PALETA PRINCIPAL- NAO VAI MUDAR COM O TEMA */
+    --color-primary: #10002B;
+    /* azul escuro/quase preto */
+    --color-secondary: #3C096C;
+    /* roxo mais escuro */
+    --color-background-detail: #A9ABE1;
+    /* lilás/roxo claro (usado na imagem de fundo) */
+    --color-light-primary: #7B2CBF;
+    /* roxo médio */
+    --color-lighten-primary: #C6C7EB;
+    /*  lilás bem claro */
+    /* Cores de texto e fundo que NÃO mudam com o tema */
+    --color-text-primary: #10002B;
+    /* Cor principal para textos, títulos */
+    --color-text-secondary: #240046;
+    /* Texto secundário */
+    --color-body-text: #333;
+    /* Cor geral para textos do body/html */
+    --color-body-background: #f8f8f8;
+    /* Cor de fundo geral do body */
+    --color-paragraph-text: #555;
+    /* Cor para parágrafos */
+    --color-muted-text: #999;
+    /* Cor para textos muted */
+    --color-footer-link: #ccc;
+    /* Cor de links no rodapé */
+    --color-light-background: #fdfdff;
+    /* Cor de fundo para seções claras */
+    --color-white: #ffffff;
+    /* Branco puro */
+    --color-light-gray: #ccc;
+    /* Cinza claro para bordas de input */
+    --color-medium-gray: #cccccc;
+    /* Cinza médio para botões desabilitados */
+    --color-danger: #dc3545;
+    /* Vermelho para erros */
+    --color-success: #28a745;
+    /* Verde para sucesso */
+    --color-warning: #ffc107;
+    /* Amarelo para avisos */
+    --color-info-blue: #007bff;
+    /* Azul para links e foco de input */
+    --color-info-blue-dark: #0056b3;
+    /* Azul escuro para hover de link/botão */
+    /* Fontes que usamos */
+    --font-playfair-display: 'Playfair Display', serif;
+    --font-nunito-sans: 'Nunito Sans', sans-serif;
+    --font-secondary: 'Allura', sans-serif;
+    /* Variáveis de TEMA que serão usadas no modo LIGHT  */
+    --theme-background: var(--color-body-background);
+    /* Fundo geral da página */
+    --theme-form-bg: var(--color-white);
+    /* Fundo da seção do formulário  */
+    --theme-card-bg: var(--color-white);
+    /* Fundo do cartão do formulário  */
+    --theme-heading-text: var(--color-primary);
+    /* Cor do texto de títulos  */
+    --theme-body-text: var(--color-paragraph-text);
+    /* Cor do texto do corpo  */
+    --theme-label-text: var(--color-primary);
+    /* Cor do texto dos rótulos */
+    --theme-input-text: var(--color-text-primary);
+    /* Cor do texto dentro dos inputs  */
+    --theme-input-border: var(--color-light-gray);
+    /* Cor da borda dos inputs  */
+    --theme-focus-border: var(--color-info-blue);
+    /* Cor da borda no foco */
+    --theme-focus-shadow: rgba(0, 123, 255, 0.25);
+    /* Cor da sombra no foco  */
+    --theme-button-primary-bg: var(--color-primary);
+    /* Cor de fundo do botão primário  */
+    --theme-button-primary-hover: var(--color-secondary);
+    /* Cor de hover do botão primário  */
+    --theme-button-text: var(--color-white);
+    /* Cor do texto dos botões  */
+    --theme-link-text: var(--color-info-blue);
+    /* Cor do texto dos links  */
+    --theme-button-disabled-bg: var(--color-medium-gray);
+    /* Cor do botão desabilitado */
+    --theme-button-secondary-bg: var(--color-primary);
+    /* Cor de fundo do botão secundário  */
+    --theme-image-section-bg: var(--color-background-detail);
+    /* Fundo da seção da imagem */
+    --theme-invalid-feedback-text: #96020b;
+    /* Cor do texto de feedback (vermelho) no modo claro */
 }
+
 
 /*  Modo Escuro  */
+
+
 /* vão PREVALECER sobre as do :root quando a classe .dark-theme está no body. */
-body.dark-theme { 
-  --theme-background: #1a1a1a; /* Fundo geral da página  */
-  --theme-form-bg: #000000; /*  Fundo da seção do formulário */
-  --theme-card-bg: #000000; /* Fundo do cartão do formulário  */
-  --theme-heading-text: var(--color-lighten-primary); /* Cor do texto de títulos */
-  --theme-body-text: #ffffff; /* Cor do texto do corpo  */
-  --theme-label-text: #ffffff; /* Cor do texto dos rótulos */
-  --theme-input-text: #ffffff; /* Cor do texto dentro dos inputs */
-  --theme-input-border: #555; /* Cor da borda dos inputs  */
-  --theme-focus-border: var(--color-lighten-primary); /* Cor da borda no foco  */
-  --theme-focus-shadow: rgba(123, 44, 191, 0.25); /* Cor da sombra no foco  */
-  --theme-button-primary-bg: var(--color-light-primary); /* Cor de fundo do botão primário  */
-  --theme-button-primary-hover: var(--color-secondary); /* Cor de hover do botão primário */
-  --theme-button-text: var(--color-white); /* Cor do texto dos botões  */
-  --theme-link-text: var(--color-lighten-primary); /* Cor do texto dos links  */
-  --theme-button-disabled-bg: #555; /* Cor do botão desabilitado  */
-  --theme-button-secondary-bg: #4a4a4a; /* Cor de fundo do botão secundário  */
-  --theme-image-section-bg: var(--color-secondary); /* Fundo da seção da imagem  */
-  --theme-invalid-feedback-text: #ffffff; /* Cor do texto de feedback (branco) no modo escuro */
+
+body.dark-theme {
+    --theme-background: #1a1a1a;
+    /* Fundo geral da página  */
+    --theme-form-bg: #000000;
+    /*  Fundo da seção do formulário */
+    --theme-card-bg: #000000;
+    /* Fundo do cartão do formulário  */
+    --theme-heading-text: var(--color-lighten-primary);
+    /* Cor do texto de títulos */
+    --theme-body-text: #ffffff;
+    /* Cor do texto do corpo  */
+    --theme-label-text: #ffffff;
+    /* Cor do texto dos rótulos */
+    --theme-input-text: #ffffff;
+    /* Cor do texto dentro dos inputs */
+    --theme-input-border: #555;
+    /* Cor da borda dos inputs  */
+    --theme-focus-border: var(--color-lighten-primary);
+    /* Cor da borda no foco  */
+    --theme-focus-shadow: rgba(123, 44, 191, 0.25);
+    /* Cor da sombra no foco  */
+    --theme-button-primary-bg: var(--color-light-primary);
+    /* Cor de fundo do botão primário  */
+    --theme-button-primary-hover: var(--color-secondary);
+    /* Cor de hover do botão primário */
+    --theme-button-text: var(--color-white);
+    /* Cor do texto dos botões  */
+    --theme-link-text: var(--color-lighten-primary);
+    /* Cor do texto dos links  */
+    --theme-button-disabled-bg: #555;
+    /* Cor do botão desabilitado  */
+    --theme-button-secondary-bg: #4a4a4a;
+    /* Cor de fundo do botão secundário  */
+    --theme-image-section-bg: var(--color-secondary);
+    /* Fundo da seção da imagem  */
+    --theme-invalid-feedback-text: #ffffff;
+    /* Cor do texto de feedback (branco) no modo escuro */
 }
+
 
 /* reset básico (Universal) */
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 
 /* Estilos globais para HTML e body  */
-html, body {
-  height: 100%;
-  width: 100%;
-  font-family: var(--font-nunito-sans); /*  fonte padrão para o body */
-  color: var(--theme-body-text); /* variável de tema para a cor do texto do body */
-  background-color: var(--theme-background); /* variável de tema para o fundo do body */
-  line-height: 1.6;
-  scroll-behavior: smooth;
-  
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-family: var(--font-nunito-sans);
+    /*  fonte padrão para o body */
+    color: var(--theme-body-text);
+    /* variável de tema para a cor do texto do body */
+    background-color: var(--theme-background);
+    /* variável de tema para o fundo do body */
+    line-height: 1.6;
+    scroll-behavior: smooth;
 }
+
 
 /* Reset e configurações globais para responsividade */
+
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
+
 
 /* Container responsivo */
+
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
+
 
 /* Imagens responsivas */
+
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
+
 
 /* Botões responsivos */
+
 .btn {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  text-align: center;
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
 }
+
 
 /* Grades responsivas */
+
 .grid {
-  display: grid;
-  gap: 1rem;
+    display: grid;
+    gap: 1rem;
 }
 
+
+/* Garante que o widget do VLibras fique sempre visível acima de tudo */
+
+[vw] {
+    z-index: 999999 !important;
+}
+
+
+/* Garante que o ícone de acesso também fique no topo */
+
+[vw-access-button] {
+    z-index: 999999 !important;
+}
+
+
+/* --- REGRA GLOBAL DE ALTO CONTRASTE (styles.css) --- */
+
+body.high-contrast,
+body.dark-theme.high-contrast {
+    /* 1. FUNDO E TEXTO BASE (PRETO E BRANCO) */
+    background-color: black !important;
+    color: white !important;
+    /* Texto geral */
+    /* 2. CORES DE DESTAQUE PARA ACESSIBILIDADE (AMARELO NEON) */
+    --color-highlight-neon: #FFFF00 !important;
+    /* Amarelo Puro Neon */
+    /* VARIÁVEIS DE TEMA SOBRESCRITAS */
+    --theme-form-bg: black !important;
+    --theme-card-bg: black !important;
+    --theme-background: black !important;
+    /* TEXTO E TÍTULOS */
+    --theme-heading-text: var(--color-highlight-neon) !important;
+    /* Títulos Amarelo Neon */
+    --theme-body-text: white !important;
+    --color-text-primary: var(--color-highlight-neon) !important;
+    /* Títulos e texto principal */
+    --color-paragraph-text: white !important;
+    /* LINKS E ÍCONES */
+    --theme-link-text: var(--color-highlight-neon) !important;
+    /* Links (esqueci senha, etc.) */
+    /* 3. BOTÕES PRIMÁRIOS (Botão "Conhecer Recursos") */
+    --theme-button-primary-bg: var(--color-highlight-neon) !important;
+    /* Fundo Amarelo */
+    --theme-button-primary-hover: #E0E000 !important;
+    --theme-button-text: black !important;
+    /* Texto Preto no botão amarelo */
+    /* 4. BOTÃO SECUNDÁRIO (Botão "Falar com Especialista") */
+    --theme-button-secondary-bg: black !important;
+    /* Fundo Preto */
+    --theme-button-secondary-hover: #333 !important;
+    /* 5. INPUTS E BORDAS */
+    --theme-input-border: white !important;
+    border-color: white !important;
+    /* ZERA SOMBRAS E CORES DECORATIVAS */
+    box-shadow: none !important;
+    text-shadow: none !important;
+    filter: none !important;
+}
+
+
+/* Força bordas brancas em inputs e outros elementos */
+
+body.high-contrast input,
+body.high-contrast button,
+body.high-contrast select,
+body.high-contrast .testimonial-card,
+body.high-contrast .custom-input-style {
+    border: 2px solid white !important;
+}
+
+
+/* Garante que o fundo da seção "Sobre" (que usa color-background-detail) fique PRETO */
+
+body.high-contrast .about-section {
+    background-color: black !important;
+}
+
+
+/* Fim de Contrastes */
+
+
+/* --- CLASSES GLOBAIS PARA AUMENTO DE FONTE (styles.css) --- */
+
+
+/* Nível 1: +2px */
+
+body.font-size-level-1 {
+    font-size: calc(100% + 2px);
+    /* Aumenta 2px no tamanho base (16px + 2px) */
+}
+
+
+/* Nível 2: +4px */
+
+body.font-size-level-2 {
+    font-size: calc(100% + 4px);
+    /* Aumenta 4px no tamanho base */
+}
+
+
+/* Nível 3: +6px (Máximo) */
+
+body.font-size-level-3 {
+    font-size: calc(100% + 6px);
+    /* Aumenta 6px no tamanho base */
+}
+
+
+/* Garante que o Alto Contraste não anule o tamanho da fonte */
+
+body.high-contrast.font-size-level-1 {
+    font-size: calc(100% + 2px) !important;
+}
+
+body.high-contrast.font-size-level-3 {
+    font-size: calc(100% + 6px) !important;
+}
+
+
 /* Utilities responsivas */
+
 @media (max-width: 768px) {
-  .hide-mobile {
-    display: none !important;
-  }
-  
-  .text-center-mobile {
-    text-align: center !important;
-  }
-  
-  .full-width-mobile {
-    width: 100% !important;
-  }
+    .hide-mobile {
+        display: none !important;
+    }
+    .text-center-mobile {
+        text-align: center !important;
+    }
+    .full-width-mobile {
+        width: 100% !important;
+    }
 }
 
 @media (min-width: 769px) {
-  .hide-desktop {
-    display: none !important;
-  }
+    .hide-desktop {
+        display: none !important;
+    }
 }
+
 
 /* Prevent horizontal scroll */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
 }
 
+
 /* Para telas mobile */
+
 #home,
 #sobre,
 #servicos,
 #vagas,
 #contato {
-  scroll-margin-top: 48px;
+    scroll-margin-top: 48px;
 }
+
 
 /*  tablet e desktop (768px) */
+
 @media (min-width: 768px) {
-  #home,
-  #sobre,
-  #servicos,
-  #vagas,
-  #contato {
-    scroll-margin-top: 160px;
-  }
+    #home,
+    #sobre,
+    #servicos,
+    #vagas,
+    #contato {
+        scroll-margin-top: 160px;
+    }
 }
 
+
 /* desktop grandes (1200px+) */
+
 @media (min-width: 1200px) {
-  #home,
-  #sobre,
-  #servicos,
-  #vagas,
-  #contato {
-    scroll-margin-top: 190px;
-  }
+    #home,
+    #sobre,
+    #servicos,
+    #vagas,
+    #contato {
+        scroll-margin-top: 190px;
+    }
+}
+
+/* ===== CORREÇÃO PARA SIDEBAR FIXA ===== */
+body.has-sidebar {
+    padding-left: 250px !important;
+    transition: padding-left 0.3s ease !important;
+}
+
+body.has-sidebar * {
+    box-sizing: border-box !important;
+}
+
+/* GARANTIR QUE O CONTEÚDO SE ADAPTE */
+body.has-sidebar .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    max-width: none !important;
+}
+
+body.has-sidebar app-root,
+body.has-sidebar main {
+    width: 100% !important;
+    display: block !important;
+}
+
+@media (max-width: 767px) {
+    body.has-sidebar {
+        padding-left: 0 !important;
+    }
+}
+
+body.has-sidebar {
+    overflow-x: hidden !important;
 }

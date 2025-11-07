@@ -1,0 +1,205 @@
+<div class="modal-backdrop" (click)="fecharModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        
+        <!-- Ícone de Fechar -->
+        <button class="close-button" (click)="fecharModal()">
+            &times;
+        </button>
+
+        <!-- Cabeçalho -->
+        <div class="header-purple">
+            <h2 class="title">CRIAR AVALIAÇÃO</h2>
+            <p class="step-indicator">Etapa {{ currentStep }} de 2</p>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="main-body">
+
+            <!-- ============================================================== -->
+            <!-- STEP 1: INFORMAÇÕES-->
+            <!-- ============================================================== -->
+            <form *ngIf="currentStep === 1" [formGroup]="etapa1Form" (ngSubmit)="proximaEtapa()">
+                <h3 class="section-title">Informações Básicas</h3>
+                <p class="section-description">Preencha as informações gerais da avaliação</p>
+
+                <!-- Nome da Avaliação -->
+                <div class="form-group">
+                    <label for="nome" [ngClass]="{'required': etapa1Form.get('nomeAvaliacao')?.invalid && etapa1Form.get('nomeAvaliacao')?.touched}">
+                        <span class="bullet"></span> Nome da Avaliação*
+                    </label>
+                    <input id="nome" type="text" formControlName="nomeAvaliacao" placeholder="Digite o nome da avaliação" class="purple-input">
+                    <div *ngIf="etapa1Form.get('nomeAvaliacao')?.invalid && etapa1Form.get('nomeAvaliacao')?.touched" class="invalid-feedback">
+                        Nome da avaliação é obrigatório.
+                    </div>
+                </div>
+
+                <!-- Curso -->
+                <div class="form-group">
+                    <label for="curso" [ngClass]="{'required': etapa1Form.get('curso')?.invalid && etapa1Form.get('curso')?.touched}">
+                        <span class="bullet"></span> Curso*
+                    </label>
+                    <select id="curso" formControlName="curso" class="purple-input" [disabled]="cursoId !== null">
+                        <option [ngValue]="''" disabled>Selecione o curso</option>
+                        <option *ngFor="let curso of cursos" [value]="curso.id">
+                            {{ curso.nome }}
+                        </option>
+                    </select>
+                    <div *ngIf="carregandoCursos" class="loading-text">Carregando cursos...</div>
+                    <div *ngIf="etapa1Form.get('curso')?.invalid && etapa1Form.get('curso')?.touched" class="invalid-feedback">
+                        Curso é obrigatório.
+                    </div>
+                </div>
+
+                <!-- Matriz -->
+                <div class="form-group">
+                    <label for="matriz" [ngClass]="{'required': etapa1Form.get('matriz')?.invalid && etapa1Form.get('matriz')?.touched}">
+                        <span class="bullet"></span> Matriz*
+                    </label>
+                    <select id="matriz" formControlName="matriz" class="purple-input" [disabled]="matrizes.length === 0">
+                        <option [ngValue]="''" disabled>
+                            {{ carregandoMatrizes ? 'Carregando matrizes...' : (matrizes.length === 0 ? 'Selecione um curso primeiro' : 'Selecione a matriz') }}
+                        </option>
+                        <option *ngFor="let matriz of matrizes" [value]="matriz.id">
+                            {{ matriz.name }} {{ matriz.version ? '(v' + matriz.version + ')' : '' }}
+                        </option>
+                    </select>
+                    <div *ngIf="carregandoMatrizes" class="loading-text">Carregando matrizes...</div>
+                    <div *ngIf="etapa1Form.get('matriz')?.invalid && etapa1Form.get('matriz')?.touched" class="invalid-feedback">
+                        Matriz é obrigatória.
+                    </div>
+                </div>
+
+                <!-- Botões da Etapa 1 -->
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" (click)="fecharModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary" [disabled]="etapa1Form.invalid">Próximo</button>
+                </div>
+            </form>
+
+            <!-- ============================================================== -->
+            <!-- STEP 2: CONFIG DE ITENS -->
+            <!-- ============================================================== -->
+            <form *ngIf="currentStep === 2" [formGroup]="etapa2Form" (ngSubmit)="criarAvaliacao()">
+                <h3 class="section-title">Configuração de Itens</h3>
+                <p class="section-description">Defina a quantidade e a distribuição de dificuldade dos itens</p>
+
+                <!-- Resumo Etapa 1 -->
+                <div class="selection-summary">
+                    <p><strong>Avaliação:</strong> {{ etapa1Form.value.nomeAvaliacao }}</p>
+                    <p><strong>Curso:</strong> {{ getCursoNome(etapa1Form.value.curso) }}</p>
+                    <p><strong>Matriz:</strong> {{ getMatrizNome(etapa1Form.value.matriz) }}</p>
+                </div>
+
+                <!-- Qtd de Itens -->
+                <div class="form-group mb-4">
+                    <label for="quantidade" [ngClass]="{'required': etapa2Form.get('quantidadeItens')?.invalid && etapa2Form.get('quantidadeItens')?.touched}">
+                        <span class="bullet"></span> Quantidade de itens*
+                    </label>
+                    <input id="quantidade" type="number" formControlName="quantidadeItens" min="1" max="50" class="purple-input text-lg font-bold">
+                    <div *ngIf="etapa2Form.get('quantidadeItens')?.invalid && etapa2Form.get('quantidadeItens')?.touched" class="invalid-feedback">
+                        <span *ngIf="etapa2Form.get('quantidadeItens')?.errors?.['required']">A quantidade é obrigatória.</span>
+                        <span *ngIf="etapa2Form.get('quantidadeItens')?.errors?.['min']">Mínimo de 1 item.</span>
+                        <span *ngIf="etapa2Form.get('quantidadeItens')?.errors?.['max']">Máximo de 50 itens.</span>
+                        <span *ngIf="etapa2Form.get('quantidadeItens')?.errors?.['positiveInteger']">O valor deve ser um número inteiro positivo.</span>
+                    </div>
+                </div>
+
+                <h3 class="section-subtitle">Distribuição de Dificuldade dos Itens*</h3>
+                <p class="section-description-small">Abaixo estão as proporções de itens por nível de dificuldade. O total deve somar 100%.</p>
+
+                <!-- Distribuição Fixa 30/40/30 -->
+                <div class="difficulty-box">
+                    <!-- Fácil / Muito Fácil (30%) -->
+                    <div class="difficulty-item">
+                        <div class="level-info">
+                            <span class="dot easy"></span>
+                            <label>Fácil / Muito Fácil</label>
+                        </div>
+                        <div class="percentage-info">
+                            <span class="percentage-badge">{{ DIFICULDADE.FACIL * 100 }} %</span>
+                            <span class="item-count">{{ etapa2Form.value.percentualFacil }} itens</span>
+                        </div>
+                        <div class="slider-mock">
+                            <div class="slider-fill" [style.width.%]="DIFICULDADE.FACIL * 100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Média (40%) -->
+                    <div class="difficulty-item">
+                        <div class="level-info">
+                            <span class="dot medium"></span>
+                            <label>Média</label>
+                        </div>
+                        <div class="percentage-info">
+                            <span class="percentage-badge">{{ DIFICULDADE.MEDIO * 100 }} %</span>
+                            <span class="item-count">{{ etapa2Form.value.percentualMedio }} itens</span>
+                        </div>
+                        <div class="slider-mock">
+                            <div class="slider-fill" [style.width.%]="DIFICULDADE.MEDIO * 100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Difícil / Muito Difícil (30%) -->
+                    <div class="difficulty-item">
+                        <div class="level-info">
+                            <span class="dot hard"></span>
+                            <label>Difícil / Muito Difícil</label>
+                        </div>
+                        <div class="percentage-info">
+                            <span class="percentage-badge">{{ DIFICULDADE.DIFICIL * 100 }} %</span>
+                            <span class="item-count">{{ etapa2Form.value.percentualDificil }} itens</span>
+                        </div>
+                        <div class="slider-mock">
+                            <div class="slider-fill" [style.width.%]="DIFICULDADE.DIFICIL * 100"></div>
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="total-summary">
+                        <span>Total:</span>
+                        <div [ngClass]="{'valid': totalItensCalculado === etapa2Form.value.quantidadeItens, 'invalid': totalItensCalculado !== etapa2Form.value.quantidadeItens}">
+                            <span *ngIf="totalItensCalculado === etapa2Form.value.quantidadeItens">✔️ Válido</span>
+                            <span *ngIf="totalItensCalculado !== etapa2Form.value.quantidadeItens">❌ Inválido</span>
+                            <strong>{{ totalItensCalculado }} itens / 100%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ← CAMPOS HIDDEN para o FormControl funcionar -->
+                <div style="display: none;">
+                    <input type="number" formControlName="percentualFacil">
+                    <input type="number" formControlName="percentualMedio">
+                    <input type="number" formControlName="percentualDificil">
+                </div>
+
+                <!-- Botões da Etapa 2 -->
+                <div class="modal-actions">
+                    <button type="button" class="btn-voltar" (click)="voltarEtapa()"> < Voltar </button>
+                    <div class="right-actions">
+                        <button type="button" class="btn-secondary" (click)="fecharModal()">Cancelar</button>
+                        <button type="submit" class="btn-primary" [disabled]="!etapa2Form.valid || totalItensCalculado !== etapa2Form.value.quantidadeItens">
+                            Criar Avaliação
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Loading durante criação da avaliação -->
+            <div *ngIf="criandoAvaliacao" class="loading-overlay">
+                <div class="loading-spinner"></div>
+                <p>Criando avaliação...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Alerta -->
+<app-alert-modal
+  [open]="showAlert"
+  [title]="alertTitle"
+  [message]="alertMessage"
+  [variant]="alertVariant"
+  [actions]="alertActions"
+  (action)="onAlertAction($event)"
+  (closed)="onAlertClosed()"
+></app-alert-modal>

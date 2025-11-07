@@ -5,24 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Sanctum\HasApiTokens;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Colab extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUuids;
+    use HasApiTokens;
+    use HasFactory;
+    use HasUuids;
 
     protected $table = 'colab';
 
-    protected $primaryKey = 'id_colab';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
+        'nome',
         'cpf',
         'email',
+        'password',
         'celular',
         'cep',
-        'estado',
+        'uf',
         'cidade',
         'bairro',
         'logradouro',
@@ -31,10 +33,21 @@ class Colab extends Authenticatable
     ];
 
     protected $casts = [
-        'id_colab' => 'string',
+        'id' => 'string',
     ];
 
-    public function perfil(){
+    public function perfil()
+    {
         return $this->belongsTo(Perfis::class, 'perfil_id', 'perfil_id');
+    }
+
+    public function cursos()
+    {
+        return $this->belongsToMany(
+            Curso::class,
+            'colab_curso',
+            'colab_id',
+            'curso_id'
+        )->withTimestamps();
     }
 }

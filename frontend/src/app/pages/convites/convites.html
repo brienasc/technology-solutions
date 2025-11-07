@@ -1,45 +1,168 @@
-<!-- frontend/src/app/pages/convites/convites.component.html -->
 <app-header></app-header>
-<div class="convites-container">
-    <!-- <label class="theme-switch">
-    <input type="checkbox" [checked]="isDarkTheme" (change)="toggleTheme()">
-    <span class="slider round"></span>
-  </label> -->
+<app-accessibility-bar></app-accessibility-bar>
+
+<div class="convites-container" role="main" aria-label="Gerenciamento de Convites de Colaboradores">
     <div class="header-section">
-        <h1>Gerenciar Convites</h1>
+        <div class ="convites-title">
+        <div class="convites-title-content">
+            <h1>Menu Convites</h1>
+            <p class="subtitle">Gerencie seus convites de colaboradores</p>
+        </div>
+        </div>
         <button class="create-invite-button" (click)="onCreateNewInvite()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.875 7.875 0 0 1 15.75 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z"/>
             </svg>
-            Criar Novo Convite 
+            Criar Novo Convite
         </button>
     </div>
 
-    <!-- Componente filho para a listagem, filtros e paginação -->
-    <app-lista-convites 
-        [invitations]="invitations"
-        [totalItems]="totalItems"
-        [pageSize]="pageSize"
-        [currentPage]="currentPage"
-        [statusFilter]="statusFilter"
-        [emailFilter]="emailFilter"
-        (filterApplied)="onFilterApplied($event)"
-        (pageChanged)="onPageChange($event)"
-        (pageSizeChanged)="onPageSizeChange($event)"
-       
-    ></app-lista-convites>
-
-    <button class="back-button" (click)="goBack()">Voltar</button>
-
-    
-    <!--Estrutura do Modal de Criar Convite -->
-    <div class="modal-overlay" [class.active]="showInviteDialog" (click)="closeInviteDialog()"></div>
-    <div class="modal-dialog" [class.active]="showInviteDialog">
-        <div class="modal-header">
-            <h2>Convidar Novo Colaborador</h2>
-            <button class="close-modal-btn" (click)="closeInviteDialog()">×</button>
+    <!-- Seção de controles (busca e filtro) -->
+    <div class="controls-section">
+        <div class="search-container">
+            <div class="search-bar">
+                <input
+                    type="text"
+                    placeholder="Buscar por e-mail..."
+                    [(ngModel)]="emailFilter"
+                    aria-label="Campo de pesquisa por e-mail"
+                    (keyup.enter)="applyFilter()"
+                />
+                <button
+                    class="search-button"
+                    aria-label="Iniciar Pesquisa"
+                    (click)="applyFilter()"
+                >
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd"/>
+                    </svg>
+                </button>
+            </div>
         </div>
+
+        <div class="filter-container">
+            <div class="filter-group">
+                <label for="status-filter"></label>
+                <select id="status-filter" [(ngModel)]="statusFilter" (change)="applyFilter()">
+                    <option value="all">Todos os Status</option>
+                    <option value="Em Aberto">Em Aberto</option>
+                    <option value="Finalizado">Finalizado</option>
+                    <option value="Vencido">Vencido</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Componente filho para a listagem -->
+    <app-lista-convites 
+        [invitations]="invitations" 
+        [totalItems]="totalItems" 
+        [pageSize]="pageSize" 
+        [currentPage]="currentPage" 
+        [statusFilter]="statusFilter" 
+        [emailFilter]="emailFilter" 
+        (filterApplied)="onFilterApplied($event)" 
+        (pageChanged)="onPageChange($event)"
+        (pageSizeChanged)="onPageSizeChange($event)">
+    </app-lista-convites>
+
+    <!-- Seção de paginação -->
+    <div class="pagination-section">
+        <div class="pagination-container">
+            <div class="pagination-info">
+                <div class="items-per-page">
+                    <label for="itemsPerPage">Itens por página:</label>
+                    <select id="itemsPerPage" [(ngModel)]="pageSize" (change)="updatePageSize()">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pagination-range">
+                <span>{{ getStartIndex() }} - {{ getEndIndex() }} de {{ totalItems }}</span>
+            </div>
+
+            <div class="pagination-controls">
+                <button
+                    class="pagination-btn"
+                    [disabled]="currentPage === 1"
+                    (click)="goToPage(1)"
+                    title="Primeira página"
+                    aria-label="Ir para a primeira página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m11 17-5-5 5-5M18 17l-5-5 5-5" />
+                    </svg>
+                </button>
+                <button
+                    class="pagination-btn"
+                    [disabled]="currentPage === 1"
+                    (click)="goToPrevious()"
+                    title="Página anterior"
+                    aria-label="Ir para a página anterior"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m15 18-6-6 6-6" />
+                    </svg>
+                </button>
+                <button
+                    class="pagination-btn"
+                    [disabled]="currentPage === totalPages"
+                    (click)="goToNext()"
+                    title="Próxima página"
+                    aria-label="Ir para a próxima página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </button>
+                <button
+                    class="pagination-btn"
+                    [disabled]="currentPage === totalPages"
+                    (click)="goToPage(totalPages)"
+                    title="Última página"
+                    aria-label="Ir para a última página"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 17 5-5-5-5M13 17l5-5-5-5" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Criar Convite -->
+    <div class="modal-overlay" [class.active]="showInviteDialog" (click)="closeInviteDialog()"></div>
+    <div class="modal-dialog" [class.active]="showInviteDialog" role="dialog" aria-modal="true" aria-labelledby="inviteDialogTitle" aria-describedby="inviteDialogDesc">
+        <div class="modal-header">
+            <svg class="modal-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z"/>
+                <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z"/>
+            </svg>
+            <h2>Convidar Colaborador</h2>
+            <button class="close-modal-btn" (click)="closeInviteDialog()" aria-label="Fechar janela de convite">×</button>
+        </div>
+
         <div class="modal-body">
+            <div class="message-container" *ngIf="showSuccessMessage || showErrorMessage">
+                <div class="success-message" *ngIf="showSuccessMessage" role="alert" aria-live="assertive">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg> 
+                    {{ successMessageText }}
+                </div>
+
+                <div class="error-message" *ngIf="showErrorMessage" role="alert" aria-live="assertive">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg> 
+                    {{ errorMessageText }}
+                </div>
+            </div>
+
             <form (ngSubmit)="sendInvite()">
                 <div class="form-group">
                     <label for="inviteEmail">E-mail do Colaborador:</label>
@@ -48,25 +171,83 @@
                         id="inviteEmail" 
                         [(ngModel)]="inviteEmail" 
                         name="inviteEmail" 
-                        placeholder="nome@exemplo.com"
-                        (ngModelChange)="onEmailChange()"
-                        [class.is-invalid]="inviteErrorMessage && !isValidEmail"
-                    >
+                        placeholder="nome@exemplo.com" 
+                        (ngModelChange)="onEmailChange()" 
+                        [class.is-invalid]="inviteErrorMessage && !isValidEmail" 
+                    />
                     <div *ngIf="inviteErrorMessage" class="invalid-feedback">
                         {{ inviteErrorMessage }}
                     </div>
                 </div>
+
+                <!-- Campo de Perfil -->
+                <div class="form-group">
+                    <label for="invitePerfilSelect">Perfil de acesso: <span class="required">*</span></label>
+                    <select
+                        id="invitePerfilSelect"
+                        name="invitePerfilSelect"
+                        [(ngModel)]="selectedPerfilConvite"
+                        #perfilSelect="ngModel"
+                        required
+                        class="form-control form-select"
+                        [class.error]="perfilSelect.invalid && perfilSelect.touched"
+                        (ngModelChange)="onPerfilConviteChange($event)"
+                    >
+                        <option [ngValue]="undefined" disabled>Selecione um perfil</option>
+                        <option *ngFor="let p of perfisConvite" [ngValue]="p">
+                            {{ p.nome }}
+                        </option>
+                    </select>
+                    <div class="error-messages" *ngIf="perfilSelect.invalid && perfilSelect.touched">
+                        <small *ngIf="perfilSelect.errors?.['required']" class="error-text">
+                            O perfil é obrigatório.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Campo de Curso -->
+                <div class="form-group">
+                    <label for="inviteCursoSelect">Curso: <span class="required">*</span></label>
+                    <select
+                        id="inviteCursoSelect"
+                        name="inviteCursoSelect"
+                        [(ngModel)]="selectedCursoConvite"
+                        #cursoSelect="ngModel"
+                        required
+                        class="form-control form-select"
+                        [class.error]="cursoSelect.invalid && cursoSelect.touched"
+                        (ngModelChange)="onCursoConviteChange($event)"
+                    >
+                        <option [ngValue]="undefined" disabled>Selecione um curso</option>
+                        <option *ngFor="let c of cursosConvite" [ngValue]="c">
+                            {{ c.nome }}
+                        </option>
+                    </select>
+                    <div class="error-messages" *ngIf="cursoSelect.invalid && cursoSelect.touched">
+                        <small *ngIf="cursoSelect.errors?.['required']" class="error-text">
+                            O curso é obrigatório.
+                        </small>
+                    </div>
+                </div>
+
                 <div class="modal-actions">
-                    <button type="button" class="cancel-button" (click)="closeInviteDialog()">Cancelar</button>
-                    <button type="submit" class="send-button" [disabled]="inviteLoading || !isValidEmail">
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        (click)="closeInviteDialog()"
+                        aria-label="Cancelar e fechar convite">
+                        Cancelar
+                    </button>
+                    <button
+                        type="submit"
+                        class="send-button"
+                        [disabled]="inviteLoading || !isValidEmail"
+                    >
                         <span *ngIf="!inviteLoading">Enviar Convite</span>
                         <span *ngIf="inviteLoading">Enviando...</span>
                     </button>
                 </div>
             </form>
-            <div *ngIf="inviteSuccessMessage" class="success-message">
-                {{ inviteSuccessMessage }}
-            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,115 @@
+.matrizes-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  table-layout: auto;
+}
+.matrizes-table th,
+.matrizes-table td {
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 0.9em;
+  color: var(--theme-body-text);
+  border: none;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+.matrizes-table th {
+  background: #C7C7EB;
+  color: var(--theme-heading-text);
+  font-weight: bold;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--theme-border-color);
+}
+.matrizes-table tbody tr {
+  background: var(--theme-card-bg);
+  transition: background-color 0.2s ease;
+}
+.matrizes-table tbody tr:hover {
+  background: var(--theme-hover-bg, rgba(124, 58, 237, 0.05));
+}
+
+.matrizes-table th:nth-child(1),
+.matrizes-table td:nth-child(1) {
+  width: 34%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.col-actions {
+  text-align: center;
+  width: 84px;
+  white-space: nowrap;
+}
+.actions {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--theme-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+.icon-btn:hover {
+  background: var(--theme-button-hover, #e5e7eb);
+}
+.icon-btn:active {
+  transform: translateY(0);
+}
+.view-btn svg {
+  color: #7120bd;
+  fill: currentColor;
+}
+.delete-btn svg {
+  stroke: #dc2626;
+}
+
+@media (max-width: 640px) {
+  .matrizes-table th,
+  .matrizes-table td {
+    padding: 8px 8px;
+    font-size: 0.88rem;
+  }
+  .icon-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 5px;
+  }
+  .icon-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+  .col-actions {
+    width: 76px;
+  }
+}
+
+:host-context(.dark-theme) .matrizes-table th{
+  background: #1F2937;
+}
+
+:host-context(.high-contrast) .matrizes-table th{
+  background: #000000;
+  border-bottom: 1px solid var(--color-highlight-neon);
+}

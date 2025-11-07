@@ -1,0 +1,191 @@
+<app-accessibility-bar></app-accessibility-bar>
+<app-header></app-header>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div class="dashboard-container">
+  <!-- Cabeçalho da página -->
+  <div class="dashboard-title">
+    <h1>
+      Bem-vindo, {{ dashboardData?.perfil }}!
+    </h1>
+    <p>
+      <span *ngIf="dashboardData">
+        Você tem {{ dashboardData.total_cursos }} 
+        {{ dashboardData.total_cursos === 1 ? 'curso disponível' : 'cursos disponíveis' }}
+      </span>
+    </p>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Carregando seus cursos...</p>
+    </div>
+  </div>
+
+  <!-- Erro -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-message">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="loadDashboardData()">
+        <i class="fas fa-redo"></i>
+        Tentar Novamente
+      </button>
+    </div>
+  </div>
+
+  <!-- Conteúdo principal -->
+  <div *ngIf="!loading && !error && dashboardData" class="dashboard-content">
+
+  <div class="controls-section" *ngIf="!loading && shouldShowFilters()">
+  <!-- ... controles existentes ... -->
+  </div>
+    
+    <!-- Barra de controles -->
+    <div class="dashboard-controls">
+      <!-- Barra de pesquisa -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()"
+            placeholder="Pesquisar cursos..."
+            class="search-input">
+        </div>
+      </div>
+
+      <!-- Filtros e visualização -->
+      <div class="filters-container">
+        <!-- Filtro de status -->
+        <div class="status-filter">
+          <label for="statusFilter">Status:</label>
+          <select 
+            id="statusFilter"
+            [(ngModel)]="statusFilter" 
+            (change)="onStatusFilterChange()"
+            class="status-select">
+            <option value="todos">Todos</option>
+            <option value="ativo">Ativos</option>
+            <option value="inativo">Inativos</option>
+          </select>
+        </div>
+
+        <!-- Botões de visualização -->
+        <div class="view-controls">
+          <button 
+            type="button"
+            class="btn-view"
+            [class.active]="viewMode === 'lista'"
+            (click)="viewMode = 'lista'"
+            title="Visualização em Lista">
+            <i class="fas fa-bars"></i>
+          </button>
+          <button 
+            type="button"
+            class="btn-view"
+            [class.active]="viewMode === 'grid'"
+            (click)="viewMode = 'grid'"
+            title="Visualização em Grid">
+            <i class="fas fa-th"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid/Lista de cursos -->
+    <div class="cursos-container" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'lista'">
+      <div 
+        *ngFor="let curso of filteredCursos; trackBy: trackByCursoFn" 
+        class="curso-card"
+        [class.curso-inactive]="!curso.status"
+        (click)="onCursoClick(curso)">
+        
+        <!-- Visualização em Lista -->
+        <ng-container *ngIf="viewMode === 'lista'">
+          <div class="curso-content-list">
+            <div class="curso-info-list">
+              <div class="curso-header-list">
+                <h3 class="curso-nome">{{ curso.nome }}</h3>
+                <span 
+                  class="status-badge" 
+                  [class.status-ativo]="curso.status"
+                  [class.status-inativo]="!curso.status">
+                  {{ curso.status ? 'Ativo' : 'Inativo' }}
+                </span>
+              </div>
+              <p class="curso-descricao">{{ curso.descricao }}</p>
+              <div class="curso-details-list">
+                <div class="detail-item">
+                  <i class="fas fa-clock"></i>
+                  <span>{{ curso.carga_horaria }}h</span>
+                </div>
+              </div>
+            </div>
+            <div class="curso-stats-list">
+              <div class="items-count-large">{{ curso.quantidade_itens }}</div>
+              <div class="items-label">{{ curso.quantidade_itens === 1 ? 'item' : 'itens' }}</div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Visualização em Grid -->
+        <ng-container *ngIf="viewMode === 'grid'">
+          <div class="curso-header">
+            <div class="curso-status">
+              <span 
+                class="status-badge" 
+                [class.status-ativo]="curso.status"
+                [class.status-inativo]="!curso.status">
+                {{ curso.status ? 'Ativo' : 'Inativo' }}
+              </span>
+            </div>
+            <div class="curso-carga-horaria">
+              <i class="fas fa-clock"></i>
+              {{ curso.carga_horaria }}h
+            </div>
+          </div>
+
+          <div class="curso-content">
+            <h3 class="curso-nome">{{ curso.nome }}</h3>
+            <p class="curso-descricao">{{ curso.descricao }}</p>
+          </div>
+
+          <div class="curso-footer">
+            <div class="curso-stats-grid">
+              <div class="items-count-large">{{ curso.quantidade_itens }}</div>
+              <div class="items-label">{{ curso.quantidade_itens === 1 ? 'item criado' : 'itens criados' }}</div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Mensagem quando não há cursos -->
+    <div *ngIf="filteredCursos.length === 0" class="no-cursos">
+      <div class="no-cursos-content">
+        <i class="fas fa-graduation-cap"></i>
+        <h3>Nenhum curso encontrado</h3>
+        <p *ngIf="searchTerm.trim()">
+          Não foram encontrados cursos que correspondam à sua pesquisa "{{ searchTerm }}".
+        </p>
+        <p *ngIf="!searchTerm.trim() && isElaborador()">
+          Você ainda não está associado a nenhum curso. Entre em contato com o administrador.
+        </p>
+        <p *ngIf="!searchTerm.trim() && isAdmin()">
+          Nenhum curso cadastrado no sistema.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalhes do curso -->
+<app-curso-modal
+  [curso]="selectedCurso"
+  [isVisible]="showModal"
+  [userPerfil]="dashboardData?.perfil || ''"
+  (closeModal)="onCloseModal()">
+</app-curso-modal>
