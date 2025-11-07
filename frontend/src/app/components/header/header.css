@@ -853,16 +853,16 @@ body.high-contrast .sidebar-user-name {
 }
 
 
-body.high-contrast .user-avatar,
-body.high-contrast .sidebar-user-avatar,
-body.high-contrast .sidebar-logo-icon {
+:host-context(.high-contrast) .user-avatar,
+:host-context(.high-contrast) .sidebar-user-avatar,
+:host-context(.high-contrast) .sidebar-logo-icon {
     background-color: #FFFF00 !important;
     color: black !important;
     border: 2px solid white !important;
 }
 
-body.high-contrast .login-button,
-body.high-contrast .mobile-btn {
+:host-context(.high-contrast) .login-button,
+:host-context(.high-contrast) .mobile-btn {
     background-color: #FFFF00 !important;
     color: black !important;
     border: 2px solid white !important;
@@ -875,11 +875,10 @@ body.high-contrast .mobile-btn:hover {
     color: black !important;
 }
 
-body.high-contrast .logout-btn {
-    background-color: black !important;
-    color: #FFFF00 !important;
-    border: 2px solid white !important;
-    box-shadow: none !important;
+:host-context(.high-contrast) .logout-btn {
+  background-color: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
 }
 
 body.high-contrast .logout-btn:hover {
