@@ -180,7 +180,7 @@ body.has-sidebar .app-header {
     text-decoration: none;
     color: var(--theme-heading-text);
     font-weight: 500;
-    font-size: 16px;
+    font-size: 1em;
     padding: 12px 20px;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -222,7 +222,7 @@ body.has-sidebar .app-header {
 
 .user-name {
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1em;
     color: var(--theme-heading-text);
     line-height: 1.2;
     font-family: var(--fonte-family, inherit);
@@ -230,14 +230,14 @@ body.has-sidebar .app-header {
 
 .user-profile {
     font-weight: 500;
-    font-size: 14px;
+    font-size: 0.875em;
     color: var(--primary-color);
     line-height: 1.2;
     font-family: var(--fonte-family, inherit);
 }
 
 .user-email {
-    font-size: 12px;
+    font-size: 0.75em;
     color: var(--theme-text-muted);
     line-height: 1.2;
     font-family: var(--fonte-family, inherit);
@@ -254,7 +254,7 @@ body.has-sidebar .app-header {
     justify-content: center;
     color: #5a189a;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1em;
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -275,7 +275,7 @@ body.has-sidebar .app-header {
     padding: 10px 16px;
     border-radius: 20px;
     color: #ef4444 !important;
-    font-size: 14px;
+    font-size: 0.875em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -312,7 +312,7 @@ body.has-sidebar .app-header {
     text-decoration: none;
     border-radius: 25px;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1em;
     transition: all 0.3s ease;
     border: none;
     box-shadow: 0 2px 8px rgba(90, 24, 154, 0.3);
@@ -472,7 +472,7 @@ body.has-sidebar .app-header {
 }
 .sidebar-title {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 1.125em;
     color: var(--theme-heading-text);
     font-family: var(--fonte-family, inherit);
 }
@@ -486,7 +486,7 @@ body.has-sidebar .app-header {
     padding: 8px;
     border-radius: 6px;
     transition: all 0.3s ease;
-    font-size: 20px;
+    font-size: 1.25em;
     width: 36px;
     height: 36px;
     display: flex;
@@ -529,7 +529,7 @@ body.has-sidebar .app-header {
     color: var(--theme-heading-text);
     text-decoration: none;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 0.9375em;
     transition: all 0.3s ease;
     border-radius: 12px;
     margin: 0 10px;
@@ -614,7 +614,7 @@ body.has-sidebar .app-header {
     justify-content: center;
     color: #3d1a78;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1em;
     flex-shrink: 0;
 }
 
@@ -625,7 +625,7 @@ body.has-sidebar .app-header {
 
 .sidebar-user-name {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 0.875em;
     color: var(--theme-heading-text);
     line-height: 1.2;
     margin-bottom: 2px;
@@ -635,7 +635,7 @@ body.has-sidebar .app-header {
 }
 
 .sidebar-user-email {
-    font-size: 12px;
+    font-size: 0.75em;
     color: var(--theme-text-muted);
     line-height: 1.2;
     white-space: nowrap;
@@ -678,7 +678,7 @@ body.has-sidebar .app-header {
 
 .mobile-menu-title {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 1.125em;
     margin: 0;
     color: var(--theme-heading-text);
     font-family: var(--fonte-family, inherit);
@@ -687,7 +687,7 @@ body.has-sidebar .app-header {
 .mobile-close-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 1.5em;
     cursor: pointer;
     color: var(--theme-heading-text);
     padding: 5px;
@@ -853,16 +853,16 @@ body.high-contrast .sidebar-user-name {
 }
 
 
-body.high-contrast .user-avatar,
-body.high-contrast .sidebar-user-avatar,
-body.high-contrast .sidebar-logo-icon {
+:host-context(.high-contrast) .user-avatar,
+:host-context(.high-contrast) .sidebar-user-avatar,
+:host-context(.high-contrast) .sidebar-logo-icon {
     background-color: #FFFF00 !important;
     color: black !important;
     border: 2px solid white !important;
 }
 
-body.high-contrast .login-button,
-body.high-contrast .mobile-btn {
+:host-context(.high-contrast) .login-button,
+:host-context(.high-contrast) .mobile-btn {
     background-color: #FFFF00 !important;
     color: black !important;
     border: 2px solid white !important;
@@ -875,11 +875,10 @@ body.high-contrast .mobile-btn:hover {
     color: black !important;
 }
 
-body.high-contrast .logout-btn {
-    background-color: black !important;
-    color: #FFFF00 !important;
-    border: 2px solid white !important;
-    box-shadow: none !important;
+:host-context(.high-contrast) .logout-btn {
+  background-color: black !important;
+  color: var(--color-highlight-neon) !important;
+  border: 2px solid var(--color-highlight-neon) !important;
 }
 
 body.high-contrast .logout-btn:hover {
@@ -941,7 +940,7 @@ body.high-contrast .sidebar-menu a {
     
     .header-nav ul li a {
         padding: 10px 15px;
-        font-size: 14px;
+        font-size: 0.875em;
     }
 }
 
@@ -952,7 +951,7 @@ body.high-contrast .sidebar-menu a {
     
     .header-nav ul li a {
         padding: 8px 12px;
-        font-size: 13px;
+        font-size: 0.8125em;
     }
 }
 
