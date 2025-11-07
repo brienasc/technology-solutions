@@ -48,9 +48,9 @@
     border: none;
     border-radius: 50%;
     /* TAMANHO: Aumentando o tamanho */
-    width: 65px;
+    width: 45px;
     /* Aumenta a largura (Exemplo de 50px para 60px) */
-    height: 65px;
+    height: 45px;
     /* Aumenta a altura */
     display: flex;
     justify-content: center;

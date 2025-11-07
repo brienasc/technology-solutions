@@ -34,7 +34,7 @@ services:
   postgres:
     container_name: postgres-db
     restart: always
-    image: postgres:latest
+    image: postgres:17
     platform: linux/x86_64
     ports:
       - "5433:5432"
@@ -42,9 +42,10 @@ services:
       POSTGRES_USER: hoppe
       POSTGRES_PASSWORD: passwd
       POSTGRES_DB: techsolu_db_docker
-      PGDATA: /var/lib/postgresql/18/docker
+      # PGDATA: /var/lib/postgresql/18/docker
     volumes:
-      - ../db-data:/var/lib/postgresql/18/docker
+      # - ../db-data:/var/lib/postgresql/18/docker
+      - ../db-data:/var/lib/postgresql/data
       - ../backend/database/:/docker-entrypoint-initdb.d/
     networks:
       - internal

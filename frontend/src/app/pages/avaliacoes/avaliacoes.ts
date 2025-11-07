@@ -9,6 +9,7 @@ import { CursoService } from '../../services/curso.service';
 import { AlertVariant, AlertAction } from '../../models/alert.model';
 import { AlertModalComponent } from '../../components/alert/alert.component';
 import { Header } from '../../components/header/header';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-avaliacoes',
@@ -17,6 +18,7 @@ import { Header } from '../../components/header/header';
     CommonModule, 
     FormsModule,
     Header,
+    MatIconModule,
     ModalNovaAvaliacaoComponent,
     ModalDetalhesAvaliacaoComponent, 
     AlertModalComponent
