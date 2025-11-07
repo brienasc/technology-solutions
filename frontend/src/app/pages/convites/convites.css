@@ -139,13 +139,13 @@ body,
     color: var(--color-secondary);
     letter-spacing: -0.02em;
     line-height: 1.1;
-    font-size: 1.75rem;
+    font-size: 1.75em;
     padding-bottom: 0.5rem;
     border-bottom: 4px solid #0B061D;
 }
 
 .header-section p {
-    font-size: 1rem;
+    font-size: 1em;
     color: var(--color-secondary);
     margin: 0;
     line-height: 1.6;
@@ -280,7 +280,7 @@ body,
 
 .modal-header h2 {
     font-family: var(--font-nunito-sans);
-    font-size: 1.5rem;
+    font-size: 1.5em;
     font-weight: 600;
     color: white;
     margin: 0;
@@ -442,7 +442,7 @@ body,
   gap: 0.75rem;
   padding: 12px 16px;
   border-radius: 8px;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 500;
   margin-bottom: 1rem;
 }
@@ -477,7 +477,7 @@ body,
 .invalid-feedback {
   display: block;
   color: #ef4444;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   margin-top: 0.5rem;
   font-weight: 500;
 }
@@ -491,7 +491,7 @@ body,
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--theme-label-text);
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 
 .required {
@@ -518,7 +518,7 @@ body,
 .error-text {
   display: block;
   color: #ef4444;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 500;
 }
 
@@ -609,7 +609,7 @@ body,
   font-weight: 500;
   color: var(--color-secondary);
   white-space: nowrap;
-  font-size: 0.875rem;
+  font-size: 0.875em;
 }
 
 .filter-group select {
@@ -618,7 +618,7 @@ body,
   border-radius: 6px;
   background: #C7C7EB;
   color: #4c1d95;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   cursor: pointer;
   min-width: 150px;
 }
@@ -673,7 +673,7 @@ body,
   border-radius: 6px;
   background: #C7C7EB;
   color: #4c1d95;
-  font-size: 14px;
+  font-size: 0.875em;
   min-width: 56px;
   cursor: pointer;
 }
@@ -773,7 +773,7 @@ body,
   padding: 0.75rem;
   border: 2px solid #C7C7EB;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 1em;
   background: #C7C7EB;
   color: #4c1d95;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;

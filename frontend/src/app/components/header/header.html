@@ -221,15 +221,6 @@
                 </a>
             </li>
 
-            <li *ngIf="authService.canAccessAvaliacoes()">
-                <a routerLink="/avaliacoes" routerLinkActive="active" (click)="closeSidebar()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11zm-5.5-2.5L9 14l1.5-1.5L12 14l4.5-4.5L18 11l-7.5 7.5z"/>
-                    </svg>
-                    Avaliações
-                </a>
-            </li>
-
             <li *ngIf="authService.isRH() || authService.isAdmin()">
                 <a routerLink="/menu-gerencial" routerLinkActive="active" (click)="closeSidebar()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">

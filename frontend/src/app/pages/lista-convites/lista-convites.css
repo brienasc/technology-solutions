@@ -45,7 +45,7 @@
   right: 1rem;
   padding: 4px 12px;
   border-radius: 12px;
-  font-size: 0.75rem;
+  font-size: 0.75em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -102,7 +102,7 @@
 
 /* ===================== EMAIL ===================== */
 .card-email {
-  font-size: 1rem;
+  font-size: 1em;
   font-weight: 600;
   color: #1f2937;
   margin: 0;
@@ -111,7 +111,7 @@
 
 /* ===================== STATUS DESCRITIVO ===================== */
 .card-status {
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: #6b7280;
   margin: 0;
   font-weight: 500;
@@ -134,7 +134,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: #6b7280;
 }
 
@@ -153,7 +153,7 @@
   background: none;
   border: none;
   color: #7c3aed;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   font-weight: 500;
   cursor: pointer;
   padding: 0;
@@ -217,14 +217,14 @@
 }
 
 .no-invitations h3 {
-  font-size: 1.25rem;
+  font-size: 1.25em;
   font-weight: 600;
   color: #374151;
   margin: 0 0 0.5rem 0;
 }
 
 .no-invitations p {
-  font-size: 0.875rem;
+  font-size: 0.875em;
   color: #6b7280;
   margin: 0;
   max-width: 400px;
@@ -269,16 +269,16 @@
   }
 
   .status-badge {
-    font-size: 0.7rem;
+    font-size: 0.7em;
     padding: 3px 8px;
   }
 
   .card-email {
-    font-size: 0.9rem;
+    font-size: 0.9em;
   }
 
   .date-item {
-    font-size: 0.8rem;
+    font-size: 0.8em;
   }
 }
 
