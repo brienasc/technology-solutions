@@ -54,19 +54,30 @@
 /* Contêiner principal para o título e o botão de exportar no topo */
 
 .menu-gerencial-title-wrapper {
-    display: flex;
-    justify-content: space-between;
+    /* display: flex;
+    justify-content: space-between; */
     /* Empurra o botão para a direita */
-    align-items: center;
+    position: relative;
+    z-index: 1;
+    width: 34%;
+    margin: 0;
+    padding: 0 1rem;
     /* Alinha verticalmente */
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    /* padding: 1.5rem 1.5rem 0.5rem 1.5rem; */
     /* O mesmo padding do .menu-gerencial-title */
-    background: var(--theme-card-bg);
+    /* background: var(--theme-card-bg); */
     /* Fundo branco do card */
-    border-bottom: 1px solid var(--theme-border-color);
+    /* border-bottom: 1px solid var(--theme-border-color); */
     /* Linha divisória inferior */
-    margin-bottom: 25px;
+    /* margin-bottom: 25px; */
     /* Margem para separar da seção de pesquisa abaixo */
+    background: transparent;
+    border-bottom: none;
+    padding: 1rem 0;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
 }
 
 
@@ -153,20 +164,21 @@
     background-color: black !important;
     /* Borda branca/amarela (usa a global se definida, ou forçamos) */
     border-bottom: 2px solid white !important;
+    color: var(--color-highlight-neon) !important;
 }
 
 
 /* Título Principal (Menu Gerencial) */
 
 :host-context(.high-contrast) .menu-gerencial-title h1 {
-    color: white !important;
+    color: var(--color-highlight-neon) !important;
 }
 
 
 /* Subtítulo (Gerencie colaboradores e suas permissões) */
 
 :host-context(.high-contrast) .menu-gerencial-title p {
-    color: white !important;
+    color: var(--color-highlight-neon) !important;
 }
 
 
@@ -179,14 +191,6 @@
     /* Deixa a linha mais visível */
     border-radius: 0 !important;
     /* Opcional: remove o arredondamento */
-}
-
-
-/* Contêiner principal (Para garantir que a lista de colaboradores tenha fundo preto) */
-
-:host-context(.high-contrast) .menu-gerencial-container {
-    background-color: black !important;
-    color: white !important;
 }
 
 body,
@@ -488,12 +492,12 @@ button[type="submit"]:disabled {
 /* Título principal */
 
 .menu-gerencial-title h1 {
-    font-size: 1.75rem;
+    /* font-size: 1.75rem;
     position: relative;
     display: block;
     color: var(--theme-heading-text);
     margin: 0;
-    padding-bottom: 12px;
+    padding-bottom: 12px; */
     /* font-size: 2rem;
     font-weight: 700;
     margin: 0 0 1rem 2rem;
@@ -501,6 +505,23 @@ button[type="submit"]:disabled {
     text-shadow: none;
     letter-spacing: -0.025em;
     line-height: 1.1; */
+    font-weight: 500;
+    margin: 0 0.5rem 0;
+    color: var(--color-secondary);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-size: 1.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid #0B061D;
+    display: inline-block;
+    padding-left: 0rem;
+    padding-right: 50rem;
+    /* bottom: 0;
+    left: 2rem;
+    width: 400px;
+    height: 4px;
+    border-radius: 2px;
+    z-index: 1; */
 }
 
 
@@ -508,15 +529,18 @@ button[type="submit"]:disabled {
 
 .menu-gerencial-title p {
     font-size: 1rem;
-    color: var(--theme-text-secondary);
-    margin-top: 15px;
-    margin-bottom: 0;
+    color: var(--color-secondary);
+    margin: 0;
+    line-height: 1.6;
+    font-weight: 400;
+    opacity: 0.9;
 }
 
 
 /* Linha decorativa - ajustada para a esquerda */
 
-.menu-gerencial-title::after {
+
+/* .menu-gerencial-title::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -526,7 +550,7 @@ button[type="submit"]:disabled {
     background: linear-gradient(135deg, #3e2292 0%, #7120bd 100%);
     border-radius: 2px;
     z-index: 1;
-}
+} */
 
 
 /* Container principal */

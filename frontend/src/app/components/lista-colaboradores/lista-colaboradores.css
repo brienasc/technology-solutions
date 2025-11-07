@@ -45,15 +45,10 @@
         }
         
         .lista-colaboradores-container {
-            max-width: none !important;
-            width: 100% !important;
-            margin: 2rem 0 !important;
-            padding: 2rem !important;
-            border: none !important;
-            border-radius: 0 !important;
-            background-color: transparent !important;
-            color: var(--theme-body-text);
-            box-shadow: none !important;
+            width: 100%;
+            margin: 0;
+            padding: 0 0 3rem 0;
+            margin-left: -80 !important;
         }
         /* ===================== CONTAINER DA TABELA ===================== */
         
@@ -71,24 +66,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            padding: 15px 20px;
-            border-bottom: none;
-            background: var(--theme-card-bg);
-            /* Fundo branco/claro */
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            /* Sombra de cartão */
-            margin-bottom: 20px;
-            /* Separar da tabela abaixo */
-            flex-wrap: wrap;
+            padding: 20px;
+            gap: 2em;
+            background: #ffffff;
+            border-radius: 12px;
+            border: none;
+            /* border: 1px solid #e2e8f0; */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            margin-bottom: 1.5rem;
         }
         /* Container da barra de pesquisa (lado esquerdo) */
         
         .search-container {
             flex: 1;
-            max-width: 500px;
-            margin: 0 10px;
+            /* max-width: 500px;
+        margin: 0 10px; */
         }
         /* Barra de pesquisa */
         
@@ -103,19 +95,14 @@
         
         .search-bar input {
             flex: 1;
-            background-color: var(--theme-primary-color);
-            /* MODIFICADO: Aumenta o padding vertical para a barra ficar maior */
-            padding: 12px 2.5rem 12px 15px;
-            border: 1px solid var(--theme-border-color);
-            /* Alterado para 1px para visual mais suave */
+            padding: 10px 12px 10px 2.75rem;
+            border: 1px solid transparent;
             border-radius: 8px;
-            /* Canto mais suave */
-            font-size: 1rem;
-            background: var(--theme-input-bg);
-            color: var(--theme-text);
+            font-size: 0.9em;
+            background: #C7C7EB;
+            color: #4c1d95;
             transition: border-color 0.3s ease;
             min-width: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
             width: 100%;
         }
         /* Sombra suave, como na imagem */
@@ -124,26 +111,32 @@
         .search-bar input::placeholder {
             color: var(--color-primary);
             font-size: 0.9rem;
+            opacity: 0.7;
         }
         /* Estado de foco do input de pesquisa */
         
         .search-bar input:focus {
             outline: none;
-            border-color: var(--theme-button-primary-bg, #667eea);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #7c3aed;
+            background: #C7C7EB;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
         /* Botão de pesquisa (ícone lupa) posicionado dentro do input */
         
         .search-button {
             position: absolute;
-            right: 15px;
+            left: 0.75rem;
+            right: auto;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: var(--theme-text-secondary, #6b7280);
+            color: #7c3aed;
             cursor: pointer;
             padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         /* Ícone do botão de pesquisa */
         
@@ -242,8 +235,15 @@
         }
         
         .colaboradores-table {
+            border-collapse: separate;
+            /* ESSENCIAL para que o border-radius funcione nas células (th) */
+            border-spacing: 0;
+            /* Remove o espaço entre as células */
+            overflow: hidden;
+            /* Ajuda a garantir que o arredondamento superior funcione */
             width: 100%;
-            border-collapse: collapse;
+            /* width: 100%;
+        border-collapse: collapse; */
         }
         
         .colaboradores-table th,
@@ -257,15 +257,37 @@
         }
         
         .colaboradores-table th {
-            /* Fundo levemente diferente para o cabeçalho */
-            background: var(--theme-background);
+            background: #C7C7EB;
             color: var(--theme-heading-text);
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: bold;
+            font-size: 0.75em;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--theme-border-color);
+            /* Fundo levemente diferente para o cabeçalho */
+            /* background: var(--theme-background);
+        color: var(--theme-heading-text) !important;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px; */
             /* Linha inferior mais grossa no cabeçalho */
-            border-bottom: 2px solid var(--theme-border-color) !important;
+            /* border-bottom: 2px solid var(--theme-border-color) !important; */
+        }
+        /* ---------------------------------------------------- */
+        /*  Arredonda o canto superior esquerdo da primeira coluna */
+        /* ---------------------------------------------------- */
+        
+        .colaboradores-table th:first-child {
+            border-top-left-radius: 12px;
+            /* Ajuste o valor (ex: 12px) conforme a sua preferência */
+        }
+        /* ---------------------------------------------------- */
+        /* Arredonda o canto superior direito da última coluna */
+        /* ---------------------------------------------------- */
+        
+        .colaboradores-table th:last-child {
+            border-top-right-radius: 12px;
+            /* Use o mesmo valor do canto esquerdo */
         }
         
         .colaboradores-table tbody tr {
@@ -322,10 +344,13 @@
         
         .items-per-page select {
             padding: 4px 8px;
-            border: 1px solid var(--theme-border-color);
-            border-radius: 4px;
-            background: var(--theme-input-bg);
-            color: var(--theme-text);
+            padding: 4px 8px;
+            border: 1px solid #e0d7fe;
+            border-radius: 6px;
+            background: #C7C7EB;
+            color: #4c1d95;
+            font-size: 14px;
+            min-width: 56px;
             cursor: pointer;
         }
         
@@ -333,26 +358,29 @@
             flex: 1;
             text-align: center;
             font-weight: 500;
+            color: var(--theme-text);
         }
         
         .pagination-controls {
             display: flex;
             gap: 4px;
+            align-items: center;
         }
         /* PAGINAÇÃO */
         
         .pagination-btn {
             width: 32px;
             height: 32px;
-            border: 1px solid var(--theme-border-color);
-            background: var(--theme-button-bg);
-            color: var(--theme-text);
+            border: 1px solid #e0d7fe;
+            background: #f7f5ff;
+            color: #7c3aed;
             border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
         }
         
         .pagination-btn:not(:disabled):hover {
@@ -394,10 +422,10 @@
             border: 2px solid var(--theme-border-color);
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            width: 95%;
-            max-width: 1200px;
-            min-height: 90vh;
-            max-height: 90vh;
+            width: 50%;
+            max-width: 1100px;
+            min-height: 70vh;
+            max-height: 16vh;
             display: flex;
             flex-direction: column;
             animation: slideIn 0.3s ease-out;
@@ -410,7 +438,7 @@
             align-items: center;
             padding: 1.2rem 1.5rem;
             border-bottom: 1px solid var(--theme-border-color);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #667eea, #764ba2);
             color: white;
             border-radius: 10px 10px 0 0;
             flex-shrink: 0;
@@ -545,6 +573,8 @@
         
         .perfil-badge.administrador {
             background-color: #dc3545;
+            background-origin: padding-box;
+            border-radius: 25px;
         }
         
         .perfil-badge.elaborador {
@@ -665,11 +695,15 @@
         body.dark-theme .curso-item-readonly {
             background: #1a1a1a !important;
             border-color: var(--theme-border-color);
+            color: var(--color-highlight-neon)!important;
+            background-color: var(--color-highlight-neon) !important;
         }
         
         body.dark-theme .curso-item-readonly:hover {
             border-color: var(--theme-primary-color);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            color: var(--color-highlight-neon)!important;
+            background-color: var(--color-highlight-neon) !important;
         }
         
         .curso-info {
@@ -975,9 +1009,10 @@
         }
         
         .modal-footer .btn-primary {
-            background-color: #7c3aed;
+            background-color: var(--color-primary);
             color: #ffffff;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            border-radius: 25px;
         }
         
         .modal-footer .btn-primary:hover {
@@ -1063,6 +1098,72 @@
                 opacity: 1;
             }
         }
+        /* ============================================================== */
+        /* ESTILOS DE ALTO CONTRASTE PARA LISTA-COLABORADORES.CSS */
+        /* ============================================================== */
+        /* Ajusta o contêiner principal para fundo preto e texto branco */
+        
+         :host-context(.high-contrast) .lista-colaboradores-container {
+            background-color: black !important;
+            color: var(--color-highlight-neon) !important;
+            /* Remove sombras para contraste máximo */
+            box-shadow: none !important;
+            /* border-bottom: 4px solid var(--color-highlight-neon) !important; */
+        }
+        /* Título "Gerencie seus colaboradores" */
+        
+         :host-context(.high-contrast) .matrizes-title h1 {
+            color: var(--color-highlight-neon) !important;
+            /* Texto branco */
+            border-bottom: 4px solid var(--color-highlight-neon) !important;
+            /* Linha de destaque */
+        }
+        /* Seção de Controles (onde fica a pesquisa e botão "Convidar") */
+        
+         :host-context(.high-contrast) .controls-section {
+            background-color: black !important;
+            color: var(--color-highlight-neon) !important;
+            border: 2px solid var(--color-highlight-neon) !important;
+            box-shadow: none !important;
+        }
+        /* Input de Pesquisa dentro do Controls-section */
+        
+         :host-context(.high-contrast) .controls-section .search-bar input {
+            background-color: black !important;
+            color: var(--color-highlight-neon) !important;
+            border: 2px solid var(--color-highlight-neon) !important;
+        }
+        
+         :host-context(.high-contrast) .controls-section .search-bar input::placeholder {
+            color: var(--color-highlight-neon) !important;
+            /* Placeholder em destaque */
+        }
+        /* Células do Cabeçalho da Tabela */
+        
+         :host-context(.high-contrast) .colaboradores-table th {
+            background: black !important;
+            color: var(--color-highlight-neon) !important;
+            border: 1px solid var(--color-highlight-neon) !important;
+            border-bottom: 2px solid var(--color-highlight-neon) !important;
+        }
+        /* Linhas Alternadas da Tabela (para corpo e separação) */
+        
+         :host-context(.high-contrast) .colaboradores-table tbody tr {
+            border-bottom: 1px solid var(--color-highlight-neon) !important;
+            color: var(--color-highlight-neon) !important;
+        }
+        
+         :host-context(.high-contrast) .colaboradores-table tbody tr:nth-child(odd) {
+            color: var(--color-highlight-neon) !important;
+        }
+        
+         :host-context(.high-contrast) .buttons-container .export-button .details-button .pagination-btn .pagination-container .modal-dialog .close-button .modal-body .info-section .items-per-page {
+            background-color: black !important;
+            color: var(--color-highlight-neon) !important;
+            border: 2px solid var(--color-highlight-neon) !important;
+            /* box-shadow: none !important; */
+        }
+        /*  */
         /* ===================== RESPONSIVIDADE ===================== */
         
         @media (max-width: 1024px) {
