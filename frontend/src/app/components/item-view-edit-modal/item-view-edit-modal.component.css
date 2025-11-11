@@ -38,7 +38,7 @@
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid var(--theme-border-color, #e5e5e5);
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #240046, #612a94);
 }
 
 .modal-header h2 {
