@@ -442,86 +442,44 @@ button[type="submit"]:disabled {
 /* Seção do título principal */
 
 .menu-gerencial-title {
-    position: relative;
-    /* Necessário para posicionar o :after */
-    background: var(--theme-card-bg);
-    /* Fundo da seção (Branco) */
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
-    /* Ajuste o padding para dar espaço */
-    border-bottom: 1px solid var(--theme-border-color);
-    /* Linha divisória sutil */
-    /* Remove a margem superior que pode ter sido herdada */
-    margin-top: 0;
-    /* background: #f8f8f8; */
-    /* Tema claro */
-    /* border-bottom: 1px solid var(--theme-input-border);
-    padding: 1rem 0 1rem;
-    margin-bottom: 2rem;
+    background: transparent;
+    border-bottom: none;
+    padding: 1rem 0;
+    margin-bottom: 1.5rem;
     text-align: left;
     position: relative;
-    overflow: hidden; */
+    overflow: hidden;
 }
 
+.menu-gerencial-title-content{
+    position: relative;
+    z-index: 1;
+    width: 34%;
+    margin: 0;
+    padding: 0 1rem;
+}
 
 /* LINHA ROXA ENTRE O TÍTULO E O SUBTÍTULO */
 
-.menu-gerencial-title h1::after {
-    content: '';
-    position: absolute;
-    bottom: 0px;
-    /* Mantido, puxa a linha 8px para baixo do h1 */
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--theme-primary-color);
-    border-radius: 2px;
+.menu-gerencial-title::after {
+    display: none;
 }
 
 
 /* O Retângulo Roxo/Gradiente Fixo no Topo */
 
-.menu-gerencial-title-content {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
 
 /* Título principal */
 
 .menu-gerencial-title h1 {
-    /* font-size: 1.75rem;
-    position: relative;
-    display: block;
-    color: var(--theme-heading-text);
-    margin: 0;
-    padding-bottom: 12px; */
-    /* font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 1rem 2rem;
-    color: var(--theme-heading-text);
-    text-shadow: none;
-    letter-spacing: -0.025em;
-    line-height: 1.1; */
     font-weight: 500;
-    margin: 0 0.5rem 0;
-    color: var(--color-secondary);
+    margin: 0 0 0.5rem 0;
+    color: #3C096C;
     letter-spacing: -0.02em;
     line-height: 1.1;
     font-size: 1.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 4px solid #0B061D;
-    display: inline-block;
-    padding-left: 0rem;
-    padding-right: 50rem;
-    /* bottom: 0;
-    left: 2rem;
-    width: 400px;
-    height: 4px;
-    border-radius: 2px;
-    z-index: 1; */
 }
 
 
@@ -529,7 +487,7 @@ button[type="submit"]:disabled {
 
 .menu-gerencial-title p {
     font-size: 1rem;
-    color: var(--color-secondary);
+    color: #3C096C;
     margin: 0;
     line-height: 1.6;
     font-weight: 400;
@@ -556,9 +514,9 @@ button[type="submit"]:disabled {
 /* Container principal */
 
 .menu-gerencial-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem 3rem;
+    width: 100%;
+    margin: 0;
+    padding: 0 1rem 3rem;
 }
 
 
