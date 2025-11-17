@@ -156,7 +156,7 @@ export class CreateItemModalComponent implements OnInit {
     tipo_criacao: 'manual'
   };
 
-  private aiApiUrl = 'http://localhost:8000/ai/create';
+  private aiApiUrl = '/ai/create';
 
   constructor(
     private matricesService: MatricesService,

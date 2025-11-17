@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { DashboardData, CursoCard } from '../interfaces/dashboard.interface';
 
+import { environment } from '../../environments/environment';
+
 type DashboardResponse = {
   status: 'success' | 'error';
   message?: string;
@@ -18,7 +20,7 @@ type DashboardResponse = {
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -31,8 +33,8 @@ export class DashboardService {
   }
 
   getDashboardData(): Observable<DashboardData> {
-    return this.http.get<DashboardResponse>(`${this.apiUrl}/dashboard`, { 
-      headers: this.getHeaders() 
+    return this.http.get<DashboardResponse>(`${this.apiUrl}/dashboard`, {
+      headers: this.getHeaders()
     }).pipe(
       map((res) => ({
         cursos: res.data.cursos,
@@ -43,8 +45,8 @@ export class DashboardService {
   }
 
   getCursoDetalhes(cursoId: string): Observable<CursoCard> {
-    return this.http.get<{ data: CursoCard }>(`${this.apiUrl}/cursos/${cursoId}/detalhes`, { 
-      headers: this.getHeaders() 
+    return this.http.get<{ data: CursoCard }>(`${this.apiUrl}/cursos/${cursoId}/detalhes`, {
+      headers: this.getHeaders()
     }).pipe(
       map(res => res.data)
     );

@@ -4,6 +4,8 @@ import { map, of, catchError, tap } from 'rxjs';
 import { ImportMatrixDialogComponent } from './import-matrix-dialog.component';
 import { ImportMatrixPayload } from '../../models/matrix.model';
 
+import { environment } from '../../../environments/environment';
+
 export type CourseOption = { id: string; nome: string };
 
 @Injectable({ providedIn: 'root' })
@@ -12,7 +14,7 @@ export class ImportMatrixDialogService {
   private env = inject(EnvironmentInjector);
   private http = inject(HttpClient);
   private cmpRef: ComponentRef<ImportMatrixDialogComponent> | null = null;
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = environment.apiUrl
   private cachedCourses: CourseOption[] = [];
 
   openAndWait(): Promise<ImportMatrixPayload | null> {

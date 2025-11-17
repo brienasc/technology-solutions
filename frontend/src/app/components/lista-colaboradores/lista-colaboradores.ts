@@ -11,6 +11,8 @@ import { Header } from '../header/header';
 import { Curso } from '../../interfaces/curso.interface'; // ⭐ CAMINHO CORRETO
 import { CursoService } from '../../services/curso.service'; // ⭐ CAMINHO CORRETO
 
+import { environment } from '../../../environments/environment';
+
 // ⭐ INTERFACES ATUALIZADAS COM CURSOS
 interface CursoColaborador {
   id: string;
@@ -57,22 +59,25 @@ export class ListaColaboradoresComponent implements OnInit {
   @Output() viewColaboradorDetails = new EventEmitter<Colaborador>();
 
   // ========== PROPRIEDADES PRINCIPAIS ==========
+
+  private readonly baseUrl = environment.apiUrl;
+
   colaboradores: Colaborador[] = [];
   filteredColaboradores: Colaborador[] = [];
   paginatedColaboradores: Colaborador[] = [];
-  
+
   loading: boolean = false;
   searchTerm: string = '';
-  
+
   // Paginação
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalItems: number = 0;
-  
+
   // Dialog de colaborador
   showColaboradorDialog: boolean = false;
   selectedColaborador: Colaborador | null = null;
-  
+
   // Alteração de perfil
   isEditingProfile: boolean = false;
   showPasswordField: boolean = false;
@@ -82,7 +87,7 @@ export class ListaColaboradoresComponent implements OnInit {
   profileChangeError: string = '';
   profileChangeSuccess: string = '';
   passwordError: string = '';
-  
+
   // PROPRIEDADES PARA CURSOS
   isManagingCursos: boolean = false;
   selectedColaboradorCursos: CursoColaborador[] = [];
@@ -91,7 +96,7 @@ export class ListaColaboradoresComponent implements OnInit {
   cursosLoading: boolean = false;
   cursosError: string = '';
   cursosSuccess: string = '';
-  
+
   // PROPRIEDADES PARA TODOS OS CURSOS
   todosOsCursos: Curso[] = [];
   cursoSearchTerm: string = '';
@@ -117,7 +122,8 @@ export class ListaColaboradoresComponent implements OnInit {
   // ========== MÉTODOS DE CARREGAMENTO ==========
   loadColaboradores(): void {
     this.loading = true;
-    const apiUrl = 'http://localhost:8080/api/colabs';
+
+    const apiUrl = `${this.baseUrl}/colabs`;
 
     this.http.get<any>(apiUrl).pipe(
       map(response => {
@@ -150,11 +156,11 @@ export class ListaColaboradoresComponent implements OnInit {
             })) : []
           };
         })
-        .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
-        .sort((a: Colaborador, b: Colaborador) => {
-          if (!a.nome || !b.nome) return 0;
-          return a.nome.localeCompare(b.nome);
-        });
+          .filter((colaborador: Colaborador) => colaborador.nome && colaborador.nome !== 'Nome não informado')
+          .sort((a: Colaborador, b: Colaborador) => {
+            if (!a.nome || !b.nome) return 0;
+            return a.nome.localeCompare(b.nome);
+          });
       }),
       catchError(error => {
         console.error('Erro ao carregar colaboradores:', error);
@@ -178,7 +184,7 @@ export class ListaColaboradoresComponent implements OnInit {
   // MÉTODO PARA CARREGAR TODOS OS CURSOS
   private loadAllCursos(): void {
     console.log('Carregando todos os cursos...');
-    
+
     this.cursoService.getAllCursos().subscribe({
       next: (cursos: Curso[]) => {
         this.todosOsCursos = cursos;
@@ -187,7 +193,7 @@ export class ListaColaboradoresComponent implements OnInit {
       error: (error) => {
         console.error('Erro ao carregar cursos:', error);
         this.todosOsCursos = [];
-        
+
         // FALLBACK: Tentar com o método original
         this.cursoService.getCursos(1, 1000).subscribe({
           next: (response) => {
@@ -203,7 +209,7 @@ export class ListaColaboradoresComponent implements OnInit {
   }
 
   // ========== MÉTODOS DE CURSOS ==========
-  
+
   getCursosDisponiveis(): Curso[] {
     if (!this.todosOsCursos || this.todosOsCursos.length === 0) {
       console.log('Nenhum curso carregado ainda');
@@ -217,10 +223,10 @@ export class ListaColaboradoresComponent implements OnInit {
 
     // Filtrar cursos que não estão associados ao colaborador
     const cursosAssociados = this.selectedColaboradorCursos.map(c => c.id);
-    const cursosDisponiveis = this.todosOsCursos.filter(curso => 
+    const cursosDisponiveis = this.todosOsCursos.filter(curso =>
       !cursosAssociados.includes(curso.id)
     );
-    
+
     console.log('Cursos disponíveis:', cursosDisponiveis.length, 'de', this.todosOsCursos.length);
     return cursosDisponiveis;
   }
@@ -228,7 +234,7 @@ export class ListaColaboradoresComponent implements OnInit {
   onCursoSearch(): void {
     const cursosDisponiveis = this.getCursosDisponiveis();
     console.log('Pesquisando cursos. Termo:', this.cursoSearchTerm, 'Disponíveis:', cursosDisponiveis.length);
-    
+
     if (!this.cursoSearchTerm.trim()) {
       this.filteredCursosDisponiveis = cursosDisponiveis;
     } else {
@@ -236,7 +242,7 @@ export class ListaColaboradoresComponent implements OnInit {
         curso.nome.toLowerCase().includes(this.cursoSearchTerm.toLowerCase())
       );
     }
-    
+
     console.log('Cursos filtrados:', this.filteredCursosDisponiveis.length);
     this.showCursoDropdown = true;
   }
@@ -262,13 +268,13 @@ export class ListaColaboradoresComponent implements OnInit {
     this.cursosError = '';
     this.cursoSearchTerm = '';
     this.selectedCursoToAdd = '';
-    
+
     // Garantir que todos os cursos estão carregados
     if (this.todosOsCursos.length === 0) {
       console.log('Recarregando cursos...');
       this.loadAllCursos();
     }
-    
+
     // Aguardar um momento para os cursos carregarem
     setTimeout(() => {
       this.filteredCursosDisponiveis = this.getCursosDisponiveis();
@@ -290,11 +296,11 @@ export class ListaColaboradoresComponent implements OnInit {
     if (!this.selectedColaborador) return;
 
     this.cursosLoading = true;
-    
+
     const cursoIds = this.selectedColaboradorCursos.map(c => c.id);
     const requestData = { curso_ids: cursoIds };
 
-    this.http.put(`http://localhost:8080/api/colabs/${this.selectedColaborador.id}/cursos`, requestData)
+    this.http.put(`${this.baseUrl}/colabs/${this.selectedColaborador.id}/cursos`, requestData)
       .subscribe({
         next: (response: any) => {
           if (this.selectedColaborador) {
@@ -354,7 +360,7 @@ export class ListaColaboradoresComponent implements OnInit {
     this.selectedCursoToAdd = '';
     this.cursoSearchTerm = '';
     this.cursosSuccess = 'Curso associado com sucesso! Clique em "Salvar Alterações" para confirmar.';
-    
+
     // Atualizar lista filtrada
     this.filteredCursosDisponiveis = this.getCursosDisponiveis();
 
@@ -366,7 +372,7 @@ export class ListaColaboradoresComponent implements OnInit {
   removeCursoFromColaborador(cursoId: string): void {
     this.selectedColaboradorCursos = this.selectedColaboradorCursos.filter(c => c.id !== cursoId);
     this.cursosSuccess = 'Curso removido! Clique em "Salvar Alterações" para confirmar.';
-    
+
     // Atualizar lista filtrada
     this.filteredCursosDisponiveis = this.getCursosDisponiveis();
 
@@ -463,9 +469,9 @@ export class ListaColaboradoresComponent implements OnInit {
   onPerfilChange(event: any): void {
     const novoPerfilId = +event.target.value;
 
-  this.showPasswordField = false;
-  this.resetPasswordFields();
-  this.clearMessages();this.passwordError = '';
+    this.showPasswordField = false;
+    this.resetPasswordFields();
+    this.clearMessages(); this.passwordError = '';
   }
 
   saveProfileChange(): void {
@@ -486,8 +492,8 @@ export class ListaColaboradoresComponent implements OnInit {
     this.clearMessages();
 
     const updateData = { perfil: novoPerfilId };
-    
-    this.http.put(`http://localhost:8080/api/colabs/${this.selectedColaborador.id}`, updateData)
+
+    this.http.put(`${this.baseUrl}/colabs/${this.selectedColaborador.id}`, updateData)
       .subscribe({
         next: (response: any) => {
           const novoPerfilNome = this.mapearPerfilPorId(novoPerfilId);
@@ -560,12 +566,12 @@ export class ListaColaboradoresComponent implements OnInit {
   // ========== MÉTODOS DE EXPORTAÇÃO ==========
   exportToExcel(): void {
     this.loading = true;
-    
+
     try {
       this.applyFilterAndPaginate();
-      
+
       let dadosParaExportar: Colaborador[] = [];
-      
+
       if (this.searchTerm && this.searchTerm.trim()) {
         if (this.filteredColaboradores.length > 0) {
           dadosParaExportar = this.filteredColaboradores;
@@ -583,9 +589,9 @@ export class ListaColaboradoresComponent implements OnInit {
         alert('❌ Nenhum colaborador encontrado para exportar.');
         return;
       }
-      
+
       this.gerarEBaixarCSV(dadosParaExportar);
-      
+
     } catch (error) {
       this.loading = false;
       alert('❌ Erro ao exportar dados.');
@@ -596,10 +602,10 @@ export class ListaColaboradoresComponent implements OnInit {
     if (!this.searchTerm || !this.searchTerm.trim()) {
       return this.colaboradores;
     }
-    
+
     const termo = this.searchTerm.toLowerCase().trim();
-    
-    return this.colaboradores.filter(colaborador => 
+
+    return this.colaboradores.filter(colaborador =>
       (colaborador.nome && colaborador.nome.toLowerCase().includes(termo)) ||
       (colaborador.email && colaborador.email.toLowerCase().includes(termo)) ||
       (colaborador.cpf && colaborador.cpf.includes(termo)) ||
@@ -611,7 +617,7 @@ export class ListaColaboradoresComponent implements OnInit {
     try {
       const cabecalho = [
         'Nome',
-        'Email', 
+        'Email',
         'CPF',
         'Celular',
         'Perfil',
@@ -621,7 +627,7 @@ export class ListaColaboradoresComponent implements OnInit {
         'Bairro',
         'Endereço'
       ];
-      
+
       const linhas = colaboradores.map(colab => [
         colab.nome || '',
         colab.email || '',
@@ -634,35 +640,36 @@ export class ListaColaboradoresComponent implements OnInit {
         colab.bairro || '',
         colab.logradouro || ''
       ]);
-      
+
       const todasLinhas = [cabecalho, ...linhas];
-      
+
       const csvContent = todasLinhas
-        .map(linha => 
+        .map(linha =>
           linha.map(campo => this.limparCampoCSV(campo)).join(';')
         )
         .join('\n');
-      
+
       const csvFinal = '\uFEFF' + csvContent;
-      
+
       const blob = new Blob([csvFinal], { type: 'text/csv;charset=utf-8' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      
+
       link.href = url;
       link.download = this.gerarNomeArquivo();
       link.style.display = 'none';
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
-      
+
       this.loading = false;
-      
+
       const filtroInfo = this.searchTerm ? ` (filtro: "${this.searchTerm}")` : '';
-      alert(`✅ CSV baixado com sucesso! ${colaboradores.length} registros${filtroInfo}`);
-      
+      alert(`✅ CSV baixado com sucesso! ${colaboradores.length
+        } registros${filtroInfo} `);
+
     } catch (error) {
       this.loading = false;
       alert('❌ Erro ao gerar arquivo CSV.');
@@ -673,15 +680,15 @@ export class ListaColaboradoresComponent implements OnInit {
     if (campo == null || campo === undefined) {
       return '';
     }
-    
+
     let valor = String(campo).trim();
     valor = valor.replace(/[\r\n]/g, ' ');
-    
+
     if (valor.includes(';') || valor.includes(',') || valor.includes('"')) {
       valor = valor.replace(/"/g, '""');
       valor = `"${valor}"`;
     }
-    
+
     return valor;
   }
 
@@ -689,16 +696,16 @@ export class ListaColaboradoresComponent implements OnInit {
     const agora = new Date();
     const data = agora.toISOString().slice(0, 10);
     const hora = agora.toTimeString().slice(0, 8).replace(/:/g, '-');
-    
-    let nome = `colaboradores_${data}_${hora}`;
-    
+
+    let nome = `colaboradores_${data}_${hora} `;
+
     if (this.searchTerm && this.searchTerm.trim()) {
       const filtro = this.searchTerm.trim()
         .replace(/[^a-zA-Z0-9]/g, '_')
         .substring(0, 15);
-      nome += `_filtro_${filtro}`;
+      nome += `_filtro_${filtro} `;
     }
-    
+
     return `${nome}.csv`;
   }
 
@@ -712,7 +719,7 @@ export class ListaColaboradoresComponent implements OnInit {
       1: 'Administrador',
       2: 'Elaborador de Itens',
     };
-    return perfis[perfilId] || `Perfil ${perfilId}`;
+    return perfis[perfilId] || `Perfil ${perfilId} `;
   }
 
   private handleApiError(error: any): void {
@@ -723,7 +730,7 @@ export class ListaColaboradoresComponent implements OnInit {
     } else if (error.status === 500) {
       alert('❌ Erro interno do servidor!');
     } else {
-      alert(`❌ Erro ${error.status}: ${error.message}`);
+      alert(`❌ Erro ${error.status}: ${error.message} `);
     }
   }
 
