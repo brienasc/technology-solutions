@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 // << IMPORTAÇÃO CORRETA >>
 import { Invitation } from '../interfaces/invitation.interface';
 
+import { environment } from '../../environments/environment';
 
 type Payload = {
   email: string;
@@ -17,7 +18,8 @@ type Payload = {
   providedIn: 'root'
 })
 export class InvitationService {
-  private apiUrl = 'http://localhost:8080/api/convites';
+  private readonly baseUrl = environment.apiUrl;
+  private apiUrl = `${this.baseUrl}/convites`;
 
   constructor(private http: HttpClient) { }
 

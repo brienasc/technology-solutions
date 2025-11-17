@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, catchError } from 'rxjs';
 import { ItemAvaliacao } from '../models/item-avaliacao.model';
 
+import { environment } from '../../environments/environment';
+
 interface ApiResponse<T> {
   status: string;
   message: string;
@@ -12,7 +14,8 @@ interface ApiResponse<T> {
 
 @Injectable({ providedIn: 'root' })
 export class CourseItemsService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) { }
 
   getByCurso(cursoId: string): Observable<ItemAvaliacao[]> {

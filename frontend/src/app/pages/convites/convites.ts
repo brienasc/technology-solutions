@@ -12,6 +12,8 @@ import { Header } from '../../components/header/header';
 import { HttpClient } from '@angular/common/http';
 import { AccessibilityBarComponent } from '../../components/accessibility-bar/accessibility-bar';
 
+import { environment } from '../../../environments/environment';
+
 type Opcao = { id: number | string; nome: string };
 
 @Component({
@@ -23,6 +25,7 @@ type Opcao = { id: number | string; nome: string };
 })
 
 export class ConvitesComponent implements OnInit, AfterViewInit {
+  private readonly baseUrl = environment.apiUrl;
 
   invitations: Invitation[] = [];
   loading: boolean = false;
@@ -319,7 +322,7 @@ export class ConvitesComponent implements OnInit, AfterViewInit {
 
   private async verificarConviteExistente(email: string): Promise<boolean> {
     try {
-      const response = await this.http.get<any>('http://localhost:8080/api/convites').toPromise();
+      const response = await this.http.get<any>(`${this.baseUrl}/convites`).toPromise();
 
       if (response.status === 'success' && response.data) {
         // Verificar se já existe convite "Em Aberto" (status_code: 0) para este email

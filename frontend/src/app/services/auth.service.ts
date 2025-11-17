@@ -2,10 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, take, catchError, finalize, EMPTY, BehaviorSubject } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiLoginUrl = 'http://localhost:8080/api/login';
-  private apiAuthUrl = 'http://localhost:8080/api/auth';
+  private readonly baseUrl = environment.apiUrl;
+
+  private apiLoginUrl = `${this.baseUrl}/login`;
+  private apiAuthUrl = `${this.baseUrl}/auth`;
   private validating = false;
   private lastValidation = 0;
   private validationTtlMs = 5 * 60 * 1000;
@@ -22,14 +27,14 @@ export class AuthService {
         const data = response?.data ?? response;
         const token = data?.token;
         if (token) localStorage.setItem('authToken', token);
-        
+
         const abilities = data?.abilities;
         if (abilities) localStorage.setItem('userAbilities', Array.isArray(abilities) ? abilities.join(',') : String(abilities));
-        
+
         const profile = data?.profile ?? data?.perfil ?? null;
         const profileCode = profile?.code ?? profile?.codigo ?? data?.role ?? null;
         const profileLabel = profile?.label ?? data?.role_label ?? (typeof data?.role === 'string' ? data.role : null);
-        
+
         if (profileLabel) localStorage.setItem('userProfile', String(profileLabel));
         if (profileCode != null) localStorage.setItem('userProfileCode', String(profileCode));
 
@@ -108,10 +113,10 @@ export class AuthService {
   isElaborador(): boolean {
     const p = (localStorage.getItem('userProfile') || '').toLowerCase();
     const c = (localStorage.getItem('userProfileCode') || '').toLowerCase();
-    return p === 'elaborador de itens' || 
-           p === 'elaborador' || 
-           c === 'elaborador' || 
-           c === 'elaborador_itens';
+    return p === 'elaborador de itens' ||
+      p === 'elaborador' ||
+      c === 'elaborador' ||
+      c === 'elaborador_itens';
   }
 
   canAccessAvaliacoes(): boolean {
@@ -128,7 +133,7 @@ export class AuthService {
 
   hasAccess(requiredRoles: string[]): boolean {
     const userProfile = this.getUserProfile();
-    return requiredRoles.some(role => 
+    return requiredRoles.some(role =>
       userProfile.toLowerCase().includes(role.toLowerCase())
     );
   }
@@ -169,10 +174,10 @@ export class AuthService {
           const userData = JSON.parse(existingUserData);
           userData.profile = profileLabel;
           userData.profileCode = profileCode;
-          
+
           if (data.name || data.nome) userData.name = data.name || data.nome;
           if (data.email) userData.email = data.email;
-          
+
           localStorage.setItem('userData', JSON.stringify(userData));
         } catch (error) {
           console.error('Erro ao atualizar dados do usuário:', error);

@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Curso } from '../interfaces/curso.interface';
 
+import { environment } from '../../environments/environment';
+
 type CursosIndexRaw = {
   status: 'success' | 'error';
   message?: string;
@@ -45,7 +47,8 @@ export type ImportFail = {
 
 @Injectable({ providedIn: 'root' })
 export class CursoService {
-  private apiUrl = 'http://localhost:8080/api/cursos';
+  private readonly baseUrl = environment.apiUrl;
+  private apiUrl = `${this.baseUrl}/cursos`;
 
   constructor(private http: HttpClient) { }
 

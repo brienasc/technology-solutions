@@ -3,12 +3,16 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ConvitesService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8080/api/convites';
+
+  private baseUrl = environment.apiUrl;
+  private apiUrl = `${this.baseUrl}/convites`;
 
   enviarConvite(email: string): Observable<any> {
     const body = { email: email };
