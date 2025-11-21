@@ -1,46 +1,154 @@
-# Technology Solutions
+# Education Solutions
 
-Repositório para o desenvolvimento da Avaliação Técnica em Angular e Laravel.
+Plataforma de elaboração de itens e avaliações educacionais desenvolvida durante a **Residência em TIC**, programa realizado pelo **Easy** (Centro de Pesquisa em Engenharia e Sistemas), em parceria com a **UFAL** (Universidade Federal de Alagoas), **Instituto BRISA**, **Softex**, **SENAI** e o **Governo Federal**.
 
-## Estrutura
+## 📋 Sobre o Projeto
 
-- `/backend`: Laravel (API)
-- `/frontend`: Angular (interface)
-- `/infra`: Docker
-- `/docs`: Documentação
+O Education Solutions é uma aplicação web moderna que permite a criação, gerenciamento e aplicação de avaliações educacionais. A plataforma oferece uma interface intuitiva para educadores criarem itens de avaliação, organizarem cursos e acompanharem o desempenho dos estudantes.
 
+### ✨ Funcionalidades
 
+- 🔐 **Sistema de Autenticação** - Login seguro com validação de CPF
+- 👥 **Gestão de Usuários** - Cadastro via convite e controle de acesso
+- 📚 **Gerenciamento de Cursos** - Criação e administração de cursos
+- 📝 **Elaboração de Itens** - Criação de questões e avaliações
+- 🎨 **Múltiplos Temas** - Modo claro, escuro e alto contraste
+- ♿ **Acessibilidade** - Interface inclusiva seguindo padrões WCAG
+- 📱 **Design Responsivo** - Otimizado para desktop, tablet e mobile
 
-## Arquitetura do Projeto
+## 🏗️ Arquitetura
 
-### Front-end
-- **components**: Componentes reutilizáveis e independentes, como botões, modais, inputs, etc.
-- **layouts**: Componentes estruturais como headers, footers, sidebars e o layout principal da aplicação.
-- **pages**: Páginas principais da aplicação que possuem rotas próprias (ex: `login`, `home`, etc.)
-- **services**: Serviços Angular usados para comunicação com APIs, autenticação e regras de negócio.
-- **interfaces**: Arquivos TypeScript com definições de tipos e modelos utilizados no sistema.
-- **utils**: Funções auxiliares reutilizáveis como formatação de dados, máscaras e validações.
-- **app.config.ts**: Arquivo onde são configurados os providers globais e as rotas da aplicação.
-- **app.routes.ts**: Declaração das rotas da aplicação usando `Routes[]`.
-- **app.ts**: Arquivo principal do projeto que realiza o bootstrap da aplicação Angular (substitui o antigo `AppModule`).
-- **app.css**: Estilos globais que afetam toda a aplicação.
-- **app.html**: Template principal, geralmente com `<router-outlet />`.
+### Frontend (Angular)
+```
+src/
+├── app/
+│   ├── components/          # Componentes reutilizáveis
+│   ├── layouts/            # Estruturas de layout (header, footer, sidebar)
+│   ├── pages/              # Páginas da aplicação
+│   ├── services/           # Serviços para comunicação com API
+│   ├── interfaces/         # Definições TypeScript
+│   ├── utils/              # Funções auxiliares e validações
+│   ├── app.config.ts       # Configuração global da aplicação
+│   ├── app.routes.ts       # Definição das rotas
+│   └── styles.css          # Estilos globais
+```
 
+### Backend (Laravel)
+```
+app/
+├── Http/
+│   ├── Controllers/        # Controladores da API
+│   └── Requests/          # Validações de entrada
+├── Models/                # Modelos Eloquent ORM
+├── Services/              # Lógica de negócio
+routes/                    # Definição das rotas da API
+database/
+├── migrations/            # Estrutura do banco de dados
+└── seeders/              # Dados iniciais
+```
 
-### Back-end
-- **app/Http/Controllers/**: Controladores responsáveis por receber e tratar requisições HTTP.
-- **app/Http/Requests/**: Classes responsáveis por validações de entrada (formulários, APIs).
-- **app/Models/**: Representações das tabelas do banco, usando Eloquent ORM.
-- **routes**: Arquivo principal onde são definidas as rotas da API.
-- **database/migrations/**: Migrations para criação e manutenção do schema do banco de dados.
-- **database/seeders/**: Seeders para popular o banco com dados iniciais.
-- **config/**: Configurações da aplicação (app, database, cors, etc).
-- **storage/**: Logs, arquivos temporários e cache da aplicação.
+## 🚀 Tecnologias Utilizadas
 
-
-## Como rodar (modo local)
+### Frontend
+- **Angular 17+** - Framework principal
+- **TypeScript** - Linguagem de programação
+- **SCSS/CSS** - Estilização
+- **Angular Material** - Componentes UI
+- **RxJS** - Programação reativa
 
 ### Backend
+- **Laravel 10+** - Framework PHP
+- **MySQL** - Banco de dados
+- **Eloquent ORM** - Mapeamento objeto-relacional
+- **Laravel Sanctum** - Autenticação de API
+- **PHPUnit** - Testes unitários
+
+### Infraestrutura
+- **Docker** - Containerização
+- **Docker Compose** - Orquestração de containers
+- **Nginx** - Servidor web
+- **Git** - Controle de versão
+
+## 🛠️ Como Executar o Projeto
+
+### Pré-requisitos
+- Node.js (v18+)
+- PHP (8.1+)
+- Composer
+- MySQL
+- Docker (opcional)
+
+### Instalação Local
+
+#### Backend (Laravel)
 ```bash
 cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
 php artisan serve
+```
+
+#### Frontend (Angular)
+```bash
+cd frontend
+npm install
+ng serve
+```
+
+### Usando Docker
+```bash
+docker-compose up -d
+```
+
+## 🎯 Funcionalidades por Módulo
+
+### Autenticação
+- Login com CPF e senha
+- Recuperação de senha
+- Validação de convites
+- Controle de sessão
+
+### Gestão de Cursos
+- Criação e edição de cursos
+- Status: Ativo/Inativo
+- Listagem e filtros
+
+### Sistema de Convites
+- Envio de convites por email
+- Validação de tokens
+- Controle de expiração
+- Status de convites
+
+### Acessibilidade
+- Tema de alto contraste
+- Navegação por teclado
+- Leitores de tela compatíveis
+- ARIA labels e roles
+
+## 👥 Equipe de Desenvolvimento
+
+### Residentes
+- **Gabriella Maria Nascimento da Silva** - Desenvolvedora Full Stack
+- **Higor de Lima Gomes** - Desenvolvedor Backend
+- **Jacqueline Maria Barbosa Lima Santos** - Desenvolvedora Frontend
+- **Janaine Ferreira dos Santos** - Desenvolvedora Frontend e UI/UX Designer
+
+### Orientação
+- **SENAI**
+
+## 🏢 Instituições Parceiras
+
+### BRISA (Sociedade para o Desenvolvimento da Tecnologia da Informação)
+Organização responsável pelo programa de Residência em TIC, promovendo a formação de profissionais especializados em tecnologia da informação.
+
+### UFAL (Universidade Federal de Alagoas)
+Instituição de ensino superior federal que oferece suporte acadêmico e infraestrutura para o programa.
+
+### Easy
+Centro de Pesquisa ligado ao Instituto de Computação da Universidade Federal de Alagoas (UFAL), voltado à Pesquisa, Desenvolvimento e Inovação (PD&I) com sólida atuação em sistemas computacionais com foco em soluções inteligentes.
+
+### Softex
+Associação brasileira que promove a indústria de tecnologia da informação e comunicação (TIC) e a inovação no país.
